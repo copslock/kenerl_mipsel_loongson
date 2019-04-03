@@ -2,125 +2,100 @@ Return-Path: <SRS0=IOgP=SF=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D3078C4360F
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 02:48:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C2B1C4360F
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 02:59:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id AE28E206DD
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 02:48:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 05EE4204EC
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 02:59:24 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="p3ig8KV5"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726411AbfDCCsG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 2 Apr 2019 22:48:06 -0400
-Received: from ozlabs.org ([203.11.71.1]:36643 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726157AbfDCCsG (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 2 Apr 2019 22:48:06 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 44Yr984hzQz9sPB;
-        Wed,  3 Apr 2019 13:47:56 +1100 (AEDT)
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Arnd Bergmann <arnd@arndb.de>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Firoz Khan <firoz.khan@linaro.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: Re: [PATCH 2/2] arch: add pidfd and io_uring syscalls everywhere
-In-Reply-To: <20190325144737.703921-1-arnd@arndb.de>
-References: <20190325143521.34928-1-arnd@arndb.de> <20190325144737.703921-1-arnd@arndb.de>
-Date:   Wed, 03 Apr 2019 13:47:50 +1100
-Message-ID: <87tvff24a1.fsf@concordia.ellerman.id.au>
+        id S1727023AbfDCC7Y (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 2 Apr 2019 22:59:24 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:42823 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726924AbfDCC7Y (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 2 Apr 2019 22:59:24 -0400
+Received: by mail-lj1-f194.google.com with SMTP id v22so8765435lje.9
+        for <linux-mips@vger.kernel.org>; Tue, 02 Apr 2019 19:59:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=m5exmGidpjCr4jWrxYPKmCQp8rsnrX7zpX4nxsNlFNY=;
+        b=p3ig8KV5DbSiTc+DqBvEXPIifWRQHI7B+1Ms7ib1/p0gAIGIqAOShL/ZW+YJ8uJZ5U
+         3XtOabaCcy7VMC3LDbe2nIELLM50f8qY9djrIyPoT/bGwi2ngpXYc5Q/jXK7iDSMjrXM
+         A902lpiP9X/7WKjMhHqNkgikybEbwSwuXxLS0VB/u4NZook+RpCbRUh4ersX4mp6lKko
+         D+AJegBWcYPfR7q7+jWK2R//DmPEX8r/p2FZ3n5iQ83wm9Zj6DPi/LmCPU+CXjPy6Uv4
+         9DLmAxbUWOYYB+3xJPU8h+5uGbrBeoGAJWWyw2TgOVBoamOVeCb8P9N3b5EV809mnjpo
+         Q0DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=m5exmGidpjCr4jWrxYPKmCQp8rsnrX7zpX4nxsNlFNY=;
+        b=GNi4wROijUVGjMx4ML4HRRU8cEg86H9lzXDOa0wNsWtEDyI+1vXDSU2vOk4lintsQO
+         Uit5psB31l1X3AqtrV49t+qZredFkyhwR5Owxuq+des7gFVPQOGsi9y4yTjG9dtzN1O+
+         Ehpo06XoiGQQnH0Qpjvr+77dEoAHadcgXa8joohLJVjcgR9NuJxLvO/I+k+EPPmxeYPd
+         aJlo+5mLfwdWq90el9zHAHmlmGmlk2IKT/lxDcWD5pkInDeojDM/7AYlOBPhRmNBgazR
+         OIEZPnncFlgfG7TdG/PL2pQQIt8/uFNt/IjO+RkMDO3OK8Nwhkh++paQzqPTtWR6j7Pp
+         7apg==
+X-Gm-Message-State: APjAAAWbDXhZQdvcc1VbB14YvxUWqNK/LtjGGpmFwMWRiw2ECWhaT3gu
+        O/a5vPoWcyFz1a7MVCnKQ8Xsa6D8SuB21qkINa0OBw==
+X-Google-Smtp-Source: APXvYqy29GH1Jn+4u+MOhDomj+6lezG9yxERqwHecHUTB1BCVyWQlMbSD+e5lim1Q7JFWVDTXQVrM/0b/Nzkmxs9nBE=
+X-Received: by 2002:a2e:3512:: with SMTP id z18mr27025494ljz.25.1554260361993;
+ Tue, 02 Apr 2019 19:59:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <1552330521-4276-1-git-send-email-info@metux.net> <1552330521-4276-20-git-send-email-info@metux.net>
+In-Reply-To: <1552330521-4276-20-git-send-email-info@metux.net>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 3 Apr 2019 09:59:10 +0700
+Message-ID: <CACRpkdYXKOdk42V4xZLY5BWbEp8hPePep5-XmcdB=WBewpUm6w@mail.gmail.com>
+Subject: Re: [PATCH 20/42] drivers: gpio: mt7621: use devm_platform_ioremap_resource()
+To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        Hoan Tran <hoan@os.amperecomputing.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linaro.org>,
+        Lyra Zhang <zhang.lyra@gmail.com>,
+        Keguang Zhang <keguang.zhang@gmail.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Jun Nie <jun.nie@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-mips@vger.kernel.org, linux-pwm@vger.kernel.org,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-tegra@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Arnd Bergmann <arnd@arndb.de> writes:
-> diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
-> index b18abb0c3dae..00f5a63c8d9a 100644
-> --- a/arch/powerpc/kernel/syscalls/syscall.tbl
-> +++ b/arch/powerpc/kernel/syscalls/syscall.tbl
-> @@ -505,3 +505,7 @@
->  421	32	rt_sigtimedwait_time64		sys_rt_sigtimedwait		compat_sys_rt_sigtimedwait_time64
->  422	32	futex_time64			sys_futex			sys_futex
->  423	32	sched_rr_get_interval_time64	sys_sched_rr_get_interval	sys_sched_rr_get_interval
-> +424	common	pidfd_send_signal		sys_pidfd_send_signal
-> +425	common	io_uring_setup			sys_io_uring_setup
-> +426	common	io_uring_enter			sys_io_uring_enter
-> +427	common	io_uring_register		sys_io_uring_register
+On Tue, Mar 12, 2019 at 1:59 AM Enrico Weigelt, metux IT consult
+<info@metux.net> wrote:
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+> Use the new helper that wraps the calls to platform_get_resource()
+> and devm_ioremap_resource() together.
+>
+> Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
 
-Lightly tested.
+Patch applied with Matthias' ACK.
 
-The pidfd_test selftest passes.
-
-Ran the io_uring example from fio, which prints lots of:
-
-IOPS=209952, IOS/call=32/32, inflight=117 (117), Cachehit=0.00%
-IOPS=209952, IOS/call=32/32, inflight=116 (116), Cachehit=0.00%
-IOPS=209920, IOS/call=32/32, inflight=115 (115), Cachehit=0.00%
-IOPS=209952, IOS/call=32/32, inflight=115 (115), Cachehit=0.00%
-IOPS=209920, IOS/call=32/32, inflight=115 (115), Cachehit=0.00%
-IOPS=209952, IOS/call=32/32, inflight=115 (115), Cachehit=0.00%
-IOPS=210016, IOS/call=32/32, inflight=114 (114), Cachehit=0.00%
-IOPS=210016, IOS/call=32/32, inflight=113 (113), Cachehit=0.00%
-IOPS=210048, IOS/call=32/32, inflight=113 (113), Cachehit=0.00%
-IOPS=210016, IOS/call=32/32, inflight=113 (113), Cachehit=0.00%
-IOPS=210048, IOS/call=32/32, inflight=112 (112), Cachehit=0.00%
-IOPS=210016, IOS/call=32/32, inflight=110 (110), Cachehit=0.00%
-IOPS=210048, IOS/call=32/32, inflight=105 (105), Cachehit=0.00%
-IOPS=210048, IOS/call=32/32, inflight=104 (104), Cachehit=0.00%
-IOPS=210080, IOS/call=32/32, inflight=102 (102), Cachehit=0.00%
-IOPS=210112, IOS/call=32/32, inflight=100 (100), Cachehit=0.00%
-IOPS=210080, IOS/call=32/32, inflight=97 (97), Cachehit=0.00%
-IOPS=210112, IOS/call=32/32, inflight=97 (97), Cachehit=0.00%
-IOPS=210112, IOS/call=32/31, inflight=126 (126), Cachehit=0.00%
-IOPS=210048, IOS/call=32/32, inflight=126 (126), Cachehit=0.00%
-IOPS=210048, IOS/call=32/32, inflight=125 (125), Cachehit=0.00%
-IOPS=210016, IOS/call=32/32, inflight=119 (119), Cachehit=0.00%
-IOPS=210048, IOS/call=32/32, inflight=117 (117), Cachehit=0.00%
-IOPS=210016, IOS/call=32/32, inflight=114 (114), Cachehit=0.00%
-IOPS=210048, IOS/call=32/32, inflight=111 (111), Cachehit=0.00%
-IOPS=210048, IOS/call=32/32, inflight=108 (108), Cachehit=0.00%
-IOPS=210048, IOS/call=32/32, inflight=107 (107), Cachehit=0.00%
-IOPS=210048, IOS/call=32/32, inflight=105 (105), Cachehit=0.00%
-
-Which is good I think?
-
-
-cheers
+Yours,
+Linus Walleij

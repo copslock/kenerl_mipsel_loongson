@@ -2,157 +2,105 @@ Return-Path: <SRS0=IOgP=SF=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 82DD9C4360F
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 01:20:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8C10C4360F
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 02:27:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5C2F220830
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 01:20:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 887852084C
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 02:27:56 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mw8gOlJQ"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727153AbfDCBUB (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 2 Apr 2019 21:20:01 -0400
-Received: from ozlabs.org ([203.11.71.1]:41751 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726724AbfDCBUB (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 2 Apr 2019 21:20:01 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 44YpCT5B81z9sPS;
-        Wed,  3 Apr 2019 12:19:49 +1100 (AEDT)
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Firoz Khan <firoz.khan@linaro.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-ia64@vger.kernel.org,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        linux-mips@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>
-Subject: Re: [PATCH 2/2] arch: add pidfd and io_uring syscalls everywhere
-In-Reply-To: <CAK8P3a14of-jJA2q7rki3gHk6gwE-0TCkzHuXZ1+TkemopgfRA@mail.gmail.com>
-References: <20190325143521.34928-1-arnd@arndb.de> <20190325144737.703921-1-arnd@arndb.de> <87y34vl6ji.fsf@concordia.ellerman.id.au> <CAK8P3a14of-jJA2q7rki3gHk6gwE-0TCkzHuXZ1+TkemopgfRA@mail.gmail.com>
-Date:   Wed, 03 Apr 2019 12:19:49 +1100
-Message-ID: <87wokb28cq.fsf@concordia.ellerman.id.au>
+        id S1726636AbfDCC1v (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 2 Apr 2019 22:27:51 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:45850 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726183AbfDCC1v (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 2 Apr 2019 22:27:51 -0400
+Received: by mail-lf1-f67.google.com with SMTP id 5so10457868lft.12
+        for <linux-mips@vger.kernel.org>; Tue, 02 Apr 2019 19:27:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=YtAzbbTpYWm3tVKs04V+l57uF8B+h/6NgprBGPnZSRs=;
+        b=mw8gOlJQyzm1Y7BKI1LFzb+UUYWVc5AMv0r35B7azMcUHvsy+LMbGCEN4aoCf1dOLI
+         ySadbse9YQxxK9pa/dwXf8+L4jfOR4f9MutjQ6E7TkZSEQ6fdtiAkri59BpA6WLjvhi4
+         xCkcRG9kMhfuFisB/E70Y7WmE4do/xCihigqlsO1ob5t/tC6+yQYCu1FJAeo4WrgtbEQ
+         BsA6LH9jU7ZjW98ZOn/kbeC1+XQWFPaFMZoUVbYlnuP0+ILSjXGKlJgzQ4phagZKbbmG
+         86A7Z9GlbHOqt9V1gSgflek6au2TU1O7JhEFjyaF6neR3Jm/QMK+IOLshzrhILF/oA2f
+         OLOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=YtAzbbTpYWm3tVKs04V+l57uF8B+h/6NgprBGPnZSRs=;
+        b=k53N0UoAkkacAfPjvE+04Xmj+I1xH0UqEsXV3TZSV1KoqUAlMHl5hW2Q3MMnQh1B81
+         NQwRU8p6HDpWNUvNEPzypNZT5mHreFMfrYVjRwkvN43ZdW+OcwfhCHj2l/036oi620rs
+         cCHWiFuah7DjAn+LOZYyGkOulcGkm/A2/NGY7xHubOUkivJ7rJ1AqEssJqsdw6uU/CEB
+         PWaR4v0fBFswa1rXcMeXLLyMBH6bZJRCD7xRsVVxLjvUfYXDtlVWASOGI+nCvjVifJAp
+         aHhCLVATg+TlNsyWRe6LKElPWY2Va6/NypqIdelqvTQHakSSvPRd8+k2080gVvwZQN43
+         fuSw==
+X-Gm-Message-State: APjAAAWXQD9s1CS44ReMmg70G+Zfa12htwyGhYHzP4Gxr9Tti7Dsrf9J
+        Wg1viyf6wkOf1Hc5mLamPgbyJGmZFbTdMmmQBWErrg==
+X-Google-Smtp-Source: APXvYqxab7wOrozXeZGoqw1ODDCRuiSEFwVhYIrjKk+PrzQp2+B+8S2/BmWz4LxJIGY45RcAihAN1FheplC/9k53Zds=
+X-Received: by 2002:ac2:4285:: with SMTP id m5mr11140922lfh.103.1554258469204;
+ Tue, 02 Apr 2019 19:27:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <1552330521-4276-1-git-send-email-info@metux.net> <1552330521-4276-10-git-send-email-info@metux.net>
+In-Reply-To: <1552330521-4276-10-git-send-email-info@metux.net>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 3 Apr 2019 09:27:37 +0700
+Message-ID: <CACRpkdbkrmpUpn4FxNzgjD+j4UKgBLYz8OPX+5gEkCZc+PvGyg@mail.gmail.com>
+Subject: Re: [PATCH 10/42] drivers: gpio: ep93xx: devm_platform_ioremap_resource()
+To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        Hoan Tran <hoan@os.amperecomputing.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linaro.org>,
+        Lyra Zhang <zhang.lyra@gmail.com>,
+        Keguang Zhang <keguang.zhang@gmail.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Jun Nie <jun.nie@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-mips@vger.kernel.org, linux-pwm@vger.kernel.org,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-tegra@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Arnd Bergmann <arnd@arndb.de> writes:
-> On Sun, Mar 31, 2019 at 5:47 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
->>
->> Arnd Bergmann <arnd@arndb.de> writes:
->> > Add the io_uring and pidfd_send_signal system calls to all architectures.
->> >
->> > These system calls are designed to handle both native and compat tasks,
->> > so all entries are the same across architectures, only arm-compat and
->> > the generic tale still use an old format.
->> >
->> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->> > ---
->> >  arch/alpha/kernel/syscalls/syscall.tbl      | 4 ++++
->> >  arch/arm/tools/syscall.tbl                  | 4 ++++
->> >  arch/arm64/include/asm/unistd.h             | 2 +-
->> >  arch/arm64/include/asm/unistd32.h           | 8 ++++++++
->> >  arch/ia64/kernel/syscalls/syscall.tbl       | 4 ++++
->> >  arch/m68k/kernel/syscalls/syscall.tbl       | 4 ++++
->> >  arch/microblaze/kernel/syscalls/syscall.tbl | 4 ++++
->> >  arch/mips/kernel/syscalls/syscall_n32.tbl   | 4 ++++
->> >  arch/mips/kernel/syscalls/syscall_n64.tbl   | 4 ++++
->> >  arch/mips/kernel/syscalls/syscall_o32.tbl   | 4 ++++
->> >  arch/parisc/kernel/syscalls/syscall.tbl     | 4 ++++
->> >  arch/powerpc/kernel/syscalls/syscall.tbl    | 4 ++++
->>
->> Have you done any testing?
->>
->> I'd rather not wire up syscalls that have never been tested at all on
->> powerpc.
+On Tue, Mar 12, 2019 at 1:55 AM Enrico Weigelt, metux IT consult
+<info@metux.net> wrote:
+
+> Use the new helper that wraps the calls to platform_get_resource()
+> and devm_ioremap_resource() together.
 >
-> No, I have not. I did review the system calls carefully and added the first
-> patch to fix the bug on x86 compat mode before adding the same bug
-> on the other compat architectures though ;-)
->
-> Generally, my feeling is that adding system calls is not fundamentally
-> different from adding other ABIs, and we should really do it at
-> the same time across all architectures, rather than waiting for each
-> maintainer to get around to reviewing and testing the new calls
-> first. This is not a problem on powerpc, but a lot of other architectures
-> are less active, which is how we have always ended up with
-> different sets of system calls across architectures.
+> Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
 
-Well it's still something of a problem on powerpc. No one has
-volunteered to test io_uring on powerpc, so at this stage it will go in
-completely untested.
+Skipping this patch for now because of the bug pointed out by Thierry,
+BTW rebase on my GPIO "devel" branch after I applied the
+uncontroversial patches (most of them are obviously correct).
 
-If there was a selftest in the tree I'd be a bit happier, because at
-least then our CI would start testing it as soon as the syscalls were
-wired up in linux-next.
+I know it is not super easy to build all of those systems so cold
+coding is fine with me, I will find any remaining bugs for sure. :D
 
-And yeah obviously I should test it, but I don't have infinite time
-unfortunately.
-
-> The problem here is that this makes it harder for the C library to
-> know when a system call is guaranteed to be available. glibc
-> still needs a feature test for newly added syscalls to see if they
-> are working (they might be backported to an older kernel, or
-> disabled), but whenever the minimum kernel version is increased,
-> it makes sense to drop those checks and assume non-optional
-> system calls will work if they were part of that minimum version.
-
-But that's the thing, if we just wire them up untested they may not
-actually work. And then you have the far worse situation where the
-syscall exists in kernel version x but does not actually work properly.
-
-See the mess we have with pkeys for example.
-
-> In the future, I'd hope that any new system calls get added
-> right away on all architectures when they land (it was a bit
-> tricky this time, because I still did a bunch of reworks that
-> conflicted with the new calls). Bugs will happen of course, but
-> I think adding them sooner makes it more likely to catch those
-> bugs early on so we have a chance to fix them properly,
-> and need fewer arch specific workarounds (ideally none)
-> for system calls.
-
-For syscalls that have a selftest in the tree, and don't rely on
-anything arch specific I agree.
-
-I'm a bit more wary of things that are not easily tested and have the
-potential to work differently across arches.
-
-cheers
+Yours,
+Linus Walleij

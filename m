@@ -2,31 +2,60 @@ Return-Path: <SRS0=IOgP=SF=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED,USER_AGENT_MUTT
+X-Spam-Status: No, score=-1.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 40CDDC10F0B
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 15:49:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 91E5FC10F06
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 15:51:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id ECC02206DF
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 15:49:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 60B0E206BA
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 15:51:28 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel-dk.20150623.gappssmtp.com header.i=@kernel-dk.20150623.gappssmtp.com header.b="TQfs1wGf"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727025AbfDCPtN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 3 Apr 2019 11:49:13 -0400
-Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:43510 "EHLO
-        foss.arm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726183AbfDCPtL (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 3 Apr 2019 11:49:11 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AFD1380D;
-        Wed,  3 Apr 2019 08:49:10 -0700 (PDT)
-Received: from fuggles.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F1BC33F68F;
-        Wed,  3 Apr 2019 08:49:04 -0700 (PDT)
-Date:   Wed, 3 Apr 2019 16:49:02 +0100
-From:   Will Deacon <will.deacon@arm.com>
-To:     Jens Axboe <axboe@kernel.dk>
+        id S1726151AbfDCPv2 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 3 Apr 2019 11:51:28 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:39270 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726827AbfDCPv0 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 3 Apr 2019 11:51:26 -0400
+Received: by mail-pl1-f194.google.com with SMTP id b65so8241892plb.6
+        for <linux-mips@vger.kernel.org>; Wed, 03 Apr 2019 08:51:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=uonhx/LPDDVDGNQW+H/tK8KtlZ2R4bxwlGmgw2LiaWg=;
+        b=TQfs1wGfOLPtcaYtQZ/qhCsI6Zh64+pHvQk5JOLLhic495QORkGTgP0oF3wsqR3qCt
+         iXyGlUmA2MrC6SxN7941HkzwuNTmkq/5qoLckc7EYjBEJyQqyN8dCgrpbZS6552xn/Qk
+         pU4P+BbbKsFuzgT4TNxN8AmGh7Z7WIZrtHlD2lrGNCpKKMsd+i7LfRKPYC7hVkz73R1k
+         EKsTy2Fs9H1tsOZZh+pdwMzJbCX4EaWOgL8zmIDn+WJg3LPItRPgPbjjjSXPrnFRyWP3
+         Ak3GqA1C3Bh1VAboyveae9mijiF7n3RMZvkfkhdUI3RlSiKkQOfJME1OxCf+OPPzbIs6
+         fs3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=uonhx/LPDDVDGNQW+H/tK8KtlZ2R4bxwlGmgw2LiaWg=;
+        b=BbiHUfphJJ8mIztQ6+mP6XASVxfYP5kLYuuKRTb/ZV7w00qiEsfNJ5+Hvj13hZoePU
+         MvluSxyVXJY2lcrBIsTCvVfJ+K1bxlwOMLjgLXl+NnIrzpApn/EXLGIlK6Wi7ZduyOHQ
+         V9CIcnq/MyENR3zMDZAKKV83KTFXOpZzw3BroZtDseRmj9ctGDReC6l54a6bZWx6nxJc
+         yqJkkfE0+dRbgKCcULbfp9Xui6eeXjuaM3Q0mCieEGY/etKKPmxfj7Nt8XhsNKs0vLTk
+         6ULKTCqWNvc3PZhAJ8GiyeOGjg/rTECGtbYp7U4aeOXBRxIpQ4ueyx44YFgSFh9K3+S6
+         E1Kg==
+X-Gm-Message-State: APjAAAXhDzU5IYPtJOcRjL6CxjMWc3JQwNxriKmRX0Pu3FGkZ5Pv5zN5
+        YkS4zIltSPDya5npeVZW5GikwQ==
+X-Google-Smtp-Source: APXvYqyuZlOgGACiMvo7zmWSlvp9AYQWk9aBM8mIhqXcJZVajXaVHi33LyqZT/7GTZs2Le+pKElXBw==
+X-Received: by 2002:a17:902:681:: with SMTP id 1mr680253plh.31.1554306685930;
+        Wed, 03 Apr 2019 08:51:25 -0700 (PDT)
+Received: from [192.168.1.121] (66.29.188.166.static.utbb.net. [66.29.188.166])
+        by smtp.gmail.com with ESMTPSA id e4sm19098769pgd.32.2019.04.03.08.51.22
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 03 Apr 2019 08:51:25 -0700 (PDT)
+Subject: Re: [PATCH 2/2] arch: add pidfd and io_uring syscalls everywhere
+To:     Will Deacon <will.deacon@arm.com>
 Cc:     Michael Ellerman <mpe@ellerman.id.au>,
         Arnd Bergmann <arnd@arndb.de>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -58,8 +87,6 @@ Cc:     Michael Ellerman <mpe@ellerman.id.au>,
         linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org
-Subject: Re: [PATCH 2/2] arch: add pidfd and io_uring syscalls everywhere
-Message-ID: <20190403154902.GB16866@fuggles.cambridge.arm.com>
 References: <20190325143521.34928-1-arnd@arndb.de>
  <20190325144737.703921-1-arnd@arndb.de>
  <87tvff24a1.fsf@concordia.ellerman.id.au>
@@ -67,70 +94,64 @@ References: <20190325143521.34928-1-arnd@arndb.de>
  <9d673dfd-0051-3676-653e-6376430d73dd@kernel.dk>
  <20190403151932.GA16866@fuggles.cambridge.arm.com>
  <032faa2f-6317-75b6-8514-076ef1a244e8@kernel.dk>
+ <20190403154902.GB16866@fuggles.cambridge.arm.com>
+From:   Jens Axboe <axboe@kernel.dk>
+Message-ID: <086cdf60-8973-02e6-191b-b818e6f12468@kernel.dk>
+Date:   Wed, 3 Apr 2019 09:51:21 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <032faa2f-6317-75b6-8514-076ef1a244e8@kernel.dk>
-User-Agent: Mutt/1.11.1+86 (6f28e57d73f2) ()
+In-Reply-To: <20190403154902.GB16866@fuggles.cambridge.arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Wed, Apr 03, 2019 at 09:39:52AM -0600, Jens Axboe wrote:
-> On 4/3/19 9:19 AM, Will Deacon wrote:
-> > On Wed, Apr 03, 2019 at 07:49:26AM -0600, Jens Axboe wrote:
-> >> On 4/3/19 5:11 AM, Will Deacon wrote:
-> >>> will@autoplooker:~/liburing/test$ ./io_uring_register 
-> >>> RELIMIT_MEMLOCK: 67108864 (67108864)
-> >>> [   35.477875] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000070
-> >>> [   35.478969] Mem abort info:
-> >>> [   35.479296]   ESR = 0x96000004
-> >>> [   35.479785]   Exception class = DABT (current EL), IL = 32 bits
-> >>> [   35.480528]   SET = 0, FnV = 0
-> >>> [   35.480980]   EA = 0, S1PTW = 0
-> >>> [   35.481345] Data abort info:
-> >>> [   35.481680]   ISV = 0, ISS = 0x00000004
-> >>> [   35.482267]   CM = 0, WnR = 0
-> >>> [   35.482618] user pgtable: 4k pages, 48-bit VAs, pgdp = (____ptrval____)
-> >>> [   35.483486] [0000000000000070] pgd=0000000000000000
-> >>> [   35.484041] Internal error: Oops: 96000004 [#1] PREEMPT SMP
-> >>> [   35.484788] Modules linked in:
-> >>> [   35.485311] CPU: 113 PID: 3973 Comm: io_uring_regist Not tainted 5.1.0-rc3-00012-g40b114779944 #1
-> >>> [   35.486712] Hardware name: linux,dummy-virt (DT)
-> >>> [   35.487450] pstate: 20400005 (nzCv daif +PAN -UAO)
-> >>> [   35.488228] pc : link_pwq+0x10/0x60
-> >>> [   35.488794] lr : apply_wqattrs_commit+0xe0/0x118
-> >>> [   35.489550] sp : ffff000017e2bbc0
-> >>
-> >> Huh, this looks odd, it's crashing inside the wq setup.
-> > 
-> > Enabling KASAN seems to indicate a double-free, which may well be related.
+On 4/3/19 9:49 AM, Will Deacon wrote:
+> On Wed, Apr 03, 2019 at 09:39:52AM -0600, Jens Axboe wrote:
+>> On 4/3/19 9:19 AM, Will Deacon wrote:
+>>> On Wed, Apr 03, 2019 at 07:49:26AM -0600, Jens Axboe wrote:
+>>>> On 4/3/19 5:11 AM, Will Deacon wrote:
+>>>>> will@autoplooker:~/liburing/test$ ./io_uring_register 
+>>>>> RELIMIT_MEMLOCK: 67108864 (67108864)
+>>>>> [   35.477875] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000070
+>>>>> [   35.478969] Mem abort info:
+>>>>> [   35.479296]   ESR = 0x96000004
+>>>>> [   35.479785]   Exception class = DABT (current EL), IL = 32 bits
+>>>>> [   35.480528]   SET = 0, FnV = 0
+>>>>> [   35.480980]   EA = 0, S1PTW = 0
+>>>>> [   35.481345] Data abort info:
+>>>>> [   35.481680]   ISV = 0, ISS = 0x00000004
+>>>>> [   35.482267]   CM = 0, WnR = 0
+>>>>> [   35.482618] user pgtable: 4k pages, 48-bit VAs, pgdp = (____ptrval____)
+>>>>> [   35.483486] [0000000000000070] pgd=0000000000000000
+>>>>> [   35.484041] Internal error: Oops: 96000004 [#1] PREEMPT SMP
+>>>>> [   35.484788] Modules linked in:
+>>>>> [   35.485311] CPU: 113 PID: 3973 Comm: io_uring_regist Not tainted 5.1.0-rc3-00012-g40b114779944 #1
+>>>>> [   35.486712] Hardware name: linux,dummy-virt (DT)
+>>>>> [   35.487450] pstate: 20400005 (nzCv daif +PAN -UAO)
+>>>>> [   35.488228] pc : link_pwq+0x10/0x60
+>>>>> [   35.488794] lr : apply_wqattrs_commit+0xe0/0x118
+>>>>> [   35.489550] sp : ffff000017e2bbc0
+>>>>
+>>>> Huh, this looks odd, it's crashing inside the wq setup.
+>>>
+>>> Enabling KASAN seems to indicate a double-free, which may well be related.
+>>
+>> Does this help?
 > 
-> Does this help?
-
-Yes, thanks for the quick patch. Feel free to add:
-
-Reported-by: Will Deacon <will.deacon@arm.com>
-Tested-by: Will Deacon <will.deacon@arm.com>
-
-if you spin a proper patch.
-
-Will
-
-> diff --git a/fs/io_uring.c b/fs/io_uring.c
-> index bbdbd56cf2ac..07d6ef195d05 100644
-> --- a/fs/io_uring.c
-> +++ b/fs/io_uring.c
-> @@ -2215,6 +2215,7 @@ static int io_sqe_files_register(struct io_ring_ctx *ctx, void __user *arg,
->  			fput(ctx->user_files[i]);
->  
->  		kfree(ctx->user_files);
-> +		ctx->user_files = NULL;
->  		ctx->nr_user_files = 0;
->  		return ret;
->  	}
+> Yes, thanks for the quick patch. Feel free to add:
 > 
-> -- 
-> Jens Axboe
+> Reported-by: Will Deacon <will.deacon@arm.com>
+> Tested-by: Will Deacon <will.deacon@arm.com>
 > 
+> if you spin a proper patch.
+
+Great, thanks for reporting/testing.
+
+-- 
+Jens Axboe
+

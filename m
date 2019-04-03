@@ -6,56 +6,56 @@ X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09742C4360F
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 02:36:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D3DCC4360F
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 02:37:27 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C90902146E
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 02:36:29 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3D13920882
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 02:37:27 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="izpEnhoR"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="st5nkKmC"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726775AbfDCCg3 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 2 Apr 2019 22:36:29 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:33231 "EHLO
+        id S1726920AbfDCCh1 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 2 Apr 2019 22:37:27 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:43714 "EHLO
         mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726425AbfDCCg3 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 2 Apr 2019 22:36:29 -0400
-Received: by mail-lj1-f193.google.com with SMTP id f23so13416514ljc.0
-        for <linux-mips@vger.kernel.org>; Tue, 02 Apr 2019 19:36:27 -0700 (PDT)
+        with ESMTP id S1727152AbfDCCh0 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 2 Apr 2019 22:37:26 -0400
+Received: by mail-lj1-f193.google.com with SMTP id f18so13383881lja.10
+        for <linux-mips@vger.kernel.org>; Tue, 02 Apr 2019 19:37:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
         bh=XkQq/Hrmv0eGgt6shvKyYOCwWEYAJMOW7yeHRm4cO0g=;
-        b=izpEnhoRs8bDqDQxMJCPbATuwpQ0PkaQVOxJjBfIbENbNlQc3qinI7+Vg05YP2hAn9
-         mjwt+oSSDfXoj/FFgqbTb2IOKkwUHS6ISMFD0PNidrA4d2KDCSJT9hk/rSB6Du5H6NVV
-         i13C+p1h9798Tlwi0EQUGekagMxGeQe0tJZrF4gcIJHWIoEcgowB9/aATgpJIQSJAjyy
-         D1jxZB9L3RWgoKrPQTCOhWLSlaXDaJ1facbWugzpF9Ev2Vn7QJdySOA/VCuq9173dHQf
-         RkbGLbqU8zLZA264idyHhJ1FeTlWZowNXSJGBm4lZrcfa7QGP7zS1MjES+I5MjHin0zc
-         2MOg==
+        b=st5nkKmCzGYRmswYnOYUEEw9t91vDKq2nmDPsxOMI3swVsvXiqe+T6H5BaXZsLVUf8
+         4iyg/Q//wa5CYuo5pm3dj8bghd8fvSCB6s02i9nDLNvMrnYuG1Z/B099REUgLRprZRCQ
+         YGk6wa7e8rdzP5oz4ZwibSa9invEDGBYmRCH8Ryk4GHj8Gi17+qZbQuriHCXCbeJH07A
+         /QfHMeEb2MmdZ+EISyhn+aOr6N8qIZPZdWZgTCKyQ8W1ej3hoHPycuwbwi8AKU71CfWe
+         ysRozyye17+rKA1XUZZrg0QjBnwxpqGNSThUZcDzzCRA0LrA70MaulouOs2ahNZ/l2Jl
+         lrhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
         bh=XkQq/Hrmv0eGgt6shvKyYOCwWEYAJMOW7yeHRm4cO0g=;
-        b=TyuFYDIi8iUsDgEfHtTRK4v8HGkII8CypS2iaOD9Mg1T2kAhyyS4icIWq7u11iEFpN
-         ifrxmDytYogaxUDe2NMCqAGWzGSgmQeyWSKYqSxhI7dvtZyXPo6OYNQRCBy3jSerWVgs
-         vDAdzzAhDXcxgf3hanhuatsd/Sxx+gUD74fUTSIYNNX7g4ZU+/FrsPOPjHMsnNZtapS8
-         UquKxlLGsr7uTdB8gkTEs9aCNzV5NgOVNIbiYvJeNRJA8uD/gWyxEQiEyVaNEo8hpQHS
-         DJlqVmmiysRng6XfZekiLgiiAg8Ncg7rUAyq48Li6ChvvSyQ9BFv8wWMG0fCHm4q1TBs
-         EAJw==
-X-Gm-Message-State: APjAAAU0uTJJs2g1guWXh4khZ/9t1b79PvEwXFrZQ1fi2ARJd7jXCS4Y
-        UAKmntlmB1OGQ0jaPSlrofCgFRqTO3015o85RFdOyw==
-X-Google-Smtp-Source: APXvYqy+QIJQKwbRMYyJuisphj2TP7E3HliPEBKjWAEnPVjR8rfZPGn00SuHeYS77wfFjR3A+uFzAwp8oZrcUCgpjtY=
-X-Received: by 2002:a2e:4a1a:: with SMTP id x26mr4984809lja.49.1554258987313;
- Tue, 02 Apr 2019 19:36:27 -0700 (PDT)
+        b=AU9pjBPmzFTaMFS/iASfaGZqscJiTmYfvsqlNFt9oK3oSo+vKbv4VEPRin46Btew8d
+         C4nJqWaJGSceuP/h9P8LHcBZFfqN/UGoY6OXGk3PuhjrrH6pKwha2skGhw0GawEXG/ad
+         DWsqtClMOv3JK02qZVH/UAgfEg3e1Yt6PcuduKXyvXXPAugpkXnFwT1fhEmHHv2Vvts7
+         d45jEn7rrHZK6Q6XKFlc2PuswDasHbFFhyzz4ATz/zxsFO8F130HWRW5JXu9B49gqYl8
+         eHl1pwWK6GTK+5Ln2nOtN+WQXML6SCkOM9i/NOT+IcIozZZkcpcos5rgfGeKLMJinnWq
+         X4tg==
+X-Gm-Message-State: APjAAAW05BYEOjbQF8jSCMYzUrxN6ZCxmHOgnpCLKhm6kUOTofM+ZtzX
+        V+s2KFGavNOFluzksbU/dbluDW3kgLQrxNkvPXFfOw==
+X-Google-Smtp-Source: APXvYqyfqk8mV/ayFiROibrSgxPm2PCIKYdeRzUFulDCskRLOs+xN5O63mPzUMSk1fi3E1LuWmu0rFka+xyiFeNRIa8=
+X-Received: by 2002:a2e:5d94:: with SMTP id v20mr37407307lje.138.1554259044742;
+ Tue, 02 Apr 2019 19:37:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <1552330521-4276-1-git-send-email-info@metux.net> <1552330521-4276-18-git-send-email-info@metux.net>
-In-Reply-To: <1552330521-4276-18-git-send-email-info@metux.net>
+References: <1552330521-4276-1-git-send-email-info@metux.net> <1552330521-4276-19-git-send-email-info@metux.net>
+In-Reply-To: <1552330521-4276-19-git-send-email-info@metux.net>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 3 Apr 2019 09:36:16 +0700
-Message-ID: <CACRpkdaV3psr6Xaj16LoeCuJDq-oXVY_rtrXQyKcYiwpBKS=0Q@mail.gmail.com>
-Subject: Re: [PATCH 18/42] drivers: gpio: lpc18xx: use devm_platform_ioremap_resource()
+Date:   Wed, 3 Apr 2019 09:37:13 +0700
+Message-ID: <CACRpkdZ1g5NghOMaN3CgZ5KUyemhguQOuapZDG1gNqR-veC7RA@mail.gmail.com>
+Subject: Re: [PATCH 19/42] drivers: gpio: mb86s7x: use devm_platform_ioremap_resource()
 To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
 Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,

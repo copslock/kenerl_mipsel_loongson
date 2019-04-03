@@ -2,184 +2,111 @@ Return-Path: <SRS0=IOgP=SF=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F2540C10F0B
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 13:49:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92EEEC10F06
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 14:17:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B0E2820700
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 13:49:38 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20150623.gappssmtp.com header.i=@kernel-dk.20150623.gappssmtp.com header.b="a+09Q+zu"
+	by mail.kernel.org (Postfix) with ESMTP id 6E9DE2171F
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 14:17:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726396AbfDCNte (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 3 Apr 2019 09:49:34 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:35083 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726264AbfDCNtd (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 3 Apr 2019 09:49:33 -0400
-Received: by mail-pg1-f195.google.com with SMTP id g8so8375951pgf.2
-        for <linux-mips@vger.kernel.org>; Wed, 03 Apr 2019 06:49:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=t5ZVVI/5i5BZgbC0+BF4FpeyupPsSZBs0qT2dr3BKsI=;
-        b=a+09Q+zugRlUHjkyucJBUCWf446/MQuUX5HgeGs3ZuGQQLIWjJL4mBRQrPd8Bx1buN
-         pS4R4TpqP3XhVpa6S7zs10taoPdLsT7v+9IuXra/Uik1YcsijFXT7lR/UJiVHpj8asQt
-         ZKI61os4qE1ceMgeeCWS8eeEqFOYcwVarDSKzOrfLlnJyc5wRdlnXGw37CR8OlhLZqnf
-         yHVyoaWIHJpz8YliG/fKTjFH1niDFOpAo/QavcioqNac4ds3tqnSs5/kTVDh1j1rvHJs
-         S0B+dWgq7An+aJLx8NTQYB7UoUjMFTNUGB972txZpMDJCgnpUlYul4Q6ZsTAr8wNltER
-         O/0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=t5ZVVI/5i5BZgbC0+BF4FpeyupPsSZBs0qT2dr3BKsI=;
-        b=rIdjGSPju/gPJzD/b0PKm2JCbW7ipcyOkAckvjfr0F5HYHcZA1zhh7AH+KPSa7097A
-         1dpiyHGHS4m0yhxYFzlSvWooJCebwGxftgnJiyGwA456z2Nop2wDOzFitGENFPg2Oamy
-         LJmX4Aru4ztBtOLGcriP29FykUPzOK95cKdaosRyL3CcJe2i+Kx2so0OxB0SuI72NNRq
-         5Tvav62rhgbkmjAxxG4qW3NvJ2lF3R9RWZCAsZhyxU6w3nkzHLXLoORaKPFsxaRBq7Zu
-         WjOEzlHrCjvM4FoTTG6uHWNm+wdjDMFFVXm+457dRHgCwxmNQV2BrM1zXy5sXYf2GSld
-         xuRg==
-X-Gm-Message-State: APjAAAXIGByRQHmbCXOkN7HC4mNA64FNR1lK+IrlVSKGCPpEBOYLSq2N
-        6BKIgKXRjEvMKoFaklzX6ue3DdXGU82iZw==
-X-Google-Smtp-Source: APXvYqzl4pp2LVq+nDJhXTBECl1hQPThxVc/ItK+ZQpXYL1XB54jwn23RYPTMUJAYmiOOJU/yQZx8A==
-X-Received: by 2002:a62:2687:: with SMTP id m129mr25296327pfm.204.1554299372295;
-        Wed, 03 Apr 2019 06:49:32 -0700 (PDT)
-Received: from [192.168.1.121] (66.29.188.166.static.utbb.net. [66.29.188.166])
-        by smtp.gmail.com with ESMTPSA id g2sm22691245pfd.134.2019.04.03.06.49.28
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 03 Apr 2019 06:49:30 -0700 (PDT)
-Subject: Re: [PATCH 2/2] arch: add pidfd and io_uring syscalls everywhere
-To:     Will Deacon <will.deacon@arm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
+        id S1726376AbfDCORX (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 3 Apr 2019 10:17:23 -0400
+Received: from foss.arm.com ([217.140.101.70]:41434 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725959AbfDCORX (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 3 Apr 2019 10:17:23 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 52CBD1596;
+        Wed,  3 Apr 2019 07:17:23 -0700 (PDT)
+Received: from e112269-lin.arm.com (e112269-lin.cambridge.arm.com [10.1.196.69])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5A7813F68F;
+        Wed,  3 Apr 2019 07:17:19 -0700 (PDT)
+From:   Steven Price <steven.price@arm.com>
+To:     linux-mm@kvack.org
+Cc:     Steven Price <steven.price@arm.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        James Morse <james.morse@arm.com>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will.deacon@arm.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        "Liang, Kan" <kan.liang@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Firoz Khan <firoz.khan@linaro.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org
-References: <20190325143521.34928-1-arnd@arndb.de>
- <20190325144737.703921-1-arnd@arndb.de>
- <87tvff24a1.fsf@concordia.ellerman.id.au>
- <20190403111134.GA7159@fuggles.cambridge.arm.com>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <9d673dfd-0051-3676-653e-6376430d73dd@kernel.dk>
-Date:   Wed, 3 Apr 2019 07:49:26 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org
+Subject: [PATCH v8 03/20] mips: mm: Add p?d_large() definitions
+Date:   Wed,  3 Apr 2019 15:16:10 +0100
+Message-Id: <20190403141627.11664-4-steven.price@arm.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190403141627.11664-1-steven.price@arm.com>
+References: <20190403141627.11664-1-steven.price@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <20190403111134.GA7159@fuggles.cambridge.arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On 4/3/19 5:11 AM, Will Deacon wrote:
-> Hi Michael,
-> 
-> On Wed, Apr 03, 2019 at 01:47:50PM +1100, Michael Ellerman wrote:
->> Arnd Bergmann <arnd@arndb.de> writes:
->>> diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
->>> index b18abb0c3dae..00f5a63c8d9a 100644
->>> --- a/arch/powerpc/kernel/syscalls/syscall.tbl
->>> +++ b/arch/powerpc/kernel/syscalls/syscall.tbl
->>> @@ -505,3 +505,7 @@
->>>  421	32	rt_sigtimedwait_time64		sys_rt_sigtimedwait		compat_sys_rt_sigtimedwait_time64
->>>  422	32	futex_time64			sys_futex			sys_futex
->>>  423	32	sched_rr_get_interval_time64	sys_sched_rr_get_interval	sys_sched_rr_get_interval
->>> +424	common	pidfd_send_signal		sys_pidfd_send_signal
->>> +425	common	io_uring_setup			sys_io_uring_setup
->>> +426	common	io_uring_enter			sys_io_uring_enter
->>> +427	common	io_uring_register		sys_io_uring_register
->>
->> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
->>
->> Lightly tested.
->>
->> The pidfd_test selftest passes.
-> 
-> That reports pass for me too, although it fails to unshare the pid ns, which I
-> assume is benign.
-> 
->> Ran the io_uring example from fio, which prints lots of:
-> 
-> How did you invoke that? I had a play with the tests in:
+walk_page_range() is going to be allowed to walk page tables other than
+those of user space. For this it needs to know when it has reached a
+'leaf' entry in the page tables. This information is provided by the
+p?d_large() functions/macros.
 
-It's t/io_uring from the fio repo:
+For mips, we only support large pages on 64 bit.
 
-git://git.kernel.dk/fio
+For 64 bit if _PAGE_HUGE is defined we can simply look for it. When not
+defined we can be confident that there are no large pages in existence
+and fall back on the generic implementation (added in a later patch)
+which returns 0.
 
-and you just run it ala:
+CC: Ralf Baechle <ralf@linux-mips.org>
+CC: Paul Burton <paul.burton@mips.com>
+CC: James Hogan <jhogan@kernel.org>
+CC: linux-mips@vger.kernel.org
+Signed-off-by: Steven Price <steven.price@arm.com>
+Acked-by: Paul Burton <paul.burton@mips.com>
+---
+ arch/mips/include/asm/pgtable-64.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-# make t/io_uring
-# t/io_uring /dev/some_device
-
->   git://git.kernel.dk/liburing
-> 
-> but I quickly ran into the kernel oops below.
-> 
-> Will
-> 
-> --->8
-> 
-> will@autoplooker:~/liburing/test$ ./io_uring_register 
-> RELIMIT_MEMLOCK: 67108864 (67108864)
-> [   35.477875] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000070
-> [   35.478969] Mem abort info:
-> [   35.479296]   ESR = 0x96000004
-> [   35.479785]   Exception class = DABT (current EL), IL = 32 bits
-> [   35.480528]   SET = 0, FnV = 0
-> [   35.480980]   EA = 0, S1PTW = 0
-> [   35.481345] Data abort info:
-> [   35.481680]   ISV = 0, ISS = 0x00000004
-> [   35.482267]   CM = 0, WnR = 0
-> [   35.482618] user pgtable: 4k pages, 48-bit VAs, pgdp = (____ptrval____)
-> [   35.483486] [0000000000000070] pgd=0000000000000000
-> [   35.484041] Internal error: Oops: 96000004 [#1] PREEMPT SMP
-> [   35.484788] Modules linked in:
-> [   35.485311] CPU: 113 PID: 3973 Comm: io_uring_regist Not tainted 5.1.0-rc3-00012-g40b114779944 #1
-> [   35.486712] Hardware name: linux,dummy-virt (DT)
-> [   35.487450] pstate: 20400005 (nzCv daif +PAN -UAO)
-> [   35.488228] pc : link_pwq+0x10/0x60
-> [   35.488794] lr : apply_wqattrs_commit+0xe0/0x118
-> [   35.489550] sp : ffff000017e2bbc0
-
-Huh, this looks odd, it's crashing inside the wq setup.
-
-
+diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
+index 93a9dce31f25..42162877ac62 100644
+--- a/arch/mips/include/asm/pgtable-64.h
++++ b/arch/mips/include/asm/pgtable-64.h
+@@ -273,6 +273,10 @@ static inline int pmd_present(pmd_t pmd)
+ 	return pmd_val(pmd) != (unsigned long) invalid_pte_table;
+ }
+ 
++#ifdef _PAGE_HUGE
++#define pmd_large(pmd)	((pmd_val(pmd) & _PAGE_HUGE) != 0)
++#endif
++
+ static inline void pmd_clear(pmd_t *pmdp)
+ {
+ 	pmd_val(*pmdp) = ((unsigned long) invalid_pte_table);
+@@ -297,6 +301,10 @@ static inline int pud_present(pud_t pud)
+ 	return pud_val(pud) != (unsigned long) invalid_pmd_table;
+ }
+ 
++#ifdef _PAGE_HUGE
++#define pud_large(pud)	((pud_val(pud) & _PAGE_HUGE) != 0)
++#endif
++
+ static inline void pud_clear(pud_t *pudp)
+ {
+ 	pud_val(*pudp) = ((unsigned long) invalid_pmd_table);
 -- 
-Jens Axboe
+2.20.1
 

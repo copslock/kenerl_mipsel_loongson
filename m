@@ -2,100 +2,202 @@ Return-Path: <SRS0=IOgP=SF=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.0 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6FAAEC4360F
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 03:57:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44836C4360F
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 05:46:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 3C82720882
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 03:57:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 06241206DF
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Apr 2019 05:46:00 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Z8xhJlPv"
+	dkim=pass (2048-bit key) header.d=verdurent-com.20150623.gappssmtp.com header.i=@verdurent-com.20150623.gappssmtp.com header.b="TJfndTNu"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727032AbfDCD5S (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 2 Apr 2019 23:57:18 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:42519 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726724AbfDCD5S (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 2 Apr 2019 23:57:18 -0400
-Received: by mail-lf1-f68.google.com with SMTP id b7so10575097lfg.9
-        for <linux-mips@vger.kernel.org>; Tue, 02 Apr 2019 20:57:17 -0700 (PDT)
+        id S1728687AbfDCFqA (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 3 Apr 2019 01:46:00 -0400
+Received: from mail-ua1-f68.google.com ([209.85.222.68]:36812 "EHLO
+        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728748AbfDCFqA (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 3 Apr 2019 01:46:00 -0400
+Received: by mail-ua1-f68.google.com with SMTP id e15so5198485uam.3
+        for <linux-mips@vger.kernel.org>; Tue, 02 Apr 2019 22:45:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=verdurent-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=AbU+kmZSC+Y/tOkChrqM0buIPdAzFYZS8GmNBgZASBE=;
-        b=Z8xhJlPv0TtCxjb97A0wr3PD6CLzvcGjyT+3RAC9TGeAJqa1TWFRoOVtsPnlVAlHze
-         dg7umcmlEe2PXpjwG5pupxb31N1nPWAG967bBJJyQhAm09MquXAdv96Hzw+GDaslJnqB
-         yX9ceBdf4aaTSbSdIaKXQSmcPso6uLDgFcY3gsEMa6rXS5XXfKEFJTC7uL8IY606liqt
-         TJ+/SdkjH6E66u4CpdlDJNy1PRXqZSQPCdJkTOQfRc1F9FYvBP4Tf0X6RSKZq12C61nO
-         F7yXE9LFkOXNle8MntmrD/+ympcHataYbRrwhyTMcW4KWYW3oS+eXF6eT95togsSj4Fc
-         9IwQ==
+        bh=nFrxupJk5QN98j8QXG4Je1vJrfpdR68KS8rbFbTabe0=;
+        b=TJfndTNugNUfYxz9RgcKXLIY6gzPVxi8mOKeOAQu5HqImmHnbdO1oNLNplklUp6NHW
+         6T7caTphXrSVkr/w9jPejbX6XsZurgsA9HBonZT+g1sOX5zLRtAfgPsiCGnM2huH+KKA
+         JbjIn42xJHZoIl+SKPx6QAjnowT+3hBznTlQz/sEgkgb5x8IdtIReGeVoe4pEMOI+V/2
+         F8yJrvCTU9JPBRxGLUQDCouK7CBXLI/PoVA1fwM2DpMLT6ZJMZ6EEWFiJoXgnPn263to
+         QVwHI7waIb7UhCHWZu4yxvNhFaaODNlN7TmTWEiZqKuhJdxUbuKDc8w3tg7pS8eDZ2p6
+         SA0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=AbU+kmZSC+Y/tOkChrqM0buIPdAzFYZS8GmNBgZASBE=;
-        b=MHH9ApMrP1OJcTr+FYyZK03NHMC/0zx8LE16QAaZZGz4KmbtFZRkLktN9aYdRXlwJM
-         1gUyhBe/+RBnevNQrYxT2gMOgg5+YLd+sEbw+2opNnMpUsv+2m/QsodOG8WXPOYG4/en
-         1fN4qXiT8Pev9Rk8zVRTKuN6iIEXNwIlHToFHeHtxwv8MQCOB7ZZ0Y0gBsq+37wkfjFI
-         97EwqKQlkJomz0qbKv8LnuXWIGy+bVT63O93OFoPdg5F/djJjHGKWWyg3bdakZvz1fhd
-         sJLVXMSOw+u5PeJ/JbGBBhHVtUZVRAng+2082HT8bi4tWOOQh00yCElS0Mds04Estt0o
-         T4lA==
-X-Gm-Message-State: APjAAAWErTSwUbu4As9Vzzb/FCeR4wZUHHVS42Vi5reGiHatvt7Uz6Xi
-        ZD0sasYJuyA1f9E3+FMhwphRxsaw5DBoM6FOHwTSqw==
-X-Google-Smtp-Source: APXvYqxCtW6t1J0D2KR9/Dvk/b7vu0LCbFlnG2X7HgOHuumYsqjFLX/FhDm026tSB6cKJc5ogxxh3f4Dlow1w3RPJcU=
-X-Received: by 2002:ac2:4192:: with SMTP id z18mr9312256lfh.96.1554263836817;
- Tue, 02 Apr 2019 20:57:16 -0700 (PDT)
+        bh=nFrxupJk5QN98j8QXG4Je1vJrfpdR68KS8rbFbTabe0=;
+        b=cR7859fkfF3VhW/0eGN2qstSHKhZAR/gTykdwSyS1yqXar37tUtU/gNBxFxRrIWM+d
+         X/4nMNKoWmdbdga9t+HHVTnhZ1vp+5xGX+xNDradOtQ3UX+qU+Op4cdhi/+jmfJ1jB8H
+         /BCMrjd56an8j2LVkE/Y7E2eFoHAipr5ZXRxIc6FpBzQ6p0+gNh4iC0tVrnAnMrN+lq+
+         BMeoo97rX8CYi7IZTvGu4pHPk2dcnF3gpqEhxTJACGVfRl+SazJ3A4A5eO2/HE+x5XCe
+         tZULHeqziGdo1aafqaK4Gqn4GDb3X7fVWbhvgpTPV0sz6XvB5OzjlKQEl8uuEQBfG3dq
+         xMlQ==
+X-Gm-Message-State: APjAAAUzCUOZZH42S0l9Nd8sXCqcEWzucdmF8AwywTL+tqGLJ8HCG0vP
+        Qb0GArqMRc1oUquMr2nSxnjmHMtzY24KHGgQzrbPqA==
+X-Google-Smtp-Source: APXvYqzHGvJwiX/fdXxXEbQ9nw04ftftboAIcDEzw5XUfWYl5fSyrKNxgWlMIsv3+kkAGkJhPVHyho4X8bETTLnJ4Z0=
+X-Received: by 2002:ab0:6947:: with SMTP id c7mr26293252uas.51.1554270358658;
+ Tue, 02 Apr 2019 22:45:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <1552330521-4276-1-git-send-email-info@metux.net> <1552330521-4276-42-git-send-email-info@metux.net>
-In-Reply-To: <1552330521-4276-42-git-send-email-info@metux.net>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 3 Apr 2019 10:57:05 +0700
-Message-ID: <CACRpkdZ2de7Z+yhwb_dYfn5ThmuCHtxhgYoOVJtc9mQU4PsSAg@mail.gmail.com>
-Subject: Re: [PATCH 42/42] drivers: gpio: use devm_platform_ioremap_resource()
-To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        Hoan Tran <hoan@os.amperecomputing.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linaro.org>,
-        Lyra Zhang <zhang.lyra@gmail.com>,
-        Keguang Zhang <keguang.zhang@gmail.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
+References: <20190401032425.18647-1-daniel.lezcano@linaro.org>
+In-Reply-To: <20190401032425.18647-1-daniel.lezcano@linaro.org>
+From:   Amit Kucheria <amit.kucheria@verdurent.com>
+Date:   Wed, 3 Apr 2019 12:45:47 +0700
+Message-ID: <CAHLCerNx6vM_H72mWA14Avg9WcE6ugOcaxw1C1hQHeTaPsY21w@mail.gmail.com>
+Subject: Re: [PATCH] thermal/drivers/core: Remove the module Kconfig's option
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     Zhang Rui <rui.zhang@intel.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, Guan Xuetao <gxt@pku.edu.cn>,
+        Alexey Brodkin <alexey.brodkin@synopsys.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Jun Nie <jun.nie@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-mips@vger.kernel.org, linux-pwm@vger.kernel.org,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-tegra@vger.kernel.org
+        Guenter Roeck <groeck@chromium.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Daniel Mack <daniel@zonque.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        "open list:MIPS" <linux-mips@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Tue, Mar 12, 2019 at 1:56 AM Enrico Weigelt, metux IT consult
-<info@metux.net> wrote:
-
-> Use the new helper that wraps the calls to platform_get_resource()
-> and devm_ioremap_resource() together.
+On Mon, Apr 1, 2019 at 10:24 AM Daniel Lezcano
+<daniel.lezcano@linaro.org> wrote:
 >
-> Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
+> The module support for the thermal subsystem does have a little sense:
+>  - some subsystems relying on it are not modules, thus forcing the
+>    framework to be compiled in
+>  - it is compiled in for almost every configs, the remaining ones
+>    are a few platforms where I don't see why we can not switch the thermal
+>    to 'y'. The drivers can stay in tristate.
+>  - platforms need the thermal to be ready as soon as possible at boot time
+>    in order to mitigate
+>
+> Usually the subsystems framework are compiled-in and the plugs are as module.
+>
+> Remove the module option. The removal of the module related dead code will
+> come after this patch gets in or is acked.
+>
+> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-Changed subject to gpio: zynq: and applied.
+Reviewed-by: Amit Kucheria <amit.kucheria@linaro.org>
 
-Yours,
-Linus Walleij
+> ---
+>  arch/arm/configs/mini2440_defconfig        | 2 +-
+>  arch/arm/configs/pxa_defconfig             | 2 +-
+>  arch/mips/configs/ip22_defconfig           | 2 +-
+>  arch/mips/configs/ip27_defconfig           | 2 +-
+>  arch/unicore32/configs/unicore32_defconfig | 2 +-
+>  drivers/thermal/Kconfig                    | 4 ++--
+>  6 files changed, 7 insertions(+), 7 deletions(-)
+>
+> diff --git a/arch/arm/configs/mini2440_defconfig b/arch/arm/configs/mini2440_defconfig
+> index d95a8059d30b..0cf1c120c4bb 100644
+> --- a/arch/arm/configs/mini2440_defconfig
+> +++ b/arch/arm/configs/mini2440_defconfig
+> @@ -152,7 +152,7 @@ CONFIG_SPI_S3C24XX=y
+>  CONFIG_SPI_SPIDEV=y
+>  CONFIG_GPIO_SYSFS=y
+>  CONFIG_SENSORS_LM75=y
+> -CONFIG_THERMAL=m
+> +CONFIG_THERMAL=y
+>  CONFIG_WATCHDOG=y
+>  CONFIG_S3C2410_WATCHDOG=y
+>  CONFIG_FB=y
+> diff --git a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
+> index d4654755b09c..d4f9dda3a52f 100644
+> --- a/arch/arm/configs/pxa_defconfig
+> +++ b/arch/arm/configs/pxa_defconfig
+> @@ -387,7 +387,7 @@ CONFIG_SENSORS_LM75=m
+>  CONFIG_SENSORS_LM90=m
+>  CONFIG_SENSORS_LM95245=m
+>  CONFIG_SENSORS_NTC_THERMISTOR=m
+> -CONFIG_THERMAL=m
+> +CONFIG_THERMAL=y
+>  CONFIG_WATCHDOG=y
+>  CONFIG_XILINX_WATCHDOG=m
+>  CONFIG_SA1100_WATCHDOG=m
+> diff --git a/arch/mips/configs/ip22_defconfig b/arch/mips/configs/ip22_defconfig
+> index ff40fbc2f439..21a1168ae301 100644
+> --- a/arch/mips/configs/ip22_defconfig
+> +++ b/arch/mips/configs/ip22_defconfig
+> @@ -228,7 +228,7 @@ CONFIG_SERIAL_IP22_ZILOG=m
+>  # CONFIG_HW_RANDOM is not set
+>  CONFIG_RAW_DRIVER=m
+>  # CONFIG_HWMON is not set
+> -CONFIG_THERMAL=m
+> +CONFIG_THERMAL=y
+>  CONFIG_WATCHDOG=y
+>  CONFIG_INDYDOG=m
+>  # CONFIG_VGA_CONSOLE is not set
+> diff --git a/arch/mips/configs/ip27_defconfig b/arch/mips/configs/ip27_defconfig
+> index 81c47e18131b..54db5dedf776 100644
+> --- a/arch/mips/configs/ip27_defconfig
+> +++ b/arch/mips/configs/ip27_defconfig
+> @@ -271,7 +271,7 @@ CONFIG_I2C_PARPORT_LIGHT=m
+>  CONFIG_I2C_TAOS_EVM=m
+>  CONFIG_I2C_STUB=m
+>  # CONFIG_HWMON is not set
+> -CONFIG_THERMAL=m
+> +CONFIG_THERMAL=y
+>  CONFIG_MFD_PCF50633=m
+>  CONFIG_PCF50633_ADC=m
+>  CONFIG_PCF50633_GPIO=m
+> diff --git a/arch/unicore32/configs/unicore32_defconfig b/arch/unicore32/configs/unicore32_defconfig
+> index aebd01fc28e5..360cc9abcdb0 100644
+> --- a/arch/unicore32/configs/unicore32_defconfig
+> +++ b/arch/unicore32/configs/unicore32_defconfig
+> @@ -119,7 +119,7 @@ CONFIG_I2C_PUV3=y
+>  #      Hardware Monitoring support
+>  #CONFIG_SENSORS_LM75=m
+>  #      Generic Thermal sysfs driver
+> -#CONFIG_THERMAL=m
+> +#CONFIG_THERMAL=y
+>  #CONFIG_THERMAL_HWMON=y
+>
+>  #      Multimedia support
+> diff --git a/drivers/thermal/Kconfig b/drivers/thermal/Kconfig
+> index 653aa27a25a4..ccf5b9408d7a 100644
+> --- a/drivers/thermal/Kconfig
+> +++ b/drivers/thermal/Kconfig
+> @@ -3,7 +3,7 @@
+>  #
+>
+>  menuconfig THERMAL
+> -       tristate "Generic Thermal sysfs driver"
+> +       bool "Generic Thermal sysfs driver"
+>         help
+>           Generic Thermal Sysfs driver offers a generic mechanism for
+>           thermal management. Usually it's made up of one or more thermal
+> @@ -11,7 +11,7 @@ menuconfig THERMAL
+>           Each thermal zone contains its own temperature, trip points,
+>           cooling devices.
+>           All platforms with ACPI thermal support can use this driver.
+> -         If you want this support, you should say Y or M here.
+> +         If you want this support, you should say Y here.
+>
+>  if THERMAL
+>
+> --
+> 2.17.1
+>

@@ -2,116 +2,92 @@ Return-Path: <SRS0=aT0P=SG=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_NEOMUTT autolearn=ham
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7EA3EC4360F
-	for <linux-mips@archiver.kernel.org>; Thu,  4 Apr 2019 07:47:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C8EDC10F05
+	for <linux-mips@archiver.kernel.org>; Thu,  4 Apr 2019 07:53:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 591A720882
-	for <linux-mips@archiver.kernel.org>; Thu,  4 Apr 2019 07:47:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 56F7B2171F
+	for <linux-mips@archiver.kernel.org>; Thu,  4 Apr 2019 07:53:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725914AbfDDHrC (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 4 Apr 2019 03:47:02 -0400
-Received: from esa3.microchip.iphmx.com ([68.232.153.233]:24370 "EHLO
-        esa3.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726269AbfDDHrC (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 4 Apr 2019 03:47:02 -0400
-X-IronPort-AV: E=Sophos;i="5.60,306,1549954800"; 
-   d="scan'208";a="29632751"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 04 Apr 2019 00:47:01 -0700
-Received: from localhost (10.10.76.4) by chn-sv-exch02.mchp-main.com
- (10.10.76.38) with Microsoft SMTP Server id 14.3.352.0; Thu, 4 Apr 2019
- 00:47:00 -0700
-Date:   Thu, 4 Apr 2019 09:47:00 +0200
-From:   Horatiu Vultur <horatiu.vultur@microchip.com>
-To:     Paul Burton <paul.burton@mips.com>
-CC:     "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
-        "UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "jhogan@kernel.org" <jhogan@kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next] MIPS: generic: Add switchdev, pinctrl and fit
- to ocelot_defconfig
-Message-ID: <20190404074658.d3lpobem2csl6xpd@soft-dev3.microsemi.net>
-References: <1554305256-32702-1-git-send-email-horatiu.vultur@microchip.com>
- <20190403232334.7joxmw2a3qrhy2nf@pburton-laptop>
+        id S1727107AbfDDHxt (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 4 Apr 2019 03:53:49 -0400
+Received: from Galois.linutronix.de ([146.0.238.70]:43855 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726031AbfDDHxt (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 4 Apr 2019 03:53:49 -0400
+Received: from p5492e2fc.dip0.t-ipconnect.de ([84.146.226.252] helo=nanos)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1hBxBB-0000UO-Aj; Thu, 04 Apr 2019 09:52:57 +0200
+Date:   Thu, 4 Apr 2019 09:52:56 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Steven Rostedt <rostedt@goodmis.org>
+cc:     linux-kernel@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Roland McGrath <roland@hack.frob.com>,
+        Oleg Nesterov <oleg@redhat.com>, linux-arch@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Andy Lutomirski <luto@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        "Dmitry V. Levin" <ldv@altlinux.org>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Dave Martin <dave.martin@arm.com>,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, nios2-dev@lists.rocketboards.org,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+        linux-xtensa@linux-xtensa.org
+Subject: Re: [PATCH 5/6 v3] syscalls: Remove start and number from
+ syscall_get_arguments() args
+In-Reply-To: <20190401134421.278590567@goodmis.org>
+Message-ID: <alpine.DEB.2.21.1904040952280.1833@nanos.tec.linutronix.de>
+References: <20190401134104.676620247@goodmis.org> <20190401134421.278590567@goodmis.org>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <20190403232334.7joxmw2a3qrhy2nf@pburton-laptop>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Paul,
+On Mon, 1 Apr 2019, Steven Rostedt wrote:
 
-The 04/03/2019 23:23, Paul Burton wrote:
-> External E-Mail
+> From: "Steven Rostedt (Red Hat)" <rostedt@goodmis.org>
 > 
+> At Linux Plumbers, Andy Lutomirski approached me and pointed out that the
+> function call syscall_get_arguments() implemented in x86 was horribly
+> written and not optimized for the standard case of passing in 0 and 6 for
+> the starting index and the number of system calls to get. When looking at
+> all the users of this function, I discovered that all instances pass in only
+> 0 and 6 for these arguments. Instead of having this function handle
+> different cases that are never used, simply rewrite it to return the first 6
+> arguments of a system call.
 > 
-> Hi Horatiu,
+> This should help out the performance of tracing system calls by ptrace,
+> ftrace and perf.
 > 
-> On Wed, Apr 03, 2019 at 05:27:36PM +0200, Horatiu Vultur wrote:
-> > diff --git a/arch/mips/configs/generic/board-ocelot.config b/arch/mips/configs/generic/board-ocelot.config
-> > index f607888..3215741 100644
-> > --- a/arch/mips/configs/generic/board-ocelot.config
-> > +++ b/arch/mips/configs/generic/board-ocelot.config
-> >%
-> > +# CONFIG_HID is not set
-> > +# CONFIG_USB_SUPPORT is not set
-> > +# CONFIG_VIRTIO_MENU is not set
-> > +# CONFIG_SCSI is not set
-> 
-> Unfortunately this part won't work so well. If board-ocelot.config
-> disables these things, then what should happen if another board that's
-> also included in a generic kernel enables them?
-> 
-> eg. if you run 'make ARCH=mips 32r2el_defconfig' then we merge all of
-> the following:
-> 
->   board-boston.config enables USB
->   board-sead-3.config enables USB
->   board-ocelot.config disables USB
+> Link: http://lkml.kernel.org/r/20161107213233.754809394@goodmis.org
 
-I didn't think about this scenario, because I didn't expect that
-building a generic configuration will bring together all the board
-configurations.
+For x86:
 
-Anyway, I will send a new patch in which I will remove these
-configurations.
-
-> 
-> These are mutually exclusive, and it seems that on my system we
-> currently end up disabling USB due to board-ocelot.config. That will of
-> course break USB support for Boston or SEAD-3 which are also supported
-> by the same kernel binary. In practice which one 'wins' will depend on
-> the order the files are listed by make's wildcard function - so far as
-> I'm aware that doesn't guarantee any particular order so if it ends up
-> depending on the order the filesystem lists the files or something like
-> that then configurations might even differ when used on different
-> machines.
-> 
-> So to avoid that the best we can do is leave these enabled and the
-> general rule is that board-*.config files can only enable extra things,
-> not disable them.
-> 
-> You might be tempted to disable the options in generic_defconfig &
-> update any board configs that actually need them to enable them, but
-> that doesn't work too well for things which are 'default y' because
-> kconfig then warns about the conflict between generic_defconfig & the
-> board config being merged with it. That applies to the first 3 of the
-> entries you disable, leaving only CONFIG_SCSI that could potentially be
-> dealt with that way...
-> 
-> Thanks,
->     Paul
-> 
-
--- 
-/Horatiu
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>

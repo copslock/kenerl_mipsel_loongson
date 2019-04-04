@@ -2,86 +2,86 @@ Return-Path: <SRS0=aT0P=SG=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D21DBC4360F
-	for <linux-mips@archiver.kernel.org>; Thu,  4 Apr 2019 07:53:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EC0B2C4360F
+	for <linux-mips@archiver.kernel.org>; Thu,  4 Apr 2019 08:25:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id A25BC20882
-	for <linux-mips@archiver.kernel.org>; Thu,  4 Apr 2019 07:53:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BF0DD2075E
+	for <linux-mips@archiver.kernel.org>; Thu,  4 Apr 2019 08:25:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727331AbfDDHx5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 4 Apr 2019 03:53:57 -0400
-Received: from Galois.linutronix.de ([146.0.238.70]:43866 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726031AbfDDHx5 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 4 Apr 2019 03:53:57 -0400
-Received: from p5492e2fc.dip0.t-ipconnect.de ([84.146.226.252] helo=nanos)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1hBxBV-0000WH-Bj; Thu, 04 Apr 2019 09:53:17 +0200
-Date:   Thu, 4 Apr 2019 09:53:16 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Steven Rostedt <rostedt@goodmis.org>
-cc:     linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Roland McGrath <roland@hack.frob.com>,
-        Oleg Nesterov <oleg@redhat.com>, linux-arch@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Andy Lutomirski <luto@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        "Dmitry V. Levin" <ldv@altlinux.org>,
-        Palmer Dabbelt <palmer@sifive.com>,
-        Dave Martin <dave.martin@arm.com>,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@vger.kernel.org, nios2-dev@lists.rocketboards.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-xtensa@linux-xtensa.org
-Subject: Re: [PATCH 6/6 v3] syscalls: Remove start and number from
- syscall_set_arguments() args
-In-Reply-To: <20190401134421.442323029@goodmis.org>
-Message-ID: <alpine.DEB.2.21.1904040953040.1833@nanos.tec.linutronix.de>
-References: <20190401134104.676620247@goodmis.org> <20190401134421.442323029@goodmis.org>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        id S1726694AbfDDIZy (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 4 Apr 2019 04:25:54 -0400
+Received: from esa5.microchip.iphmx.com ([216.71.150.166]:42880 "EHLO
+        esa5.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726563AbfDDIZy (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 4 Apr 2019 04:25:54 -0400
+X-IronPort-AV: E=Sophos;i="5.60,306,1549954800"; 
+   d="scan'208";a="27638899"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/AES128-SHA; 04 Apr 2019 01:25:54 -0700
+Received: from soft-dev3.microsemi.net (10.10.76.4) by
+ CHN-SV-EXCH01.mchp-main.com (10.10.76.37) with Microsoft SMTP Server id
+ 14.3.352.0; Thu, 4 Apr 2019 01:25:53 -0700
+From:   Horatiu Vultur <horatiu.vultur@microchip.com>
+To:     <alexandre.belloni@bootlin.com>, <UNGLinuxDriver@microchip.com>,
+        <ralf@linux-mips.org>, <paul.burton@mips.com>, <jhogan@kernel.org>,
+        <linux-mips@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     Horatiu Vultur <horatiu.vultur@microchip.com>
+Subject: [PATCH v2] MIPS: generic: Add switchdev, pinctrl and fit to ocelot_defconfig
+Date:   Thu, 4 Apr 2019 10:25:28 +0200
+Message-ID: <1554366328-16459-1-git-send-email-horatiu.vultur@microchip.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, 1 Apr 2019, Steven Rostedt wrote:
+Some of the configuration were not selected by default anymore, therefore
+enable them again. Also remove some configs which are used for MSCC Ocelot.
 
-> From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
-> 
-> After removing the start and count arguments of syscall_get_arguments() it
-> seems reasonable to remove them from syscall_set_arguments(). Note, as of
-> today, there are no users of syscall_set_arguments(). But we are told that
-> there will be soon. But for now, at least make it consistent with
-> syscall_get_arguments().
-> 
-> Link: http://lkml.kernel.org/r/20190327222014.GA32540@altlinux.org
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+---
+ arch/mips/configs/generic/board-ocelot.config | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-For x86:
+diff --git a/arch/mips/configs/generic/board-ocelot.config b/arch/mips/configs/generic/board-ocelot.config
+index f607888..184eb65 100644
+--- a/arch/mips/configs/generic/board-ocelot.config
++++ b/arch/mips/configs/generic/board-ocelot.config
+@@ -1,6 +1,10 @@
+ # require CONFIG_CPU_MIPS32_R2=y
+ 
+ CONFIG_LEGACY_BOARD_OCELOT=y
++CONFIG_FIT_IMAGE_FDT_OCELOT=y
++
++CONFIG_BRIDGE=y
++CONFIG_GENERIC_PHY=y
+ 
+ CONFIG_MTD=y
+ CONFIG_MTD_CMDLINE_PARTS=y
+@@ -19,6 +23,8 @@ CONFIG_SERIAL_8250_CONSOLE=y
+ CONFIG_SERIAL_OF_PLATFORM=y
+ 
+ CONFIG_NETDEVICES=y
++CONFIG_NET_SWITCHDEV=y
++CONFIG_NET_DSA=y
+ CONFIG_MSCC_OCELOT_SWITCH=y
+ CONFIG_MSCC_OCELOT_SWITCH_OCELOT=y
+ CONFIG_MDIO_MSCC_MIIM=y
+@@ -35,6 +41,8 @@ CONFIG_SPI_DESIGNWARE=y
+ CONFIG_SPI_DW_MMIO=y
+ CONFIG_SPI_SPIDEV=y
+ 
++CONFIG_PINCTRL_OCELOT=y
++
+ CONFIG_GPIO_SYSFS=y
+ 
+ CONFIG_POWER_RESET=y
+-- 
+2.7.4
 
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>

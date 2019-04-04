@@ -2,209 +2,101 @@ Return-Path: <SRS0=aT0P=SG=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D737C4360F
-	for <linux-mips@archiver.kernel.org>; Thu,  4 Apr 2019 18:18:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EFF9CC4360F
+	for <linux-mips@archiver.kernel.org>; Thu,  4 Apr 2019 18:29:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5156620663
-	for <linux-mips@archiver.kernel.org>; Thu,  4 Apr 2019 18:18:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C1DD7206DD
+	for <linux-mips@archiver.kernel.org>; Thu,  4 Apr 2019 18:29:17 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="R5LnO/YL"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728762AbfDDSSx (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 4 Apr 2019 14:18:53 -0400
-Received: from vmicros1.altlinux.org ([194.107.17.57]:54046 "EHLO
-        vmicros1.altlinux.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727562AbfDDSSx (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 4 Apr 2019 14:18:53 -0400
-Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
-        by vmicros1.altlinux.org (Postfix) with ESMTP id DB43B72CC8C;
-        Thu,  4 Apr 2019 21:18:49 +0300 (MSK)
-Received: by mua.local.altlinux.org (Postfix, from userid 508)
-        id C30037CCE4F; Thu,  4 Apr 2019 21:18:49 +0300 (MSK)
-Date:   Thu, 4 Apr 2019 21:18:49 +0300
-From:   "Dmitry V. Levin" <ldv@altlinux.org>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Roland McGrath <roland@hack.frob.com>,
-        Oleg Nesterov <oleg@redhat.com>, linux-arch@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Andy Lutomirski <luto@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Palmer Dabbelt <palmer@sifive.com>,
-        Dave Martin <dave.martin@arm.com>,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@vger.kernel.org, nios2-dev@lists.rocketboards.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-xtensa@linux-xtensa.org
-Subject: Re: [PATCH 6/6 v3] syscalls: Remove start and number from
- syscall_set_arguments() args
-Message-ID: <20190404181849.GA8711@altlinux.org>
-References: <20190401134104.676620247@goodmis.org>
- <20190401134421.442323029@goodmis.org>
+        id S1728934AbfDDS3R (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 4 Apr 2019 14:29:17 -0400
+Received: from mail-eopbgr780139.outbound.protection.outlook.com ([40.107.78.139]:43390
+        "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727310AbfDDS3R (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 4 Apr 2019 14:29:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5Kw4EefOJ0jVDbHA1+OPQKxiWqYF8Ckg0OhVBFevFPE=;
+ b=R5LnO/YL6YKuS73Sov9u696bbjcEL4WcTkdR9+rPhF19c1q9yHJOa87ermLz7NxZAUXBXyvGpxBjclHB2u6pWLMoPlkEDqn580q4heDiYFt9/16dunvplFygEUa1JtHOLHA2TzhNtqnBlckNXA3oftrAvxPQryP81iaJalCCaHI=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1504.namprd22.prod.outlook.com (10.174.170.153) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1771.13; Thu, 4 Apr 2019 18:29:14 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b9d6:bf19:ec58:2765]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b9d6:bf19:ec58:2765%6]) with mapi id 15.20.1750.017; Thu, 4 Apr 2019
+ 18:29:14 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Horatiu Vultur <horatiu.vultur@microchip.com>
+CC:     "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
+        "UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        Paul Burton <pburton@wavecomp.com>,
+        "jhogan@kernel.org" <jhogan@kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Subject: Re: [PATCH v2] MIPS: generic: Add switchdev,  pinctrl and fit to
+ ocelot_defconfig
+Thread-Topic: [PATCH v2] MIPS: generic: Add switchdev,  pinctrl and fit to
+ ocelot_defconfig
+Thread-Index: AQHU6xRNa9kLMHg3rk2oDsl2wnkHTA==
+Date:   Thu, 4 Apr 2019 18:29:13 +0000
+Message-ID: <MWHPR2201MB1277CF6185BA6140F61F08BEC1500@MWHPR2201MB1277.namprd22.prod.outlook.com>
+References: <1554366328-16459-1-git-send-email-horatiu.vultur@microchip.com>
+In-Reply-To: <1554366328-16459-1-git-send-email-horatiu.vultur@microchip.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR03CA0034.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::47) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [67.207.99.198]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: fe4eb09d-02de-49c2-7b72-08d6b92b7013
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600139)(711020)(4605104)(2017052603328)(7193020);SRVR:MWHPR2201MB1504;
+x-ms-traffictypediagnostic: MWHPR2201MB1504:
+x-microsoft-antispam-prvs: <MWHPR2201MB150467283CD1B55381684FA0C1500@MWHPR2201MB1504.namprd22.prod.outlook.com>
+x-forefront-prvs: 0997523C40
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(39850400004)(396003)(376002)(346002)(366004)(136003)(189003)(199004)(5660300002)(97736004)(53936002)(25786009)(229853002)(14454004)(478600001)(55016002)(6246003)(486006)(3846002)(71190400001)(71200400001)(6116002)(9686003)(446003)(44832011)(476003)(4326008)(11346002)(8936002)(186003)(7696005)(52116002)(7736002)(76176011)(8676002)(81156014)(26005)(305945005)(105586002)(102836004)(68736007)(386003)(256004)(6506007)(66066001)(33656002)(74316002)(106356001)(42882007)(316002)(54906003)(52536014)(99286004)(4744005)(6916009)(2906002)(6436002)(81166006)(41533002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1504;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: r12zYX2aQKBUY/H5gAR/QnoeJdi5fkxbrAvFjAApTbDAe8xV+1YhowgH5BkPiaA723cyZZ+Lpls+Thc6nGf2g+reOkY1GyORaT5+8e/pNAZYW5VFxIp3kIfoIp/eAm2M24WhFW1mtfVLFOf99yKToQe/y33qVnVa5BVMlJxYO2WKBEYDk6Ps9gCUPJI9ywZCQ8abw/8MC9zJFwjdg9KYHGESibsNfXELKC1tuxhMtNlktbLC8re3wIe8OijR/X6uMdUNS17Wy1A8tnm8h5e+1TS/5m3pYjMDoXev6KH3IP+Fn5nmGeyXS7xXaWE7S2q6JiaakSr/3CPZBjsN7Fl1GcE9jTwGl3Q60Y7UqQTxmNeP6vGMRF+bZ9VOFGym/dNuwi+lgVJTPnsT4tvqmK7XqrqIrXltnLsCaZynN8kmSI8=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="PEIAKu/WMn1b1Hv9"
-Content-Disposition: inline
-In-Reply-To: <20190401134421.442323029@goodmis.org>
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe4eb09d-02de-49c2-7b72-08d6b92b7013
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Apr 2019 18:29:13.9645
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1504
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-
---PEIAKu/WMn1b1Hv9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Apr 01, 2019 at 09:41:10AM -0400, Steven Rostedt wrote:
-> From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
->=20
-> After removing the start and count arguments of syscall_get_arguments() it
-> seems reasonable to remove them from syscall_set_arguments(). Note, as of
-> today, there are no users of syscall_set_arguments(). But we are told that
-> there will be soon. But for now, at least make it consistent with
-> syscall_get_arguments().
->=20
-> Link: http://lkml.kernel.org/r/20190327222014.GA32540@altlinux.org
-
-FWIW, you can add
-Reviewed-by: Dmitry V. Levin <ldv@altlinux.org>
-=20
-There are two places listed below where I'd prefer to see more readable
-equivalents, but feel free to leave it to respective arch maintainers.
-
-> diff --git a/arch/nds32/include/asm/syscall.h b/arch/nds32/include/asm/sy=
-scall.h
-> index 89a6ec8731d8..671ebd357496 100644
-> --- a/arch/nds32/include/asm/syscall.h
-> +++ b/arch/nds32/include/asm/syscall.h
-> @@ -129,39 +129,20 @@ void syscall_get_arguments(struct task_struct *task=
-, struct pt_regs *regs,
->   * syscall_set_arguments - change system call parameter value
->   * @task:	task of interest, must be in system call entry tracing
->   * @regs:	task_pt_regs() of @task
-> - * @i:		argument index [0,5]
-> - * @n:		number of arguments; n+i must be [1,6].
->   * @args:	array of argument values to store
->   *
-> - * Changes @n arguments to the system call starting with the @i'th argum=
-ent.
-> - * Argument @i gets value @args[0], and so on.
-> - * An arch inline version is probably optimal when @i and @n are constan=
-ts.
-> + * Changes 6 arguments to the system call. The first argument gets value
-> + * @args[0], and so on.
->   *
->   * It's only valid to call this when @task is stopped for tracing on
->   * entry to a system call, due to %TIF_SYSCALL_TRACE or %TIF_SYSCALL_AUD=
-IT.
-> - * It's invalid to call this with @i + @n > 6; we only support system ca=
-lls
-> - * taking up to 6 arguments.
->   */
->  void syscall_set_arguments(struct task_struct *task, struct pt_regs *reg=
-s,
-> -			   unsigned int i, unsigned int n,
->  			   const unsigned long *args)
->  {
-> -	if (n =3D=3D 0)
-> -		return;
-> -
-> -	if (i + n > SYSCALL_MAX_ARGS) {
-> -		pr_warn("%s called with max args %d, handling only %d\n",
-> -			__func__, i + n, SYSCALL_MAX_ARGS);
-> -		n =3D SYSCALL_MAX_ARGS - i;
-> -	}
-> -
-> -	if (i =3D=3D 0) {
-> -		regs->orig_r0 =3D args[0];
-> -		args++;
-> -		i++;
-> -		n--;
-> -	}
-> +	regs->orig_r0 =3D args[0];
-> +	args++;
-> =20
-> -	memcpy(&regs->uregs[0] + i, args, n * sizeof(args[0]));
-> +	memcpy(&regs->uregs[0] + 1, args, 5 * sizeof(args[0]));
->  }
-
-A shorter and slightly more readable equivalent of the last memcpy is
-
-	memcpy(&regs->uregs[1], args, 5 * sizeof(args[0]));
-
-> diff --git a/arch/s390/include/asm/syscall.h b/arch/s390/include/asm/sysc=
-all.h
-> index ee0b1f6aa36d..59c3e91f2cdb 100644
-> --- a/arch/s390/include/asm/syscall.h
-> +++ b/arch/s390/include/asm/syscall.h
-> @@ -74,15 +74,14 @@ static inline void syscall_get_arguments(struct task_=
-struct *task,
-> =20
->  static inline void syscall_set_arguments(struct task_struct *task,
->  					 struct pt_regs *regs,
-> -					 unsigned int i, unsigned int n,
->  					 const unsigned long *args)
->  {
-> -	BUG_ON(i + n > 6);
-> +	unsigned int n =3D 6;
-> +
->  	while (n-- > 0)
-> -		if (i + n > 0)
-> -			regs->gprs[2 + i + n] =3D args[n];
-> -	if (i =3D=3D 0)
-> -		regs->orig_gpr2 =3D args[0];
-> +		if (n > 0)
-> +			regs->gprs[2 + n] =3D args[n];
-> +	regs->orig_gpr2 =3D args[0];
->  }
-
-A shorter and slightly more readable equivalent of the loop is
-
-	while (--n > 0)
-		regs->gprs[2 + n] =3D args[n];
-
-
---=20
-ldv
-
---PEIAKu/WMn1b1Hv9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAEBCAAGBQJcpkqJAAoJEAVFT+BVnCUIkZ4QAOj5yCToMhv0yo7mY8ZiYOeM
-4W75B2oenIbr0XPjODdE7bJ8Zz2aWXIy8ivTN5TkHPrhXeqD/+TrvHc8SIlGGZaQ
-RCkrjp8yN0vTWNQQyZ0QrAu27Z0bLMcM2RMTHYFHIKtIN9y/6FqOy+KFHBX+XTHs
-wRtrmxXaOg6tFsrw5ljEZJEPn4hiTStgTUNuUWfFHJ45xkLm/Xl1xy5I+q0vSTRe
-2TVfqiAgRND0rwyLCQnc6Q9A+eG/tojEI/yBeaePhNVc2aT8kjbopkH9ppxMf83s
-FR+Hy0IcJpSUEmNDPzFJ5dR4oTXVXSgxsVacQLbI1cYXZmFbe4kbmCArmS40Z1ID
-ETWm8m9repzEYVjVCGXNcPeZHwY6qm5V8TNSJYkuNdYLO/G5ViBSjNe/4EPp7Jsy
-U63M5VuKOWMfEW5JL3KV17+xKjQ8ehpeBWo9+CYRQlbjlmDfjL9CPqC+W0qWUcQn
-ID3Ifll16M/ERzBRky4+XTlNHBRIUnKsolQY+b8V9WL7F7FZAbi0EGOSBAiLIcYd
-f2JeixCHd3ax9okr0/3F3O0TWxRMfaId+9yxz8dUJUcDZ/QuMMzymnKYrmXN0Sug
-TwaWCVXiIhl3jYCF+AbJNA0dz72Jj4rz4PzQChRwagZEa5bGCRuzgU931k7xnobH
-JOoCPu0p7CEMVSeyAENw
-=xrhw
------END PGP SIGNATURE-----
-
---PEIAKu/WMn1b1Hv9--
+SGVsbG8sDQoNCkhvcmF0aXUgVnVsdHVyIHdyb3RlOg0KPiBTb21lIG9mIHRoZSBjb25maWd1cmF0
+aW9uIHdlcmUgbm90IHNlbGVjdGVkIGJ5IGRlZmF1bHQgYW55bW9yZSwgdGhlcmVmb3JlDQo+IGVu
+YWJsZSB0aGVtIGFnYWluLiBBbHNvIHJlbW92ZSBzb21lIGNvbmZpZ3Mgd2hpY2ggYXJlIHVzZWQg
+Zm9yIE1TQ0MgT2NlbG90Lg0KPiANCj4gU2lnbmVkLW9mZi1ieTogSG9yYXRpdSBWdWx0dXIgPGhv
+cmF0aXUudnVsdHVyQG1pY3JvY2hpcC5jb20+DQoNCkFwcGxpZWQgdG8gbWlwcy1maXhlcy4NCg0K
+VGhhbmtzLA0KICAgIFBhdWwNCg0KWyBUaGlzIG1lc3NhZ2Ugd2FzIGF1dG8tZ2VuZXJhdGVkOyBp
+ZiB5b3UgYmVsaWV2ZSBhbnl0aGluZyBpcyBpbmNvcnJlY3QNCiAgdGhlbiBwbGVhc2UgZW1haWwg
+cGF1bC5idXJ0b25AbWlwcy5jb20gdG8gcmVwb3J0IGl0LiBdDQo=

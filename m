@@ -2,84 +2,83 @@ Return-Path: <SRS0=aT0P=SG=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84317C4360F
-	for <linux-mips@archiver.kernel.org>; Thu,  4 Apr 2019 20:41:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E18DC10F0C
+	for <linux-mips@archiver.kernel.org>; Thu,  4 Apr 2019 21:06:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6048D2177E
-	for <linux-mips@archiver.kernel.org>; Thu,  4 Apr 2019 20:41:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F29D42171F
+	for <linux-mips@archiver.kernel.org>; Thu,  4 Apr 2019 21:06:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730631AbfDDUlA (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 4 Apr 2019 16:41:00 -0400
-Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:23758 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729962AbfDDUk7 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 4 Apr 2019 16:40:59 -0400
-Received: from belgarion ([90.76.58.102])
-        by mwinf5d74 with ME
-        id wLgh1z0032CLFkS03Lgnxj; Thu, 04 Apr 2019 22:40:56 +0200
-X-ME-Helo: belgarion
-X-ME-Auth: amFyem1pay5yb2JlcnRAb3JhbmdlLmZy
-X-ME-Date: Thu, 04 Apr 2019 22:40:56 +0200
-X-ME-IP: 90.76.58.102
-From:   Robert Jarzmik <robert.jarzmik@free.fr>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     rui.zhang@intel.com, edubezval@gmail.com, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Guenter Roeck <groeck@chromium.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, Guan Xuetao <gxt@pku.edu.cn>,
+        id S1730646AbfDDVGO (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 4 Apr 2019 17:06:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57070 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729116AbfDDVGO (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 4 Apr 2019 17:06:14 -0400
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A42092082E;
+        Thu,  4 Apr 2019 21:06:09 +0000 (UTC)
+Date:   Thu, 4 Apr 2019 17:06:08 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     "Dmitry V. Levin" <ldv@altlinux.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Ingo Molnar <mingo@kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Alexey Brodkin <alexey.brodkin@synopsys.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Daniel Mack <daniel@zonque.org>,
-        linux-arm-kernel@lists.infradead.org (moderated list:ARM PORT),
-        linux-mips@vger.kernel.org (open list:MIPS)
-Subject: Re: [PATCH 1/7] thermal/drivers/core: Remove the module Kconfig's option
-References: <20190402161256.11044-1-daniel.lezcano@linaro.org>
-X-URL:  http://belgarath.falguerolles.org/
-Date:   Thu, 04 Apr 2019 22:40:41 +0200
-In-Reply-To: <20190402161256.11044-1-daniel.lezcano@linaro.org> (Daniel
-        Lezcano's message of "Tue, 2 Apr 2019 18:12:44 +0200")
-Message-ID: <87h8bdpkqe.fsf@belgarion.home>
-User-Agent: Gnus/5.130008 (Ma Gnus v0.8) Emacs/26 (gnu/linux)
+        Andy Lutomirski <luto@amacapital.net>,
+        Roland McGrath <roland@hack.frob.com>,
+        Oleg Nesterov <oleg@redhat.com>, linux-arch@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Andy Lutomirski <luto@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Dave Martin <dave.martin@arm.com>,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, nios2-dev@lists.rocketboards.org,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+        linux-xtensa@linux-xtensa.org
+Subject: Re: [PATCH 5/6 v3] syscalls: Remove start and number from
+ syscall_get_arguments() args
+Message-ID: <20190404170608.25cadc7d@gandalf.local.home>
+In-Reply-To: <20190404181758.GA8071@altlinux.org>
+References: <20190401134104.676620247@goodmis.org>
+        <20190401134421.278590567@goodmis.org>
+        <20190404181758.GA8071@altlinux.org>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Daniel Lezcano <daniel.lezcano@linaro.org> writes:
+On Thu, 4 Apr 2019 21:17:58 +0300
+"Dmitry V. Levin" <ldv@altlinux.org> wrote:
 
-> The module support for the thermal subsystem makes little sense:
->  - some subsystems relying on it are not modules, thus forcing the
->    framework to be compiled in
->  - it is compiled in for almost every configs, the remaining ones
->    are a few platforms where I don't see why we can not switch the thermal
->    to 'y'. The drivers can stay in tristate.
->  - platforms need the thermal to be ready as soon as possible at boot time
->    in order to mitigate
->
-> Usually the subsystems framework are compiled-in and the plugs are as module.
->
-> Remove the module option. The removal of the module related dead code will
-> come after this patch gets in or is acked.
->
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Acked-by: Guenter Roeck <groeck@chromium.org>
-> For mini2440:
-> Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
-For pxa:
-Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
+> There are several places listed below where I'd prefer to see more readable
+> equivalents, but feel free to leave it to respective arch maintainers.
 
-Cheers.
+I was going to do similar changes, but figured I'd do just that (let
+the arch maintainers further optimize the code). I made this more about
+fixing the interface and less about the optimization and clean ups that
+it can allow.
 
---
-Robert
+-- Steve

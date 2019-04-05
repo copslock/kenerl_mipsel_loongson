@@ -7,53 +7,53 @@ X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B62CEC4360F
-	for <linux-mips@archiver.kernel.org>; Fri,  5 Apr 2019 00:02:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42C69C4360F
+	for <linux-mips@archiver.kernel.org>; Fri,  5 Apr 2019 00:02:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 82B95217D7
-	for <linux-mips@archiver.kernel.org>; Fri,  5 Apr 2019 00:02:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0F5D9217D7
+	for <linux-mips@archiver.kernel.org>; Fri,  5 Apr 2019 00:02:20 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QVbB3Cil"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fBpbr14C"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730156AbfDEACR (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 4 Apr 2019 20:02:17 -0400
-Received: from mail-pg1-f170.google.com ([209.85.215.170]:42894 "EHLO
-        mail-pg1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727398AbfDEACR (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 4 Apr 2019 20:02:17 -0400
-Received: by mail-pg1-f170.google.com with SMTP id p6so2034080pgh.9;
-        Thu, 04 Apr 2019 17:02:16 -0700 (PDT)
+        id S1730188AbfDEACT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 4 Apr 2019 20:02:19 -0400
+Received: from mail-pf1-f178.google.com ([209.85.210.178]:46571 "EHLO
+        mail-pf1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727398AbfDEACT (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 4 Apr 2019 20:02:19 -0400
+Received: by mail-pf1-f178.google.com with SMTP id 9so2188874pfj.13;
+        Thu, 04 Apr 2019 17:02:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=n5adcmxZ37qROrXA1JIpPKzSBcDAOW7O0W6cn5r41jI=;
-        b=QVbB3Cil4VU89CMumZyi+4YTvml//BGwVRG1vaD0nW57C8QlK2kFR837th5nd2Jbr5
-         q24jG5JhRZgU2/Qtr7o9bG7SZl3+dGBsrwsZJB/YHMZmRWoP+TOgE2ATBMy/cqzTErnD
-         aPQfRv1JIGds6v6uo56/S2U8JRisZcB3fxxo5LNTl7eyv2a0Bxf4wMp/zhFhLI+dU4YO
-         +urA3sdCnJE4ficyLfWu+qst8oN9otXSOboUc+aOwM3sPdTIrQ8wVe1vpCV6ZRqjyXiL
-         Ppugt2cdb203RzNc6//nDHRhA8wkfYYg8p2WSKQp778zbkh18Yx/pJp3EbcvQIhJEwqa
-         K66A==
+        bh=wwXPdnH5ICk6KssGxyPxjOp8avxPzVDiI6ehncX/2eo=;
+        b=fBpbr14C8U3Br5BwKSATJ6fSFq9xlTv7JNMcPG4bfSfEf62jhUHJRWPNZpTKZ8d3Si
+         kzVQX337JLvEaN9ODbpNnEMrXS5J1VQGCe2uycRtOENueADd+VRO4nZIfONmJqYe2vDg
+         u0ZA1+Yr+EuD+rCaXbBrSJ2YC45j1A6x4uAVHndCl3kDCFEDKXjt7xds2QuQZECAe9yG
+         gnijSpL103isnV9yQ34aTKHz8XXlrm+dwPKsmI7/b1j8NauUu651jPiBro3opbAdrMtW
+         FHSVrBMhCNnYOBE/KCynR4CMu9m7+sT5JNC5pcxX2bQfi6hha1vWTORlcQOiVeXdD6qb
+         71nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=n5adcmxZ37qROrXA1JIpPKzSBcDAOW7O0W6cn5r41jI=;
-        b=kmq/Omh5J9q75lMdWxVnLUqzcFrDT/2IN4l4da5y7x5QIq6q68K/xDn/+gHuhZPavl
-         qJ4vF+WnQq4UwK4dlAsx7NZXrHPmEJVviwpOqd5EraNMlSWXzwkNsWYMfG3Jfvqcc2rc
-         poE+DhUO6HlZjU47Z1egUZVAc7dTZL9PzQWuHrR9BoIF7e6Bai+DEarG6sSPie5gwmqG
-         ckpvYgtD1JdlmiMeY3TQfbkRp8c5bhJpGIibD1fnFsCH08rc+KMS4cH7L4PY1UmLbS69
-         qE/a6mYl6FcwwjB8y2CgSL5X/u52p6xE3BpJhjHcSJxe8C/FYx1386lKtRkV9S08Q/L0
-         vt/Q==
-X-Gm-Message-State: APjAAAV4ccDSQgD2tTDo4ddyNl7HrUFwuttDuSKjrHIdUWtAm+rIuebi
-        UprcoI+bieLRmHAhx5FddLg=
-X-Google-Smtp-Source: APXvYqxyyeLYhnZbQUxJlicMAjALTydk+4e//4mo4GQ9NGhcMnT4THJqQAXU92Xp7mGGXo6N2fpLtw==
-X-Received: by 2002:a63:f707:: with SMTP id x7mr8807877pgh.343.1554422536541;
-        Thu, 04 Apr 2019 17:02:16 -0700 (PDT)
+        bh=wwXPdnH5ICk6KssGxyPxjOp8avxPzVDiI6ehncX/2eo=;
+        b=PZil6IpFlEJQ/Vqe7z2a1Ht25smIBirZUUPwFWTMgGVstKqqwR881Jrh/GWSGgz0AJ
+         H6rbl6EUlkYG4C1KN9IfIGnvdB5TDUI5aVTC17iW8Ib4CqJJUHYjDbsvRsj882BqBK+A
+         T+NPM+AtrEI0ZF/clQGSgmHSPnT8+ooVZmyXu0rhFdt+urueM6a2MH4iir4TxrKRfXHe
+         dNOFpuWFTzertrXSOxFyywSqJqDadsTuzY2hcXLdWdj7iZ9HtkGZz4GXA17ywX4DI/D3
+         8aFGmWoKtYsXMD6vcrCAtj3Gw0uDm6zc3ZRfLWirSb4ZP+oHzJhOv4tCbI20MLLbXDr3
+         VB3g==
+X-Gm-Message-State: APjAAAWXHc9sqHolyU4/ISEVzy9xzWWMYUCoyktQsBXoheZ4d3EE/Qi7
+        IOKIm59yf4VoTN/kqRBZHM0=
+X-Google-Smtp-Source: APXvYqxS6AfqkDwkcYgBs9jaAxPNwpXZcMfmC19ifYt6kCpP3BDCIzghHo3DTdVqyzlQ3ONB3lPHmw==
+X-Received: by 2002:a63:28c:: with SMTP id 134mr8913056pgc.278.1554422538971;
+        Thu, 04 Apr 2019 17:02:18 -0700 (PDT)
 Received: from localhost.localdomain ([2409:251:20c0:100:fe80:8e59:9ae1:e028])
-        by smtp.gmail.com with ESMTPSA id p26sm43755664pfa.49.2019.04.04.17.02.14
+        by smtp.gmail.com with ESMTPSA id p26sm43755664pfa.49.2019.04.04.17.02.16
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 04 Apr 2019 17:02:16 -0700 (PDT)
+        Thu, 04 Apr 2019 17:02:18 -0700 (PDT)
 From:   NOGUCHI Hiroshi <drvlabo@gmail.com>
 To:     John Crispin <john@phrozen.org>
 Cc:     Michael Turquette <mturquette@baylibre.com>,
@@ -62,9 +62,9 @@ Cc:     Michael Turquette <mturquette@baylibre.com>,
         Mark Rutland <mark.rutland@arm.com>,
         linux-mips@vger.kernel.org, linux-clk@vger.kernel.org,
         NOGUCHI Hiroshi <drvlabo@gmail.com>
-Subject: [RFC v2 4/5] mips: ralink: mt76x8: add nodes for clocks
-Date:   Fri,  5 Apr 2019 09:01:28 +0900
-Message-Id: <20190405000129.19331-5-drvlabo@gmail.com>
+Subject: [RFC v2 5/5] mips: ralink: mt7620: add nodes for clocks
+Date:   Fri,  5 Apr 2019 09:01:29 +0900
+Message-Id: <20190405000129.19331-6-drvlabo@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190405000129.19331-1-drvlabo@gmail.com>
 References: <20190405000129.19331-1-drvlabo@gmail.com>
@@ -77,20 +77,42 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 Signed-off-by: NOGUCHI Hiroshi <drvlabo@gmail.com>
 ---
- arch/mips/boot/dts/ralink/mt7628a.dtsi | 52 ++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ arch/mips/boot/dts/ralink/mt7620a.dtsi | 46 ++++++++++++++++++++++++--
+ 1 file changed, 43 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/boot/dts/ralink/mt7628a.dtsi b/arch/mips/boot/dts/ralink/mt7628a.dtsi
-index 9ff7e8faaecc..f7630b52c8d7 100644
---- a/arch/mips/boot/dts/ralink/mt7628a.dtsi
-+++ b/arch/mips/boot/dts/ralink/mt7628a.dtsi
-@@ -1,3 +1,5 @@
+diff --git a/arch/mips/boot/dts/ralink/mt7620a.dtsi b/arch/mips/boot/dts/ralink/mt7620a.dtsi
+index 1f6e5320f486..7c98cb6bb5b9 100644
+--- a/arch/mips/boot/dts/ralink/mt7620a.dtsi
++++ b/arch/mips/boot/dts/ralink/mt7620a.dtsi
+@@ -1,15 +1,27 @@
+ // SPDX-License-Identifier: GPL-2.0
 +#include <dt-bindings/clock/mt7620-clk.h>
 +
  / {
  	#address-cells = <1>;
  	#size-cells = <1>;
-@@ -26,6 +28,31 @@
+ 	compatible = "ralink,mtk7620a-soc";
+ 
+ 	cpus {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
+ 		cpu@0 {
+ 			compatible = "mips,mips24KEc";
++			device_type = "cpu";
++			reg = <0>;
+ 		};
+ 	};
+ 
++	resetc: reset-controller {
++		compatible = "ralink,rt2880-reset";
++		#reset-cells = <1>;
++	};
++
+ 	cpuintc: cpuintc {
+ 		#address-cells = <0>;
+ 		#interrupt-cells = <1>;
+@@ -17,6 +29,28 @@
  		compatible = "mti,cpu-interrupt-controller";
  	};
  
@@ -107,70 +129,46 @@ index 9ff7e8faaecc..f7630b52c8d7 100644
 +
 +		clock-indices =
 +				<12>,
-+				<16>, <17>, <18>, <19>,
-+				<20>;
++				<16>, <17>, <18>, <19>;
 +		clock-output-names =
-+				"uart0",
-+				"i2c", "i2s", "spi", "uart1",
-+				"uart2";
++				"uart",
++				"i2c", "i2s", "spi", "uartl";
 +		clocks =
 +				<&pll MT7620_CLK_PERIPH>,
-+				<&pll MT7620_CLK_PERIPH>, <&pll MT7620_CLK_PCMI2S>, <&pll MT7620_CLK_SYS>, <&pll MT7620_CLK_PERIPH>,
-+				<&pll MT7620_CLK_PERIPH>;
++				<&pll MT7620_CLK_PERIPH>, <&pll MT7620_CLK_PCMI2S>, <&pll MT7620_CLK_SYS>, <&pll MT7620_CLK_PERIPH>;
 +	};
 +
  	palmbus@10000000 {
  		compatible = "palmbus";
  		reg = <0x10000000 0x200000>;
-@@ -62,10 +89,29 @@
+@@ -25,8 +59,8 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 
+-		sysc@0 {
+-			compatible = "ralink,mt7620a-sysc";
++		sysc: sysc@0 {
++			compatible = "ralink,mt7620a-sysc", "syscon";
+ 			reg = <0x0 0x100>;
+ 		};
+ 
+@@ -46,10 +80,16 @@
  			reg = <0x300 0x100>;
  		};
  
-+		spi0: spi@b00 {
-+			compatible = "ralink,mt7621-spi";
-+			reg = <0xb00 0x100>;
-+
-+			clocks = <&clkctrl 18>;
-+			clock-names = "spi";
-+
-+			resets = <&resetc 18>;
-+			reset-names = "spi";
-+
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			status = "disabled";
-+		};
-+
- 		uart0: uartlite@c00 {
- 			compatible = "ns16550a";
+-		uartlite@c00 {
++		uartlite: uartlite@c00 {
+ 			compatible = "ralink,mt7620a-uart", "ralink,rt2880-uart", "ns16550a";
  			reg = <0xc00 0x100>;
  
-+			clocks = <&clkctrl 12>;
-+			clock-names = "uart0";
-+
- 			resets = <&resetc 12>;
- 			reset-names = "uart0";
- 
-@@ -79,6 +125,9 @@
- 			compatible = "ns16550a";
- 			reg = <0xd00 0x100>;
- 
 +			clocks = <&clkctrl 19>;
-+			clock-names = "uart1";
++			clock-names = "uartl";
 +
- 			resets = <&resetc 19>;
- 			reset-names = "uart1";
- 
-@@ -92,6 +141,9 @@
- 			compatible = "ns16550a";
- 			reg = <0xe00 0x100>;
- 
-+			clocks = <&clkctrl 20>;
-+			clock-names = "uart2";
++			resets = <&resetc 19>;
++			reset-names = "uartl";
 +
- 			resets = <&resetc 20>;
- 			reset-names = "uart2";
+ 			interrupt-parent = <&intc>;
+ 			interrupts = <12>;
  
 -- 
 2.20.1

@@ -2,93 +2,77 @@ Return-Path: <SRS0=L1Yz=SK=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 806E4C10F13
-	for <linux-mips@archiver.kernel.org>; Mon,  8 Apr 2019 17:41:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D935C10F13
+	for <linux-mips@archiver.kernel.org>; Mon,  8 Apr 2019 18:49:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 58D6920879
-	for <linux-mips@archiver.kernel.org>; Mon,  8 Apr 2019 17:41:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 437AD20833
+	for <linux-mips@archiver.kernel.org>; Mon,  8 Apr 2019 18:49:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726620AbfDHRl5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 8 Apr 2019 13:41:57 -0400
-Received: from vmicros1.altlinux.org ([194.107.17.57]:32894 "EHLO
-        vmicros1.altlinux.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726373AbfDHRl4 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 8 Apr 2019 13:41:56 -0400
-Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
-        by vmicros1.altlinux.org (Postfix) with ESMTP id BCD4172CCAC;
-        Mon,  8 Apr 2019 20:41:53 +0300 (MSK)
-Received: by mua.local.altlinux.org (Postfix, from userid 508)
-        id 273C37CCE4F; Mon,  8 Apr 2019 20:41:52 +0300 (MSK)
-Date:   Mon, 8 Apr 2019 20:41:52 +0300
-From:   "Dmitry V. Levin" <ldv@altlinux.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Paul Burton <paul.burton@mips.com>,
-        Elvira Khabirova <lineprinter@altlinux.org>,
-        Eugene Syromyatnikov <esyr@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Andy Lutomirski <luto@kernel.org>, linux-mips@vger.kernel.org
-Subject: [PATCH linux-next v9 3/7] mips: define syscall_get_error()
-Message-ID: <20190408174152.GD11889@altlinux.org>
-References: <20190408174036.GA11889@altlinux.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190408174036.GA11889@altlinux.org>
+        id S1726582AbfDHStE convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 8 Apr 2019 14:49:04 -0400
+Received: from mx2.suse.de ([195.135.220.15]:49134 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726373AbfDHStE (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 8 Apr 2019 14:49:04 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 2564FADE2;
+        Mon,  8 Apr 2019 18:49:02 +0000 (UTC)
+Date:   Mon, 8 Apr 2019 20:48:47 +0200
+From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
+To:     David Miller <davem@davemloft.net>
+Cc:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
+        dmitry.torokhov@gmail.com, lee.jones@linaro.org,
+        a.zummo@towertech.it, alexandre.belloni@bootlin.com,
+        gregkh@linuxfoundation.org, jslaby@suse.com,
+        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-input@vger.kernel.org, netdev@vger.kernel.org,
+        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org
+Subject: Re: [PATCH 2/6] MIPS: SGI-IP27: remove setup of RTC platform device
+Message-Id: <20190408204847.d9f0c870a690aec8179f0615@suse.de>
+In-Reply-To: <20190408.100528.608078178525055072.davem@davemloft.net>
+References: <20190408142100.27618-1-tbogendoerfer@suse.de>
+        <20190408142100.27618-3-tbogendoerfer@suse.de>
+        <20190408.100528.608078178525055072.davem@davemloft.net>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-suse-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-syscall_get_error() is required to be implemented on all
-architectures in addition to already implemented syscall_get_nr(),
-syscall_get_arguments(), syscall_get_return_value(), and
-syscall_get_arch() functions in order to extend the generic
-ptrace API with PTRACE_GET_SYSCALL_INFO request.
+On Mon, 08 Apr 2019 10:05:28 -0700 (PDT)
+David Miller <davem@davemloft.net> wrote:
 
-Acked-by: Paul Burton <paul.burton@mips.com>
-Cc: Elvira Khabirova <lineprinter@altlinux.org>
-Cc: Eugene Syromyatnikov <esyr@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: linux-mips@vger.kernel.org
-Signed-off-by: Dmitry V. Levin <ldv@altlinux.org>
----
+> From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+> Date: Mon,  8 Apr 2019 16:20:54 +0200
+> 
+> > RTC platform device will be setup by new IOC3 MFD driver, therefore
+> > remove it from IP27 platform code.
+> > 
+> > Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+> 
+> You cannot break the driver like this.
+> 
+> Your patch series must be fully bisectable, which means that after
+> this patch is applied things still must continue working properly.
 
-Notes:
-    v9: unchanged
-    v8: unchanged
-    v7: added Acked-by
-    v6: unchanged
-    v5: initial revision
+I see your point and the ethernet driver itself will work properly, but of
+course IP27 will be working again after applying the whole series. One
+way I can see to solve this to also add the addition of the serial driver
+into it. Then we are on par with the current driver. Does this solve your
+concern ?
 
- arch/mips/include/asm/syscall.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+Thomas.
 
-diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
-index acf80ae0a430..83bb439597d8 100644
---- a/arch/mips/include/asm/syscall.h
-+++ b/arch/mips/include/asm/syscall.h
-@@ -89,6 +89,12 @@ static inline unsigned long mips_get_syscall_arg(unsigned long *arg,
- 	unreachable();
- }
- 
-+static inline long syscall_get_error(struct task_struct *task,
-+				     struct pt_regs *regs)
-+{
-+	return regs->regs[7] ? -regs->regs[2] : 0;
-+}
-+
- static inline long syscall_get_return_value(struct task_struct *task,
- 					    struct pt_regs *regs)
- {
 -- 
-ldv
+SUSE Linux GmbH
+GF: Felix Imendörffer, Mary Higgins, Sri Rasiah
+HRB 21284 (AG Nürnberg)

@@ -3,25 +3,25 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F1C5AC10F13
-	for <linux-mips@archiver.kernel.org>; Mon,  8 Apr 2019 14:22:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 38230C282CE
+	for <linux-mips@archiver.kernel.org>; Mon,  8 Apr 2019 14:22:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B604E21473
-	for <linux-mips@archiver.kernel.org>; Mon,  8 Apr 2019 14:22:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0AC5A21473
+	for <linux-mips@archiver.kernel.org>; Mon,  8 Apr 2019 14:22:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727164AbfDHOVb (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 8 Apr 2019 10:21:31 -0400
-Received: from mx2.suse.de ([195.135.220.15]:33914 "EHLO mx1.suse.de"
+        id S1727022AbfDHOV1 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 8 Apr 2019 10:21:27 -0400
+Received: from mx2.suse.de ([195.135.220.15]:33812 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727149AbfDHOVa (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 8 Apr 2019 10:21:30 -0400
+        id S1726736AbfDHOV1 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 8 Apr 2019 10:21:27 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id E9EF2B014;
-        Mon,  8 Apr 2019 14:21:27 +0000 (UTC)
+        by mx1.suse.de (Postfix) with ESMTP id 1642BB00E;
+        Mon,  8 Apr 2019 14:21:25 +0000 (UTC)
 From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
@@ -36,9 +36,9 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
         linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
         netdev@vger.kernel.org, linux-rtc@vger.kernel.org,
         linux-serial@vger.kernel.org
-Subject: [PATCH 4/6] MIPS: SGI-IP27: fix readb/writeb addressing
-Date:   Mon,  8 Apr 2019 16:20:56 +0200
-Message-Id: <20190408142100.27618-5-tbogendoerfer@suse.de>
+Subject: [PATCH 2/6] MIPS: SGI-IP27: remove setup of RTC platform device
+Date:   Mon,  8 Apr 2019 16:20:54 +0200
+Message-Id: <20190408142100.27618-3-tbogendoerfer@suse.de>
 X-Mailer: git-send-email 2.13.7
 In-Reply-To: <20190408142100.27618-1-tbogendoerfer@suse.de>
 References: <20190408142100.27618-1-tbogendoerfer@suse.de>
@@ -47,347 +47,42 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Our chosen byte swapping, which is what firmware already uses, is to
-do readl/writel by normal lw/sw intructions (data invariance). This
-also means we need to mangle addresses for u8 and u16 accesses. The
-mangling for 16bit has been done aready, but 8bit one was missing.
-Correcting this causes different addresses for accesses to the
-SuperIO and local bus of the IOC3 chip. This is fixed by changing
-byte order in ioc3 and m48rtc_rtc structs.
+RTC platform device will be setup by new IOC3 MFD driver, therefore
+remove it from IP27 platform code.
 
 Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 ---
- arch/mips/include/asm/mach-ip27/mangle-port.h |   2 +-
- arch/mips/include/asm/sn/ioc3.h               | 198 +++++++++++++-------------
- arch/mips/sgi-ip27/ip27-console.c             |   5 +-
- drivers/rtc/rtc-m48t35.c                      |  11 ++
- 4 files changed, 112 insertions(+), 104 deletions(-)
+ arch/mips/sgi-ip27/ip27-timer.c | 20 --------------------
+ 1 file changed, 20 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-ip27/mangle-port.h b/arch/mips/include/asm/mach-ip27/mangle-port.h
-index f6e4912ea062..7771ae0f3971 100644
---- a/arch/mips/include/asm/mach-ip27/mangle-port.h
-+++ b/arch/mips/include/asm/mach-ip27/mangle-port.h
-@@ -8,7 +8,7 @@
- #ifndef __ASM_MACH_IP27_MANGLE_PORT_H
- #define __ASM_MACH_IP27_MANGLE_PORT_H
- 
--#define __swizzle_addr_b(port)	(port)
-+#define __swizzle_addr_b(port)	((port) ^ 3)
- #define __swizzle_addr_w(port)	((port) ^ 2)
- #define __swizzle_addr_l(port)	(port)
- #define __swizzle_addr_q(port)	(port)
-diff --git a/arch/mips/include/asm/sn/ioc3.h b/arch/mips/include/asm/sn/ioc3.h
-index 028d9d466ddf..f7a0c9a8a31a 100644
---- a/arch/mips/include/asm/sn/ioc3.h
-+++ b/arch/mips/include/asm/sn/ioc3.h
-@@ -9,35 +9,35 @@
- 
- /* serial port register map */
- struct ioc3_serialregs {
--	uint32_t	sscr;
--	uint32_t	stpir;
--	uint32_t	stcir;
--	uint32_t	srpir;
--	uint32_t	srcir;
--	uint32_t	srtr;
--	uint32_t	shadow;
-+	u32	sscr;
-+	u32	stpir;
-+	u32	stcir;
-+	u32	srpir;
-+	u32	srcir;
-+	u32	srtr;
-+	u32	shadow;
- };
- 
- /* SUPERIO uart register map */
- struct ioc3_uartregs {
-+	u8	iu_lcr;
- 	union {
--		char	rbr;	/* read only, DLAB == 0 */
--		char	thr;	/* write only, DLAB == 0 */
--		char	dll;	/* DLAB == 1 */
--	} u1;
-+		u8	iir;	/* read only */
-+		u8	fcr;	/* write only */
-+	};
- 	union {
--		char	ier;	/* DLAB == 0 */
--		char	dlm;	/* DLAB == 1 */
--	} u2;
-+		u8	ier;	/* DLAB == 0 */
-+		u8	dlm;	/* DLAB == 1 */
-+	};
- 	union {
--		char	iir;	/* read only */
--		char	fcr;	/* write only */
--	} u3;
--	char	iu_lcr;
--	char	iu_mcr;
--	char	iu_lsr;
--	char	iu_msr;
--	char	iu_scr;
-+		u8	rbr;	/* read only, DLAB == 0 */
-+		u8	thr;	/* write only, DLAB == 0 */
-+		u8	dll;	/* DLAB == 1 */
-+	} u1;
-+	u8	iu_scr;
-+	u8	iu_msr;
-+	u8	iu_lsr;
-+	u8	iu_mcr;
- };
- 
- #define iu_rbr u1.rbr
-@@ -49,122 +49,122 @@ struct ioc3_uartregs {
- #define iu_fcr u3.fcr
- 
- struct ioc3_sioregs {
--	char	fill[0x141];	/* starts at 0x141 */
-+	u8	fill[0x141];	/* starts at 0x141 */
- 
--	char	uartc;
--	char	kbdcg;
-+	u8	kbdcg;
-+	u8	uartc;
- 
--	char	fill0[0x150 - 0x142 - 1];
-+	u8	fill0[0x151 - 0x142 - 1];
- 
--	char	pp_data;
--	char	pp_dsr;
--	char	pp_dcr;
-+	u8	pp_dcr;
-+	u8	pp_dsr;
-+	u8	pp_data;
- 
--	char	fill1[0x158 - 0x152 - 1];
-+	u8	fill1[0x159 - 0x153 - 1];
- 
--	char	pp_fifa;
--	char	pp_cfgb;
--	char	pp_ecr;
-+	u8	pp_ecr;
-+	u8	pp_cfgb;
-+	u8	pp_fifa;
- 
--	char	fill2[0x168 - 0x15a - 1];
-+	u8	fill2[0x16a - 0x15b - 1];
- 
--	char	rtcad;
--	char	rtcdat;
-+	u8	rtcdat;
-+	u8	rtcad;
- 
--	char	fill3[0x170 - 0x169 - 1];
-+	u8	fill3[0x170 - 0x16b - 1];
- 
- 	struct ioc3_uartregs	uartb;	/* 0x20170  */
- 	struct ioc3_uartregs	uarta;	/* 0x20178  */
- };
- 
- struct ioc3_ethregs {
--	uint32_t	emcr;		/* 0x000f0  */
--	uint32_t	eisr;		/* 0x000f4  */
--	uint32_t	eier;		/* 0x000f8  */
--	uint32_t	ercsr;		/* 0x000fc  */
--	uint32_t	erbr_h;		/* 0x00100  */
--	uint32_t	erbr_l;		/* 0x00104  */
--	uint32_t	erbar;		/* 0x00108  */
--	uint32_t	ercir;		/* 0x0010c  */
--	uint32_t	erpir;		/* 0x00110  */
--	uint32_t	ertr;		/* 0x00114  */
--	uint32_t	etcsr;		/* 0x00118  */
--	uint32_t	ersr;		/* 0x0011c  */
--	uint32_t	etcdc;		/* 0x00120  */
--	uint32_t	ebir;		/* 0x00124  */
--	uint32_t	etbr_h;		/* 0x00128  */
--	uint32_t	etbr_l;		/* 0x0012c  */
--	uint32_t	etcir;		/* 0x00130  */
--	uint32_t	etpir;		/* 0x00134  */
--	uint32_t	emar_h;		/* 0x00138  */
--	uint32_t	emar_l;		/* 0x0013c  */
--	uint32_t	ehar_h;		/* 0x00140  */
--	uint32_t	ehar_l;		/* 0x00144  */
--	uint32_t	micr;		/* 0x00148  */
--	uint32_t	midr_r;		/* 0x0014c  */
--	uint32_t	midr_w;		/* 0x00150  */
-+	u32	emcr;		/* 0x000f0  */
-+	u32	eisr;		/* 0x000f4  */
-+	u32	eier;		/* 0x000f8  */
-+	u32	ercsr;		/* 0x000fc  */
-+	u32	erbr_h;		/* 0x00100  */
-+	u32	erbr_l;		/* 0x00104  */
-+	u32	erbar;		/* 0x00108  */
-+	u32	ercir;		/* 0x0010c  */
-+	u32	erpir;		/* 0x00110  */
-+	u32	ertr;		/* 0x00114  */
-+	u32	etcsr;		/* 0x00118  */
-+	u32	ersr;		/* 0x0011c  */
-+	u32	etcdc;		/* 0x00120  */
-+	u32	ebir;		/* 0x00124  */
-+	u32	etbr_h;		/* 0x00128  */
-+	u32	etbr_l;		/* 0x0012c  */
-+	u32	etcir;		/* 0x00130  */
-+	u32	etpir;		/* 0x00134  */
-+	u32	emar_h;		/* 0x00138  */
-+	u32	emar_l;		/* 0x0013c  */
-+	u32	ehar_h;		/* 0x00140  */
-+	u32	ehar_l;		/* 0x00144  */
-+	u32	micr;		/* 0x00148  */
-+	u32	midr_r;		/* 0x0014c  */
-+	u32	midr_w;		/* 0x00150  */
- };
- 
- struct ioc3_serioregs {
--	uint32_t	km_csr;		/* 0x0009c  */
--	uint32_t	k_rd;		/* 0x000a0  */
--	uint32_t	m_rd;		/* 0x000a4  */
--	uint32_t	k_wd;		/* 0x000a8  */
--	uint32_t	m_wd;		/* 0x000ac  */
-+	u32	km_csr;		/* 0x0009c  */
-+	u32	k_rd;		/* 0x000a0  */
-+	u32	m_rd;		/* 0x000a4  */
-+	u32	k_wd;		/* 0x000a8  */
-+	u32	m_wd;		/* 0x000ac  */
- };
- 
- /* Register layout of IOC3 in configuration space.  */
- struct ioc3 {
- 	/* PCI Config Space registers  */
--	uint32_t	pci_id;		/* 0x00000  */
--	uint32_t	pci_scr;	/* 0x00004  */
--	uint32_t	pci_rev;	/* 0x00008  */
--	uint32_t	pci_lat;	/* 0x0000c  */
--	uint32_t	pci_addr;	/* 0x00010  */
--	uint32_t	pci_err_addr_l;	/* 0x00014  */
--	uint32_t	pci_err_addr_h;	/* 0x00018  */
--
--	uint32_t	sio_ir;		/* 0x0001c  */
--	uint32_t	sio_ies;	/* 0x00020  */
--	uint32_t	sio_iec;	/* 0x00024  */
--	uint32_t	sio_cr;		/* 0x00028  */
--	uint32_t	int_out;	/* 0x0002c  */
--	uint32_t	mcr;		/* 0x00030  */
-+	u32	pci_id;		/* 0x00000  */
-+	u32	pci_scr;	/* 0x00004  */
-+	u32	pci_rev;	/* 0x00008  */
-+	u32	pci_lat;	/* 0x0000c  */
-+	u32	pci_addr;	/* 0x00010  */
-+	u32	pci_err_addr_l;	/* 0x00014  */
-+	u32	pci_err_addr_h;	/* 0x00018  */
-+
-+	u32	sio_ir;		/* 0x0001c  */
-+	u32	sio_ies;	/* 0x00020  */
-+	u32	sio_iec;	/* 0x00024  */
-+	u32	sio_cr;		/* 0x00028  */
-+	u32	int_out;	/* 0x0002c  */
-+	u32	mcr;		/* 0x00030  */
- 
- 	/* General Purpose I/O registers  */
--	uint32_t	gpcr_s;		/* 0x00034  */
--	uint32_t	gpcr_c;		/* 0x00038  */
--	uint32_t	gpdr;		/* 0x0003c  */
--	uint32_t	gppr[16];	/* 0x00040  */
-+	u32	gpcr_s;		/* 0x00034  */
-+	u32	gpcr_c;		/* 0x00038  */
-+	u32	gpdr;		/* 0x0003c  */
-+	u32	gppr[16];	/* 0x00040  */
- 
- 	/* Parallel Port Registers  */
--	uint32_t	ppbr_h_a;	/* 0x00080  */
--	uint32_t	ppbr_l_a;	/* 0x00084  */
--	uint32_t	ppcr_a;		/* 0x00088  */
--	uint32_t	ppcr;		/* 0x0008c  */
--	uint32_t	ppbr_h_b;	/* 0x00090  */
--	uint32_t	ppbr_l_b;	/* 0x00094  */
--	uint32_t	ppcr_b;		/* 0x00098  */
-+	u32	ppbr_h_a;	/* 0x00080  */
-+	u32	ppbr_l_a;	/* 0x00084  */
-+	u32	ppcr_a;		/* 0x00088  */
-+	u32	ppcr;		/* 0x0008c  */
-+	u32	ppbr_h_b;	/* 0x00090  */
-+	u32	ppbr_l_b;	/* 0x00094  */
-+	u32	ppcr_b;		/* 0x00098  */
- 
- 	/* Keyboard and Mouse Registers	 */
- 	struct ioc3_serioregs	serio;
- 
- 	/* Serial Port Registers  */
--	uint32_t	sbbr_h;		/* 0x000b0  */
--	uint32_t	sbbr_l;		/* 0x000b4  */
-+	u32	sbbr_h;		/* 0x000b0  */
-+	u32	sbbr_l;		/* 0x000b4  */
- 	struct ioc3_serialregs	port_a;
- 	struct ioc3_serialregs	port_b;
- 
- 	/* Ethernet Registers */
- 	struct ioc3_ethregs	eth;
--	uint32_t	pad1[(0x20000 - 0x00154) / 4];
-+	u32	pad1[(0x20000 - 0x00154) / 4];
- 
- 	/* SuperIO Registers  XXX */
- 	struct ioc3_sioregs	sregs;	/* 0x20000 */
--	uint32_t	pad2[(0x40000 - 0x20180) / 4];
-+	u32	pad2[(0x40000 - 0x20180) / 4];
- 
- 	/* SSRAM Diagnostic Access */
--	uint32_t	ssram[(0x80000 - 0x40000) / 4];
-+	u32	ssram[(0x80000 - 0x40000) / 4];
- 
- 	/* Bytebus device offsets
- 	   0x80000 -   Access to the generic devices selected with   DEV0
-@@ -597,8 +597,4 @@ struct ioc3_etxd {
- 
- #define MIDR_DATA_MASK		0x0000ffff
- 
--#if defined(CONFIG_SGI_IP27) || defined(CONFIG_SGI_IP30)
--extern int bridge_alloc_irq(struct pci_dev *dev);
--#endif
--
- #endif /* MIPS_SN_IOC3_H */
-diff --git a/arch/mips/sgi-ip27/ip27-console.c b/arch/mips/sgi-ip27/ip27-console.c
-index 6bdb48d41276..5886bee89d06 100644
---- a/arch/mips/sgi-ip27/ip27-console.c
-+++ b/arch/mips/sgi-ip27/ip27-console.c
-@@ -35,6 +35,7 @@ void prom_putchar(char c)
- {
- 	struct ioc3_uartregs *uart = console_uart();
- 
--	while ((uart->iu_lsr & 0x20) == 0);
--	uart->iu_thr = c;
-+	while ((readb(&uart->iu_lsr) & 0x20) == 0)
-+		;
-+	writeb(c, &uart->iu_thr);
+diff --git a/arch/mips/sgi-ip27/ip27-timer.c b/arch/mips/sgi-ip27/ip27-timer.c
+index 9b4b9ac621a3..5631e93ea350 100644
+--- a/arch/mips/sgi-ip27/ip27-timer.c
++++ b/arch/mips/sgi-ip27/ip27-timer.c
+@@ -188,23 +188,3 @@ void hub_rtc_init(cnodeid_t cnode)
+ 		LOCAL_HUB_S(PI_RT_PEND_B, 0);
+ 	}
  }
-diff --git a/drivers/rtc/rtc-m48t35.c b/drivers/rtc/rtc-m48t35.c
-index 0cf6507de3c7..05f0d91366af 100644
---- a/drivers/rtc/rtc-m48t35.c
-+++ b/drivers/rtc/rtc-m48t35.c
-@@ -24,6 +24,16 @@
- 
- struct m48t35_rtc {
- 	u8	pad[0x7ff8];    /* starts at 0x7ff8 */
-+#ifdef CONFIG_SGI_IP27
-+	u8	hour;
-+	u8	min;
-+	u8	sec;
-+	u8	control;
-+	u8	year;
-+	u8	month;
-+	u8	date;
-+	u8	day;
-+#else
- 	u8	control;
- 	u8	sec;
- 	u8	min;
-@@ -32,6 +42,7 @@ struct m48t35_rtc {
- 	u8	date;
- 	u8	month;
- 	u8	year;
-+#endif
- };
- 
- #define M48T35_RTC_SET		0x80
+-
+-static int __init sgi_ip27_rtc_devinit(void)
+-{
+-	struct resource res;
+-
+-	memset(&res, 0, sizeof(res));
+-	res.start = XPHYSADDR(KL_CONFIG_CH_CONS_INFO(master_nasid)->memory_base +
+-			      IOC3_BYTEBUS_DEV0);
+-	res.end = res.start + 32767;
+-	res.flags = IORESOURCE_MEM;
+-
+-	return IS_ERR(platform_device_register_simple("rtc-m48t35", -1,
+-						      &res, 1));
+-}
+-
+-/*
+- * kludge make this a device_initcall after ioc3 resource conflicts
+- * are resolved
+- */
+-late_initcall(sgi_ip27_rtc_devinit);
 -- 
 2.13.7
 

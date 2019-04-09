@@ -6,79 +6,85 @@ X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 877CFC10F0E
-	for <linux-mips@archiver.kernel.org>; Tue,  9 Apr 2019 15:29:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 34FD7C10F0E
+	for <linux-mips@archiver.kernel.org>; Tue,  9 Apr 2019 15:46:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 57628208C0
-	for <linux-mips@archiver.kernel.org>; Tue,  9 Apr 2019 15:29:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 05BFF2084C
+	for <linux-mips@archiver.kernel.org>; Tue,  9 Apr 2019 15:46:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726515AbfDIP3s (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 9 Apr 2019 11:29:48 -0400
-Received: from hall.aurel32.net ([195.154.113.88]:56668 "EHLO hall.aurel32.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726396AbfDIP3s (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 9 Apr 2019 11:29:48 -0400
-X-Greylist: delayed 2130 seconds by postgrey-1.27 at vger.kernel.org; Tue, 09 Apr 2019 11:29:47 EDT
-Received: from [2a01:e35:2fdd:a4e1:fe91:fc89:bc43:b814] (helo=ohm.rr44.fr)
-        by hall.aurel32.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1hDs8b-0005MD-Nq; Tue, 09 Apr 2019 16:54:13 +0200
-Received: from aurel32 by ohm.rr44.fr with local (Exim 4.92)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1hDs8b-0008Uz-Bg; Tue, 09 Apr 2019 16:54:13 +0200
-From:   Aurelien Jarno <aurelien@aurel32.net>
+        id S1726499AbfDIPqf (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 9 Apr 2019 11:46:35 -0400
+Received: from mx2.suse.de ([195.135.220.15]:54446 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726383AbfDIPqf (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 9 Apr 2019 11:46:35 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 4A66BAFFA;
+        Tue,  9 Apr 2019 15:46:33 +0000 (UTC)
+From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>
-Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Aurelien Jarno <aurelien@aurel32.net>, stable@vger.kernel.org
-Subject: [PATCH] MIPS: scall64-o32: Fix indirect syscall number load
-Date:   Tue,  9 Apr 2019 16:53:55 +0200
-Message-Id: <20190409145355.25842-1-aurelien@aurel32.net>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        James Hogan <jhogan@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+        netdev@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-serial@vger.kernel.org
+Subject: [PATCH v2 1/4] MIPS: SGI-IP27: remove ioc3 ethernet init
+Date:   Tue,  9 Apr 2019 17:46:05 +0200
+Message-Id: <20190409154610.6735-2-tbogendoerfer@suse.de>
+X-Mailer: git-send-email 2.13.7
+In-Reply-To: <20190409154610.6735-1-tbogendoerfer@suse.de>
+References: <20190409154610.6735-1-tbogendoerfer@suse.de>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Commit 4c21b8fd8f14 (MIPS: seccomp: Handle indirect system calls (o32))
-added indirect syscall detection for O32 processes running on MIPS64,
-but it did not work correctly for big endian kernel/processes. The
-reason is that the syscall number is loaded from ARG1 using the lw
-instruction while this is a 64-bit value, so zero is loaded instead of
-the syscall number.
+Removed not needed disabling of ethernet interrupts in IP27 platform code.
 
-Fix the code by using the ld instruction instead. When running a 32-bit
-processes on a 64 bit CPU, the values are properly sign-extended, so it
-ensures the value passed to syscall_trace_enter is correct.
-
-Recent systemd versions with seccomp enabled whitelist the getpid
-syscall for their internal  processes (e.g. systemd-journald), but call
-it through syscall(SYS_getpid). This fix therefore allows O32 big endian
-systems with a 64-bit kernel to run recent systemd versions.
-
-Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
-Cc: <stable@vger.kernel.org> # v3.15+
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 ---
- arch/mips/kernel/scall64-o32.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/sgi-ip27/ip27-init.c | 13 -------------
+ 1 file changed, 13 deletions(-)
 
-diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
-index f158c5894a9a..feb2653490df 100644
---- a/arch/mips/kernel/scall64-o32.S
-+++ b/arch/mips/kernel/scall64-o32.S
-@@ -125,7 +125,7 @@ trace_a_syscall:
- 	subu	t1, v0,  __NR_O32_Linux
- 	move	a1, v0
- 	bnez	t1, 1f /* __NR_syscall at offset 0 */
--	lw	a1, PT_R4(sp) /* Arg1 for __NR_syscall case */
-+	ld	a1, PT_R4(sp) /* Arg1 for __NR_syscall case */
- 	.set	pop
+diff --git a/arch/mips/sgi-ip27/ip27-init.c b/arch/mips/sgi-ip27/ip27-init.c
+index 066b33f50bcc..59d5375c9021 100644
+--- a/arch/mips/sgi-ip27/ip27-init.c
++++ b/arch/mips/sgi-ip27/ip27-init.c
+@@ -130,17 +130,6 @@ cnodeid_t get_compact_nodeid(void)
+ 	return NASID_TO_COMPACT_NODEID(get_nasid());
+ }
  
- 1:	jal	syscall_trace_enter
+-static inline void ioc3_eth_init(void)
+-{
+-	struct ioc3 *ioc3;
+-	nasid_t nid;
+-
+-	nid = get_nasid();
+-	ioc3 = (struct ioc3 *) KL_CONFIG_CH_CONS_INFO(nid)->memory_base;
+-
+-	ioc3->eier = 0;
+-}
+-
+ extern void ip27_reboot_setup(void);
+ 
+ void __init plat_mem_setup(void)
+@@ -182,8 +171,6 @@ void __init plat_mem_setup(void)
+ 		panic("Kernel compiled for N mode.");
+ #endif
+ 
+-	ioc3_eth_init();
+-
+ 	ioport_resource.start = 0;
+ 	ioport_resource.end = ~0UL;
+ 	set_io_port_base(IO_BASE);
 -- 
-2.20.1
+2.13.7
 

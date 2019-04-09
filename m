@@ -1,106 +1,165 @@
-Return-Path: <SRS0=L1Yz=SK=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=d2pN=SL=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_MUTT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED,USER_AGENT_MUTT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0093CC10F13
-	for <linux-mips@archiver.kernel.org>; Mon,  8 Apr 2019 22:32:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 722BFC10F13
+	for <linux-mips@archiver.kernel.org>; Tue,  9 Apr 2019 00:13:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id BA912213F2
-	for <linux-mips@archiver.kernel.org>; Mon,  8 Apr 2019 22:32:48 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i1NNcI75"
+	by mail.kernel.org (Postfix) with ESMTP id 49A4C20883
+	for <linux-mips@archiver.kernel.org>; Tue,  9 Apr 2019 00:13:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726547AbfDHWcs (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 8 Apr 2019 18:32:48 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:42887 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726068AbfDHWcs (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 8 Apr 2019 18:32:48 -0400
-Received: by mail-pg1-f193.google.com with SMTP id p6so8089668pgh.9;
-        Mon, 08 Apr 2019 15:32:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=9gURMCfoOgoTkHI/WJj+bRmGByb2rAQnY4p70cixdkM=;
-        b=i1NNcI75+g2upSaeC1/N3mMZXEf5X0ASPgi1UDAZ1IxRbyeo5FdgSnuCx32plocEIb
-         rcEEPo9Q1vH2Q1ZRUyW5jffOTFrAM/KegPvRsExYc3kPbrx5UQm+q/RHChaVu28aK9KF
-         mvAD6jpTEG9ZU7Veh6+2UpZ64h81iu8TKdiqYnDZ1CvFTmd8eoooNgwTSO9Jw5qSk7wJ
-         t1T9cFAVyWCBzkn2jiF65ny+cYWQJLf1u3x5KEFBRinR0NSIz6lXIH6Li2wg/whe2pUu
-         JoqYO0kvX8YV/uyV3vzahAUpnX00OtE6w2n1AcH70z4gigK5OXtDGYspSv5tRPy7+1gL
-         O6NQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=9gURMCfoOgoTkHI/WJj+bRmGByb2rAQnY4p70cixdkM=;
-        b=qe2nHABtVT2fIKliCj+mY56+tTtXWK6BpN59SJSiGQNy/iVhobs0kcGHsKqN4ifiY3
-         9Zx03TcDzFoPqSUPXIsjiS6Gx5LY1f/OKlIgyLGcbz/M35OdERNaoh+bL657tjn4NYWv
-         m2FxphLuL3jzyhIbv51alSLpTNfxB3NMdSlWAlSorRoOfnWlhJTQWftcpM3YrbycqYEg
-         GU57mS5ZyZMv+DOvs6JP2ZkorlPgOAxidpaxKeHOWJn8TWJtMOVoN6XnbZ8xNywqUnHF
-         rkm8kdaH/XmhNawJeVzDXhyUZ+/9Mme/IIuBMRmzjlhSCeYrws23rVbR4Tq85noAiWc5
-         5/ug==
-X-Gm-Message-State: APjAAAVLXMPQ5t2P+PHTHzwTyVPjc1YqX0KrjDeoomWwgb9MaRRCvMgm
-        dvcqxuY7ipL7OfocQm9aJo8=
-X-Google-Smtp-Source: APXvYqzXp5yvcRUDAZ8JYCI+6Q8UQW2R43ki9hg1Qw7iMNcFXU1zZarpGTH+ofkOTCqO+fHHrSEPxg==
-X-Received: by 2002:aa7:938b:: with SMTP id t11mr31966899pfe.67.1554762766686;
-        Mon, 08 Apr 2019 15:32:46 -0700 (PDT)
-Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
-        by smtp.gmail.com with ESMTPSA id f22sm3107057pgv.45.2019.04.08.15.32.45
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 08 Apr 2019 15:32:45 -0700 (PDT)
-Date:   Mon, 8 Apr 2019 15:32:43 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
+        id S1726728AbfDIANo (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 8 Apr 2019 20:13:44 -0400
+Received: from mga05.intel.com ([192.55.52.43]:61840 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726240AbfDIANn (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 8 Apr 2019 20:13:43 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Apr 2019 17:13:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.60,327,1549958400"; 
+   d="scan'208";a="159915232"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+  by fmsmga004.fm.intel.com with ESMTP; 08 Apr 2019 17:13:42 -0700
+Date:   Mon, 8 Apr 2019 17:13:36 -0700
+From:   Ira Weiny <ira.weiny@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Michal Hocko <mhocko@suse.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-        netdev@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-serial@vger.kernel.org
-Subject: Re: [PATCH 6/6] Input: add IOC3 serio driver
-Message-ID: <20190408223243.GB200740@dtor-ws>
-References: <20190408142100.27618-1-tbogendoerfer@suse.de>
- <20190408142100.27618-7-tbogendoerfer@suse.de>
- <20190408190218.GA200740@dtor-ws>
- <20190408190842.GS7480@piout.net>
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Rich Felker <dalias@libc.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>
+Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-rdma@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH V3 0/7] Add FOLL_LONGTERM to GUP fast and use it
+Message-ID: <20190409001336.GB2049@iweiny-DESK2.sc.intel.com>
+References: <20190328084422.29911-1-ira.weiny@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190408190842.GS7480@piout.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190328084422.29911-1-ira.weiny@intel.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, Apr 08, 2019 at 09:08:42PM +0200, Alexandre Belloni wrote:
-> On 08/04/2019 12:02:18-0700, Dmitry Torokhov wrote:
-> > > +MODULE_AUTHOR("Stanislaw Skowronek <skylark@unaligned.org>");
-> > > +MODULE_DESCRIPTION("SGI IOC3 serio driver");
-> > > +MODULE_LICENSE("GPL");
-> > 
-> > "GPL v2" to match SPDX header?
-> > 
+On Thu, Mar 28, 2019 at 01:44:15AM -0700, 'Ira Weiny' wrote:
+> From: Ira Weiny <ira.weiny@intel.com>
 > 
-> I've been told this is not true:
+> Following discussion and review[1] here are the cleanups requested.
 > 
-> https://lore.kernel.org/linux-rtc/371999940784dbd281669122c3027805ab0ecfd9.camel@perches.com/
+> The biggest change for V3 was the disabling of the ability to use FOLL_LONGTERM
+> in get_user_pages[unlocked|locked|remote]
+> 
+> Comments were also enhanced throughout to show potential users what
+> FOLL_LONGTERM is all about and limitations it has.
 
-Ah, great, nevermind then.
+Does anyone have any problems with these changes?
 
-Thanks.
+I would like to get official Reviewed-by tags if possible.
 
--- 
-Dmitry
+Thanks,
+Ira
+
+> 
+> Minor review comments were fixed
+> 
+> Original cover letter:
+> 
+> HFI1, qib, and mthca, use get_user_pages_fast() due to it performance
+> advantages.  These pages can be held for a significant time.  But
+> get_user_pages_fast() does not protect against mapping FS DAX pages.
+> 
+> Introduce FOLL_LONGTERM and use this flag in get_user_pages_fast() which
+> retains the performance while also adding the FS DAX checks.  XDP has also
+> shown interest in using this functionality.[1]
+> 
+> In addition we change get_user_pages() to use the new FOLL_LONGTERM flag and
+> remove the specialized get_user_pages_longterm call.
+> 
+> [1] https://lkml.org/lkml/2019/3/19/939
+> 
+> 
+> 
+> Ira Weiny (7):
+>   mm/gup: Replace get_user_pages_longterm() with FOLL_LONGTERM
+>   mm/gup: Change write parameter to flags in fast walk
+>   mm/gup: Change GUP fast to use flags rather than a write 'bool'
+>   mm/gup: Add FOLL_LONGTERM capability to GUP fast
+>   IB/hfi1: Use the new FOLL_LONGTERM flag to get_user_pages_fast()
+>   IB/qib: Use the new FOLL_LONGTERM flag to get_user_pages_fast()
+>   IB/mthca: Use the new FOLL_LONGTERM flag to get_user_pages_fast()
+> 
+>  arch/mips/mm/gup.c                          |  11 +-
+>  arch/powerpc/kvm/book3s_64_mmu_hv.c         |   4 +-
+>  arch/powerpc/kvm/e500_mmu.c                 |   2 +-
+>  arch/powerpc/mm/mmu_context_iommu.c         |   3 +-
+>  arch/s390/kvm/interrupt.c                   |   2 +-
+>  arch/s390/mm/gup.c                          |  12 +-
+>  arch/sh/mm/gup.c                            |  11 +-
+>  arch/sparc/mm/gup.c                         |   9 +-
+>  arch/x86/kvm/paging_tmpl.h                  |   2 +-
+>  arch/x86/kvm/svm.c                          |   2 +-
+>  drivers/fpga/dfl-afu-dma-region.c           |   2 +-
+>  drivers/gpu/drm/via/via_dmablit.c           |   3 +-
+>  drivers/infiniband/core/umem.c              |   5 +-
+>  drivers/infiniband/hw/hfi1/user_pages.c     |   3 +-
+>  drivers/infiniband/hw/mthca/mthca_memfree.c |   3 +-
+>  drivers/infiniband/hw/qib/qib_user_pages.c  |   8 +-
+>  drivers/infiniband/hw/qib/qib_user_sdma.c   |   2 +-
+>  drivers/infiniband/hw/usnic/usnic_uiom.c    |   9 +-
+>  drivers/media/v4l2-core/videobuf-dma-sg.c   |   6 +-
+>  drivers/misc/genwqe/card_utils.c            |   2 +-
+>  drivers/misc/vmw_vmci/vmci_host.c           |   2 +-
+>  drivers/misc/vmw_vmci/vmci_queue_pair.c     |   6 +-
+>  drivers/platform/goldfish/goldfish_pipe.c   |   3 +-
+>  drivers/rapidio/devices/rio_mport_cdev.c    |   4 +-
+>  drivers/sbus/char/oradax.c                  |   2 +-
+>  drivers/scsi/st.c                           |   3 +-
+>  drivers/staging/gasket/gasket_page_table.c  |   4 +-
+>  drivers/tee/tee_shm.c                       |   2 +-
+>  drivers/vfio/vfio_iommu_spapr_tce.c         |   3 +-
+>  drivers/vfio/vfio_iommu_type1.c             |   3 +-
+>  drivers/vhost/vhost.c                       |   2 +-
+>  drivers/video/fbdev/pvr2fb.c                |   2 +-
+>  drivers/virt/fsl_hypervisor.c               |   2 +-
+>  drivers/xen/gntdev.c                        |   2 +-
+>  fs/io_uring.c                               |   5 +-
+>  fs/orangefs/orangefs-bufmap.c               |   2 +-
+>  include/linux/mm.h                          |  45 ++-
+>  kernel/futex.c                              |   2 +-
+>  lib/iov_iter.c                              |   7 +-
+>  mm/gup.c                                    | 288 +++++++++++++-------
+>  mm/gup_benchmark.c                          |   5 +-
+>  mm/util.c                                   |   8 +-
+>  net/ceph/pagevec.c                          |   2 +-
+>  net/rds/info.c                              |   2 +-
+>  net/rds/rdma.c                              |   3 +-
+>  net/xdp/xdp_umem.c                          |   4 +-
+>  46 files changed, 314 insertions(+), 200 deletions(-)
+> 
+> -- 
+> 2.20.1
+> 

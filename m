@@ -2,176 +2,79 @@ Return-Path: <SRS0=erdp=SM=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FROM_EXCESS_BASE64,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F73AC10F11
-	for <linux-mips@archiver.kernel.org>; Wed, 10 Apr 2019 07:54:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2CA72C10F11
+	for <linux-mips@archiver.kernel.org>; Wed, 10 Apr 2019 08:19:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5A96F20674
-	for <linux-mips@archiver.kernel.org>; Wed, 10 Apr 2019 07:54:13 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E41E5204FD
+	for <linux-mips@archiver.kernel.org>; Wed, 10 Apr 2019 08:18:59 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=vdorst.com header.i=@vdorst.com header.b="nJ1thTEk"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727838AbfDJHyE (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 10 Apr 2019 03:54:04 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:41800 "EHLO mx1.redhat.com"
+        id S1729455AbfDJIS7 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 10 Apr 2019 04:18:59 -0400
+Received: from mx.0dd.nl ([5.2.79.48]:43986 "EHLO mx.0dd.nl"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727306AbfDJHyE (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 10 Apr 2019 03:54:04 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1729371AbfDJIS7 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 10 Apr 2019 04:18:59 -0400
+X-Greylist: delayed 453 seconds by postgrey-1.27 at vger.kernel.org; Wed, 10 Apr 2019 04:18:58 EDT
+Received: from mail.vdorst.com (mail.vdorst.com [IPv6:fd01::250])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 7CCA6C002965;
-        Wed, 10 Apr 2019 07:54:03 +0000 (UTC)
-Received: from [10.72.12.186] (ovpn-12-186.pek2.redhat.com [10.72.12.186])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2125419C72;
-        Wed, 10 Apr 2019 07:53:53 +0000 (UTC)
-Subject: Re: [PATCH net] vhost: flush dcache page when logging dirty pages
-To:     "Michael S. Tsirkin" <mst@redhat.com>
-Cc:     kvm@vger.kernel.org,
-        "open list:VIRTIO GPU DRIVER" 
-        <virtualization@lists.linux-foundation.org>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Christoph Hellwig <hch@infradead.org>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Andrea Arcangeli <aarcange@redhat.com>, linux@armlinux.org.uk,
-        linux-arm-kernel@lists.infradead.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linuxppc-dev@lists.ozlabs.org, Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
-        Linux-MM <linux-mm@kvack.org>
-References: <20190409041647.21269-1-jasowang@redhat.com>
- <20190409085607-mutt-send-email-mst@kernel.org>
-From:   Jason Wang <jasowang@redhat.com>
-Message-ID: <b635592f-a2c5-5687-e634-6fcd4f5a1e36@redhat.com>
-Date:   Wed, 10 Apr 2019 15:53:52 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        by mx.0dd.nl (Postfix) with ESMTPS id 0E1585FA71;
+        Wed, 10 Apr 2019 10:11:25 +0200 (CEST)
+Authentication-Results: mx.0dd.nl;
+        dkim=pass (2048-bit key; secure) header.d=vdorst.com header.i=@vdorst.com header.b="nJ1thTEk";
+        dkim-atps=neutral
+Received: from www (www.vdorst.com [192.168.2.222])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.vdorst.com (Postfix) with ESMTPSA id B7AA118B9448;
+        Wed, 10 Apr 2019 10:11:24 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.vdorst.com B7AA118B9448
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vdorst.com;
+        s=default; t=1554883884;
+        bh=nTWMAyfYpQ7F05eBkGusqktjM8nl1QGebhyGL+m7WBc=;
+        h=Date:From:To:Cc:Subject:From;
+        b=nJ1thTEka4eQ03pG6ERb0MpuCiajX887+LbVITM6acVt5lWTF84OmwsIhQHk/nSWH
+         vaZEfOtiysvgBSJKJMyjWp8Hh0/M3idgdfJHQjvpyu5Ijo6XNyCCAlw3FSpvSHpIuE
+         T2q0BE3jttV5xbdnFh71My2hQ5wC4UPigAZyHEBk8PZhnd+QYFWhK5doS1/K42K+R3
+         uq0dzo6Q3oYA1thgiBjutVMmfPXeA86OFeLnA+B79hoC00cgoWOCKCBmKtKH6bQeAu
+         aTyZpBfAZ8fwoHASPSQOVpiDk4+A+0Vj63sGJ3pOHctfSrNz1sVu/hoPfVIk0k/CCA
+         muBM4UPKB652g==
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1]) by
+ www.vdorst.com (Horde Framework) with HTTPS; Wed, 10 Apr 2019 08:11:24 +0000
+Date:   Wed, 10 Apr 2019 08:11:24 +0000
+Message-ID: <20190410081124.Horde.6-W5VZY62-uScLlme86cCYa@www.vdorst.com>
+From:   =?utf-8?b?UmVuw6k=?= van Dorst <opensource@vdorst.com>
+To:     Chuanhong Guo <gch981213@gmail.com>
+Cc:     Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
+Subject: MIPS: ralink: fix cpu clock of mt7621 and add dt clk devices,
+ mt7621-clk.h is missing
+User-Agent: Horde Application Framework 5
+Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-In-Reply-To: <20190409085607-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.31]); Wed, 10 Apr 2019 07:54:04 +0000 (UTC)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
+Hi Chuanhong,
 
-On 2019/4/9 下午9:14, Michael S. Tsirkin wrote:
-> On Tue, Apr 09, 2019 at 12:16:47PM +0800, Jason Wang wrote:
->> We set dirty bit through setting up kmaps and access them through
->> kernel virtual address, this may result alias in virtually tagged
->> caches that require a dcache flush afterwards.
->>
->> Cc: Christoph Hellwig <hch@infradead.org>
->> Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
->> Cc: Andrea Arcangeli <aarcange@redhat.com>
->> Fixes: 3a4d5c94e9593 ("vhost_net: a kernel-level virtio server")
-> This is like saying "everyone with vhost needs this".
-> In practice only might affect some architectures.
+I tried your patch but include/dt-bindings/clock/mt7621-clk.h is missing.
 
+See the original patch.  
+https://github.com/lede-project/source/blob/master/target/linux/ramips/patches-4.14/102-mt7621-fix-cpu-clk-add-clkdev.patch#L205
 
-For the archs that does need dcache flushing, the function is just a nop.
+Can you send an other patch to fix that?
 
+Greats,
 
-> Which ones?
+René
 
-
-There're more than 10 archs that have ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 
-defined, just cc some maintainers of some more influenced ones.
-
-
-> You want to Cc the relevant maintainers
-> who understand this...
->
->> Signed-off-by: Jason Wang <jasowang@redhat.com>
-> I am not sure this is a good idea.
-> The region in question is supposed to be accessed
-> by userspace at the same time, through atomic operations.
->
-> How do we know userspace didn't access it just before?
-
-
-get_user_pages() will do both flush_annon_page() to make sure the 
-userspace write is visible to kernel.
-
-
->
-> Is that an issue at all given we use
-> atomics for access? Documentation/core-api/cachetlb.rst does
-> not mention atomics.
-> Which architectures are affected?
-> Assuming atomics actually do need a flush, then don't we need
-> a flush in the other direction too? How are atomics
-> supposed to work at all?
-
-
-It's the issue of visibility, atomic operation is just one of the 
-possible operations. If we can finally makes the write visible to each 
-other, there will be no issue.
-
-It looks to me we could still end up alias if userspace is accessing the 
-dirty log between get_user_pages_fast() and flush_dcache_page(). But the 
-flush_dcache_page() can guarantee what kernel wrote is visible to 
-userspace finally though some bits cleared by userspace might still 
-there. We may end up with more dirty pages noticed by userspace which 
-should be harmless.
-
-
->
->
-> I really think we need new APIs along the lines of
-> set_bit_to_user.
-
-
-Can we simply do:
-
-get_user()
-
-set bit
-
-put_user()
-
-instead?
-
-
->
->> ---
->>   drivers/vhost/vhost.c | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
->> index 351af88231ad..34a1cedbc5ba 100644
->> --- a/drivers/vhost/vhost.c
->> +++ b/drivers/vhost/vhost.c
->> @@ -1711,6 +1711,7 @@ static int set_bit_to_user(int nr, void __user *addr)
->>   	base = kmap_atomic(page);
->>   	set_bit(bit, base);
->>   	kunmap_atomic(base);
->> +	flush_dcache_page(page);
->>   	set_page_dirty_lock(page);
->>   	put_page(page);
->>   	return 0;
-> Ignoring the question of whether this actually helps, I doubt
-> flush_dcache_page is appropriate here.  Pls take a look at
-> Documentation/core-api/cachetlb.rst as well as the actual
-> implementation.
->
-> I think you meant flush_kernel_dcache_page, and IIUC it must happen
-> before kunmap, not after (which you still have the va locked).
-
-
-Looks like you're right.
-
-Thanks
-
-
->
->> -- 
->> 2.19.1

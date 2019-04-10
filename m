@@ -2,72 +2,65 @@ Return-Path: <SRS0=erdp=SM=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_MUTT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 17019C282CE
-	for <linux-mips@archiver.kernel.org>; Wed, 10 Apr 2019 06:59:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 31C02C282CE
+	for <linux-mips@archiver.kernel.org>; Wed, 10 Apr 2019 07:19:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D5F5120850
-	for <linux-mips@archiver.kernel.org>; Wed, 10 Apr 2019 06:59:34 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="HBYgeKPO"
+	by mail.kernel.org (Postfix) with ESMTP id 07CF22070D
+	for <linux-mips@archiver.kernel.org>; Wed, 10 Apr 2019 07:19:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728862AbfDJG7e (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 10 Apr 2019 02:59:34 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:60726 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728647AbfDJG7e (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 10 Apr 2019 02:59:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=l2WBiCb5duYJRA9nKpihqrJOH1Qjg6utSrFiu8qAdtc=; b=HBYgeKPOdkpup2ZwGf/wNMi1k
-        YE2XTsEtQr9oixczaj6gWzM4waxp/O0RAUD/tZWZvCpkUFvmXar3GGQkJxTkO1aUeOnZETWBh3ctH
-        42HTlzYqzu+DIZt4C5OLcLd4zMrZ60Y5U48K2pinODd7NZRWSUaTCpaM4cc85rblDE+ppjNqsZ1iq
-        5qj1sv3ZwJ4wSkOowWxUo7z9+BEbni/LpTY8G1irI8smfCCOWkEUVyvbFrjHyjB06pKs7oIA7VzCH
-        U5TYOKzECkTD1T+rRUTgIJusV9Vs4rYhDw7JLZJw1SgciPZcy48BJfawhuFNttB73vwIOz//Q72OP
-        yJw/rU+hA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hE7Ci-0003pQ-UV; Wed, 10 Apr 2019 06:59:28 +0000
-Date:   Tue, 9 Apr 2019 23:59:28 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Alexandre Ghiti <alex@ghiti.fr>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Albert Ou <aou@eecs.berkeley.edu>,
+        id S1726776AbfDJHTI (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 10 Apr 2019 03:19:08 -0400
+Received: from relay10.mail.gandi.net ([217.70.178.230]:35797 "EHLO
+        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728415AbfDJHTI (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 10 Apr 2019 03:19:08 -0400
+Received: from [10.30.1.20] (lneuilly-657-1-5-103.w81-250.abo.wanadoo.fr [81.250.144.103])
+        (Authenticated sender: alex@ghiti.fr)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 857E4240009;
+        Wed, 10 Apr 2019 07:19:01 +0000 (UTC)
+Subject: Re: [PATCH v2 1/5] mm, fs: Move randomize_stack_top from fs to mm
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     Albert Ou <aou@eecs.berkeley.edu>,
         Kees Cook <keescook@chromium.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Palmer Dabbelt <palmer@sifive.com>,
         Will Deacon <will.deacon@arm.com>,
         Russell King <linux@armlinux.org.uk>,
         Ralf Baechle <ralf@linux-mips.org>,
-        linux-kernel@vger.kernel.org,
-        Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         Paul Burton <paul.burton@mips.com>,
         Alexander Viro <viro@zeniv.linux.org.uk>,
         James Hogan <jhogan@kernel.org>, linux-fsdevel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-mips@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
         linux-arm-kernel@lists.infradead.org,
         Luis Chamberlain <mcgrof@kernel.org>
-Subject: Re: [PATCH v2 5/5] riscv: Make mmap allocation top-down by default
-Message-ID: <20190410065928.GD2942@infradead.org>
 References: <20190404055128.24330-1-alex@ghiti.fr>
- <20190404055128.24330-6-alex@ghiti.fr>
+ <20190404055128.24330-2-alex@ghiti.fr> <20190410065437.GB2942@infradead.org>
+From:   Alexandre Ghiti <alex@ghiti.fr>
+Message-ID: <a67eeb56-216e-69a0-5905-bfd8017879d2@ghiti.fr>
+Date:   Wed, 10 Apr 2019 09:18:08 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190404055128.24330-6-alex@ghiti.fr>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20190410065437.GB2942@infradead.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: fr
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Looks good,
+On 04/10/2019 08:54 AM, Christoph Hellwig wrote:
+> Looks good,
+>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Thanks Christoph,
+
+Alex

@@ -7,45 +7,45 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CBB7FC10F14
-	for <linux-mips@archiver.kernel.org>; Thu, 11 Apr 2019 12:20:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D5DF5C10F13
+	for <linux-mips@archiver.kernel.org>; Thu, 11 Apr 2019 12:20:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8EC162083E
-	for <linux-mips@archiver.kernel.org>; Thu, 11 Apr 2019 12:20:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 98A1D2083E
+	for <linux-mips@archiver.kernel.org>; Thu, 11 Apr 2019 12:20:26 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="amGneY6x"
+	dkim=pass (1024-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="VFodtS5n"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726391AbfDKMUd (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 11 Apr 2019 08:20:33 -0400
-Received: from forward105o.mail.yandex.net ([37.140.190.183]:37165 "EHLO
-        forward105o.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726121AbfDKMUd (ORCPT
+        id S1726145AbfDKMU0 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 11 Apr 2019 08:20:26 -0400
+Received: from forward101o.mail.yandex.net ([37.140.190.181]:46554 "EHLO
+        forward101o.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726121AbfDKMU0 (ORCPT
         <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 11 Apr 2019 08:20:33 -0400
-Received: from mxback7g.mail.yandex.net (mxback7g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:168])
-        by forward105o.mail.yandex.net (Yandex) with ESMTP id C74CD4200C6A;
-        Thu, 11 Apr 2019 15:20:30 +0300 (MSK)
+        Thu, 11 Apr 2019 08:20:26 -0400
+Received: from mxback7j.mail.yandex.net (mxback7j.mail.yandex.net [IPv6:2a02:6b8:0:1619::110])
+        by forward101o.mail.yandex.net (Yandex) with ESMTP id B0EE63C017DC;
+        Thu, 11 Apr 2019 15:20:23 +0300 (MSK)
 Received: from smtp2o.mail.yandex.net (smtp2o.mail.yandex.net [2a02:6b8:0:1a2d::26])
-        by mxback7g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id vhskqf5ZQ6-KU4uOQW6;
-        Thu, 11 Apr 2019 15:20:30 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1554985230;
-        bh=CjsRND6fVCwNjty2QFm2hXF7hynBJdtzagz/50SMmRA=;
+        by mxback7j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id dNcVzy2puC-KNcKt8i4;
+        Thu, 11 Apr 2019 15:20:23 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1554985223;
+        bh=IzbwqLW/q4VeMivUvZ5KCD8lQ3TSqiuKZvKLu+u83+M=;
         h=In-Reply-To:Subject:To:From:Message-Id:Cc:References:Date;
-        b=amGneY6xFlec2x9dGeothaBFijgYNFDHFpbuwXjRKA9gLXER1KmS0CftIgZ2xx2EG
-         SUmiVWP8xugxEhCn5itKMK7AnJ+h74LWFe8i6Z2P3mAhmJdEhDutfh37qJQGOdUbU8
-         VHySRfm4MEbvm6TOrYXhmbim68I/WJeA8YSv38sg=
-Authentication-Results: mxback7g.mail.yandex.net; dkim=pass header.i=@flygoat.com
-Received: by smtp2o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id QbB7ClwXzg-KOCmQ3vo;
-        Thu, 11 Apr 2019 15:20:28 +0300
+        b=VFodtS5nTor5DcyantpJ0ITcVr1fOPD/f9gTxh0+h4Zb+L8Q+gdV+8TJVKel4ibcg
+         RNQ7kzT1+s6UHjc/AFqhpZYtqEOOKC35VrI72jkc4Nl6DMIqgLaMCtjpfu8pDQc1ID
+         tsAyJl7ZQAIPOGw4XYw4blmc6mOHWte1Y++IemdI=
+Authentication-Results: mxback7j.mail.yandex.net; dkim=pass header.i=@flygoat.com
+Received: by smtp2o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id QbB7ClwXzg-KHCmX6L3;
+        Thu, 11 Apr 2019 15:20:21 +0300
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (Client certificate not present)
 From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
 To:     linux-mips@vger.kernel.org
 Cc:     devicetree@vger.kernel.org, paul.burton@mips.com,
         robh+dt@kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH v2 5/6] dt/bindings: Add bindings for ls1x CPU
-Date:   Thu, 11 Apr 2019 20:19:14 +0800
-Message-Id: <20190411121915.8040-6-jiaxun.yang@flygoat.com>
+Subject: [PATCH v2 4/6] dt-bindings: Add vendor prefix for loongson
+Date:   Thu, 11 Apr 2019 20:19:13 +0800
+Message-Id: <20190411121915.8040-5-jiaxun.yang@flygoat.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190411121915.8040-1-jiaxun.yang@flygoat.com>
 References: <20190312091520.8863-2-jiaxun.yang@flygoat.com>
@@ -57,24 +57,26 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-This documented ls1x CPU node.
+Add vendor prefix for loongson, known as
+Loongson Technology Corporation Limited, a CPUs & IP Cores vendor.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- Documentation/devicetree/bindings/mips/loongson/ls1x-cpu.txt | 4 ++++
- 1 file changed, 4 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/mips/loongson/ls1x-cpu.txt
+ Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/mips/loongson/ls1x-cpu.txt b/Documentation/devicetree/bindings/mips/loongson/ls1x-cpu.txt
-new file mode 100644
-index 000000000000..33664bd15487
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mips/loongson/ls1x-cpu.txt
-@@ -0,0 +1,4 @@
-+* Loongson-1 MCU CPUs
-+
-+Required properties:
-+- compatible: "loongson,ls1b", "loongson,ls1c"
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
+index 389508584f48..6464192f47ae 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.txt
++++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
+@@ -221,6 +221,7 @@ linux	Linux-specific binding
+ linx	Linx Technologies
+ lltc	Linear Technology Corporation
+ logicpd	Logic PD, Inc.
++loongson Loongson Technology Corporation Limited
+ lsi	LSI Corp. (LSI Logic)
+ lwn	Liebherr-Werk Nenzing GmbH
+ macnica	Macnica Americas
 -- 
 2.21.0
 

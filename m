@@ -2,88 +2,59 @@ Return-Path: <SRS0=fNfu=SN=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69E17C10F14
-	for <linux-mips@archiver.kernel.org>; Thu, 11 Apr 2019 07:17:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B6A0C10F13
+	for <linux-mips@archiver.kernel.org>; Thu, 11 Apr 2019 12:19:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 417D62184B
-	for <linux-mips@archiver.kernel.org>; Thu, 11 Apr 2019 07:17:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EE48D2083E
+	for <linux-mips@archiver.kernel.org>; Thu, 11 Apr 2019 12:19:32 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="H5VycW7p"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726139AbfDKHRL (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 11 Apr 2019 03:17:11 -0400
-Received: from relay9-d.mail.gandi.net ([217.70.183.199]:33889 "EHLO
-        relay9-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726104AbfDKHRL (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 11 Apr 2019 03:17:11 -0400
-X-Originating-IP: 81.250.144.103
-Received: from [10.30.1.20] (lneuilly-657-1-5-103.w81-250.abo.wanadoo.fr [81.250.144.103])
-        (Authenticated sender: alex@ghiti.fr)
-        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id A0D7EFF80C;
-        Thu, 11 Apr 2019 07:17:05 +0000 (UTC)
-Subject: Re: [PATCH v2 2/5] arm64, mm: Move generic mmap layout functions to
- mm
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Albert Ou <aou@eecs.berkeley.edu>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Palmer Dabbelt <palmer@sifive.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Linux-MM <linux-mm@kvack.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        James Hogan <jhogan@kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Luis Chamberlain <mcgrof@kernel.org>
-References: <20190404055128.24330-1-alex@ghiti.fr>
- <20190404055128.24330-3-alex@ghiti.fr> <20190410065908.GC2942@infradead.org>
- <8d482fd0-b926-6d11-0554-a0f9001d19aa@ghiti.fr>
- <CAGXu5jKt8f7=DKrvcPg-NUJGbc-vanMNojfDsEiBt3vP05G4oQ@mail.gmail.com>
-From:   Alexandre Ghiti <alex@ghiti.fr>
-Message-ID: <4c498b2b-e916-3389-209f-aa4cc7b523ff@ghiti.fr>
-Date:   Thu, 11 Apr 2019 09:16:09 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.5.2
+        id S1726145AbfDKMTc (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 11 Apr 2019 08:19:32 -0400
+Received: from forward106p.mail.yandex.net ([77.88.28.109]:43949 "EHLO
+        forward106p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726121AbfDKMTc (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 11 Apr 2019 08:19:32 -0400
+Received: from mxback17g.mail.yandex.net (mxback17g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:317])
+        by forward106p.mail.yandex.net (Yandex) with ESMTP id E90221C804E6;
+        Thu, 11 Apr 2019 15:19:28 +0300 (MSK)
+Received: from smtp2o.mail.yandex.net (smtp2o.mail.yandex.net [2a02:6b8:0:1a2d::26])
+        by mxback17g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id gntORT2Cqn-JSDaFQnc;
+        Thu, 11 Apr 2019 15:19:28 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1554985168;
+        bh=ft9OmVT6aCUsQ5Kk29vVt3utzLICJCugYHV2VR51/Bs=;
+        h=In-Reply-To:Subject:To:From:Cc:References:Date:Message-Id;
+        b=H5VycW7p8yQPU56uy1Q5Am8dn7oBOCFNp9MKd9SDUVgCLJMF42ROnsHGMegLSs6DA
+         djCIXiDqoyiakqZjI6FDqjXpvpHdctv8524E5wmAtNozU/QNriVSc+Dcx9Uyh+OBFe
+         xNJ4XJnqTz/gPVNMEhxfDiH3GFitPKWBHUL/A280=
+Authentication-Results: mxback17g.mail.yandex.net; dkim=pass header.i=@flygoat.com
+Received: by smtp2o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id QbB7ClwXzg-JMCmhaRo;
+        Thu, 11 Apr 2019 15:19:26 +0300
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client certificate not present)
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     linux-mips@vger.kernel.org
+Cc:     devicetree@vger.kernel.org, paul.burton@mips.com,
+        robh+dt@kernel.org
+Subject: [PATCH v2 0/6] MIPS: Loongson32: Initial devicetree support
+Date:   Thu, 11 Apr 2019 20:19:09 +0800
+Message-Id: <20190411121915.8040-1-jiaxun.yang@flygoat.com>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190312091520.8863-2-jiaxun.yang@flygoat.com>
+References: <20190312091520.8863-2-jiaxun.yang@flygoat.com>
 MIME-Version: 1.0
-In-Reply-To: <CAGXu5jKt8f7=DKrvcPg-NUJGbc-vanMNojfDsEiBt3vP05G4oQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: fr
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On 04/10/2019 08:27 PM, Kees Cook wrote:
-> On Wed, Apr 10, 2019 at 12:33 AM Alexandre Ghiti <alex@ghiti.fr> wrote:
->> On 04/10/2019 08:59 AM, Christoph Hellwig wrote:
->>> On Thu, Apr 04, 2019 at 01:51:25AM -0400, Alexandre Ghiti wrote:
->>>> - fix the case where stack randomization should not be taken into
->>>>     account.
->>> Hmm.  This sounds a bit vague.  It might be better if something
->>> considered a fix is split out to a separate patch with a good
->>> description.
->> Ok, I will move this fix in another patch.
-> Yeah, I think it'd be best to break this into a few (likely small) patches:
-> - update the compat case in the arm64 code
-> - fix the "not randomized" case
-> - move the code to mm/ (line-for-line identical for easy review)
->
-> That'll make it much easier to review (at least for me).
->
-> Thanks!
->
+v1->v2: Fix dts and add documents
 
-Sorry about that, I'm working on it.
 
-Thanks,
-
-Alex

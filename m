@@ -2,528 +2,91 @@ Return-Path: <SRS0=EiLB=SP=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ADF6CC10F11
-	for <linux-mips@archiver.kernel.org>; Sat, 13 Apr 2019 06:42:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A9E7C282CE
+	for <linux-mips@archiver.kernel.org>; Sat, 13 Apr 2019 22:44:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5DA6220869
-	for <linux-mips@archiver.kernel.org>; Sat, 13 Apr 2019 06:42:01 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="efVypBnQ"
+	by mail.kernel.org (Postfix) with ESMTP id E437D218E2
+	for <linux-mips@archiver.kernel.org>; Sat, 13 Apr 2019 22:44:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1555195498;
+	bh=ZLW/Kxa1smBLm3T1ptMC7Z7ED7tJEJp9hYLWmENfdNc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=nzXMMOL8CzpAGzi5Odh6WyFX1Iv+j8ezSJk+uTXGcRvlXlwABt7XI52uWlVfyaCn1
+	 xYdpKMBOwYEbVGbtYj0LNzi9oGj7Cory75kqWCAbSiXuXEgsduKzEz1f+0U+LhEOc9
+	 vtaGKOMEuzH5HuSZypXsksHIJ25ebfxLB+hHC/L8=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726922AbfDMGmB (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 13 Apr 2019 02:42:01 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:43063 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725766AbfDMGmA (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 13 Apr 2019 02:42:00 -0400
-Received: by mail-oi1-f195.google.com with SMTP id t81so9804945oig.10;
-        Fri, 12 Apr 2019 23:42:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=X5iuzpTjgycvM4OTuqciup+62MIApUbtIZos4mNob/M=;
-        b=efVypBnQVZKMJoZ/Pfa57KHXV1QBtjVrK7D2rzfNZJED3Pyq58vRymLjFZXsTD92st
-         Ah9dVo3qxab7szfjmaTGSZwTiwYPm3uWK6PS2BlAO99BQ8NtKgYFN9/HdOkRmurotKyk
-         RiZEbKUPay27zrRmwIhKtE7nqDAfmMZPTyy+kyssdNA3PTWJD1qMBTXe8boFCt+tegEe
-         AkgiOC/GoutcRzx/oT9gYYcSCF26uKz4nPzHrQphtHJtjF/d6HiJ9HjcM4eH7QXVD38p
-         eg/cEkO00AqirdQkdP46u1MPKjuomflsGMutiTDIFOv0jYKk82XRqCr6YKvI55LjEfVe
-         6wRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=X5iuzpTjgycvM4OTuqciup+62MIApUbtIZos4mNob/M=;
-        b=ZwDHG94n9UeYFh7VXbk/3jo9hXz+FZZCbgLCXalBk9Br74b015ZxlqE3JS23YEgsnz
-         /O9h4PO0wKy7/nSR0+0ws4BW31no8HDrwUiz9xxv14g2NwbZmxJrH+P22HB1+C/e3cdv
-         I0NDNeWmj6FAaz7g0GNKiUc8zijXizwLt3atxv6FQnQ8O9zqppHoTCiha7oGovc/ZWXh
-         SxeVGGeQi49DHBxeVkpLfj3SgCnSWV/Zz18U5WyxDf6cWZweNqK5rMYJnXO7ivmtJMsV
-         7NoLYa8eLZpxuNzsihq0d8EsYIK1vSc+Cgv2dUltRsd+eTpjp9jL6ELuf1S+iC9WeoVm
-         HIWQ==
-X-Gm-Message-State: APjAAAVy5rUlznHvDzX72SnaHUjDlxWT+VzK/5lWHi4NYG4t49+Z9QpH
-        RerH8oAAlXgzEWhcc+Ur+vQMOQlidnlfSbn7aM4=
-X-Google-Smtp-Source: APXvYqzbeeZNYxgi3LEbEYTQQGOHG4pSQGkHLw1agFFicoNI5fjmS+CaxeEUxjvviRm5ObJibkmWQay02BmkTnnTUk0=
-X-Received: by 2002:aca:fc02:: with SMTP id a2mr12627435oii.44.1555137719602;
- Fri, 12 Apr 2019 23:41:59 -0700 (PDT)
+        id S1727261AbfDMWox (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 13 Apr 2019 18:44:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57458 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727048AbfDMWow (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 13 Apr 2019 18:44:52 -0400
+Received: from sinanubuntu1604.mkjiurmyylmellclgttazegk5f.bx.internal.cloudapp.net (unknown [40.117.159.179])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 58043218C3;
+        Sat, 13 Apr 2019 22:44:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1555195492;
+        bh=ZLW/Kxa1smBLm3T1ptMC7Z7ED7tJEJp9hYLWmENfdNc=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=IOEsYA62YgXa0/f2SFNB62xWcApGzjBCsm4n+ZmxqanSkhHpsWQZmfL9Z3iVOZFxx
+         QBofqzirXFpi/xuvSrT2pHcTxUUhcj9eUfOsIMLNF4U2/doQojYUujoSVIHlfWoxu+
+         6pxx0QG6H+6Fo5Le+u8xsMRd/csw+p5mfbXoUlqM=
+From:   Sinan Kaya <okaya@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     josh@joshtriplett.org, keescook@chromium.org,
+        Sinan Kaya <okaya@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-mips@vger.kernel.org (open list:MIPS)
+Subject: [PATCH v5 3/5] mips: Replace CONFIG_DEBUG_KERNEL with CONFIG_DEBUG_MISC
+Date:   Sat, 13 Apr 2019 22:44:36 +0000
+Message-Id: <20190413224438.10802-4-okaya@kernel.org>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190413224438.10802-1-okaya@kernel.org>
+References: <20190413224438.10802-1-okaya@kernel.org>
 MIME-Version: 1.0
-References: <20190330055038.18958-1-sergio.paracuellos@gmail.com> <20190330055038.18958-3-sergio.paracuellos@gmail.com>
-In-Reply-To: <20190330055038.18958-3-sergio.paracuellos@gmail.com>
-From:   Sergio Paracuellos <sergio.paracuellos@gmail.com>
-Date:   Sat, 13 Apr 2019 08:41:48 +0200
-Message-ID: <CAMhs-H_wsxo9kF+N9or0RNoz=cfd0Sk2Onv8qTOh93Ut+FibTA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] phy: ralink: Add PHY driver for MT7621 PCIe PHY
-To:     kishon@ti.com
-Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
-        driverdev-devel@linuxdriverproject.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, John Crispin <john@phrozen.org>,
-        linux-mips@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        NeilBrown <neil@brown.name>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi all!
+CONFIG_DEBUG_KERNEL should not impact code generation. Use the newly
+defined CONFIG_DEBUG_MISC instead to keep the current code.
 
-On Sat, Mar 30, 2019 at 6:50 AM Sergio Paracuellos
-<sergio.paracuellos@gmail.com> wrote:
->
-> This patch adds a driver for the PCIe PHY of MT7621 SoC.
->
-> Signed-off-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
-> ---
->  drivers/phy/ralink/Kconfig          |   7 +
->  drivers/phy/ralink/Makefile         |   1 +
->  drivers/phy/ralink/phy-mt7621-pci.c | 401 ++++++++++++++++++++++++++++
->  3 files changed, 409 insertions(+)
->  create mode 100644 drivers/phy/ralink/phy-mt7621-pci.c
+Signed-off-by: Sinan Kaya <okaya@kernel.org>
+Reviewed-by: Josh Triplett <josh@joshtriplett.org>
+---
+ arch/mips/kernel/setup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Any comments on this?
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 8d1dc6c71173..9fc8fadb8418 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -563,7 +563,7 @@ static void __init bootmem_init(void)
+ 		offset = __pa_symbol(_text) - __pa_symbol(VMLINUX_LOAD_ADDRESS);
+ 		memblock_free(__pa_symbol(VMLINUX_LOAD_ADDRESS), offset);
+ 
+-#if defined(CONFIG_DEBUG_KERNEL) && defined(CONFIG_DEBUG_INFO)
++#if defined(CONFIG_DEBUG_MISC) && defined(CONFIG_DEBUG_INFO)
+ 		/*
+ 		 * This information is necessary when debugging the kernel
+ 		 * But is a security vulnerability otherwise!
+-- 
+2.21.0
 
-Thanks in advance for your time.
-
-Best regards,
-    Sergio Paracuellos
->
-> diff --git a/drivers/phy/ralink/Kconfig b/drivers/phy/ralink/Kconfig
-> index 14fd219535ef..87943a10f210 100644
-> --- a/drivers/phy/ralink/Kconfig
-> +++ b/drivers/phy/ralink/Kconfig
-> @@ -1,6 +1,13 @@
->  #
->  # PHY drivers for Ralink platforms.
->  #
-> +config PHY_MT7621_PCI
-> +       tristate "MediaTek MT7621 PCI PHY Driver"
-> +       depends on RALINK && OF
-> +       select GENERIC_PHY
-> +       help
-> +         Say 'Y' here to add support for MediaTek MT7621 PCI PHY driver,
-> +
->  config PHY_RALINK_USB
->         tristate "Ralink USB PHY driver"
->         depends on RALINK || COMPILE_TEST
-> diff --git a/drivers/phy/ralink/Makefile b/drivers/phy/ralink/Makefile
-> index 5c9e326e8757..2052d5649863 100644
-> --- a/drivers/phy/ralink/Makefile
-> +++ b/drivers/phy/ralink/Makefile
-> @@ -1 +1,2 @@
-> +obj-$(CONFIG_PHY_MT7621_PCI)   += phy-mt7621-pci.o
->  obj-$(CONFIG_PHY_RALINK_USB)   += phy-ralink-usb.o
-> diff --git a/drivers/phy/ralink/phy-mt7621-pci.c b/drivers/phy/ralink/phy-mt7621-pci.c
-> new file mode 100644
-> index 000000000000..118302c122ee
-> --- /dev/null
-> +++ b/drivers/phy/ralink/phy-mt7621-pci.c
-> @@ -0,0 +1,401 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Mediatek MT7621 PCI PHY Driver
-> + * Author: Sergio Paracuellos <sergio.paracuellos@gmail.com>
-> + */
-> +
-> +#include <dt-bindings/phy/phy.h>
-> +#include <linux/bitops.h>
-> +#include <linux/module.h>
-> +#include <linux/of_address.h>
-> +#include <linux/of_device.h>
-> +#include <linux/phy/phy.h>
-> +#include <linux/platform_device.h>
-> +#include <mt7621.h>
-> +#include <ralink_regs.h>
-> +
-> +#define RALINK_CLKCFG1                         0x30
-> +#define CHIP_REV_MT7621_E2                     0x0101
-> +
-> +#define PCIE_PORT_CLK_EN(x)                    BIT(24 + (x))
-> +
-> +#define RG_PE1_PIPE_REG                                0x02c
-> +#define RG_PE1_PIPE_RST                                BIT(12)
-> +#define RG_PE1_PIPE_CMD_FRC                    BIT(4)
-> +
-> +#define RG_P0_TO_P1_WIDTH                      0x100
-> +#define RG_PE1_H_LCDDS_REG                     0x49c
-> +#define RG_PE1_H_LCDDS_PCW                     GENMASK(30, 0)
-> +#define RG_PE1_H_LCDDS_PCW_VAL(x)              ((0x7fffffff & (x)) << 0)
-> +
-> +#define RG_PE1_FRC_H_XTAL_REG                  0x400
-> +#define RG_PE1_FRC_H_XTAL_TYPE                 BIT(8)
-> +#define RG_PE1_H_XTAL_TYPE                     GENMASK(10, 9)
-> +#define RG_PE1_H_XTAL_TYPE_VAL(x)              ((0x3 & (x)) << 9)
-> +
-> +#define RG_PE1_FRC_PHY_REG                     0x000
-> +#define RG_PE1_FRC_PHY_EN                      BIT(4)
-> +#define RG_PE1_PHY_EN                          BIT(5)
-> +
-> +#define RG_PE1_H_PLL_REG                       0x490
-> +#define RG_PE1_H_PLL_BC                                GENMASK(23, 22)
-> +#define RG_PE1_H_PLL_BC_VAL(x)                 ((0x3 & (x)) << 22)
-> +#define RG_PE1_H_PLL_BP                                GENMASK(21, 18)
-> +#define RG_PE1_H_PLL_BP_VAL(x)                 ((0xf & (x)) << 18)
-> +#define RG_PE1_H_PLL_IR                                GENMASK(15, 12)
-> +#define RG_PE1_H_PLL_IR_VAL(x)                 ((0xf & (x)) << 12)
-> +#define RG_PE1_H_PLL_IC                                GENMASK(11, 8)
-> +#define RG_PE1_H_PLL_IC_VAL(x)                 ((0xf & (x)) << 8)
-> +#define RG_PE1_H_PLL_PREDIV                    GENMASK(7, 6)
-> +#define RG_PE1_H_PLL_PREDIV_VAL(x)             ((0x3 & (x)) << 6)
-> +#define RG_PE1_PLL_DIVEN                       GENMASK(3, 1)
-> +#define RG_PE1_PLL_DIVEN_VAL(x)                        ((0x7 & (x)) << 1)
-> +
-> +#define RG_PE1_H_PLL_FBKSEL_REG                        0x4bc
-> +#define RG_PE1_H_PLL_FBKSEL                    GENMASK(5, 4)
-> +#define RG_PE1_H_PLL_FBKSEL_VAL(x)             ((0x3 & (x)) << 4)
-> +
-> +#define        RG_PE1_H_LCDDS_SSC_PRD_REG              0x4a4
-> +#define RG_PE1_H_LCDDS_SSC_PRD                 GENMASK(15, 0)
-> +#define RG_PE1_H_LCDDS_SSC_PRD_VAL(x)          ((0xffff & (x)) << 0)
-> +
-> +#define RG_PE1_H_LCDDS_SSC_DELTA_REG           0x4a8
-> +#define RG_PE1_H_LCDDS_SSC_DELTA               GENMASK(11, 0)
-> +#define RG_PE1_H_LCDDS_SSC_DELTA_VAL(x)                ((0xfff & (x)) << 0)
-> +#define RG_PE1_H_LCDDS_SSC_DELTA1              GENMASK(27, 16)
-> +#define RG_PE1_H_LCDDS_SSC_DELTA1_VAL(x)       ((0xff & (x)) << 16)
-> +
-> +#define RG_PE1_LCDDS_CLK_PH_INV_REG            0x4a0
-> +#define RG_PE1_LCDDS_CLK_PH_INV                        BIT(5)
-> +
-> +#define RG_PE1_H_PLL_BR_REG                    0x4ac
-> +#define RG_PE1_H_PLL_BR                                GENMASK(18, 16)
-> +#define RG_PE1_H_PLL_BR_VAL(x)                 ((0x7 & (x)) << 16)
-> +
-> +#define        RG_PE1_MSTCKDIV_REG                     0x414
-> +#define RG_PE1_MSTCKDIV                                GENMASK(7, 6)
-> +#define RG_PE1_MSTCKDIV_VAL(x)                 ((0x3 & (x)) << 6)
-> +
-> +#define RG_PE1_FRC_MSTCKDIV                    BIT(5)
-> +
-> +#define MAX_PHYS       2
-> +
-> +/**
-> + * struct mt7621_pci_phy_instance - Mt7621 Pcie PHY device
-> + * @phy: pointer to the kernel PHY device
-> + * @port_base: base register
-> + * @index: internal ID to identify the Mt7621 PCIe PHY
-> + */
-> +struct mt7621_pci_phy_instance {
-> +       struct phy *phy;
-> +       void __iomem *port_base;
-> +       u32 index;
-> +};
-> +
-> +/**
-> + * struct mt7621_pci_phy - Mt7621 Pcie PHY core
-> + * @dev: pointer to device
-> + * @phys: pointer to Mt7621 PHY device
-> + * @nphys: number of PHY devices for this core
-> + */
-> +struct mt7621_pci_phy {
-> +       struct device *dev;
-> +       struct mt7621_pci_phy_instance **phys;
-> +       int nphys;
-> +};
-> +
-> +static inline u32 phy_read(struct mt7621_pci_phy_instance *instance, u32 reg)
-> +{
-> +       return readl(instance->port_base + reg);
-> +}
-> +
-> +static inline void phy_write(struct mt7621_pci_phy_instance *instance,
-> +                            u32 val, u32 reg)
-> +{
-> +       writel(val, instance->port_base + reg);
-> +}
-> +
-> +static void mt7621_bypass_pipe_rst(struct mt7621_pci_phy *phy,
-> +                                  struct mt7621_pci_phy_instance *instance)
-> +{
-> +       u32 offset = (instance->index != 1) ?
-> +               RG_PE1_PIPE_REG : RG_PE1_PIPE_REG + RG_P0_TO_P1_WIDTH;
-> +       u32 reg;
-> +
-> +       reg = phy_read(instance, offset);
-> +       reg &= ~(RG_PE1_PIPE_RST | RG_PE1_PIPE_CMD_FRC);
-> +       reg |= (RG_PE1_PIPE_RST | RG_PE1_PIPE_CMD_FRC);
-> +       phy_write(instance, reg, offset);
-> +}
-> +
-> +static void mt7621_set_phy_for_ssc(struct mt7621_pci_phy *phy,
-> +                                  struct mt7621_pci_phy_instance *instance)
-> +{
-> +       struct device *dev = phy->dev;
-> +       u32 reg = rt_sysc_r32(SYSC_REG_SYSTEM_CONFIG0);
-> +       u32 offset;
-> +       u32 val;
-> +
-> +       reg = (reg >> 6) & 0x7;
-> +       /* Set PCIe Port PHY to disable SSC */
-> +       /* Debug Xtal Type */
-> +       val = phy_read(instance, RG_PE1_FRC_H_XTAL_REG);
-> +       val &= ~(RG_PE1_FRC_H_XTAL_TYPE | RG_PE1_H_XTAL_TYPE);
-> +       val |= RG_PE1_FRC_H_XTAL_TYPE;
-> +       val |= RG_PE1_H_XTAL_TYPE_VAL(0x00);
-> +       phy_write(instance, val, RG_PE1_FRC_H_XTAL_REG);
-> +
-> +       /* disable port */
-> +       offset = (instance->index != 1) ?
-> +               RG_PE1_FRC_PHY_REG : RG_PE1_FRC_PHY_REG + RG_P0_TO_P1_WIDTH;
-> +       val = phy_read(instance, offset);
-> +       val &= ~(RG_PE1_FRC_PHY_EN | RG_PE1_PHY_EN);
-> +       val |= RG_PE1_FRC_PHY_EN;
-> +       phy_write(instance, val, offset);
-> +
-> +       /* Set Pre-divider ratio (for host mode) */
-> +       val = phy_read(instance, RG_PE1_H_PLL_REG);
-> +       val &= ~(RG_PE1_H_PLL_PREDIV);
-> +
-> +       if (reg <= 5 && reg >= 3) { /* 40MHz Xtal */
-> +               val |= RG_PE1_H_PLL_PREDIV_VAL(0x01);
-> +               phy_write(instance, val, RG_PE1_H_PLL_REG);
-> +               dev_info(dev, "Xtal is 40MHz\n");
-> +       } else { /* 25MHz | 20MHz Xtal */
-> +               val |= RG_PE1_H_PLL_PREDIV_VAL(0x00);
-> +               phy_write(instance, val, RG_PE1_H_PLL_REG);
-> +               if (reg >= 6) {
-> +                       dev_info(dev, "Xtal is 25MHz\n");
-> +
-> +                       /* Select feedback clock */
-> +                       val = phy_read(instance, RG_PE1_H_PLL_FBKSEL_REG);
-> +                       val &= ~(RG_PE1_H_PLL_FBKSEL);
-> +                       val |= RG_PE1_H_PLL_FBKSEL_VAL(0x01);
-> +                       phy_write(instance, val, RG_PE1_H_PLL_FBKSEL_REG);
-> +
-> +                       /* DDS NCPO PCW (for host mode) */
-> +                       val = phy_read(instance, RG_PE1_H_LCDDS_SSC_PRD_REG);
-> +                       val &= ~(RG_PE1_H_LCDDS_SSC_PRD);
-> +                       val |= RG_PE1_H_LCDDS_SSC_PRD_VAL(0x18000000);
-> +                       phy_write(instance, val, RG_PE1_H_LCDDS_SSC_PRD_REG);
-> +
-> +                       /* DDS SSC dither period control */
-> +                       val = phy_read(instance, RG_PE1_H_LCDDS_SSC_PRD_REG);
-> +                       val &= ~(RG_PE1_H_LCDDS_SSC_PRD);
-> +                       val |= RG_PE1_H_LCDDS_SSC_PRD_VAL(0x18d);
-> +                       phy_write(instance, val, RG_PE1_H_LCDDS_SSC_PRD_REG);
-> +
-> +                       /* DDS SSC dither amplitude control */
-> +                       val = phy_read(instance, RG_PE1_H_LCDDS_SSC_DELTA_REG);
-> +                       val &= ~(RG_PE1_H_LCDDS_SSC_DELTA |
-> +                                RG_PE1_H_LCDDS_SSC_DELTA1);
-> +                       val |= RG_PE1_H_LCDDS_SSC_DELTA_VAL(0x4a);
-> +                       val |= RG_PE1_H_LCDDS_SSC_DELTA1_VAL(0x4a);
-> +                       phy_write(instance, val, RG_PE1_H_LCDDS_SSC_DELTA_REG);
-> +               } else {
-> +                       dev_info(dev, "Xtal is 20MHz\n");
-> +               }
-> +       }
-> +
-> +       /* DDS clock inversion */
-> +       val = phy_read(instance, RG_PE1_LCDDS_CLK_PH_INV_REG);
-> +       val &= ~(RG_PE1_LCDDS_CLK_PH_INV);
-> +       val |= RG_PE1_LCDDS_CLK_PH_INV;
-> +       phy_write(instance, val, RG_PE1_LCDDS_CLK_PH_INV_REG);
-> +
-> +       /* Set PLL bits */
-> +       val = phy_read(instance, RG_PE1_H_PLL_REG);
-> +       val &= ~(RG_PE1_H_PLL_BC | RG_PE1_H_PLL_BP | RG_PE1_H_PLL_IR |
-> +                RG_PE1_H_PLL_IC | RG_PE1_PLL_DIVEN);
-> +       val |= RG_PE1_H_PLL_BC_VAL(0x02);
-> +       val |= RG_PE1_H_PLL_BP_VAL(0x06);
-> +       val |= RG_PE1_H_PLL_IR_VAL(0x02);
-> +       val |= RG_PE1_H_PLL_IC_VAL(0x01);
-> +       val |= RG_PE1_PLL_DIVEN_VAL(0x02);
-> +       phy_write(instance, val, RG_PE1_H_PLL_REG);
-> +
-> +       val = phy_read(instance, RG_PE1_H_PLL_BR_REG);
-> +       val &= ~(RG_PE1_H_PLL_BR);
-> +       val |= RG_PE1_H_PLL_BR_VAL(0x00);
-> +       phy_write(instance, val, RG_PE1_H_PLL_BR_REG);
-> +
-> +       if (reg <= 5 && reg >= 3) { /* 40MHz Xtal */
-> +               /* set force mode enable of da_pe1_mstckdiv */
-> +               val = phy_read(instance, RG_PE1_MSTCKDIV_REG);
-> +               val &= ~(RG_PE1_MSTCKDIV | RG_PE1_FRC_MSTCKDIV);
-> +               val |= (RG_PE1_MSTCKDIV_VAL(0x01) | RG_PE1_FRC_MSTCKDIV);
-> +               phy_write(instance, val, RG_PE1_MSTCKDIV_REG);
-> +       }
-> +}
-> +
-> +static int mt7621_pci_phy_init(struct phy *phy)
-> +{
-> +       struct mt7621_pci_phy_instance *instance = phy_get_drvdata(phy);
-> +       struct mt7621_pci_phy *mphy = dev_get_drvdata(phy->dev.parent);
-> +       u32 chip_rev_id = rt_sysc_r32(SYSC_REG_CHIP_REV);
-> +
-> +       if ((chip_rev_id & 0xFFFF) == CHIP_REV_MT7621_E2)
-> +               mt7621_bypass_pipe_rst(mphy, instance);
-> +
-> +       mt7621_set_phy_for_ssc(mphy, instance);
-> +
-> +       return 0;
-> +}
-> +
-> +static int mt7621_pci_phy_power_on(struct phy *phy)
-> +{
-> +       struct mt7621_pci_phy_instance *instance = phy_get_drvdata(phy);
-> +       u32 offset = (instance->index != 1) ?
-> +               RG_PE1_FRC_PHY_REG : RG_PE1_FRC_PHY_REG + RG_P0_TO_P1_WIDTH;
-> +       u32 val;
-> +
-> +       /* Enable PHY and disable force mode */
-> +       val = phy_read(instance, offset);
-> +       val &= ~(RG_PE1_FRC_PHY_EN | RG_PE1_PHY_EN);
-> +       val |= (RG_PE1_FRC_PHY_EN | RG_PE1_PHY_EN);
-> +       phy_write(instance, val, offset);
-> +
-> +       return 0;
-> +}
-> +
-> +static int mt7621_pci_phy_power_off(struct phy *phy)
-> +{
-> +       struct mt7621_pci_phy_instance *instance = phy_get_drvdata(phy);
-> +       u32 offset = (instance->index != 1) ?
-> +               RG_PE1_FRC_PHY_REG : RG_PE1_FRC_PHY_REG + RG_P0_TO_P1_WIDTH;
-> +       u32 val;
-> +
-> +       /* Disable PHY */
-> +       val = phy_read(instance, offset);
-> +       val &= ~(RG_PE1_FRC_PHY_EN | RG_PE1_PHY_EN);
-> +       val |= RG_PE1_FRC_PHY_EN;
-> +       phy_write(instance, val, offset);
-> +
-> +       return 0;
-> +}
-> +
-> +static int mt7621_pci_phy_exit(struct phy *phy)
-> +{
-> +       struct mt7621_pci_phy_instance *instance = phy_get_drvdata(phy);
-> +
-> +       rt_sysc_m32(PCIE_PORT_CLK_EN(instance->index), 0, RALINK_CLKCFG1);
-> +
-> +       return 0;
-> +}
-> +
-> +static const struct phy_ops mt7621_pci_phy_ops = {
-> +       .init           = mt7621_pci_phy_init,
-> +       .exit           = mt7621_pci_phy_exit,
-> +       .power_on       = mt7621_pci_phy_power_on,
-> +       .power_off      = mt7621_pci_phy_power_off,
-> +       .owner          = THIS_MODULE,
-> +};
-> +
-> +static struct phy *mt7621_pcie_phy_of_xlate(struct device *dev,
-> +                                           struct of_phandle_args *args)
-> +{
-> +       struct mt7621_pci_phy *mt7621_phy = dev_get_drvdata(dev);
-> +
-> +       if (args->args_count == 0)
-> +               return mt7621_phy->phys[0]->phy;
-> +
-> +       if (WARN_ON(args->args[0] >= MAX_PHYS))
-> +               return ERR_PTR(-ENODEV);
-> +
-> +       return mt7621_phy->phys[args->args[0]]->phy;
-> +}
-> +
-> +static int mt7621_pci_phy_probe(struct platform_device *pdev)
-> +{
-> +       struct device *dev = &pdev->dev;
-> +       struct device_node *np = dev->of_node;
-> +       struct device_node *child_np;
-> +       struct phy_provider *provider;
-> +       struct mt7621_pci_phy *phy;
-> +       struct resource res;
-> +       int port, ret;
-> +       void __iomem *port_base;
-> +
-> +       phy = devm_kzalloc(dev, sizeof(*phy), GFP_KERNEL);
-> +       if (!phy)
-> +               return -ENOMEM;
-> +
-> +       phy->nphys = MAX_PHYS;
-> +       phy->phys = devm_kcalloc(dev, phy->nphys,
-> +                                sizeof(*phy->phys), GFP_KERNEL);
-> +       if (!phy->phys)
-> +               return -ENOMEM;
-> +
-> +       phy->dev = dev;
-> +       platform_set_drvdata(pdev, phy);
-> +
-> +       ret = of_address_to_resource(np, 0, &res);
-> +       if (ret) {
-> +               dev_err(dev, "failed to get address resource(id-%d)\n", port);
-> +               return ret;
-> +       }
-> +
-> +       port_base = devm_ioremap_resource(dev, &res);
-> +       if (IS_ERR(port_base)) {
-> +               dev_err(dev, "failed to remap phy regs\n");
-> +               return PTR_ERR(port_base);
-> +       }
-> +
-> +       for (port = 0; port < MAX_PHYS; port++) {
-> +               struct mt7621_pci_phy_instance *instance;
-> +               struct phy *pphy;
-> +
-> +               instance = devm_kzalloc(dev, sizeof(*instance), GFP_KERNEL);
-> +               if (!instance) {
-> +                       ret = -ENOMEM;
-> +                       goto put_child;
-> +               }
-> +
-> +               phy->phys[port] = instance;
-> +
-> +               pphy = devm_phy_create(dev, dev->of_node, &mt7621_pci_phy_ops);
-> +               if (IS_ERR(phy)) {
-> +                       dev_err(dev, "failed to create phy\n");
-> +                       ret = PTR_ERR(phy);
-> +                       goto put_child;
-> +               }
-> +
-> +               instance->port_base = port_base;
-> +               instance->phy = pphy;
-> +               instance->index = port;
-> +               phy_set_drvdata(pphy, instance);
-> +       }
-> +
-> +       provider = devm_of_phy_provider_register(dev, mt7621_pcie_phy_of_xlate);
-> +
-> +       return PTR_ERR_OR_ZERO(provider);
-> +
-> +put_child:
-> +       of_node_put(child_np);
-> +       return ret;
-> +}
-> +
-> +static const struct of_device_id mt7621_pci_phy_ids[] = {
-> +       { .compatible = "mediatek,mt7621-pci-phy" },
-> +       {},
-> +};
-> +MODULE_DEVICE_TABLE(of, mt7621_pci_ids);
-> +
-> +static struct platform_driver mt7621_pci_phy_driver = {
-> +       .probe = mt7621_pci_phy_probe,
-> +       .driver = {
-> +               .name = "mt7621-pci-phy",
-> +               .of_match_table = of_match_ptr(mt7621_pci_phy_ids),
-> +       },
-> +};
-> +
-> +static int __init mt7621_pci_phy_drv_init(void)
-> +{
-> +       return platform_driver_register(&mt7621_pci_phy_driver);
-> +}
-> +
-> +module_init(mt7621_pci_phy_drv_init);
-> +
-> +MODULE_AUTHOR("Sergio Paracuellos <sergio.paracuellos@gmail.com>");
-> +MODULE_DESCRIPTION("MediaTek MT7621 PCIe PHY driver");
-> +MODULE_LICENSE("GPL v2");
-> --
-> 2.19.1
->

@@ -2,138 +2,124 @@ Return-Path: <SRS0=Gg09=SQ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1303BC282DA
-	for <linux-mips@archiver.kernel.org>; Sun, 14 Apr 2019 09:15:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C30DC10F13
+	for <linux-mips@archiver.kernel.org>; Sun, 14 Apr 2019 20:16:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D7E26218FC
-	for <linux-mips@archiver.kernel.org>; Sun, 14 Apr 2019 09:15:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1AAAF2084D
+	for <linux-mips@archiver.kernel.org>; Sun, 14 Apr 2019 20:16:16 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="Vx6SC+WB"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fltrupee"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726533AbfDNJPh (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 14 Apr 2019 05:15:37 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:44980 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726392AbfDNJPg (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sun, 14 Apr 2019 05:15:36 -0400
-Received: by mail-pf1-f193.google.com with SMTP id y13so7132860pfm.11
-        for <linux-mips@vger.kernel.org>; Sun, 14 Apr 2019 02:15:36 -0700 (PDT)
+        id S1727112AbfDNUQP (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 14 Apr 2019 16:16:15 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:36093 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726313AbfDNUQP (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sun, 14 Apr 2019 16:16:15 -0400
+Received: by mail-wr1-f66.google.com with SMTP id y13so19096969wrd.3
+        for <linux-mips@vger.kernel.org>; Sun, 14 Apr 2019 13:16:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=nQJrrbue7c3N84Cd6mFZPA1Y1o7acbXS4cTb2nznlGA=;
-        b=Vx6SC+WBX6kmXBT4OP7H4eDk8pZHoU/6bnBya6zmdqnkmojK/Kyegi8oINArN7IYSn
-         +1/yKPRCgEiPL2mbV0UVrKN/5WOq6lk9U0eM7lknJ/LesMvOvavOIaIHTDuaUm2Sal0B
-         6L2RJwK2Dz0nII5LmzT4mcUBTnjEOkw+KlIkA=
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:openpgp:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=nCAZ6Av6mNyTtjsExYvyRVW2UsXA9NqvqJ5nSAVHBrY=;
+        b=fltrupeefy03xS5oLnvS45vloUG0hgj/LNN4Hzyf+xSEDtZwyHlzNmBDKgG/KQxDaB
+         Wcb1/Ef+cufS+ptXpzrdPLIv1bNLXNEcHFdW8e/OtESdfxlkB0HczbuYyEPgJgVt14lx
+         +4UM64oVKrOUdmB70qWa3vGv8lvf6uhD8ad1TyiURloyyKazvkyxf4ANLWR1zYrWxSJW
+         Eb+hKIFY+gKprNpSzmB/RpC4T+koX2HWWPqFmKSZp/BG1VExmABd2L3ZqX7wBVye93rY
+         U8mlEHmXzq6j5SDynuaYB5XbBoH0V81apQDnlLlbqnV5GAWqWqzAT/e5OMx+Ga7AET4i
+         rfXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=nQJrrbue7c3N84Cd6mFZPA1Y1o7acbXS4cTb2nznlGA=;
-        b=o9Cn4BSt5p9ZpLeaIcF7+WbYZUZCjEIBmM5lTjW3JfGBcNhSFtc9tNXRBVefihPqW0
-         pJkFMkX4EIASs3kZugsGoDPHNlnubWEo86fWrsfGAJgYp4i4Hl5RK8q8vuIrqyf4twVO
-         JB4Y6iAFmaQx3LqKTkjqyzU1AvQIICxFHu3ROvHQhU6Q3GcF2TgPmWw+zJ05NZI/cbt8
-         DF/sPAABnbNmYOTADi2rdau6gxjb6XlCf6nNKxxOi1cJrp8+rR2R+3saNkmBZvWHfVdJ
-         hj2gYkIBYD08Bt3esgBAPI0nxTRLCXik3wxdz5e9MA8oEAF8hpZUyA0uIFfv3AQ8yKKR
-         2cbQ==
-X-Gm-Message-State: APjAAAWbB0VU2L/voZyGUrHMGIQmMmhTZAfGgORVTU2g0rwq4n+ArgQC
-        MJd4OR9JgamrmnKRJarYZOgMkA==
-X-Google-Smtp-Source: APXvYqzJvZI8cg4NBQ48Y2+PvRZTxzZuXgdmiA69lcI6ZO8t6W2tPumqwfHBphvyyz1mE1fpT8Y3Og==
-X-Received: by 2002:a63:3188:: with SMTP id x130mr61423347pgx.64.1555233335889;
-        Sun, 14 Apr 2019 02:15:35 -0700 (PDT)
-Received: from localhost.localdomain ([42.111.19.105])
-        by smtp.googlemail.com with ESMTPSA id g10sm31344767pgq.54.2019.04.14.02.15.28
+        h=x-gm-message-state:sender:subject:to:cc:references:from:openpgp
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=nCAZ6Av6mNyTtjsExYvyRVW2UsXA9NqvqJ5nSAVHBrY=;
+        b=FWpTBoGm//fBJjy95eH7XOS6KnEohN3Td6jrg34L6laks/lgiQaq2Gd2k/wNy3lXfY
+         NbsBdssd1qHMErVkIBd2WCebdMJOuXpVkIAH3F9lUQuG3CaHkM9wE1B3KD6ArjqHSgvl
+         q3mPZaOvJ4f8CrZN0LG20fmL7xHVF+aSLbNDrn/p2DB8EhrdatJti7d3NcFtF38uYbbM
+         cL50HfT1FXDiYBptImorWqjy+PbkNqeCGbH965QqGoptYaXdibxWmBjM+kdMULlGY5+s
+         dFU0TZ+HYYF0bzVeIzFVmo+v1dafsXEW99tKc4a+wBm9PAYyZXGLtyRihGb0ZTGgtzEC
+         XRsA==
+X-Gm-Message-State: APjAAAUA2MKivrki1beUXbbY12CnTrQJkkH4sZUrrEQl1OG5OoTkDd8x
+        nJMynkoMBwxyhhPp1eCAOSEtBkFn
+X-Google-Smtp-Source: APXvYqxA2JCiAv74TnA60U2XL521ttRowxbBpBfBcfxLzK+a84GNhAJWttUbB+wQ70SQ+fw4Ev/eEg==
+X-Received: by 2002:adf:edcf:: with SMTP id v15mr20620706wro.20.1555272973665;
+        Sun, 14 Apr 2019 13:16:13 -0700 (PDT)
+Received: from [192.168.1.37] (193.red-88-21-103.staticip.rima-tde.net. [88.21.103.193])
+        by smtp.gmail.com with ESMTPSA id 7sm163436768wrc.81.2019.04.14.13.16.11
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 14 Apr 2019 02:15:35 -0700 (PDT)
-From:   Shyam Saini <shyam.saini@amarulasolutions.com>
-To:     kernel-hardening@lists.openwall.com
-Cc:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        keescook@chromium.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@vger.kernel.org, intel-gvt-dev@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        netdev@vger.kernel.org, linux-ext4@vger.kernel.org,
-        devel@lists.orangefs.org, linux-mm@kvack.org,
-        linux-sctp@vger.kernel.org, bpf@vger.kernel.org,
-        kvm@vger.kernel.org, mayhs11saini@gmail.com,
-        Shyam Saini <shyam.saini@amarulasolutions.com>
-Subject: [PATCH 2/2] include: linux: Remove unused macros and their defination
-Date:   Sun, 14 Apr 2019 14:44:52 +0530
-Message-Id: <20190414091452.22275-2-shyam.saini@amarulasolutions.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20190414091452.22275-1-shyam.saini@amarulasolutions.com>
-References: <20190414091452.22275-1-shyam.saini@amarulasolutions.com>
+        Sun, 14 Apr 2019 13:16:12 -0700 (PDT)
+Subject: Re: [PATCH] MIPS: Fix access_ok() for the last byte of user space
+To:     Paul Burton <paul.burton@mips.com>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Cc:     Paul Burton <pburton@wavecomp.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+References: <20190209194718.1294-1-paul.burton@mips.com>
+From:   =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>
+Openpgp: url=http://pgp.mit.edu/pks/lookup?op=get&search=0xE3E32C2CDEADC0DE
+Message-ID: <63900602-56d5-72b7-fdcb-4558d1007401@amsat.org>
+Date:   Sun, 14 Apr 2019 22:16:11 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <20190209194718.1294-1-paul.burton@mips.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-In favour of FIELD_SIZEOF, lets deprecate other two similar macros
-sizeof_field and SIZEOF_FIELD, and remove them completely.
+On 2/9/19 8:47 PM, Paul Burton wrote:
+> The MIPS implementation of access_ok() incorrectly reports that access
+> to the final byte of user memory is not OK, much as the alpha & SH
+> versions did prior to commit 94bd8a05cd4d ("Fix 'acccess_ok()' on alpha
+> and SH").
+> 
+> For example on a MIPS64 system with __UA_LIMIT == 0xffff000000000000 we
+> incorrectly fail in the following cases:
+> 
+>   access_ok(0xffffffffffff, 0x1) = 0
+>   access_ok(0xfffffffffffe, 0x2) = 0
+> 
+> Fix MIPS in the same way as alpha & SH, by subtracting one from the addr
+> + size condition when size is non-zero. With this the access_ok() calls
+> above return 1 indicating that the access may be valid.
+> 
+> The cost of the improved check is pretty minimal - we gain 2410 bytes,
+> or 0.03%, in kernel code size for a 64r6el_defconfig kernel built using
+> GCC 8.1.0.
+> 
+> Signed-off-by: Paul Burton <paul.burton@mips.com>
+> Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+> ---
+> 
+>  arch/mips/include/asm/uaccess.h | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
+> index d43c1dc6ef15..774c0f955ab0 100644
+> --- a/arch/mips/include/asm/uaccess.h
+> +++ b/arch/mips/include/asm/uaccess.h
+> @@ -128,7 +128,9 @@ static inline bool eva_kernel_access(void)
+>  static inline int __access_ok(const void __user *p, unsigned long size)
+>  {
+>  	unsigned long addr = (unsigned long)p;
+> -	return (get_fs().seg & (addr | (addr + size) | __ua_size(size))) == 0;
+> +	unsigned long end = addr + size - !!size;
+> +
+> +	return (get_fs().seg & (addr | end | __ua_size(size))) == 0;
+>  }
+>  
+>  #define access_ok(addr, size)					\
+> 
+> 
 
-Signed-off-by: Shyam Saini <shyam.saini@amarulasolutions.com>
----
- arch/mips/cavium-octeon/executive/cvmx-bootmem.c | 7 -------
- include/linux/stddef.h                           | 8 --------
- tools/testing/selftests/bpf/bpf_util.h           | 4 ----
- 3 files changed, 19 deletions(-)
-
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-bootmem.c b/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
-index fc754d155002..44b506a14666 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
-@@ -45,13 +45,6 @@ static struct cvmx_bootmem_desc *cvmx_bootmem_desc;
- /* See header file for descriptions of functions */
- 
- /**
-- * This macro returns the size of a member of a structure.
-- * Logically it is the same as "sizeof(s::field)" in C++, but
-- * C lacks the "::" operator.
-- */
--#define SIZEOF_FIELD(s, field) sizeof(((s *)NULL)->field)
--
--/**
-  * This macro returns a member of the
-  * cvmx_bootmem_named_block_desc_t structure. These members can't
-  * be directly addressed as they might be in memory not directly
-diff --git a/include/linux/stddef.h b/include/linux/stddef.h
-index 63f2302bc406..b888eb7795a1 100644
---- a/include/linux/stddef.h
-+++ b/include/linux/stddef.h
-@@ -29,14 +29,6 @@ enum {
- #define FIELD_SIZEOF(t, f) (sizeof(((t *)0)->f))
- 
- /**
-- * sizeof_field(TYPE, MEMBER)
-- *
-- * @TYPE: The structure containing the field of interest
-- * @MEMBER: The field to return the size of
-- */
--#define sizeof_field(TYPE, MEMBER) sizeof((((TYPE *)0)->MEMBER))
--
--/**
-  * offsetofend(TYPE, MEMBER)
-  *
-  * @TYPE: The type of the structure
-diff --git a/tools/testing/selftests/bpf/bpf_util.h b/tools/testing/selftests/bpf/bpf_util.h
-index 2e90a4315b55..815e7b48fa37 100644
---- a/tools/testing/selftests/bpf/bpf_util.h
-+++ b/tools/testing/selftests/bpf/bpf_util.h
-@@ -67,10 +67,6 @@ static inline unsigned int bpf_num_possible_cpus(void)
-  */
- #define FIELD_SIZEOF(t, f) (sizeof(((t *)0)->f))
- 
--#ifndef sizeof_field
--#define sizeof_field(TYPE, MEMBER) sizeof((((TYPE *)0)->MEMBER))
--#endif
--
- #ifndef offsetofend
- #define offsetofend(TYPE, MEMBER) \
- 	(offsetof(TYPE, MEMBER)	+ FIELD_SIZEOF(TYPE, MEMBER))
--- 
-2.11.0
-
+Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>

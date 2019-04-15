@@ -2,100 +2,238 @@ Return-Path: <SRS0=MCbt=SR=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D6BE4C10F0E
-	for <linux-mips@archiver.kernel.org>; Mon, 15 Apr 2019 17:37:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 56316C282DA
+	for <linux-mips@archiver.kernel.org>; Mon, 15 Apr 2019 23:43:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id A82202073F
-	for <linux-mips@archiver.kernel.org>; Mon, 15 Apr 2019 17:37:07 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="JSX4WXux"
+	by mail.kernel.org (Postfix) with ESMTP id 2A85620675
+	for <linux-mips@archiver.kernel.org>; Mon, 15 Apr 2019 23:43:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728028AbfDORhG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 15 Apr 2019 13:37:06 -0400
-Received: from mail-eopbgr770137.outbound.protection.outlook.com ([40.107.77.137]:32583
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727490AbfDORhG (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 15 Apr 2019 13:37:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=x/NDw3P8O2seC2cXxn2b0Fzs0GEXYKtE53y/3Rc05hA=;
- b=JSX4WXuxzgJpvfHi5QXQDL5mwgdS3IAODx4hCjihSg3hhyQFEEGX88y3N5Bg15/hX5YvYOWIw0ABOZeWyx4m48k2q1xfT7BWvs+E4tAvFzO3BW0J2NVVU/+Ww3lVcawS6sBgdrRM5t1nRVSjiaa44pyE+PLtUR6yhQa2OR3SsCk=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1341.namprd22.prod.outlook.com (10.174.162.144) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1792.14; Mon, 15 Apr 2019 17:37:04 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::b9d6:bf19:ec58:2765]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::b9d6:bf19:ec58:2765%7]) with mapi id 15.20.1792.018; Mon, 15 Apr 2019
- 17:37:04 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Paul Burton <pburton@wavecomp.com>
-CC:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        Paul Burton <pburton@wavecomp.com>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH 1/3] MIPS: jump_label: Remove redundant nops
-Thread-Topic: [PATCH 1/3] MIPS: jump_label: Remove redundant nops
-Thread-Index: AQHU7AH7CwG3ZcEkaU69Sdva8A7leqY9i6cA
-Date:   Mon, 15 Apr 2019 17:37:04 +0000
-Message-ID: <MWHPR2201MB127787844B78DFFD6F81E95FC12B0@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20190405225014.15236-1-paul.burton@mips.com>
-In-Reply-To: <20190405225014.15236-1-paul.burton@mips.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR08CA0048.namprd08.prod.outlook.com
- (2603:10b6:a03:117::25) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [67.207.99.198]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 62dee778-c09f-4e09-62cb-08d6c1c8f95f
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600140)(711020)(4605104)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:MWHPR2201MB1341;
-x-ms-traffictypediagnostic: MWHPR2201MB1341:
-x-microsoft-antispam-prvs: <MWHPR2201MB13411B2D26B0F71FD21B678FC12B0@MWHPR2201MB1341.namprd22.prod.outlook.com>
-x-forefront-prvs: 000800954F
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(136003)(346002)(396003)(366004)(39840400004)(376002)(199004)(189003)(42882007)(3846002)(71190400001)(68736007)(81166006)(11346002)(2906002)(7696005)(55016002)(81156014)(229853002)(8676002)(52116002)(256004)(6436002)(99286004)(97736004)(8936002)(9686003)(71200400001)(476003)(14454004)(478600001)(6116002)(446003)(486006)(102836004)(386003)(105586002)(44832011)(5660300002)(4326008)(6506007)(106356001)(316002)(66066001)(4744005)(25786009)(52536014)(6862004)(53936002)(6246003)(33656002)(76176011)(26005)(74316002)(54906003)(305945005)(7736002)(186003);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1341;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: +DKKpRgJxLDxbryp/AsTthog4K+C9wXOH0SZSO5k9jr/OTfkaZwiQ75xv8p3ygizLLvZ0oHKhUoDoS4uJv+zCqnpoF1exOJrpMaMD/znbvaovkBebPJ+7bmM+8Apadj3U17wSpfMOPvNNp0VslKzB0IMpxsMohqeWV2mm38RufDgIXXwPKHZO/Yld/NaQ1i0jZkZ4JiVIw5yJGkReNZZ3S8d2n1hXNJi6Nyd/qo65716TO2sNF5Ieqtsdt0zXs8rH1u08pJMU08SdYQqGD56d3B1IczoKMF7WTv2kFvyFyYHAXX8FT2k5tJ9GR7mq159Rjq1ciRreNGSLadcjyFLNZsZyAroHMDqpMC9FGGq3q/5iFsBXpPIRmkxy5YzrhdFhg4aQJTlDt2wy9+7pyTRt31hG9vCMDvx6ulMNrGAj70=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1727841AbfDOXnP (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 15 Apr 2019 19:43:15 -0400
+Received: from vmicros1.altlinux.org ([194.107.17.57]:37412 "EHLO
+        vmicros1.altlinux.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726980AbfDOXnO (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 15 Apr 2019 19:43:14 -0400
+Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
+        by vmicros1.altlinux.org (Postfix) with ESMTP id 10C7D72CC61;
+        Tue, 16 Apr 2019 02:43:08 +0300 (MSK)
+Received: by mua.local.altlinux.org (Postfix, from userid 508)
+        id F28B57CC6FF; Tue, 16 Apr 2019 02:43:07 +0300 (MSK)
+Date:   Tue, 16 Apr 2019 02:43:07 +0300
+From:   "Dmitry V. Levin" <ldv@altlinux.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Elvira Khabirova <lineprinter@altlinux.org>,
+        Eugene Syromyatnikov <esyr@redhat.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Greentime Hu <greentime@andestech.com>,
+        Helge Deller <deller@gmx.de>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        James Hogan <jhogan@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Burton <paul.burton@mips.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Shuah Khan <shuah@kernel.org>,
+        Vincent Chen <deanbo422@gmail.com>, linux-api@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        strace-devel@lists.strace.io
+Subject: [PATCH linux-next v10 0/7] ptrace: add PTRACE_GET_SYSCALL_INFO
+ request
+Message-ID: <20190415234307.GA9364@altlinux.org>
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 62dee778-c09f-4e09-62cb-08d6c1c8f95f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Apr 2019 17:37:04.4204
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1341
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-SGVsbG8sDQoNClBhdWwgQnVydG9uIHdyb3RlOg0KPiBCb3RoIGFyY2hfc3RhdGljX2JyYW5jaCgp
-ICYgYXJjaF9zdGF0aWNfYnJhbmNoX2p1bXAoKSBlbWl0IGEgY29udHJvbA0KPiB0cmFuc2ZlciBp
-bnN0cnVjdGlvbiAoaWUuIGJyYW5jaCBvciBqdW1wKSB3aXRob3V0IGRpc2FibGluZyBhc3NlbWJs
-ZXINCj4gcmUtb3JkZXJpbmcuIEFzIHN1Y2ggdGhlIGFzc2VtYmxlciB3aWxsIGF1dG9tYXRpY2Fs
-bHkgZmlsbCB0aGVpciBkZWxheQ0KPiBzbG90cy4NCj4gDQo+IEJvdGggZnVuY3Rpb25zIGZvbGxv
-dyB0aGVpciBicmFuY2ggb3IganVtcCB3aXRoIGFuIGV4cGxpY2l0IG5vcCB0aGF0IGF0DQo+IGZp
-cnN0IGFwcGVhcnMgdG8gYmUgdGhlcmUgdG8gZmlsbCB0aGUgZGVsYXkgc2xvdCwgYnV0IGdpdmVu
-IHRoYXQgdGhlDQo+IGFzc2VtYmxlciB3aWxsIGRvIHRoYXQgdGhlIGV4cGxpY2l0IG5vcHMgc2Vy
-dmUgbm8gcHVycG9zZSAmIHdlIGVuZCB1cA0KPiB3aXRoIG91ciBicmFuY2ggb3IganVtcCBmb2xs
-b3dlZCBieSAyIG5vcHMuIFJlbW92ZSB0aGUgcmVkdW5kYW50IG5vcHMuDQo+IA0KPiBTaWduZWQt
-b2ZmLWJ5OiBQYXVsIEJ1cnRvbiA8cGF1bC5idXJ0b25AbWlwcy5jb20+DQoNClNlcmllcyBhcHBs
-aWVkIHRvIG1pcHMtbmV4dC4NCg0KVGhhbmtzLA0KICAgIFBhdWwNCg0KWyBUaGlzIG1lc3NhZ2Ug
-d2FzIGF1dG8tZ2VuZXJhdGVkOyBpZiB5b3UgYmVsaWV2ZSBhbnl0aGluZyBpcyBpbmNvcnJlY3QN
-CiAgdGhlbiBwbGVhc2UgZW1haWwgcGF1bC5idXJ0b25AbWlwcy5jb20gdG8gcmVwb3J0IGl0LiBd
-DQo=
+[Andrew, could you take this patchset into your tree, please?]
+
+PTRACE_GET_SYSCALL_INFO is a generic ptrace API that lets ptracer obtain
+details of the syscall the tracee is blocked in.
+
+There are two reasons for a special syscall-related ptrace request.
+
+Firstly, with the current ptrace API there are cases when ptracer cannot
+retrieve necessary information about syscalls.  Some examples include:
+* The notorious int-0x80-from-64-bit-task issue.  See [1] for details.
+In short, if a 64-bit task performs a syscall through int 0x80, its tracer
+has no reliable means to find out that the syscall was, in fact,
+a compat syscall, and misidentifies it.
+* Syscall-enter-stop and syscall-exit-stop look the same for the tracer.
+Common practice is to keep track of the sequence of ptrace-stops in order
+not to mix the two syscall-stops up.  But it is not as simple as it looks;
+for example, strace had a (just recently fixed) long-standing bug where
+attaching strace to a tracee that is performing the execve system call
+led to the tracer identifying the following syscall-exit-stop as
+syscall-enter-stop, which messed up all the state tracking.
+* Since the introduction of commit 84d77d3f06e7e8dea057d10e8ec77ad71f721be3
+("ptrace: Don't allow accessing an undumpable mm"), both PTRACE_PEEKDATA
+and process_vm_readv become unavailable when the process dumpable flag
+is cleared.  On such architectures as ia64 this results in all syscall
+arguments being unavailable for the tracer.
+
+Secondly, ptracers also have to support a lot of arch-specific code for
+obtaining information about the tracee.  For some architectures, this
+requires a ptrace(PTRACE_PEEKUSER, ...) invocation for every syscall
+argument and return value.
+
+PTRACE_GET_SYSCALL_INFO returns the following structure:
+
+struct ptrace_syscall_info {
+	__u8 op;	/* PTRACE_SYSCALL_INFO_* */
+	__u32 arch __attribute__((__aligned__(sizeof(__u32))));
+	__u64 instruction_pointer;
+	__u64 stack_pointer;
+	union {
+		struct {
+			__u64 nr;
+			__u64 args[6];
+		} entry;
+		struct {
+			__s64 rval;
+			__u8 is_error;
+		} exit;
+		struct {
+			__u64 nr;
+			__u64 args[6];
+			__u32 ret_data;
+		} seccomp;
+	};
+};
+
+The structure was chosen according to [2], except for the following
+changes:
+* seccomp substructure was added as a superset of entry substructure;
+* the type of nr field was changed from int to __u64 because syscall
+numbers are, as a practical matter, 64 bits;
+* stack_pointer field was added along with instruction_pointer field
+since it is readily available and can save the tracer from extra
+PTRACE_GETREGS/PTRACE_GETREGSET calls;
+* arch is always initialized to aid with tracing system calls
+* such as execve();
+* instruction_pointer and stack_pointer are always initialized
+so they could be easily obtained for non-syscall stops;
+* a boolean is_error field was added along with rval field, this way
+the tracer can more reliably distinguish a return value
+from an error value.
+
+strace has been ported to PTRACE_GET_SYSCALL_INFO.
+Starting with release 4.26, strace uses PTRACE_GET_SYSCALL_INFO API
+as the preferred mechanism of obtaining syscall information.
+
+[1] https://lore.kernel.org/lkml/CA+55aFzcSVmdDj9Lh_gdbz1OzHyEm6ZrGPBDAJnywm2LF_eVyg@mail.gmail.com/
+[2] https://lore.kernel.org/lkml/CAObL_7GM0n80N7J_DFw_eQyfLyzq+sf4y2AvsCCV88Tb3AwEHA@mail.gmail.com/
+
+---
+
+Notes:
+    v10: added more Acked-by.
+
+    v9:
+    * Rebased to linux-next again due to syscall_get_arguments() signature change.
+
+    v8:
+    * Moved syscall_get_arch() specific patches to a separate patchset
+      which is now merged into audit/next tree.
+    * Rebased to linux-next.
+    * Moved ptrace_get_syscall_info code under #ifdef CONFIG_HAVE_ARCH_TRACEHOOK,
+      narrowing down the set of architectures supported by this implementation
+      back to those 19 that enable CONFIG_HAVE_ARCH_TRACEHOOK because
+      I failed to get all syscall_get_*(), instruction_pointer(),
+      and user_stack_pointer() functions implemented on some niche
+      architectures.  This leaves the following architectures out:
+      alpha, h8300, m68k, microblaze, and unicore32.
+
+    v7:
+    * Rebased to v5.0-rc1.
+    * 5 arch-specific preparatory patches out of 25 have been merged
+      into v5.0-rc1 via arch trees.
+
+    v6:
+    * Add syscall_get_arguments and syscall_set_arguments wrappers
+      to asm-generic/syscall.h, requested by Geert.
+    * Change PTRACE_GET_SYSCALL_INFO return code: do not take trailing paddings
+      into account, use the end of the last field of the structure being written.
+    * Change struct ptrace_syscall_info:
+      * remove .frame_pointer field, is is not needed and not portable;
+      * make .arch field explicitly aligned, remove no longer needed
+        padding before .arch field;
+      * remove trailing pads, they are no longer needed.
+
+    v5:
+    * Merge separate series and patches into the single series.
+    * Change PTRACE_EVENTMSG_SYSCALL_{ENTRY,EXIT} values as requested by Oleg.
+    * Change struct ptrace_syscall_info: generalize instruction_pointer,
+      stack_pointer, and frame_pointer fields by moving them from
+      ptrace_syscall_info.{entry,seccomp} substructures to ptrace_syscall_info
+      and initializing them for all stops.
+    * Add PTRACE_SYSCALL_INFO_NONE, set it when not in a syscall stop,
+      so e.g. "strace -i" could use PTRACE_SYSCALL_INFO_SECCOMP to obtain
+      instruction_pointer when the tracee is in a signal stop.
+    * Patch all remaining architectures to provide all necessary
+      syscall_get_* functions.
+    * Make available for all architectures: do not conditionalize on
+      CONFIG_HAVE_ARCH_TRACEHOOK since all syscall_get_* functions
+      are implemented on all architectures.
+    * Add a test for PTRACE_GET_SYSCALL_INFO to selftests/ptrace.
+    
+    v4:
+    * Do not introduce task_struct.ptrace_event,
+      use child->last_siginfo->si_code instead.
+    * Implement PTRACE_SYSCALL_INFO_SECCOMP and ptrace_syscall_info.seccomp
+      support along with PTRACE_SYSCALL_INFO_{ENTRY,EXIT} and
+      ptrace_syscall_info.{entry,exit}.
+    
+    v3:
+    * Change struct ptrace_syscall_info.
+    * Support PTRACE_EVENT_SECCOMP by adding ptrace_event to task_struct.
+    * Add proper defines for ptrace_syscall_info.op values.
+    * Rename PT_SYSCALL_IS_ENTERING and PT_SYSCALL_IS_EXITING to
+      PTRACE_EVENTMSG_SYSCALL_ENTRY and PTRACE_EVENTMSG_SYSCALL_EXIT
+    * and move them to uapi.
+    
+    v2:
+    * Do not use task->ptrace.
+    * Replace entry_info.is_compat with entry_info.arch, use syscall_get_arch().
+    * Use addr argument of sys_ptrace to get expected size of the struct;
+      return full size of the struct.
+
+Dmitry V. Levin (6):
+  nds32: fix asm/syscall.h # acked
+  hexagon: define syscall_get_error() and syscall_get_return_value() # waiting for ack since November
+  mips: define syscall_get_error() # acked
+  parisc: define syscall_get_error() # acked
+  powerpc: define syscall_get_error() # waiting for ack since early December
+  selftests/ptrace: add a test case for PTRACE_GET_SYSCALL_INFO # acked
+
+Elvira Khabirova (1):
+  ptrace: add PTRACE_GET_SYSCALL_INFO request # reviewed
+
+ arch/hexagon/include/asm/syscall.h            |  14 +
+ arch/mips/include/asm/syscall.h               |   6 +
+ arch/nds32/include/asm/syscall.h              |  27 +-
+ arch/parisc/include/asm/syscall.h             |   7 +
+ arch/powerpc/include/asm/syscall.h            |  10 +
+ include/linux/tracehook.h                     |   9 +-
+ include/uapi/linux/ptrace.h                   |  35 +++
+ kernel/ptrace.c                               | 103 ++++++-
+ tools/testing/selftests/ptrace/.gitignore     |   1 +
+ tools/testing/selftests/ptrace/Makefile       |   2 +-
+ .../selftests/ptrace/get_syscall_info.c       | 271 ++++++++++++++++++
+ 11 files changed, 470 insertions(+), 15 deletions(-)
+ create mode 100644 tools/testing/selftests/ptrace/get_syscall_info.c
+
+-- 
+ldv

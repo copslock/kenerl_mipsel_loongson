@@ -1,172 +1,116 @@
-Return-Path: <SRS0=Gg09=SQ=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=MCbt=SR=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F878C10F13
-	for <linux-mips@archiver.kernel.org>; Sun, 14 Apr 2019 21:20:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 141DCC282CE
+	for <linux-mips@archiver.kernel.org>; Mon, 15 Apr 2019 05:44:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 13A3520850
-	for <linux-mips@archiver.kernel.org>; Sun, 14 Apr 2019 21:20:14 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D598A20874
+	for <linux-mips@archiver.kernel.org>; Mon, 15 Apr 2019 05:43:59 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A7D4zOoM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ioIki42a"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726233AbfDNVUJ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 14 Apr 2019 17:20:09 -0400
-Received: from mail-wm1-f44.google.com ([209.85.128.44]:40396 "EHLO
-        mail-wm1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726159AbfDNVUJ (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sun, 14 Apr 2019 17:20:09 -0400
-Received: by mail-wm1-f44.google.com with SMTP id z24so17765951wmi.5
-        for <linux-mips@vger.kernel.org>; Sun, 14 Apr 2019 14:20:08 -0700 (PDT)
+        id S1725994AbfDOFn7 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 15 Apr 2019 01:43:59 -0400
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:40982 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725816AbfDOFn7 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 15 Apr 2019 01:43:59 -0400
+Received: by mail-lf1-f66.google.com with SMTP id t30so12027006lfd.8;
+        Sun, 14 Apr 2019 22:43:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:openpgp:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=2AGQIFcQxasa4udfiLKZK+AfZp6PqqxaaIedPAmmEk8=;
-        b=A7D4zOoM6yzT1nQ5x7COZO5/50Wu9hSleT7BkgM0flgYUOEIIb50dPi3AS3UsZzoye
-         MLQ0uYybgtEfCm/0BYkExIymveZodOlx5cDFuRQ0MBUGnZ4xycs+wXy4W2nrlNM/mmgj
-         Q9fIw6SIOmOEoSJE9AWRn3a8sqKSw7XBjQaxQ7fjBNqw8e7/CJ6MItQa00BvJs2k/y9J
-         EjrgXQEdGOy7w9DvMSl2GGgqnwVav9t/R6sjU4QBoP1LzN+XF92SSu6aUwmxleo6MnfH
-         A2ADn4hMnBJATMeU7bmZzioh8kzMjDpebLwoowgRcoMjiZ0JzdWBVYWpH4mFhpVgUOkv
-         igyA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/c+Hw5+k/azU8PvnxKFqYmJEScc8yTKsIrOq90KcNSI=;
+        b=ioIki42aQJHfE8Z4YokPbljBrYNgoYz9Nf0Cc206GZusD6gjAIzI28wJbEZBUIKR0x
+         PsSFzKpzb9INhNuwNO+nBgVpGJ1uqna8NrizyAbxNfGbUI2LkkhlraXK3tnM/qpaKrzD
+         bGe8jQ9oRCQB5i+kZ/dwlOP62bXCQBJrNA021hAJJe78QJ/fwHvH9yf7NyGI5fPxBOty
+         oBdQz0JqexEk5ZAzaCVCmujySd0vzIT3mi6HCeFfv9ZFsJVqV/vs7BPjstAmOy5wMd59
+         wbKXEEvKPJ273T+F4phTZUAiqeRrVLAAICwnq8VmmoGODBWLXdq1ITD/CZVR5fjUsKkt
+         A+oA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:openpgp
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=2AGQIFcQxasa4udfiLKZK+AfZp6PqqxaaIedPAmmEk8=;
-        b=MFyyxdNFCGNVOkngls1B/0UdPzky8ARoylUXljh22R+tR8Z1i/qzeubsS/4OeRUiAV
-         XZIC0enlkSoH2qmOhlN+qNTBDRVSDEKZ/AIPSi0pY0eMaUV0K7rl+vFaILic21vpVxQj
-         dRMCO7BahHdofww226yQ9ARXyouWLGEcPXjOyiK6d6I+RPnwqq8z+OpqJlbPwbFCusBK
-         6MsG9WPGDLmVc7IIqXYHWGiFO2xISjvzAj4hb1XV6+6yd6vYh2/MXpUTEt+HL3ag7fIW
-         /k27DEK3hpa83Q7fHbSfeQKFGVLCO6ef7TVF/HR/Z565iqAC1Eznk7tm9Ie3fKIFSoi+
-         ndqg==
-X-Gm-Message-State: APjAAAWQy6ZXrPWNdkztC1JXs3jGeoS9yPPz/OmGaYQVsob1+P6SSZRF
-        6mLOKL5FDcww2B2m+xfGvW0=
-X-Google-Smtp-Source: APXvYqx/Oyratk46WPRqIceSBQDg54i6OBY8KRceKtmDy3Jf/BSdP9ltW+GFVe+UZMVL4vmwt0TkmA==
-X-Received: by 2002:a05:600c:2118:: with SMTP id u24mr19375779wml.24.1555276807659;
-        Sun, 14 Apr 2019 14:20:07 -0700 (PDT)
-Received: from [192.168.1.37] (193.red-88-21-103.staticip.rima-tde.net. [88.21.103.193])
-        by smtp.gmail.com with ESMTPSA id n1sm12890495wmc.19.2019.04.14.14.20.06
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Sun, 14 Apr 2019 14:20:06 -0700 (PDT)
-Subject: Re: [RFC] MIPS: Install final length of TLB refill handler rather
- than 256 bytes
-To:     Fredrik Noring <noring@nocrew.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org
-Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>
-References: <20190405160531.GF33393@sx9>
-From:   =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>
-Openpgp: url=http://pgp.mit.edu/pks/lookup?op=get&search=0xE3E32C2CDEADC0DE
-Message-ID: <5b42742e-b9fb-996a-fbe4-918d48aa0a18@amsat.org>
-Date:   Sun, 14 Apr 2019 23:20:05 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/c+Hw5+k/azU8PvnxKFqYmJEScc8yTKsIrOq90KcNSI=;
+        b=Poo36XdHiCWAT7JTmJv3cjGNctUbI3jh36ge3JMGLn2qftBtXf+ZcVAyxUV0xkEDqf
+         oP6SfYfZ7gZoSUY90HL2GSc2JXVgUQk7K3FC1WA1jkogEYXYJF+l8FHoujDSuadF3/0S
+         u7l+KgtFxtYCS5SB2VxUs3W7sh4A4booXaZSXwlBwcfCqrB0+46YweFzPUZ4RJdIL8oh
+         1qN/TjQkZcvX3Vl+ERkubdMYZHB9Cv9mDGGErLb8vhQwhMpkcRH77hBOjKhQXNcBMFdE
+         37y3TbW6qbJRfU9DdVXB0TRpDa3RzpCsbepN4nwUEqWeNXaLUhe/M7Cl5XQuPeWuNZIa
+         pgMw==
+X-Gm-Message-State: APjAAAWCggU093PIkzt617iL1vYvDIK216eOV3bQ+yMVwfJ0hcq+tEd5
+        4NHXP1EQf9JtawUTx1z4NG0FXgm9bnRMrNhPRRM=
+X-Google-Smtp-Source: APXvYqz5KJTKzNAp0YVyNvmQJpO1OyGfuUarw6cWCWeFUfRpXA51WDRxn5UL/u/lq4P5E+TmUPismgSWGwO2+n4/ick=
+X-Received: by 2002:ac2:59db:: with SMTP id x27mr32758509lfn.108.1555307036239;
+ Sun, 14 Apr 2019 22:43:56 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190405160531.GF33393@sx9>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20190414091452.22275-1-shyam.saini@amarulasolutions.com>
+In-Reply-To: <20190414091452.22275-1-shyam.saini@amarulasolutions.com>
+From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date:   Sun, 14 Apr 2019 22:43:44 -0700
+Message-ID: <CAADnVQKx5WrUYxr_gSc5ai=fJh2cM9e26NZL1mRPkoSVQxAd0Q@mail.gmail.com>
+Subject: Re: [PATCH 1/2] include: linux: Regularise the use of FIELD_SIZEOF macro
+To:     Shyam Saini <shyam.saini@amarulasolutions.com>
+Cc:     Kernel Hardening <kernel-hardening@lists.openwall.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Kees Cook <keescook@chromium.org>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        intel-gvt-dev@lists.freedesktop.org,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        Network Development <netdev@vger.kernel.org>,
+        linux-ext4@vger.kernel.org, devel@lists.orangefs.org,
+        linux-mm <linux-mm@kvack.org>, linux-sctp@vger.kernel.org,
+        bpf <bpf@vger.kernel.org>, kvm@vger.kernel.org,
+        mayhs11saini@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Fredrik,
-
-On 4/5/19 6:05 PM, Fredrik Noring wrote:
-> The R5900 TLB refill handler is limited to 128 bytes, corresponding
-> to 32 instructions.
-
-There is a comment about the R4000 worst case:
-
- /* The worst case length of the handler is around 18 instructions for
-  * R3000-style TLBs and up to 63 instructions for R4000-style TLBs.
-  * Maximum space available is 32 instructions for R3000 and 64
-  * instructions for R4000.
-
-So you need to check the handler generated for your cpu doesn't exceed
-your 32 instructions.
-
-> Installing a 256 byte TLB refill handler for the R5900 at address
-> 0x80000000 overwrites the performance counter handler at address
-> 0x80000080, according to the TX79 manual[1]:
-> 
->         Table 5-2. Exception Vectors for Level 1 exceptions
-> 
->              Exceptions      |      Vector Address
->                              |   BEV = 0  |   BEV = 1
->         ---------------------+------------+-----------
->         TLB Refill (EXL = 0) | 0x80000000 | 0xBFC00200
->         TLB Refill (EXL = 1) | 0x80000180 | 0xBFC00380
->         Interrupt            | 0x80000200 | 0xBFC00400
->         Others               | 0x80000180 | 0xBFC00380
->         ---------------------+------------+-----------
-> 
->         Table 5-3. Exception Vectors for Level 2 exceptions
-> 
->              Exceptions      |      Vector Address
->                              |   DEV = 0  |   DEV = 1
->         ---------------------+------------+-----------
->         Reset, NMI           | 0xBFC00000 | 0xBFC00000
->         Performance Counter  | 0x80000080 | 0xBFC00280
->         Debug, SIO           | 0x80000100 | 0xBFC00300
->         ---------------------+------------+-----------
-> 
-> Reference:
-> 
-> [1] "TX System RISC TX79 Core Architecture" manual, revision 2.0,
->     Toshiba Corporation, p. 5-7, https://wiki.qemu.org/File:C790.pdf
-> 
-> Signed-off-by: Fredrik Noring <noring@nocrew.org>
+On Sun, Apr 14, 2019 at 2:15 AM Shyam Saini
+<shyam.saini@amarulasolutions.com> wrote:
+>
+> Currently, there are 3 different macros, namely sizeof_field, SIZEOF_FIELD
+> and FIELD_SIZEOF which are used to calculate the size of a member of
+> structure, so to bring uniformity in entire kernel source tree lets use
+> FIELD_SIZEOF and replace all occurrences of other two macros with this.
+>
+> For this purpose, redefine FIELD_SIZEOF in include/linux/stddef.h and
+> tools/testing/selftests/bpf/bpf_util.h and remove its defination from
+> include/linux/kernel.h
+>
+> Signed-off-by: Shyam Saini <shyam.saini@amarulasolutions.com>
 > ---
-> Hi MIPS maintainers,
-> 
-> Reading through the TX79 manual I noticed that the installation of
-> the TLB refill handler seems to overwrite the performance counter
-> handler. Is there any particular reason to not install the actual
-> lengths of the handlers, such as memory boundaries or alignments?
-> 
-> I have a separate patch that checks the R5900 handler length limit,
-> but it depends on R5900 support, which isn't merged (yet).
-> 
-> Fredrik
-> ---
-> 
-> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-> --- a/arch/mips/mm/tlbex.c
-> +++ b/arch/mips/mm/tlbex.c
-> @@ -1462,9 +1462,9 @@ static void build_r4000_tlb_refill_handler(void)
->  	pr_debug("Wrote TLB refill handler (%u instructions).\n",
->  		 final_len);
->  
+>  arch/arm64/include/asm/processor.h                 | 10 +++++-----
+>  arch/mips/cavium-octeon/executive/cvmx-bootmem.c   |  2 +-
+>  drivers/gpu/drm/i915/gvt/scheduler.c               |  2 +-
+>  drivers/net/ethernet/mellanox/mlxsw/spectrum_fid.c |  4 ++--
+>  fs/befs/linuxvfs.c                                 |  2 +-
+>  fs/ext2/super.c                                    |  2 +-
+>  fs/ext4/super.c                                    |  2 +-
+>  fs/freevxfs/vxfs_super.c                           |  2 +-
+>  fs/orangefs/super.c                                |  2 +-
+>  fs/ufs/super.c                                     |  2 +-
+>  include/linux/kernel.h                             |  9 ---------
+>  include/linux/slab.h                               |  2 +-
+>  include/linux/stddef.h                             | 11 ++++++++++-
+>  kernel/fork.c                                      |  2 +-
+>  kernel/utsname.c                                   |  2 +-
+>  net/caif/caif_socket.c                             |  2 +-
+>  net/core/skbuff.c                                  |  2 +-
+>  net/ipv4/raw.c                                     |  2 +-
+>  net/ipv6/raw.c                                     |  2 +-
+>  net/sctp/socket.c                                  |  4 ++--
+>  tools/testing/selftests/bpf/bpf_util.h             | 11 ++++++++++-
 
-> -	memcpy((void *)ebase, final_handler, 0x100);
-> -	local_flush_icache_range(ebase, ebase + 0x100);
-> -	dump_handler("r4000_tlb_refill", (u32 *)ebase, (u32 *)(ebase + 0x100));
-> +	memcpy((void *)ebase, final_handler, 4 * final_len);
-> +	local_flush_icache_range(ebase, ebase + 4 * final_len);
-> +	dump_handler("r4000_tlb_refill", (u32 *)ebase, (u32 *)(ebase + 4 * final_len));
-
-Maybe you could modify the logic few lines earlier that check and
-panic("TLB refill handler space exceeded") and add a case for your cpu
-type. There you could set a handler_max_size = 0x80, 0x100 else.
-
-Take my comment as RFC too, I'm just wondering :)
-
-Regards,
-
-Phil.
-
->  }
->  
->  static void setup_pw(void)
-> 
-> 
+tools/ directory is for user space pieces that don't include kernel's include.
+I bet your pathes break the user space builds.

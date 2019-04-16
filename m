@@ -2,271 +2,128 @@ Return-Path: <SRS0=Z6Mo=SS=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
-	UNWANTED_LANGUAGE_BODY,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C1FDC10F13
-	for <linux-mips@archiver.kernel.org>; Tue, 16 Apr 2019 20:39:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DDF5C10F13
+	for <linux-mips@archiver.kernel.org>; Tue, 16 Apr 2019 22:10:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 1577B20693
-	for <linux-mips@archiver.kernel.org>; Tue, 16 Apr 2019 20:39:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5DD1A20880
+	for <linux-mips@archiver.kernel.org>; Tue, 16 Apr 2019 22:10:36 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="VE9WRHlR"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729754AbfDPUjS (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 16 Apr 2019 16:39:18 -0400
-Received: from mout.kundenserver.de ([217.72.192.73]:43053 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727136AbfDPUjS (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 16 Apr 2019 16:39:18 -0400
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue107 [212.227.15.145]) with ESMTPA (Nemesis) id
- 1MGhi0-1h2hLx21sg-00Dq4r; Tue, 16 Apr 2019 22:38:39 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
+        id S1726631AbfDPWKg (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 16 Apr 2019 18:10:36 -0400
+Received: from mail-eopbgr760100.outbound.protection.outlook.com ([40.107.76.100]:18182
+        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726287AbfDPWKf (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 16 Apr 2019 18:10:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ag5BIczzLqC4PSeR3/KnyhPQYdcIQDMpYIrFF4nawro=;
+ b=VE9WRHlR1v1X0MbscDb6QxPBw761VSKJiGPzjsTULrwInB9DnqQISApO5k3fnCRlyxrIbKuQ4zo7NGJd6fFYRfst+ixjhPefeS6hoSyCyYWa58+0TFORacejH/WyhmZeKfEQWOJNNiSDsL2g1m0jEzkMhZ7o+D1WTQkGBjrCNaQ=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1230.namprd22.prod.outlook.com (10.174.161.151) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1813.12; Tue, 16 Apr 2019 22:10:26 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b9d6:bf19:ec58:2765]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b9d6:bf19:ec58:2765%7]) with mapi id 15.20.1792.018; Tue, 16 Apr 2019
+ 22:10:26 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     =?utf-8?B?UGV0ciDFoHRldGlhcg==?= <ynezz@true.cz>
+CC:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
+        Paul Burton <pburton@wavecomp.com>,
         James Hogan <jhogan@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        Willem de Bruijn <willemb@google.com>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-arch@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH net-next 3/3] net: socket: implement 64-bit timestamps
-Date:   Tue, 16 Apr 2019 22:32:50 +0200
-Message-Id: <20190416203620.539628-3-arnd@arndb.de>
-X-Mailer: git-send-email 2.20.0
-In-Reply-To: <20190416203620.539628-1-arnd@arndb.de>
-References: <20190416203620.539628-1-arnd@arndb.de>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        John Crispin <john@phrozen.org>,
+        =?utf-8?B?UGV0ciDFoHRldGlhcg==?= <ynezz@true.cz>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Subject: Re: [PATCH v2] MIPS: perf: ath79: Fix perfcount IRQ assignment
+Thread-Topic: [PATCH v2] MIPS: perf: ath79: Fix perfcount IRQ assignment
+Thread-Index: AQHU8XPq46qITC5HyUGq8suZ70CawKY/X28A
+Date:   Tue, 16 Apr 2019 22:10:25 +0000
+Message-ID: <MWHPR2201MB12776250EC4360AB559C160DC1240@MWHPR2201MB1277.namprd22.prod.outlook.com>
+References: <1555103312-28232-1-git-send-email-ynezz@true.cz>
+In-Reply-To: <1555103312-28232-1-git-send-email-ynezz@true.cz>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR05CA0104.namprd05.prod.outlook.com
+ (2603:10b6:a03:e0::45) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [67.207.99.198]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: ce54c0be-f4b4-4514-79d9-08d6c2b85367
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600140)(711020)(4605104)(2017052603328)(7193020);SRVR:MWHPR2201MB1230;
+x-ms-traffictypediagnostic: MWHPR2201MB1230:
+x-microsoft-antispam-prvs: <MWHPR2201MB1230E2882F8817DC243C4B79C1240@MWHPR2201MB1230.namprd22.prod.outlook.com>
+x-forefront-prvs: 000947967F
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(376002)(39850400004)(346002)(366004)(136003)(199004)(189003)(71190400001)(102836004)(8676002)(76176011)(305945005)(52536014)(71200400001)(6246003)(5660300002)(8936002)(44832011)(316002)(105586002)(66066001)(6506007)(106356001)(386003)(81166006)(81156014)(4326008)(11346002)(74316002)(68736007)(446003)(54906003)(33656002)(53936002)(25786009)(186003)(99286004)(256004)(9686003)(14454004)(2906002)(6436002)(476003)(7736002)(97736004)(55016002)(478600001)(26005)(6116002)(42882007)(486006)(229853002)(3846002)(52116002)(6916009)(7696005);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1230;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: CUJpOGav0fYE0Y/rkQe5bcvaT7jDS1FNYalpOPiwpCHNL2uQkUQYnTSXQfqJCroKPBWJiZnHLv50sdc7aU5ovocaBDiu7YGjiP2tUbHWWzqu4oCw6xMQ/2bgTjbxRsjjWDBiLW7KKJA4ra4NfmTLUEAShQZRLP6NoSjAeeNrNSTvvOSgxOqy/gCZ8L1anAiPJHYszGgV6P4QyYc2aSvsherbSC9hIUWeVwywwGj8IUZXBKHMG8yb7f2i2yXyKf0wdZfdgcAyqCL+NtfUTlhXGYI+0sYnWYZOA2nJwr7EBcVLFDiGoxnwrAhtETbYtXmLeMftv+RzrPbeSklcLRqA5nrOLDw4HXbKvWF1dQC31G7OppJwQvbnN3tq4YmTNgpUWr3DeN4Pd2+G1//htj/frz9aICgIyG8BG3bFW4aMU2U=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:sOojUxWE0R5G27Up6/kcKJOjM3sWX/4hCW0BHI4i2Axs46yRMmT
- 1/AErTd+Kl95NWKkq7HGyaxNLahAoQRPxmBpDMD2rJRylloHqsEobArb4mXK9kyZV9NnU5T
- JpdqD3UmOGrTBj8wWHxi4VCKwbX7GLO93MDXtxiCDcmWoRsUqsYyVUnhvNpe03+nWPuZUf9
- dIG33KKfDA8SPCavQw/gg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:dfQn/jTtQK0=:UvsmhE8wgdHzpBOHdMS7JD
- aPEGPZfDIJ9vQ+BY7N9kGJf2+LS+KCIf4WdxFaF5N8XMGNnBWpotNpTsj4fm5rdrrc9VfkmQF
- 8BFYGlzh4uYA8bA1ablO4oYUNaXfEBrVeOcOzayQjQvavBA5YkZZ4vbJAOmDUcsZ0oG0pECMV
- t59tomtnNjOo6TkOHME4DjXQmOypH6bTFagQU5kmAu5CHrHShU1e2k+z8WTC+pl6ySdFbfzqZ
- ljTJpvt4vAdwIo/PDeBZrwWMmUbq/tJB5lPz1nh8XMpOEQ5J/ABWo4RWHG5RzivjFgzDn/EDj
- D+ACR83dfuff0DArZi/F5IqmfJLO4zar3HkEwXqhzhHDdfZYgGUmLyeud9aFaWFzhBhUy5juE
- 2EW2QzlSwUyueWJ/F3XLaVV6UNy8UrIsDuwFpUKKXAXn1ybVL5Gzo61DM7vKYNlfTr8IzgsUu
- kCvz/ei0HCdBFR3Ea3tOCu1MwiaSU+cX/mDBPeDN6U4DuogJc27ulWmOTwuTlXm41qCYO6hGY
- rTqXa4cLeLTUyCeFC9gMtgq1ngdItV/zZuh72TQBDcKBqWjD9QrVW78yVBti3HVfbQqnUGbp2
- 0uJZLnHImYcDHiqh5WYytnZa8bhvUbTGOnKI1+LLFGGuqtbfUIL4zvrI+9huwNLJgb81fCvyP
- Y/RRQhe2FNs91ffK4Ev2HKYNHBBJeEtaSkoKo5macJ8zUYEimdJq+rvTdCE88/B6KZencExb1
- 9tl5btr2rqCpmoKjylXLCMsW6n52eS5Ue66Clg==
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ce54c0be-f4b4-4514-79d9-08d6c2b85367
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Apr 2019 22:10:25.9204
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1230
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The 'timeval' and 'timespec' data structures used for socket timestamps
-are going to be redefined in user space based on 64-bit time_t in future
-versions of the C library to deal with the y2038 overflow problem,
-which breaks the ABI definition.
-
-Unlike many modern ioctl commands, SIOCGSTAMP and SIOCGSTAMPNS do not
-use the _IOR() macro to encode the size of the transferred data, so it
-remains ambiguous whether the application uses the old or new layout.
-
-The best workaround I could find is rather ugly: we redefine the command
-code based on the size of the respective data structure with a ternary
-operator. This lets it get evaluated as late as possible, hopefully after
-that structure is visible to the caller. We cannot use an #ifdef here,
-because inux/sockios.h might have been included before any libc header
-that could determine the size of time_t.
-
-The ioctl implementation now interprets the new command codes as always
-referring to the 64-bit structure on all architectures, while the old
-architecture specific command code still refers to the old architecture
-specific layout. The new command number is only used when they are
-actually different.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/alpha/include/uapi/asm/sockios.h  |  4 ++--
- arch/mips/include/uapi/asm/sockios.h   |  4 ++--
- arch/sh/include/uapi/asm/sockios.h     |  5 +++--
- arch/xtensa/include/uapi/asm/sockios.h |  4 ++--
- include/uapi/asm-generic/sockios.h     |  4 ++--
- include/uapi/linux/sockios.h           | 21 +++++++++++++++++++++
- net/socket.c                           | 24 ++++++++++++++++++------
- 7 files changed, 50 insertions(+), 16 deletions(-)
-
-diff --git a/arch/alpha/include/uapi/asm/sockios.h b/arch/alpha/include/uapi/asm/sockios.h
-index ba287e4b01bf..af92bc27c3be 100644
---- a/arch/alpha/include/uapi/asm/sockios.h
-+++ b/arch/alpha/include/uapi/asm/sockios.h
-@@ -11,7 +11,7 @@
- #define SIOCSPGRP	_IOW('s', 8, pid_t)
- #define SIOCGPGRP	_IOR('s', 9, pid_t)
- 
--#define SIOCGSTAMP	0x8906		/* Get stamp (timeval) */
--#define SIOCGSTAMPNS	0x8907		/* Get stamp (timespec) */
-+#define SIOCGSTAMP_OLD	0x8906		/* Get stamp (timeval) */
-+#define SIOCGSTAMPNS_OLD 0x8907		/* Get stamp (timespec) */
- 
- #endif /* _ASM_ALPHA_SOCKIOS_H */
-diff --git a/arch/mips/include/uapi/asm/sockios.h b/arch/mips/include/uapi/asm/sockios.h
-index 5b40a88593fa..66f60234f290 100644
---- a/arch/mips/include/uapi/asm/sockios.h
-+++ b/arch/mips/include/uapi/asm/sockios.h
-@@ -21,7 +21,7 @@
- #define SIOCSPGRP	_IOW('s', 8, pid_t)
- #define SIOCGPGRP	_IOR('s', 9, pid_t)
- 
--#define SIOCGSTAMP	0x8906		/* Get stamp (timeval) */
--#define SIOCGSTAMPNS	0x8907		/* Get stamp (timespec) */
-+#define SIOCGSTAMP_OLD	0x8906		/* Get stamp (timeval) */
-+#define SIOCGSTAMPNS_OLD 0x8907		/* Get stamp (timespec) */
- 
- #endif /* _ASM_SOCKIOS_H */
-diff --git a/arch/sh/include/uapi/asm/sockios.h b/arch/sh/include/uapi/asm/sockios.h
-index 17313d2c3527..ef18a668456d 100644
---- a/arch/sh/include/uapi/asm/sockios.h
-+++ b/arch/sh/include/uapi/asm/sockios.h
-@@ -10,6 +10,7 @@
- #define SIOCSPGRP	_IOW('s', 8, pid_t)
- #define SIOCGPGRP	_IOR('s', 9, pid_t)
- 
--#define SIOCGSTAMP	_IOR('s', 100, struct timeval) /* Get stamp (timeval) */
--#define SIOCGSTAMPNS	_IOR('s', 101, struct timespec) /* Get stamp (timespec) */
-+#define SIOCGSTAMP_OLD	_IOR('s', 100, struct timeval) /* Get stamp (timeval) */
-+#define SIOCGSTAMPNS_OLD _IOR('s', 101, struct timespec) /* Get stamp (timespec) */
-+
- #endif /* __ASM_SH_SOCKIOS_H */
-diff --git a/arch/xtensa/include/uapi/asm/sockios.h b/arch/xtensa/include/uapi/asm/sockios.h
-index fb8ac3607189..1a1f58f4b75a 100644
---- a/arch/xtensa/include/uapi/asm/sockios.h
-+++ b/arch/xtensa/include/uapi/asm/sockios.h
-@@ -26,7 +26,7 @@
- #define SIOCSPGRP	_IOW('s', 8, pid_t)
- #define SIOCGPGRP	_IOR('s', 9, pid_t)
- 
--#define SIOCGSTAMP	0x8906		/* Get stamp (timeval) */
--#define SIOCGSTAMPNS	0x8907		/* Get stamp (timespec) */
-+#define SIOCGSTAMP_OLD	0x8906		/* Get stamp (timeval) */
-+#define SIOCGSTAMPNS_OLD 0x8907		/* Get stamp (timespec) */
- 
- #endif	/* _XTENSA_SOCKIOS_H */
-diff --git a/include/uapi/asm-generic/sockios.h b/include/uapi/asm-generic/sockios.h
-index 64f658c7cec2..44fa3ed70483 100644
---- a/include/uapi/asm-generic/sockios.h
-+++ b/include/uapi/asm-generic/sockios.h
-@@ -8,7 +8,7 @@
- #define FIOGETOWN	0x8903
- #define SIOCGPGRP	0x8904
- #define SIOCATMARK	0x8905
--#define SIOCGSTAMP	0x8906		/* Get stamp (timeval) */
--#define SIOCGSTAMPNS	0x8907		/* Get stamp (timespec) */
-+#define SIOCGSTAMP_OLD	0x8906		/* Get stamp (timeval) */
-+#define SIOCGSTAMPNS_OLD 0x8907		/* Get stamp (timespec) */
- 
- #endif /* __ASM_GENERIC_SOCKIOS_H */
-diff --git a/include/uapi/linux/sockios.h b/include/uapi/linux/sockios.h
-index d393e9ed3964..7d1bccbbef78 100644
---- a/include/uapi/linux/sockios.h
-+++ b/include/uapi/linux/sockios.h
-@@ -19,6 +19,7 @@
- #ifndef _LINUX_SOCKIOS_H
- #define _LINUX_SOCKIOS_H
- 
-+#include <asm/bitsperlong.h>
- #include <asm/sockios.h>
- 
- /* Linux-specific socket ioctls */
-@@ -27,6 +28,26 @@
- 
- #define SOCK_IOC_TYPE	0x89
- 
-+/*
-+ * the timeval/timespec data structure layout is defined by libc,
-+ * so we need to cover both possible versions on 32-bit.
-+ */
-+/* Get stamp (timeval) */
-+#define SIOCGSTAMP_NEW	 _IOR(SOCK_IOC_TYPE, 0x06, long long[2])
-+/* Get stamp (timespec) */
-+#define SIOCGSTAMPNS_NEW _IOR(SOCK_IOC_TYPE, 0x07, long long[2])
-+
-+#if __BITS_PER_LONG == 64 || (defined(__x86_64__) && defined(__ILP32__))
-+/* on 64-bit and x32, avoid the ?: operator */
-+#define SIOCGSTAMP	SIOCGSTAMP_OLD
-+#define SIOCGSTAMPNS	SIOCGSTAMPNS_OLD
-+#else
-+#define SIOCGSTAMP	((sizeof(struct timeval))  == 8 ? \
-+			 SIOCGSTAMP_OLD   : SIOCGSTAMP_NEW)
-+#define SIOCGSTAMPNS	((sizeof(struct timespec)) == 8 ? \
-+			 SIOCGSTAMPNS_OLD : SIOCGSTAMPNS_NEW)
-+#endif
-+
- /* Routing table calls. */
- #define SIOCADDRT	0x890B		/* add routing table entry	*/
- #define SIOCDELRT	0x890C		/* delete routing table entry	*/
-diff --git a/net/socket.c b/net/socket.c
-index ab624d42ead5..8d9d4fc7d962 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -1164,14 +1164,24 @@ static long sock_ioctl(struct file *file, unsigned cmd, unsigned long arg)
- 
- 			err = open_related_ns(&net->ns, get_net_ns);
- 			break;
--		case SIOCGSTAMP:
--		case SIOCGSTAMPNS:
-+		case SIOCGSTAMP_OLD:
-+		case SIOCGSTAMPNS_OLD:
- 			if (!sock->ops->gettstamp) {
- 				err = -ENOIOCTLCMD;
- 				break;
- 			}
- 			err = sock->ops->gettstamp(sock, argp,
--						   cmd == SIOCGSTAMP, false);
-+						   cmd == SIOCGSTAMP_OLD,
-+						   !IS_ENABLED(CONFIG_64BIT));
-+		case SIOCGSTAMP_NEW:
-+		case SIOCGSTAMPNS_NEW:
-+			if (!sock->ops->gettstamp) {
-+				err = -ENOIOCTLCMD;
-+				break;
-+			}
-+			err = sock->ops->gettstamp(sock, argp,
-+						   cmd == SIOCGSTAMP_NEW,
-+						   false);
- 			break;
- 		default:
- 			err = sock_do_ioctl(net, sock, cmd, arg);
-@@ -3324,11 +3334,11 @@ static int compat_sock_ioctl_trans(struct file *file, struct socket *sock,
- 	case SIOCADDRT:
- 	case SIOCDELRT:
- 		return routing_ioctl(net, sock, cmd, argp);
--	case SIOCGSTAMP:
--	case SIOCGSTAMPNS:
-+	case SIOCGSTAMP_OLD:
-+	case SIOCGSTAMPNS_OLD:
- 		if (!sock->ops->gettstamp)
- 			return -ENOIOCTLCMD;
--		return sock->ops->gettstamp(sock, argp, cmd == SIOCGSTAMP,
-+		return sock->ops->gettstamp(sock, argp, cmd == SIOCGSTAMP_OLD,
- 					    !COMPAT_USE_64BIT_TIME);
- 
- 	case SIOCBONDSLAVEINFOQUERY:
-@@ -3348,6 +3358,8 @@ static int compat_sock_ioctl_trans(struct file *file, struct socket *sock,
- 	case SIOCADDDLCI:
- 	case SIOCDELDLCI:
- 	case SIOCGSKNS:
-+	case SIOCGSTAMP_NEW:
-+	case SIOCGSTAMPNS_NEW:
- 		return sock_ioctl(file, cmd, arg);
- 
- 	case SIOCGIFFLAGS:
--- 
-2.20.0
-
+SGVsbG8sDQoNClBldHIgxaB0ZXRpYXIgd3JvdGU6DQo+IEN1cnJlbnRseSBpdCdzIG5vdCBwb3Nz
+aWJsZSB0byB1c2UgcGVyZiBvbiBhdGg3OSBkdWUgdG8gZ2VuaXJxIGZsYWdzDQo+IG1pc21hdGNo
+IGhhcHBlbmluZyBvbiBzdGF0aWMgdmlydHVhbCBJUlEgMTMgd2hpY2ggaXMgdXNlZCBmb3INCj4g
+cGVyZm9ybWFuY2UgY291bnRlcnMgaGFyZHdhcmUgSVJRIDUuDQo+IA0KPiBPbiBUUC1MaW5rIEFy
+Y2hlciBDN3Y1Og0KPiANCj4gQ1BVMA0KPiAyOiAgICAgICAgICAwICAgICAgTUlQUyAgIDIgIGF0
+aDlrDQo+IDQ6ICAgICAgICAzMTggICAgICBNSVBTICAgNCAgMTkwMDAwMDAuZXRoDQo+IDc6ICAg
+ICAgNTUwMzQgICAgICBNSVBTICAgNyAgdGltZXINCj4gODogICAgICAgMTIzNiAgICAgIE1JU0Mg
+ICAzICB0dHlTMA0KPiAxMjogICAgICAgICAgMCAgICAgIElOVEMgICAxICBlaGNpX2hjZDp1c2Ix
+DQo+IDEzOiAgICAgICAgICAwICBncGlvLWF0aDc5ICAgMiAga2V5cw0KPiAxNDogICAgICAgICAg
+MCAgZ3Bpby1hdGg3OSAgIDUgIGtleXMNCj4gMTU6ICAgICAgICAgMzEgIEFSNzI0WCBQQ0kgICAg
+MSAgYXRoMTBrX3BjaQ0KPiANCj4gJCBwZXJmIHRvcA0KPiBnZW5pcnE6IEZsYWdzIG1pc21hdGNo
+IGlycSAxMy4gMDAwMTRjODMgKG1pcHNfcGVyZl9wbXUpIHZzLiAwMDAwMjAwMyAoa2V5cykNCj4g
+DQo+IE9uIFRQLUxpbmsgQXJjaGVyIEM3djQ6DQo+IA0KPiBDUFUwDQo+IDQ6ICAgICAgICAgIDAg
+ICAgICBNSVBTICAgNCAgMTkwMDAwMDAuZXRoDQo+IDU6ICAgICAgIDcxMzUgICAgICBNSVBTICAg
+NSAgMWEwMDAwMDAuZXRoDQo+IDc6ICAgICAgOTgzNzkgICAgICBNSVBTICAgNyAgdGltZXINCj4g
+ODogICAgICAgICAzMCAgICAgIE1JU0MgICAzICB0dHlTMA0KPiAxMjogICAgICA5MDAyOCAgICAg
+IElOVEMgICAwICBhdGg5aw0KPiAxMzogICAgICAgNTUyMCAgICAgIElOVEMgICAxICBlaGNpX2hj
+ZDp1c2IxDQo+IDE0OiAgICAgICA0NjIzICAgICAgSU5UQyAgIDIgIGVoY2lfaGNkOnVzYjINCj4g
+MTU6ICAgICAgMzI4NDQgIEFSNzI0WCBQQ0kgICAgMSAgYXRoMTBrX3BjaQ0KPiAxNjogICAgICAg
+ICAgMCAgZ3Bpby1hdGg3OSAgMTYgIGtleXMNCj4gMjM6ICAgICAgICAgIDAgIGdwaW8tYXRoNzkg
+IDIzICBrZXlzDQo+IA0KPiAkIHBlcmYgdG9wDQo+IGdlbmlycTogRmxhZ3MgbWlzbWF0Y2ggaXJx
+IDEzLiAwMDAxNGM4MCAobWlwc19wZXJmX3BtdSkgdnMuIDAwMDAwMDgwIChlaGNpX2hjZDp1c2Ix
+KQ0KPiANCj4gVGhpcyBwcm9ibGVtIGlzIGhhcHBlbmluZywgYmVjYXVzZSBjdXJyZW50bHkgc3Rh
+dGljYWxseSBhc3NpZ25lZCB2aXJ0dWFsDQo+IElSUSAxMyBmb3IgcGVyZm9ybWFuY2UgY291bnRl
+cnMgaXMgbm90IGNsYWltZWQgZHVyaW5nIHRoZSBpbml0aWFsaXphdGlvbg0KPiBvZiBNSVBTIFBN
+VSBkdXJpbmcgdGhlIGJvb3R1cCwgc28gdGhlIElSUSBzdWJzeXN0ZW0gZG9lc24ndCBrbm93LCB0
+aGF0DQo+IHRoaXMgaW50ZXJydXB0IGlzbid0IGF2YWlsYWJsZSBmb3IgZnVydGhlciB1c2UuDQo+
+IA0KPiBTbyB0aGlzIHBhdGNoIGZpeGVzIHRoZSBpc3N1ZSBieSBzaW1wbHkgYm9va2luZyBoYXJk
+d2FyZSBJUlEgNSBmb3IgTUlQUyBQTVUuDQo+IA0KPiBUZXN0ZWQtYnk6IEtldmluICdsZGlyJyBE
+YXJieXNoaXJlLUJyeWFudCA8bGRpckBkYXJieXNoaXJlLWJyeWFudC5tZS51az4NCj4gU2lnbmVk
+LW9mZi1ieTogUGV0ciDDhcKgdGV0aWFyIDx5bmV6ekB0cnVlLmN6Pg0KPiBBY2tlZC1ieTogSm9o
+biBDcmlzcGluIDxqb2huQHBocm96ZW4ub3JnPg0KPiBBY2tlZC1ieTogTWFyYyBaeW5naWVyIDxt
+YXJjLnp5bmdpZXJAYXJtLmNvbT4NCg0KQXBwbGllZCB0byBtaXBzLWZpeGVzLg0KDQpUaGFua3Ms
+DQogICAgUGF1bA0KDQpbIFRoaXMgbWVzc2FnZSB3YXMgYXV0by1nZW5lcmF0ZWQ7IGlmIHlvdSBi
+ZWxpZXZlIGFueXRoaW5nIGlzIGluY29ycmVjdA0KICB0aGVuIHBsZWFzZSBlbWFpbCBwYXVsLmJ1
+cnRvbkBtaXBzLmNvbSB0byByZXBvcnQgaXQuIF0NCg==

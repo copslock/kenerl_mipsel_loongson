@@ -2,100 +2,92 @@ Return-Path: <SRS0=Z6Mo=SS=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_MUTT autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,UNPARSEABLE_RELAY autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EEE04C282DA
-	for <linux-mips@archiver.kernel.org>; Tue, 16 Apr 2019 13:21:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6A5BC10F13
+	for <linux-mips@archiver.kernel.org>; Tue, 16 Apr 2019 14:02:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C166C2077C
-	for <linux-mips@archiver.kernel.org>; Tue, 16 Apr 2019 13:21:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1555420891;
-	bh=lQvlKkLoWQROchqf3jjmgxZhA79mmpKcJdrvVgfy49I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=YtxrSMtuMREk+DesZ2wg2DrR+Zcd0iYPrQM4Dyug9hsC3h5Ct8BH6bW9rmuTARFlb
-	 lIATt5uCvdGsFz3zEjVxiswLT9DZnEbV/j1TIIgg5hWBG67fVQNJ1ULm7r/uZkxXfZ
-	 5tVcBdOXu4jfxuceNjioZWWgwwNZJAZjJ7WMUcz0=
+	by mail.kernel.org (Postfix) with ESMTP id 921DC223D3
+	for <linux-mips@archiver.kernel.org>; Tue, 16 Apr 2019 14:02:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728083AbfDPNVT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 16 Apr 2019 09:21:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35912 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727841AbfDPNVS (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 16 Apr 2019 09:21:18 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 984B220821;
-        Tue, 16 Apr 2019 13:21:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1555420878;
-        bh=lQvlKkLoWQROchqf3jjmgxZhA79mmpKcJdrvVgfy49I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KCqQqc9q3lnd7540nAhm696oWBTotcCQYlyrjQntCRUOUa84ZufimlXgNArbcK16i
-         3dcpfdNyJrW/toSMgBhNKLYadLxu4hjmFP8HFTrgHzZT0PDTO/ZLUA1mJARV1CjUIh
-         EPBn4UrUDa+jwmI+1YBFnSzhJWX19cl42BX1hcEc=
-Date:   Tue, 16 Apr 2019 15:16:19 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Jiri Slaby <jslaby@suse.com>, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-        netdev@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-serial@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] mfd: ioc3: Add driver for SGI IOC3 chip
-Message-ID: <20190416131619.GE7406@kroah.com>
-References: <20190409154610.6735-1-tbogendoerfer@suse.de>
- <20190409154610.6735-3-tbogendoerfer@suse.de>
+        id S1729071AbfDPOCr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 16 Apr 2019 10:02:47 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:50572 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726215AbfDPOCr (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 16 Apr 2019 10:02:47 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: ezequiel)
+        with ESMTPSA id D2873281F9F
+Message-ID: <16b99f4040a1837bcdbf860d0e9517eb53002aed.camel@collabora.com>
+Subject: Re: [5.2][PATCH 0/3] Ingenic JZ47xx KMS driver
+From:   Ezequiel Garcia <ezequiel@collabora.com>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, devicetree@vger.kernel.org,
+        linux-mips@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 16 Apr 2019 11:02:35 -0300
+In-Reply-To: <1552304705.1929.0@crapouillou.net>
+References: <20190228220756.20262-1-paul@crapouillou.net>
+         <fce3f17981cda6a263abcce6b2902591e7984fa4.camel@collabora.com>
+         <1552304705.1929.0@crapouillou.net>
+Organization: Collabora
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190409154610.6735-3-tbogendoerfer@suse.de>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Tue, Apr 09, 2019 at 05:46:06PM +0200, Thomas Bogendoerfer wrote:
-> SGI IOC3 chip has integrated ethernet, keyboard and mouse interface.
-> It also supports connecting a SuperIO chip for serial and parallel
-> interfaces. IOC3 is used inside various SGI systemboards and add-on
-> cards with different equipped external interfaces.
+On Mon, 2019-03-11 at 12:45 +0100, Paul Cercueil wrote:
+> Hi Ezequiel,
 > 
-> Support for ethernet and serial interfaces were implemented inside
-> the network driver. This patchset moves out the not network related
-> parts to a new MFD driver, which takes care of card detection,
-> setup of platform devices and interrupt distribution for the subdevices.
+> On Mon, Mar 11, 2019 at 1:02 AM, Ezequiel Garcia 
+> <ezequiel@collabora.com> wrote:
+> > On Thu, 2019-02-28 at 19:07 -0300, Paul Cercueil wrote:
+> > >  Hi,
+> > > 
+> > >  This is a first attempt at a KMS driver for the JZ47xx MIPS SoCs by
+> > >  Ingenic. It is aimed to replace the aging jz4740-fb driver.
+> > > 
+> > >  The driver will later be updated with new features (overlays, TV-out
+> > >  etc.), that's why I didn't go with the simple/tiny DRM driver.
+> > > 
+> > >  The driver has been tested on the Ben Nanonote (JZ4740) and the
+> > >  RetroMini RS-90 (JZ4725B) handheld gaming console.
+> > > 
+> > 
+> > Does this support JZ4780? Or otherwise,
+> > is there any similarity with JZ4780 display controller?
+> > 
+> > Thanks,
+> > Eze
 > 
-> Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
-> ---
->  arch/mips/include/asm/sn/ioc3.h       |  345 +++---
->  arch/mips/sgi-ip27/ip27-timer.c       |   20 -
->  drivers/mfd/Kconfig                   |   13 +
->  drivers/mfd/Makefile                  |    1 +
->  drivers/mfd/ioc3.c                    |  802 ++++++++++++++
->  drivers/net/ethernet/sgi/Kconfig      |    4 +-
->  drivers/net/ethernet/sgi/ioc3-eth.c   | 1867 ++++++++++++---------------------
->  drivers/tty/serial/8250/8250_ioc3.c   |   98 ++
->  drivers/tty/serial/8250/Kconfig       |   11 +
->  drivers/tty/serial/8250/Makefile      |    1 +
->  include/linux/platform_data/ioc3eth.h |   15 +
->  11 files changed, 1762 insertions(+), 1415 deletions(-)
->  create mode 100644 drivers/mfd/ioc3.c
->  create mode 100644 drivers/tty/serial/8250/8250_ioc3.c
->  create mode 100644 include/linux/platform_data/ioc3eth.h
+> The JZ4780 LCD controller would in theory work with this driver, but
+> to test on the CI20 you'd need to add support for HDMI first.
+> 
 
-Serial portion:
+After reviewing a bit this driver and the JZ480 one on the CI20 repo,
+there seems to be some differences.
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To begin with, the JZ480 apparently has a new 8-word descriptor.
+
+The HDMI looks pretty much a Synopsys DW HDMI, mostly compatible
+with the dw-hdmi encoder.
+
+I'll try to put together some patches to enable JZ4780 support.
+Won't happen anytime soon, so if anyone wants to give it
+a shot, be my guest :-)
+
+Regards,
+Eze
+

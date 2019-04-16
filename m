@@ -2,108 +2,100 @@ Return-Path: <SRS0=Z6Mo=SS=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_MUTT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,USER_AGENT_MUTT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C1F8C282DA
-	for <linux-mips@archiver.kernel.org>; Tue, 16 Apr 2019 11:41:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EEE04C282DA
+	for <linux-mips@archiver.kernel.org>; Tue, 16 Apr 2019 13:21:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id DC1D62077C
-	for <linux-mips@archiver.kernel.org>; Tue, 16 Apr 2019 11:41:23 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C166C2077C
+	for <linux-mips@archiver.kernel.org>; Tue, 16 Apr 2019 13:21:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1555420891;
+	bh=lQvlKkLoWQROchqf3jjmgxZhA79mmpKcJdrvVgfy49I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=YtxrSMtuMREk+DesZ2wg2DrR+Zcd0iYPrQM4Dyug9hsC3h5Ct8BH6bW9rmuTARFlb
+	 lIATt5uCvdGsFz3zEjVxiswLT9DZnEbV/j1TIIgg5hWBG67fVQNJ1ULm7r/uZkxXfZ
+	 5tVcBdOXu4jfxuceNjioZWWgwwNZJAZjJ7WMUcz0=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729225AbfDPLlN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 16 Apr 2019 07:41:13 -0400
-Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:52938 "EHLO
-        foss.arm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726905AbfDPLlN (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 16 Apr 2019 07:41:13 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3AC77EBD;
-        Tue, 16 Apr 2019 04:41:12 -0700 (PDT)
-Received: from arrakis.emea.arm.com (arrakis.cambridge.arm.com [10.1.196.78])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7FF603F68F;
-        Tue, 16 Apr 2019 04:41:06 -0700 (PDT)
-Date:   Tue, 16 Apr 2019 12:41:04 +0100
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     linux-arch@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
+        id S1728083AbfDPNVT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 16 Apr 2019 09:21:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35912 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727841AbfDPNVS (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 16 Apr 2019 09:21:18 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 984B220821;
+        Tue, 16 Apr 2019 13:21:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1555420878;
+        bh=lQvlKkLoWQROchqf3jjmgxZhA79mmpKcJdrvVgfy49I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=KCqQqc9q3lnd7540nAhm696oWBTotcCQYlyrjQntCRUOUa84ZufimlXgNArbcK16i
+         3dcpfdNyJrW/toSMgBhNKLYadLxu4hjmFP8HFTrgHzZT0PDTO/ZLUA1mJARV1CjUIh
+         EPBn4UrUDa+jwmI+1YBFnSzhJWX19cl42BX1hcEc=
+Date:   Tue, 16 Apr 2019 15:16:19 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Firoz Khan <firoz.khan@linaro.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH] [v2] arch: add pidfd and io_uring syscalls everywhere
-Message-ID: <20190416114103.GB28994@arrakis.emea.arm.com>
-References: <20190415143007.2989285-1-arnd@arndb.de>
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Jiri Slaby <jslaby@suse.com>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+        netdev@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-serial@vger.kernel.org
+Subject: Re: [PATCH v2 2/4] mfd: ioc3: Add driver for SGI IOC3 chip
+Message-ID: <20190416131619.GE7406@kroah.com>
+References: <20190409154610.6735-1-tbogendoerfer@suse.de>
+ <20190409154610.6735-3-tbogendoerfer@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190415143007.2989285-1-arnd@arndb.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190409154610.6735-3-tbogendoerfer@suse.de>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, Apr 15, 2019 at 04:22:57PM +0200, Arnd Bergmann wrote:
-> Add the io_uring and pidfd_send_signal system calls to all architectures.
+On Tue, Apr 09, 2019 at 05:46:06PM +0200, Thomas Bogendoerfer wrote:
+> SGI IOC3 chip has integrated ethernet, keyboard and mouse interface.
+> It also supports connecting a SuperIO chip for serial and parallel
+> interfaces. IOC3 is used inside various SGI systemboards and add-on
+> cards with different equipped external interfaces.
 > 
-> These system calls are designed to handle both native and compat tasks,
-> so all entries are the same across architectures, only arm-compat and
-> the generic tale still use an old format.
+> Support for ethernet and serial interfaces were implemented inside
+> the network driver. This patchset moves out the not network related
+> parts to a new MFD driver, which takes care of card detection,
+> setup of platform devices and interrupt distribution for the subdevices.
 > 
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-> Acked-by: Heiko Carstens <heiko.carstens@de.ibm.com> (s390)
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 > ---
-> Changes since v1:
-> - fix s390 table
-> - use 'n64' tag in mips-n64 instead of common.
-> ---
->  arch/alpha/kernel/syscalls/syscall.tbl      | 4 ++++
->  arch/arm/tools/syscall.tbl                  | 4 ++++
->  arch/arm64/include/asm/unistd.h             | 2 +-
->  arch/arm64/include/asm/unistd32.h           | 8 ++++++++
->  arch/ia64/kernel/syscalls/syscall.tbl       | 4 ++++
->  arch/m68k/kernel/syscalls/syscall.tbl       | 4 ++++
->  arch/microblaze/kernel/syscalls/syscall.tbl | 4 ++++
->  arch/mips/kernel/syscalls/syscall_n32.tbl   | 4 ++++
->  arch/mips/kernel/syscalls/syscall_n64.tbl   | 4 ++++
->  arch/mips/kernel/syscalls/syscall_o32.tbl   | 4 ++++
->  arch/parisc/kernel/syscalls/syscall.tbl     | 4 ++++
->  arch/powerpc/kernel/syscalls/syscall.tbl    | 4 ++++
->  arch/s390/kernel/syscalls/syscall.tbl       | 4 ++++
->  arch/sh/kernel/syscalls/syscall.tbl         | 4 ++++
->  arch/sparc/kernel/syscalls/syscall.tbl      | 4 ++++
->  arch/xtensa/kernel/syscalls/syscall.tbl     | 4 ++++
->  16 files changed, 65 insertions(+), 1 deletion(-)
+>  arch/mips/include/asm/sn/ioc3.h       |  345 +++---
+>  arch/mips/sgi-ip27/ip27-timer.c       |   20 -
+>  drivers/mfd/Kconfig                   |   13 +
+>  drivers/mfd/Makefile                  |    1 +
+>  drivers/mfd/ioc3.c                    |  802 ++++++++++++++
+>  drivers/net/ethernet/sgi/Kconfig      |    4 +-
+>  drivers/net/ethernet/sgi/ioc3-eth.c   | 1867 ++++++++++++---------------------
+>  drivers/tty/serial/8250/8250_ioc3.c   |   98 ++
+>  drivers/tty/serial/8250/Kconfig       |   11 +
+>  drivers/tty/serial/8250/Makefile      |    1 +
+>  include/linux/platform_data/ioc3eth.h |   15 +
+>  11 files changed, 1762 insertions(+), 1415 deletions(-)
+>  create mode 100644 drivers/mfd/ioc3.c
+>  create mode 100644 drivers/tty/serial/8250/8250_ioc3.c
+>  create mode 100644 include/linux/platform_data/ioc3eth.h
 
-For arm64:
+Serial portion:
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>

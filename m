@@ -4,25 +4,25 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B962C10F12
-	for <linux-mips@archiver.kernel.org>; Wed, 17 Apr 2019 05:31:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 38785C10F12
+	for <linux-mips@archiver.kernel.org>; Wed, 17 Apr 2019 05:32:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 7492020872
-	for <linux-mips@archiver.kernel.org>; Wed, 17 Apr 2019 05:31:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0E85220872
+	for <linux-mips@archiver.kernel.org>; Wed, 17 Apr 2019 05:32:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725848AbfDQFbj (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 17 Apr 2019 01:31:39 -0400
-Received: from relay9-d.mail.gandi.net ([217.70.183.199]:56257 "EHLO
+        id S1729247AbfDQFcn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 17 Apr 2019 01:32:43 -0400
+Received: from relay9-d.mail.gandi.net ([217.70.183.199]:58599 "EHLO
         relay9-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725774AbfDQFbj (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 17 Apr 2019 01:31:39 -0400
+        with ESMTP id S1725848AbfDQFcn (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 17 Apr 2019 01:32:43 -0400
 X-Originating-IP: 79.86.19.127
 Received: from alex.numericable.fr (127.19.86.79.rev.sfr.net [79.86.19.127])
         (Authenticated sender: alex@ghiti.fr)
-        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 4BE7CFF804;
-        Wed, 17 Apr 2019 05:31:33 +0000 (UTC)
+        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id C815DFF80B;
+        Wed, 17 Apr 2019 05:32:37 +0000 (UTC)
 From:   Alexandre Ghiti <alex@ghiti.fr>
 To:     Andrew Morton <akpm@linux-foundation.org>
 Cc:     Christoph Hellwig <hch@lst.de>,
@@ -41,9 +41,9 @@ Cc:     Christoph Hellwig <hch@lst.de>,
         linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
         linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
         Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH v3 08/11] mips: Properly account for stack randomization and stack guard gap
-Date:   Wed, 17 Apr 2019 01:22:44 -0400
-Message-Id: <20190417052247.17809-9-alex@ghiti.fr>
+Subject: [PATCH v3 09/11] mips: Use STACK_TOP when computing mmap base address
+Date:   Wed, 17 Apr 2019 01:22:45 -0400
+Message-Id: <20190417052247.17809-10-alex@ghiti.fr>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190417052247.17809-1-alex@ghiti.fr>
 References: <20190417052247.17809-1-alex@ghiti.fr>
@@ -54,48 +54,36 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-This commit takes care of stack randomization and stack guard gap when
-computing mmap base address and checks if the task asked for randomization.
-This fixes the problem uncovered and not fixed for mips here:
-https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1429066.html
+mmap base address must be computed wrt stack top address, using TASK_SIZE
+is wrong since STACK_TOP and TASK_SIZE are not equivalent.
 
 Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 ---
- arch/mips/mm/mmap.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/mips/mm/mmap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/mips/mm/mmap.c b/arch/mips/mm/mmap.c
-index 2f616ebeb7e0..3ff82c6f7e24 100644
+index 3ff82c6f7e24..ffbe69f3a7d9 100644
 --- a/arch/mips/mm/mmap.c
 +++ b/arch/mips/mm/mmap.c
-@@ -21,8 +21,9 @@ unsigned long shm_align_mask = PAGE_SIZE - 1;	/* Sane caches */
- EXPORT_SYMBOL(shm_align_mask);
+@@ -22,7 +22,7 @@ EXPORT_SYMBOL(shm_align_mask);
  
  /* gap between mmap and stack */
--#define MIN_GAP (128*1024*1024UL)
--#define MAX_GAP ((TASK_SIZE)/6*5)
-+#define MIN_GAP		(128*1024*1024UL)
-+#define MAX_GAP		((TASK_SIZE)/6*5)
-+#define STACK_RND_MASK	(0x7ff >> (PAGE_SHIFT - 12))
+ #define MIN_GAP		(128*1024*1024UL)
+-#define MAX_GAP		((TASK_SIZE)/6*5)
++#define MAX_GAP		((STACK_TOP)/6*5)
+ #define STACK_RND_MASK	(0x7ff >> (PAGE_SHIFT - 12))
  
  static int mmap_is_legacy(struct rlimit *rlim_stack)
- {
-@@ -38,6 +39,15 @@ static int mmap_is_legacy(struct rlimit *rlim_stack)
- static unsigned long mmap_base(unsigned long rnd, struct rlimit *rlim_stack)
- {
- 	unsigned long gap = rlim_stack->rlim_cur;
-+	unsigned long pad = stack_guard_gap;
-+
-+	/* Account for stack randomization if necessary */
-+	if (current->flags & PF_RANDOMIZE)
-+		pad += (STACK_RND_MASK << PAGE_SHIFT);
-+
-+	/* Values close to RLIM_INFINITY can overflow. */
-+	if (gap + pad > gap)
-+		gap += pad;
+@@ -54,7 +54,7 @@ static unsigned long mmap_base(unsigned long rnd, struct rlimit *rlim_stack)
+ 	else if (gap > MAX_GAP)
+ 		gap = MAX_GAP;
  
- 	if (gap < MIN_GAP)
- 		gap = MIN_GAP;
+-	return PAGE_ALIGN(TASK_SIZE - gap - rnd);
++	return PAGE_ALIGN(STACK_TOP - gap - rnd);
+ }
+ 
+ #define COLOUR_ALIGN(addr, pgoff)				\
 -- 
 2.20.1
 

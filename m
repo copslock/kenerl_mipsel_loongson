@@ -2,145 +2,122 @@ Return-Path: <SRS0=rpqp=SU=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FSL_HELO_FAKE,MAILING_LIST_MULTI,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_MUTT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3060BC10F0B
-	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 06:09:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5401FC10F14
+	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 13:20:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 087F9205C9
-	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 06:09:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2517F217D7
+	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 13:20:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1555593658;
+	bh=tB6W23DqVoY0ovjvn+gfIFqrcvOuFPUUX6EhZ2Swf2Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=JEcuoIRLfdYfd0WH+JYBVRP9s/h7sfAhI4qzJmkIQk/wj4INNVHY2BXiOpEzoF9xp
+	 PTEazqDBlZ9lslW6rRcNoLvPd3gV1wkpSixMNzaxm6ucooSWxwgL56Dyj3RcyFNczc
+	 VGu+ZCwAbFE3Z/7VwIu85R1/04xFqXAQWSYzRU/E=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725876AbfDRGJQ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 18 Apr 2019 02:09:16 -0400
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:51853 "EHLO
-        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725773AbfDRGJQ (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 18 Apr 2019 02:09:16 -0400
-X-Originating-IP: 79.86.19.127
-Received: from [192.168.0.11] (127.19.86.79.rev.sfr.net [79.86.19.127])
-        (Authenticated sender: alex@ghiti.fr)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 0791E240008;
-        Thu, 18 Apr 2019 06:09:08 +0000 (UTC)
-Subject: Re: [PATCH v3 11/11] riscv: Make mmap allocation top-down by default
-To:     Kees Cook <keescook@chromium.org>
+        id S1731317AbfDRNUx (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 18 Apr 2019 09:20:53 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:33744 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727807AbfDRNUw (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 18 Apr 2019 09:20:52 -0400
+Received: by mail-wr1-f68.google.com with SMTP id k1so1780371wrw.0;
+        Thu, 18 Apr 2019 06:20:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=XQCHoAAFT5Z9bDRSYOBbJEBinvShFFVBSkUMOBYi/Tc=;
+        b=OBVI3mxBq7hJJ7GMq63UZAs5eDSNSQHVMQhmsRcAzOUlEvQybBl1shmYvk0PdKKK5/
+         0AT3aJ9peUWu6DDE2+uo/dmc7PEUAwXzlwkLRi6iJQAHlOzIPupYPzVxLR6BgJ1aoE8/
+         PaA7Uf6uU6WdoZEbRyIT6Bl8wnNCRk7UlthLWf1af5Bs/hdbglOXeyfrugNoRNZbu+ve
+         K6oedra3Ss9p/ADCD3fv4vNKJ1x2sNjXk8UGfrCFuaZT7pQkl/USfphp6YQaSoQn1qZZ
+         OJjlYQjkhJvXBlSdRxhmEm7YT/CUd/7rFK/KQcjGeGoFbZTeIJoWsQ6fLUy7H1fnUd8s
+         b6mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=XQCHoAAFT5Z9bDRSYOBbJEBinvShFFVBSkUMOBYi/Tc=;
+        b=HyAedJ13BSndJyNGMfLKRQ35i4vThDLmzI3hShhbYtODM/y/VId9Kt9S22Y0acdgQ8
+         n4ii6hTWqXEbmR5bLiMYB5V4ulQa9fGzkY4arMvxhAsb1xmZK/0mASRwxmZBoo+XEH9L
+         Qhr8qOwzc/jg+w2Yxh3z8ysyUeKShRMcPFoBYBi+EVYmPUsmRwlN+tTJJPmYhkRcN4as
+         DUX+Z9/7d1Ok51P7/I1foRT2T/dKWcnnSvhKFZMrgEr2gXeooYRh81X/hgDXv9CHpzfE
+         aWCmxJp88yuOrrjzl4SqfyNKbWd5DgbCFJbXXlmRntbO2mzlJpMDUD/hm8tfWv0quQiZ
+         3epA==
+X-Gm-Message-State: APjAAAUBXnIn3sfLDDOVXwY6OkmT5h2hykRKX/nOhWUTWFcxRZEX1BrC
+        P1qc0nUQiLwzTn9jrrndrEQ=
+X-Google-Smtp-Source: APXvYqzJ/ySJ+z0VjPKhlTQyMQFU1iuU9BCAPDw4iU0TqindWFDaAlZ0lD4Q/VA3V2aWhbWS1mn+aA==
+X-Received: by 2002:a05:6000:1111:: with SMTP id z17mr282634wrw.103.1555593650693;
+        Thu, 18 Apr 2019 06:20:50 -0700 (PDT)
+Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
+        by smtp.gmail.com with ESMTPSA id r18sm3417736wme.18.2019.04.18.06.20.49
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 18 Apr 2019 06:20:49 -0700 (PDT)
+Date:   Thu, 18 Apr 2019 15:20:47 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Palmer Dabbelt <palmer@sifive.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        Linux-MM <linux-mm@kvack.org>
-References: <20190417052247.17809-1-alex@ghiti.fr>
- <20190417052247.17809-12-alex@ghiti.fr>
- <CAGXu5jJcQzDQGy907H0WXu-q1sPQaXgjuFbHHW60ajUuksZb3A@mail.gmail.com>
-From:   Alex Ghiti <alex@ghiti.fr>
-Message-ID: <23d2a38d-363a-929c-5296-c2f8c3b7d1b4@ghiti.fr>
-Date:   Thu, 18 Apr 2019 02:09:08 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.4.0
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Ingo Molnar <mingo@redhat.com>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
+        x86@kernel.org, linux-mtd@lists.infradead.org,
+        Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, Dave Hansen <dave@sr71.net>,
+        linuxppc-dev@lists.ozlabs.org,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] compiler: allow all arches to enable
+ CONFIG_OPTIMIZE_INLINING
+Message-ID: <20190418132047.GA21430@gmail.com>
+References: <1553062828-27798-1-git-send-email-yamada.masahiro@socionext.com>
 MIME-Version: 1.0
-In-Reply-To: <CAGXu5jJcQzDQGy907H0WXu-q1sPQaXgjuFbHHW60ajUuksZb3A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: sv-FI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1553062828-27798-1-git-send-email-yamada.masahiro@socionext.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On 4/18/19 1:31 AM, Kees Cook wrote:
-> On Wed, Apr 17, 2019 at 12:34 AM Alexandre Ghiti <alex@ghiti.fr> wrote:
->> In order to avoid wasting user address space by using bottom-up mmap
->> allocation scheme, prefer top-down scheme when possible.
->>
->> Before:
->> root@qemuriscv64:~# cat /proc/self/maps
->> 00010000-00016000 r-xp 00000000 fe:00 6389       /bin/cat.coreutils
->> 00016000-00017000 r--p 00005000 fe:00 6389       /bin/cat.coreutils
->> 00017000-00018000 rw-p 00006000 fe:00 6389       /bin/cat.coreutils
->> 00018000-00039000 rw-p 00000000 00:00 0          [heap]
->> 1555556000-155556d000 r-xp 00000000 fe:00 7193   /lib/ld-2.28.so
->> 155556d000-155556e000 r--p 00016000 fe:00 7193   /lib/ld-2.28.so
->> 155556e000-155556f000 rw-p 00017000 fe:00 7193   /lib/ld-2.28.so
->> 155556f000-1555570000 rw-p 00000000 00:00 0
->> 1555570000-1555572000 r-xp 00000000 00:00 0      [vdso]
->> 1555574000-1555576000 rw-p 00000000 00:00 0
->> 1555576000-1555674000 r-xp 00000000 fe:00 7187   /lib/libc-2.28.so
->> 1555674000-1555678000 r--p 000fd000 fe:00 7187   /lib/libc-2.28.so
->> 1555678000-155567a000 rw-p 00101000 fe:00 7187   /lib/libc-2.28.so
->> 155567a000-15556a0000 rw-p 00000000 00:00 0
->> 3fffb90000-3fffbb1000 rw-p 00000000 00:00 0      [stack]
->>
->> After:
->> root@qemuriscv64:~# cat /proc/self/maps
->> 00010000-00016000 r-xp 00000000 fe:00 6389       /bin/cat.coreutils
->> 00016000-00017000 r--p 00005000 fe:00 6389       /bin/cat.coreutils
->> 00017000-00018000 rw-p 00006000 fe:00 6389       /bin/cat.coreutils
->> 00018000-00039000 rw-p 00000000 00:00 0          [heap]
->> 3ff7eb6000-3ff7ed8000 rw-p 00000000 00:00 0
->> 3ff7ed8000-3ff7fd6000 r-xp 00000000 fe:00 7187   /lib/libc-2.28.so
->> 3ff7fd6000-3ff7fda000 r--p 000fd000 fe:00 7187   /lib/libc-2.28.so
->> 3ff7fda000-3ff7fdc000 rw-p 00101000 fe:00 7187   /lib/libc-2.28.so
->> 3ff7fdc000-3ff7fe2000 rw-p 00000000 00:00 0
->> 3ff7fe4000-3ff7fe6000 r-xp 00000000 00:00 0      [vdso]
->> 3ff7fe6000-3ff7ffd000 r-xp 00000000 fe:00 7193   /lib/ld-2.28.so
->> 3ff7ffd000-3ff7ffe000 r--p 00016000 fe:00 7193   /lib/ld-2.28.so
->> 3ff7ffe000-3ff7fff000 rw-p 00017000 fe:00 7193   /lib/ld-2.28.so
->> 3ff7fff000-3ff8000000 rw-p 00000000 00:00 0
->> 3fff888000-3fff8a9000 rw-p 00000000 00:00 0      [stack]
->>
->> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
->> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> Reviewed-by: Kees Cook <keescook@chromium.org>
 
+* Masahiro Yamada <yamada.masahiro@socionext.com> wrote:
 
-Thank you very much for all your comments,
+> Commit 60a3cdd06394 ("x86: add optimized inlining") introduced
+> CONFIG_OPTIMIZE_INLINING, but it has been available only for x86.
+> 
+> The idea is obviously arch-agnostic although we need some code fixups.
+> This commit moves the config entry from arch/x86/Kconfig.debug to
+> lib/Kconfig.debug so that all architectures (except MIPS for now) can
+> benefit from it.
+> 
+> At this moment, I added "depends on !MIPS" because fixing 0day bot reports
+> for MIPS was complex to me.
+> 
+> I tested this patch on my arm/arm64 boards.
+> 
+> This can make a huge difference in kernel image size especially when
+> CONFIG_OPTIMIZE_FOR_SIZE is enabled.
+> 
+> For example, I got 3.5% smaller arm64 kernel image for v5.1-rc1.
+> 
+>   dec       file
+>   18983424  arch/arm64/boot/Image.before
+>   18321920  arch/arm64/boot/Image.after
+> 
+> This also slightly improves the "Kernel hacking" Kconfig menu.
+> Commit e61aca5158a8 ("Merge branch 'kconfig-diet' from Dave Hansen')
+> mentioned this config option would be a good fit in the "compiler option"
+> menu. I did so.
 
-Alex
+No objections against moving it from x86 code to generic code.
 
+Thanks,
 
->
-> -Kees
->
->> ---
->>   arch/riscv/Kconfig | 11 +++++++++++
->>   1 file changed, 11 insertions(+)
->>
->> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
->> index eb56c82d8aa1..f5897e0dbc1c 100644
->> --- a/arch/riscv/Kconfig
->> +++ b/arch/riscv/Kconfig
->> @@ -49,6 +49,17 @@ config RISCV
->>          select GENERIC_IRQ_MULTI_HANDLER
->>          select ARCH_HAS_PTE_SPECIAL
->>          select HAVE_EBPF_JIT if 64BIT
->> +       select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT if MMU
->> +       select HAVE_ARCH_MMAP_RND_BITS
->> +
->> +config ARCH_MMAP_RND_BITS_MIN
->> +       default 18
->> +
->> +# max bits determined by the following formula:
->> +#  VA_BITS - PAGE_SHIFT - 3
->> +config ARCH_MMAP_RND_BITS_MAX
->> +       default 33 if 64BIT # SV48 based
->> +       default 18
->>
->>   config MMU
->>          def_bool y
->> --
->> 2.20.1
->>
->
+	Ingo

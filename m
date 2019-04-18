@@ -7,63 +7,63 @@ X-Spam-Status: No, score=-7.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DF715C10F0E
-	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 05:31:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E5645C10F0B
+	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 05:39:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id A2E9D217F9
-	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 05:31:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A730821479
+	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 05:39:09 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="fB72dc+b"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="eKENM7Vl"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726013AbfDRFbs (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 18 Apr 2019 01:31:48 -0400
-Received: from mail-vk1-f193.google.com ([209.85.221.193]:36508 "EHLO
-        mail-vk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725886AbfDRFbr (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 18 Apr 2019 01:31:47 -0400
-Received: by mail-vk1-f193.google.com with SMTP id w140so216632vkd.3
-        for <linux-mips@vger.kernel.org>; Wed, 17 Apr 2019 22:31:46 -0700 (PDT)
+        id S1726873AbfDRFjJ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 18 Apr 2019 01:39:09 -0400
+Received: from mail-ua1-f67.google.com ([209.85.222.67]:38851 "EHLO
+        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725836AbfDRFjJ (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 18 Apr 2019 01:39:09 -0400
+Received: by mail-ua1-f67.google.com with SMTP id t15so386625uao.5
+        for <linux-mips@vger.kernel.org>; Wed, 17 Apr 2019 22:39:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=wdpJY50vmVyqQ1PqbhbBydmQ/xHEoQMQSJOB3RmLp0Q=;
-        b=fB72dc+b7uA3lZK0fM9coqknIBIeertJI7ikFyB/vi7+UhDzB4cM6BaPZBCgwdkMbP
-         I6OuKXmEOkVuVbufdWR2exS5gdkih7q9m6sKqDvBv1Q9ecvRbsRvxC0p09WYg4f8ZR9Y
-         lqwGyEe02y/u1sfKZHci1wzyCEwvxabZUD3T4=
+        bh=I49wvlYq7D5JlBzIeYIfPLcNWvP+zL3hNSqD7FZ7LkY=;
+        b=eKENM7VlYogZiu9LKw1HvlthciY0efM2NRwfvhdnWH5UYz7IY9RnPN4yev4Q+SyM9W
+         YdiBLhyiVJeHQ9+caxTPQbD0pWn+V0WnnHXoprAgGsJToXR/dAfi6b1L2J3wzGcPrtzu
+         FLBCSBvonUpQIBIMq//yfXcrvRxsfl6ta/QN4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=wdpJY50vmVyqQ1PqbhbBydmQ/xHEoQMQSJOB3RmLp0Q=;
-        b=HTi+1UFBEL8WUW9MQBF+fr9EnYt8BGgMxqjpcNYBpZ/L8d127Y7Pn2tMpBZmQOZf04
-         4Y3ERFqQp9b4GPRma72Cz+MLrNkFXjJhKTbv+KTVVz72Xlg/kd4uF9Ow5Zl6nISodM4W
-         9DfBKLD2EvJi93VwW3QsBe0edetv0jtFUTPenZE5ZQAzMsOOIm/dqceJr8M8FPRK7icD
-         p4ta8nTJlnJSnrEr0Ng1o+3aZxCBXeLZXodgzkfZxOaDAUba+6iAgJlNwtZU7N1IrM4B
-         knmBA062o787BWE7VRlsL7rUvQBFXiIikdkPYNn5cOL5smyJ8GDlPovF0mR+XndTVSWd
-         eJHw==
-X-Gm-Message-State: APjAAAWgv1YMIQhjj6J1+CN7ITfJ0Ffd5hmJxHM5sB/ClRewAOjrMI3t
-        x/k7RdNTIgaZ4i6N8AIn4T7ky7lPWcw=
-X-Google-Smtp-Source: APXvYqw/7eUCrZE16zhtvBUrFaZyPbfVMOv0xjRHXK9NShU0TfiY4yp6xZgVra9n9mtjxXGhY/HG0A==
-X-Received: by 2002:a1f:900d:: with SMTP id s13mr50196070vkd.41.1555565505133;
-        Wed, 17 Apr 2019 22:31:45 -0700 (PDT)
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com. [209.85.221.177])
-        by smtp.gmail.com with ESMTPSA id p6sm399343vke.16.2019.04.17.22.31.43
+        bh=I49wvlYq7D5JlBzIeYIfPLcNWvP+zL3hNSqD7FZ7LkY=;
+        b=l/pZ5PIOsr/t0bJnwtG7Tt3p2tpCw6bhd0MFuaMBgRFVwdzEBYC0oBauHquR12oPyV
+         wehv+tkmhveOTMQCHuBzrRMmotMNya8bnvpKE7witZi/zXaLZnmLAwLUbkNSPiNZoh5z
+         myIpSL96TiN847O2SB6dkRSXRHnoopM7Yd5US2JByVU8eLJVfFzkfVxOks66Ok80sJPc
+         RRPJqNCfRyQl/MZAfPe/HuXMwo6nFB0ImqY/mbdnIjKBf1KF7TnhD+4OifAxz63h6USw
+         FJLQGs+GCGnrRbudwv9IuL8VShp5BmJe8261/an+IHtCoTihL5iVV1ifnUGqVXV4OPRz
+         xIrw==
+X-Gm-Message-State: APjAAAVQfKhkHlgHrf60qoEDsm4ulasCkcG2QwembHCPdTwVMjaIRWQM
+        9109bZU271gGMacnRPlRkp/DePbtB2s=
+X-Google-Smtp-Source: APXvYqzObCFcAwSIg1rzP9NVJeTLArS6JQN2/4knwsTu8wNqou3ZPYmZufI1aTUpG52Qkl/PnqXYDg==
+X-Received: by 2002:ab0:6947:: with SMTP id c7mr26306230uas.51.1555565947134;
+        Wed, 17 Apr 2019 22:39:07 -0700 (PDT)
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com. [209.85.221.180])
+        by smtp.gmail.com with ESMTPSA id y72sm317461vky.29.2019.04.17.22.39.06
         for <linux-mips@vger.kernel.org>
         (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Wed, 17 Apr 2019 22:31:44 -0700 (PDT)
-Received: by mail-vk1-f177.google.com with SMTP id x84so221600vkd.1
-        for <linux-mips@vger.kernel.org>; Wed, 17 Apr 2019 22:31:43 -0700 (PDT)
-X-Received: by 2002:a1f:3458:: with SMTP id b85mr50194265vka.4.1555565503193;
- Wed, 17 Apr 2019 22:31:43 -0700 (PDT)
+        Wed, 17 Apr 2019 22:39:06 -0700 (PDT)
+Received: by mail-vk1-f180.google.com with SMTP id h127so207665vkd.12
+        for <linux-mips@vger.kernel.org>; Wed, 17 Apr 2019 22:39:06 -0700 (PDT)
+X-Received: by 2002:a1f:3c83:: with SMTP id j125mr2514890vka.92.1555565530282;
+ Wed, 17 Apr 2019 22:32:10 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190417052247.17809-1-alex@ghiti.fr> <20190417052247.17809-11-alex@ghiti.fr>
-In-Reply-To: <20190417052247.17809-11-alex@ghiti.fr>
+References: <20190417052247.17809-1-alex@ghiti.fr> <20190417052247.17809-12-alex@ghiti.fr>
+In-Reply-To: <20190417052247.17809-12-alex@ghiti.fr>
 From:   Kees Cook <keescook@chromium.org>
-Date:   Thu, 18 Apr 2019 00:31:32 -0500
-X-Gmail-Original-Message-ID: <CAGXu5jJSgHKjrQ2Z-aKofqroUDBjPnLOjiORw9pHT_cANhAqpg@mail.gmail.com>
-Message-ID: <CAGXu5jJSgHKjrQ2Z-aKofqroUDBjPnLOjiORw9pHT_cANhAqpg@mail.gmail.com>
-Subject: Re: [PATCH v3 10/11] mips: Use generic mmap top-down layout
+Date:   Thu, 18 Apr 2019 00:31:58 -0500
+X-Gmail-Original-Message-ID: <CAGXu5jJcQzDQGy907H0WXu-q1sPQaXgjuFbHHW60ajUuksZb3A@mail.gmail.com>
+Message-ID: <CAGXu5jJcQzDQGy907H0WXu-q1sPQaXgjuFbHHW60ajUuksZb3A@mail.gmail.com>
+Subject: Re: [PATCH v3 11/11] riscv: Make mmap allocation top-down by default
 To:     Alexandre Ghiti <alex@ghiti.fr>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Christoph Hellwig <hch@lst.de>,
@@ -89,138 +89,80 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Wed, Apr 17, 2019 at 12:33 AM Alexandre Ghiti <alex@ghiti.fr> wrote:
+On Wed, Apr 17, 2019 at 12:34 AM Alexandre Ghiti <alex@ghiti.fr> wrote:
 >
-> mips uses a top-down layout by default that fits the generic functions.
-> At the same time, this commit allows to fix problem uncovered
-> and not fixed for mips here:
-> https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1429066.html
+> In order to avoid wasting user address space by using bottom-up mmap
+> allocation scheme, prefer top-down scheme when possible.
+>
+> Before:
+> root@qemuriscv64:~# cat /proc/self/maps
+> 00010000-00016000 r-xp 00000000 fe:00 6389       /bin/cat.coreutils
+> 00016000-00017000 r--p 00005000 fe:00 6389       /bin/cat.coreutils
+> 00017000-00018000 rw-p 00006000 fe:00 6389       /bin/cat.coreutils
+> 00018000-00039000 rw-p 00000000 00:00 0          [heap]
+> 1555556000-155556d000 r-xp 00000000 fe:00 7193   /lib/ld-2.28.so
+> 155556d000-155556e000 r--p 00016000 fe:00 7193   /lib/ld-2.28.so
+> 155556e000-155556f000 rw-p 00017000 fe:00 7193   /lib/ld-2.28.so
+> 155556f000-1555570000 rw-p 00000000 00:00 0
+> 1555570000-1555572000 r-xp 00000000 00:00 0      [vdso]
+> 1555574000-1555576000 rw-p 00000000 00:00 0
+> 1555576000-1555674000 r-xp 00000000 fe:00 7187   /lib/libc-2.28.so
+> 1555674000-1555678000 r--p 000fd000 fe:00 7187   /lib/libc-2.28.so
+> 1555678000-155567a000 rw-p 00101000 fe:00 7187   /lib/libc-2.28.so
+> 155567a000-15556a0000 rw-p 00000000 00:00 0
+> 3fffb90000-3fffbb1000 rw-p 00000000 00:00 0      [stack]
+>
+> After:
+> root@qemuriscv64:~# cat /proc/self/maps
+> 00010000-00016000 r-xp 00000000 fe:00 6389       /bin/cat.coreutils
+> 00016000-00017000 r--p 00005000 fe:00 6389       /bin/cat.coreutils
+> 00017000-00018000 rw-p 00006000 fe:00 6389       /bin/cat.coreutils
+> 00018000-00039000 rw-p 00000000 00:00 0          [heap]
+> 3ff7eb6000-3ff7ed8000 rw-p 00000000 00:00 0
+> 3ff7ed8000-3ff7fd6000 r-xp 00000000 fe:00 7187   /lib/libc-2.28.so
+> 3ff7fd6000-3ff7fda000 r--p 000fd000 fe:00 7187   /lib/libc-2.28.so
+> 3ff7fda000-3ff7fdc000 rw-p 00101000 fe:00 7187   /lib/libc-2.28.so
+> 3ff7fdc000-3ff7fe2000 rw-p 00000000 00:00 0
+> 3ff7fe4000-3ff7fe6000 r-xp 00000000 00:00 0      [vdso]
+> 3ff7fe6000-3ff7ffd000 r-xp 00000000 fe:00 7193   /lib/ld-2.28.so
+> 3ff7ffd000-3ff7ffe000 r--p 00016000 fe:00 7193   /lib/ld-2.28.so
+> 3ff7ffe000-3ff7fff000 rw-p 00017000 fe:00 7193   /lib/ld-2.28.so
+> 3ff7fff000-3ff8000000 rw-p 00000000 00:00 0
+> 3fff888000-3fff8a9000 rw-p 00000000 00:00 0      [stack]
 >
 > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
 
-Acked-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
 -Kees
 
 > ---
->  arch/mips/Kconfig                 |  1 +
->  arch/mips/include/asm/processor.h |  5 ---
->  arch/mips/mm/mmap.c               | 67 -------------------------------
->  3 files changed, 1 insertion(+), 72 deletions(-)
+>  arch/riscv/Kconfig | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 >
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 4a5f5b0ee9a9..ec2f07561e4d 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -14,6 +14,7 @@ config MIPS
->         select ARCH_USE_CMPXCHG_LOCKREF if 64BIT
->         select ARCH_USE_QUEUED_RWLOCKS
->         select ARCH_USE_QUEUED_SPINLOCKS
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index eb56c82d8aa1..f5897e0dbc1c 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -49,6 +49,17 @@ config RISCV
+>         select GENERIC_IRQ_MULTI_HANDLER
+>         select ARCH_HAS_PTE_SPECIAL
+>         select HAVE_EBPF_JIT if 64BIT
 > +       select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT if MMU
->         select ARCH_WANT_IPC_PARSE_VERSION
->         select BUILDTIME_EXTABLE_SORT
->         select CLONE_BACKWARDS
-> diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-> index aca909bd7841..fba18d4a9190 100644
-> --- a/arch/mips/include/asm/processor.h
-> +++ b/arch/mips/include/asm/processor.h
-> @@ -29,11 +29,6 @@
+> +       select HAVE_ARCH_MMAP_RND_BITS
+> +
+> +config ARCH_MMAP_RND_BITS_MIN
+> +       default 18
+> +
+> +# max bits determined by the following formula:
+> +#  VA_BITS - PAGE_SHIFT - 3
+> +config ARCH_MMAP_RND_BITS_MAX
+> +       default 33 if 64BIT # SV48 based
+> +       default 18
 >
->  extern unsigned int vced_count, vcei_count;
->
-> -/*
-> - * MIPS does have an arch_pick_mmap_layout()
-> - */
-> -#define HAVE_ARCH_PICK_MMAP_LAYOUT 1
-> -
->  #ifdef CONFIG_32BIT
->  #ifdef CONFIG_KVM_GUEST
->  /* User space process size is limited to 1GB in KVM Guest Mode */
-> diff --git a/arch/mips/mm/mmap.c b/arch/mips/mm/mmap.c
-> index ffbe69f3a7d9..61e65a69bb09 100644
-> --- a/arch/mips/mm/mmap.c
-> +++ b/arch/mips/mm/mmap.c
-> @@ -20,43 +20,6 @@
->  unsigned long shm_align_mask = PAGE_SIZE - 1;  /* Sane caches */
->  EXPORT_SYMBOL(shm_align_mask);
->
-> -/* gap between mmap and stack */
-> -#define MIN_GAP                (128*1024*1024UL)
-> -#define MAX_GAP                ((STACK_TOP)/6*5)
-> -#define STACK_RND_MASK (0x7ff >> (PAGE_SHIFT - 12))
-> -
-> -static int mmap_is_legacy(struct rlimit *rlim_stack)
-> -{
-> -       if (current->personality & ADDR_COMPAT_LAYOUT)
-> -               return 1;
-> -
-> -       if (rlim_stack->rlim_cur == RLIM_INFINITY)
-> -               return 1;
-> -
-> -       return sysctl_legacy_va_layout;
-> -}
-> -
-> -static unsigned long mmap_base(unsigned long rnd, struct rlimit *rlim_stack)
-> -{
-> -       unsigned long gap = rlim_stack->rlim_cur;
-> -       unsigned long pad = stack_guard_gap;
-> -
-> -       /* Account for stack randomization if necessary */
-> -       if (current->flags & PF_RANDOMIZE)
-> -               pad += (STACK_RND_MASK << PAGE_SHIFT);
-> -
-> -       /* Values close to RLIM_INFINITY can overflow. */
-> -       if (gap + pad > gap)
-> -               gap += pad;
-> -
-> -       if (gap < MIN_GAP)
-> -               gap = MIN_GAP;
-> -       else if (gap > MAX_GAP)
-> -               gap = MAX_GAP;
-> -
-> -       return PAGE_ALIGN(STACK_TOP - gap - rnd);
-> -}
-> -
->  #define COLOUR_ALIGN(addr, pgoff)                              \
->         ((((addr) + shm_align_mask) & ~shm_align_mask) +        \
->          (((pgoff) << PAGE_SHIFT) & shm_align_mask))
-> @@ -154,36 +117,6 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
->                         addr0, len, pgoff, flags, DOWN);
->  }
->
-> -unsigned long arch_mmap_rnd(void)
-> -{
-> -       unsigned long rnd;
-> -
-> -#ifdef CONFIG_COMPAT
-> -       if (TASK_IS_32BIT_ADDR)
-> -               rnd = get_random_long() & ((1UL << mmap_rnd_compat_bits) - 1);
-> -       else
-> -#endif /* CONFIG_COMPAT */
-> -               rnd = get_random_long() & ((1UL << mmap_rnd_bits) - 1);
-> -
-> -       return rnd << PAGE_SHIFT;
-> -}
-> -
-> -void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
-> -{
-> -       unsigned long random_factor = 0UL;
-> -
-> -       if (current->flags & PF_RANDOMIZE)
-> -               random_factor = arch_mmap_rnd();
-> -
-> -       if (mmap_is_legacy(rlim_stack)) {
-> -               mm->mmap_base = TASK_UNMAPPED_BASE + random_factor;
-> -               mm->get_unmapped_area = arch_get_unmapped_area;
-> -       } else {
-> -               mm->mmap_base = mmap_base(random_factor, rlim_stack);
-> -               mm->get_unmapped_area = arch_get_unmapped_area_topdown;
-> -       }
-> -}
-> -
->  static inline unsigned long brk_rnd(void)
->  {
->         unsigned long rnd = get_random_long();
+>  config MMU
+>         def_bool y
 > --
 > 2.20.1
 >

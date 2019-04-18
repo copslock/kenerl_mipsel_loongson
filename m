@@ -2,141 +2,168 @@ Return-Path: <SRS0=rpqp=SU=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CA11C10F14
-	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 20:57:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42DA0C10F0E
+	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 21:27:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5BA4C217D7
-	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 20:57:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1555621052;
-	bh=7JLL91FUIyHT7pGG0sl4mCrtu002Sx+Zn9GWrjbnwLA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=JSLQOXxllZzgE15uwJCDAALPhgKn5aWwlS4IAEwVOhIBqd0mn4DEaqH6pbdDscdJg
-	 m/ulLnGx302gRk3C/61FL1fKswiXoyXjjyltE4rTXwnBEz3kYZnxpmtNzlES7VTyFA
-	 8dYSEZY34dKBDN1Sle3KFvmRFRNJjRU+udt4T9f0=
+	by mail.kernel.org (Postfix) with ESMTP id 136A72054F
+	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 21:27:13 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="ana1Xhhz"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389949AbfDRU5c (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 18 Apr 2019 16:57:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33088 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388710AbfDRU5b (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 18 Apr 2019 16:57:31 -0400
-Received: from localhost (unknown [69.71.4.100])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E927420869;
-        Thu, 18 Apr 2019 20:57:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1555621050;
-        bh=7JLL91FUIyHT7pGG0sl4mCrtu002Sx+Zn9GWrjbnwLA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tTKD3ykZdubnTOyoPm1VZdT9zmaJOyP0WzXF9ImHnafJD4TrJ/a2F9vW9d5555BTm
-         3F6U1qPtznnoz24PUshdLzY4nZnJgJKnVG4cpzzehWOgtnV4qw1LX3gCoQlFbYtrXv
-         9RODjVJsN1F+sWI4Jd3gRdGGWxq++Bj2RH6uALWQ=
-Date:   Thu, 18 Apr 2019 15:57:26 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
+        id S1731565AbfDRV1N (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 18 Apr 2019 17:27:13 -0400
+Received: from mail-eopbgr750135.outbound.protection.outlook.com ([40.107.75.135]:3589
+        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728264AbfDRV1N (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 18 Apr 2019 17:27:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QTkpgF6MsdgM/3ek6kB91g2L6guOHq+ZH/z9h01KWbc=;
+ b=ana1Xhhzu7Hz0IFrEkCAwEkDkTQsgImcguCMCnydl+XhBbfTZnkqsKFlYTD3mC9abDEBGFaWFnoo0gzQy1z4Z4XyDP9M4yt/pydlX4TuEwl4JnjS8wLZRxQlmEe/mtasK7hjxzsj/Zf6pSDMY5Vkh9h26+ZvktF7WP1qoIVuTHg=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1424.namprd22.prod.outlook.com (10.172.63.18) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1813.12; Thu, 18 Apr 2019 21:27:08 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b9d6:bf19:ec58:2765]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b9d6:bf19:ec58:2765%7]) with mapi id 15.20.1813.013; Thu, 18 Apr 2019
+ 21:27:08 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Alexandre Ghiti <alex@ghiti.fr>
+CC:     Andrew Morton <akpm@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org
-Subject: Re: [PATCH v3 00/3] MIPS: SGI-IP27 rework part2
-Message-ID: <20190418205726.GB126710@google.com>
-References: <20190319154755.31049-1-tbogendoerfer@suse.de>
+        Palmer Dabbelt <palmer@sifive.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>
+Subject: Re: [PATCH v3 08/11] mips: Properly account for stack randomization
+ and stack guard gap
+Thread-Topic: [PATCH v3 08/11] mips: Properly account for stack randomization
+ and stack guard gap
+Thread-Index: AQHU9N7WOMS/C9RNx0iyqk626UOBSKZCcS8A
+Date:   Thu, 18 Apr 2019 21:27:08 +0000
+Message-ID: <20190418212701.dpymnwuki3g7rox2@pburton-laptop>
+References: <20190417052247.17809-1-alex@ghiti.fr>
+ <20190417052247.17809-9-alex@ghiti.fr>
+In-Reply-To: <20190417052247.17809-9-alex@ghiti.fr>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR02CA0046.namprd02.prod.outlook.com
+ (2603:10b6:a03:54::23) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [67.207.99.198]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 33f5353b-dda9-4910-9587-08d6c4449c56
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);SRVR:MWHPR2201MB1424;
+x-ms-traffictypediagnostic: MWHPR2201MB1424:
+x-ms-exchange-purlcount: 1
+x-microsoft-antispam-prvs: <MWHPR2201MB1424F170E35DAE843ADE1FEFC1260@MWHPR2201MB1424.namprd22.prod.outlook.com>
+x-forefront-prvs: 0011612A55
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(39850400004)(346002)(136003)(376002)(366004)(396003)(189003)(199004)(58126008)(97736004)(6246003)(8936002)(486006)(54906003)(8676002)(81156014)(7416002)(6116002)(25786009)(3846002)(81166006)(229853002)(33716001)(2906002)(6916009)(11346002)(316002)(66556008)(66476007)(73956011)(6486002)(446003)(52116002)(1076003)(6436002)(476003)(4326008)(44832011)(6506007)(5660300002)(386003)(42882007)(14454004)(26005)(76176011)(14444005)(256004)(99286004)(53936002)(9686003)(15650500001)(6306002)(6512007)(305945005)(186003)(71190400001)(71200400001)(7736002)(478600001)(966005)(102836004)(68736007)(66066001)(66446008)(64756008)(66946007);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1424;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: 8f4+5nWoBkDj6d1MLlkvJBbL7HDwiQVIXpbaTMbUbalRzhboOrsRxZoUH949lssGtYMTSYy3jxy5+j1nM/rKWn4tVwzvbGdScU9RVhY8wbH6pY12EcqIYEe/gTCLQxzWEmMzWSuSGX0GaUU+cLuTuwXR0hsJCvKOaupWI0YjGxfS3zmOoL82DAhFZa/t778WMCols7AhxapTvBIIQTsLvgWrfQH16GSsxKmGHr4qgowyOKg9YUK66JY/8Yil7SsqzfembPwfLkmIT/BRxLxyK8yFRlhTiLaHNIiCnc1cOfGDWG2TWZt92W+a20PnZs/3W2xUGl3T5g9sEZ6kUUQiRfw7K2sggJJ/3JydxgDKBWStRA6Jqn0RcBkNUscy7D614xZHrygsPek1twK/Igwi/u8uXfVsDQ/VNP4h4M/c07o=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <7903A9C444F5B74FB67DD91CFCCC1456@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190319154755.31049-1-tbogendoerfer@suse.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 33f5353b-dda9-4910-9587-08d6c4449c56
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Apr 2019 21:27:08.3517
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1424
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Thomas,
+Hi Alexandre,
 
-On Tue, Mar 19, 2019 at 04:47:49PM +0100, Thomas Bogendoerfer wrote:
-> SGI IP27 (Origin/Onyx2) and SGI IP30 (Octane) have a similair
-> architecture and share some hardware (ioc3/bridge). To share
-> the software parts this patchset reworks SGI IP27 interrupt
-> and pci bridge code. By using features Linux gained during the
-> many years since SGI IP27 code was integrated this even results
-> in code reduction and IMHO cleaner code.
-> 
-> Tests have been done on a two module O200 (4 CPUs) and an
-> Origin 2000 (8 CPUs).
+On Wed, Apr 17, 2019 at 01:22:44AM -0400, Alexandre Ghiti wrote:
+> This commit takes care of stack randomization and stack guard gap when
+> computing mmap base address and checks if the task asked for randomizatio=
+n.
+> This fixes the problem uncovered and not fixed for mips here:
+> https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1429066.html
+>=20
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 
-Thanks for doing all this work!  It seems like it basically converts
-some of the SGI PCI code to the structure typical of current host
-controller drivers and moves it to drivers/pci/controller, which all
-seems great to me.
+For patches 8-10:
 
-The patches were kind of in limbo as far as Patchwork.  Lorenzo
-handles the native host controller drivers, so I just delegated them
-to him, so now they should be on his radar.
+    Acked-by: Paul Burton <paul.burton@mips.com>
 
-Bjorn
+Thanks for improving this,
 
-> My next step in integrating SGI IP30 support is splitting ioc3eth
-> into a MFD and subdevice drivers, which will be submitted soon.
-> 
-> Changes in v3:
-> 
-> - dropped patches accepted by Paul
-> - moved IP27 specific __phys_to_dma/__dma_to_phys into its own file
-> - moved pcibios_to_node into IP27 specific file
-> - moved PCI bus address resources setup out of pci-xtalk code into
->   IP27 specific code
-> - dropped bit from hub_irq_data and use hwirq from irq_data
-> - introduced intr_addr for setting up bridge interrupts (IP30 preperation)
-> 
-> Changes in v2:
-> 
-> - replaced HUB_L/HUB_S by __raw_readq/__raw_writeq
-> - removed union bridge_ate
-> - replaced remaing fields in slice_data by per_cpu data
-> - use generic_handle_irq instead of do_IRQ
-> - use hierarchy irq domain for stacking bridge and hub interrupt
-> - moved __dma_to_phys/__phy_to_dma to mach-ip27/dma-direct.h
-> - use dev_to_node() for pcibus_to_node() implementation
-> 
-> Thomas Bogendoerfer (3):
->   MIPS: SGI-IP27: move IP27 specific code out of pci-ip27.c into new
->     file
->   MIPS: SGI-IP27: use generic PCI driver
->   MIPS: SGI-IP27: abstract chipset irq from bridge
-> 
->  arch/mips/Kconfig                          |   3 +
->  arch/mips/include/asm/mach-ip27/topology.h |  11 +-
->  arch/mips/include/asm/pci/bridge.h         |  14 +-
->  arch/mips/include/asm/sn/irq_alloc.h       |  11 +
->  arch/mips/include/asm/xtalk/xtalk.h        |   9 -
->  arch/mips/pci/Makefile                     |   1 -
->  arch/mips/pci/ops-bridge.c                 | 302 --------------
->  arch/mips/pci/pci-ip27.c                   | 214 ----------
->  arch/mips/sgi-ip27/Makefile                |   4 +-
->  arch/mips/sgi-ip27/ip27-init.c             |   2 +
->  arch/mips/sgi-ip27/ip27-irq.c              | 191 ++++-----
->  arch/mips/sgi-ip27/ip27-pci.c              |  30 ++
->  arch/mips/sgi-ip27/ip27-xtalk.c            |  61 ++-
->  drivers/pci/controller/Kconfig             |   3 +
->  drivers/pci/controller/Makefile            |   1 +
->  drivers/pci/controller/pci-xtalk-bridge.c  | 610 +++++++++++++++++++++++++++++
->  include/linux/platform_data/xtalk-bridge.h |  22 ++
->  17 files changed, 822 insertions(+), 667 deletions(-)
->  create mode 100644 arch/mips/include/asm/sn/irq_alloc.h
->  delete mode 100644 arch/mips/pci/ops-bridge.c
->  delete mode 100644 arch/mips/pci/pci-ip27.c
->  create mode 100644 arch/mips/sgi-ip27/ip27-pci.c
->  create mode 100644 drivers/pci/controller/pci-xtalk-bridge.c
->  create mode 100644 include/linux/platform_data/xtalk-bridge.h
-> 
-> -- 
-> 2.13.7
-> 
+    Paul
+
+> ---
+>  arch/mips/mm/mmap.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/mips/mm/mmap.c b/arch/mips/mm/mmap.c
+> index 2f616ebeb7e0..3ff82c6f7e24 100644
+> --- a/arch/mips/mm/mmap.c
+> +++ b/arch/mips/mm/mmap.c
+> @@ -21,8 +21,9 @@ unsigned long shm_align_mask =3D PAGE_SIZE - 1;	/* Sane=
+ caches */
+>  EXPORT_SYMBOL(shm_align_mask);
+> =20
+>  /* gap between mmap and stack */
+> -#define MIN_GAP (128*1024*1024UL)
+> -#define MAX_GAP ((TASK_SIZE)/6*5)
+> +#define MIN_GAP		(128*1024*1024UL)
+> +#define MAX_GAP		((TASK_SIZE)/6*5)
+> +#define STACK_RND_MASK	(0x7ff >> (PAGE_SHIFT - 12))
+> =20
+>  static int mmap_is_legacy(struct rlimit *rlim_stack)
+>  {
+> @@ -38,6 +39,15 @@ static int mmap_is_legacy(struct rlimit *rlim_stack)
+>  static unsigned long mmap_base(unsigned long rnd, struct rlimit *rlim_st=
+ack)
+>  {
+>  	unsigned long gap =3D rlim_stack->rlim_cur;
+> +	unsigned long pad =3D stack_guard_gap;
+> +
+> +	/* Account for stack randomization if necessary */
+> +	if (current->flags & PF_RANDOMIZE)
+> +		pad +=3D (STACK_RND_MASK << PAGE_SHIFT);
+> +
+> +	/* Values close to RLIM_INFINITY can overflow. */
+> +	if (gap + pad > gap)
+> +		gap +=3D pad;
+> =20
+>  	if (gap < MIN_GAP)
+>  		gap =3D MIN_GAP;
+> --=20
+> 2.20.1
+>=20

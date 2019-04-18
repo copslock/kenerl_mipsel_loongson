@@ -2,130 +2,141 @@ Return-Path: <SRS0=rpqp=SU=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.7 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 553D2C10F0E
-	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 14:26:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CA11C10F14
+	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 20:57:32 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 23C10206B6
-	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 14:26:09 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="FBq8bKtw"
+	by mail.kernel.org (Postfix) with ESMTP id 5BA4C217D7
+	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 20:57:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1555621052;
+	bh=7JLL91FUIyHT7pGG0sl4mCrtu002Sx+Zn9GWrjbnwLA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=JSLQOXxllZzgE15uwJCDAALPhgKn5aWwlS4IAEwVOhIBqd0mn4DEaqH6pbdDscdJg
+	 m/ulLnGx302gRk3C/61FL1fKswiXoyXjjyltE4rTXwnBEz3kYZnxpmtNzlES7VTyFA
+	 8dYSEZY34dKBDN1Sle3KFvmRFRNJjRU+udt4T9f0=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389132AbfDRO0F (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 18 Apr 2019 10:26:05 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:41673 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733192AbfDRO0F (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 18 Apr 2019 10:26:05 -0400
-Received: by mail-vs1-f65.google.com with SMTP id g187so1250122vsc.8
-        for <linux-mips@vger.kernel.org>; Thu, 18 Apr 2019 07:26:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8eV2vUS51UMgePfSSxCuXJhq0Gtq0aUu2F6TTcKETz0=;
-        b=FBq8bKtw8jKgNvkAesGOL5wEhVUfIvOVZLawNU9Os5filzXur33S5KXLGi3G59zEmJ
-         MNxbw1dkanZJyl6+Bh/X7hbbi4DCuJUT+N82rjvvIQb1baWE98HINAsh1KYITkSEbQsv
-         WkyhKK/r8PDat9cP9eHISsDMRa0TxCyHkKPk0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8eV2vUS51UMgePfSSxCuXJhq0Gtq0aUu2F6TTcKETz0=;
-        b=iPcABJL0Zy5XL4A0lnFQs+5mOLvjikE1zE+3RlNe6oV0r/nbByGD7q9VEC2RD24Lew
-         Sotp7DknWKseG/clW0pu/KXauPQm+PYwfboe13lWakO2xRuhXE/UqMWdp52nLajww3Wo
-         RuQvbuhLmzASXQktjJ+FVrOLvxL6J52zAux96li4jMoF2kYDfsnzm0cB8owtXIMsOXn3
-         GgfUU8Bk+l9vKVcBYF6lJaPYkr031k2QfMRo+IE/qRD9SB+Jzz9WOEC5wqhd+Lq71ZIY
-         X8emNd3K6FfYNtIl0uek7sXCf9m42hhi80BDlE9e6/cNFrTCOUehrKkG9YLuiJlFSQaJ
-         iFbw==
-X-Gm-Message-State: APjAAAW7gnmRh0XzDB7MxcunlnQqeTu2Ked+5YTyrdWnFSU4foRJhWNy
-        8desRBU8yMM2dSXXFT6U5H29Qa7J0kg=
-X-Google-Smtp-Source: APXvYqzzbUcN4eUKBiHjHjpaS11RN/Ke/s+R2V2aAsMmxHpzF7orNBNDr0rGUI+AGc9qwvGvWYwgQQ==
-X-Received: by 2002:a67:f849:: with SMTP id b9mr30082920vsp.188.1555597564508;
-        Thu, 18 Apr 2019 07:26:04 -0700 (PDT)
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com. [209.85.221.178])
-        by smtp.gmail.com with ESMTPSA id u6sm1285387vke.54.2019.04.18.07.26.04
-        for <linux-mips@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Thu, 18 Apr 2019 07:26:04 -0700 (PDT)
-Received: by mail-vk1-f178.google.com with SMTP id x2so486649vkx.13
-        for <linux-mips@vger.kernel.org>; Thu, 18 Apr 2019 07:26:04 -0700 (PDT)
-X-Received: by 2002:a1f:2e07:: with SMTP id u7mr50481033vku.44.1555597170338;
- Thu, 18 Apr 2019 07:19:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190417052247.17809-1-alex@ghiti.fr> <20190417052247.17809-5-alex@ghiti.fr>
- <CAGXu5j+NV7nfQ044kvsqqSrWpuXH5J6aZEbvg7YpxyBFjdAHyw@mail.gmail.com> <fd2b02b3-5872-ccf6-9f52-53f692fba02d@ghiti.fr>
-In-Reply-To: <fd2b02b3-5872-ccf6-9f52-53f692fba02d@ghiti.fr>
-From:   Kees Cook <keescook@chromium.org>
-Date:   Thu, 18 Apr 2019 09:19:18 -0500
-X-Gmail-Original-Message-ID: <CAGXu5j+NkQ+nwRShuKeHMwuy6++3x0QMS9djE=wUzUUtAkVf3g@mail.gmail.com>
-Message-ID: <CAGXu5j+NkQ+nwRShuKeHMwuy6++3x0QMS9djE=wUzUUtAkVf3g@mail.gmail.com>
-Subject: Re: [PATCH v3 04/11] arm64, mm: Move generic mmap layout functions to mm
-To:     Alex Ghiti <alex@ghiti.fr>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
+        id S2389949AbfDRU5c (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 18 Apr 2019 16:57:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33088 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388710AbfDRU5b (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 18 Apr 2019 16:57:31 -0400
+Received: from localhost (unknown [69.71.4.100])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E927420869;
+        Thu, 18 Apr 2019 20:57:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1555621050;
+        bh=7JLL91FUIyHT7pGG0sl4mCrtu002Sx+Zn9GWrjbnwLA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=tTKD3ykZdubnTOyoPm1VZdT9zmaJOyP0WzXF9ImHnafJD4TrJ/a2F9vW9d5555BTm
+         3F6U1qPtznnoz24PUshdLzY4nZnJgJKnVG4cpzzehWOgtnV4qw1LX3gCoQlFbYtrXv
+         9RODjVJsN1F+sWI4Jd3gRdGGWxq++Bj2RH6uALWQ=
+Date:   Thu, 18 Apr 2019 15:57:26 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Palmer Dabbelt <palmer@sifive.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        Linux-MM <linux-mm@kvack.org>,
-        Christoph Hellwig <hch@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org
+Subject: Re: [PATCH v3 00/3] MIPS: SGI-IP27 rework part2
+Message-ID: <20190418205726.GB126710@google.com>
+References: <20190319154755.31049-1-tbogendoerfer@suse.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190319154755.31049-1-tbogendoerfer@suse.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, Apr 18, 2019 at 12:55 AM Alex Ghiti <alex@ghiti.fr> wrote:
-> Regarding the help text, I agree that it does not seem to be frequent to
-> place
-> comment above config like that, I'll let Christoph and you decide what's
-> best. And I'll
-> add the possibility for the arch to define its own STACK_RND_MASK.
+Hi Thomas,
 
-Yeah, I think it's very helpful to spell out the requirements for new
-architectures with these kinds of features in the help text (see
-SECCOMP_FILTER for example).
+On Tue, Mar 19, 2019 at 04:47:49PM +0100, Thomas Bogendoerfer wrote:
+> SGI IP27 (Origin/Onyx2) and SGI IP30 (Octane) have a similair
+> architecture and share some hardware (ioc3/bridge). To share
+> the software parts this patchset reworks SGI IP27 interrupt
+> and pci bridge code. By using features Linux gained during the
+> many years since SGI IP27 code was integrated this even results
+> in code reduction and IMHO cleaner code.
+> 
+> Tests have been done on a two module O200 (4 CPUs) and an
+> Origin 2000 (8 CPUs).
 
-> > I think CONFIG_ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT should select
-> > CONFIG_ARCH_HAS_ELF_RANDOMIZE. It would mean moving
->
->
-> I don't think we should link those 2 features together: an architecture
-> may want
-> topdown mmap and don't care about randomization right ?
+Thanks for doing all this work!  It seems like it basically converts
+some of the SGI PCI code to the structure typical of current host
+controller drivers and moves it to drivers/pci/controller, which all
+seems great to me.
 
-Given that the mmap randomization and stack randomization are already
-coming along for the ride, it seems weird to make brk randomization an
-optional feature (especially since all the of the architectures you're
-converting include it). I'd also like these kinds of security features
-to be available by default. So, I think one patch to adjust the MIPS
-brk randomization entropy and then you can just include it in this
-move.
+The patches were kind of in limbo as far as Patchwork.  Lorenzo
+handles the native host controller drivers, so I just delegated them
+to him, so now they should be on his radar.
 
-> Actually, I had to add those ifdefs for mmap_rnd_compat_bits, not
-> is_compat_task.
+Bjorn
 
-Oh! In that case, use CONFIG_HAVE_ARCH_MMAP_RND_BITS. :) Actually,
-what would be maybe cleaner would be to add mmap_rnd_bits_min/max
-consts set to 0 for the non-CONFIG_HAVE_ARCH_MMAP_RND_BITS case at the
-top of mm/mmap.c.
-
-I really like this clean-up! I think we can move x86 to it too without
-too much pain. :)
-
--- 
-Kees Cook
+> My next step in integrating SGI IP30 support is splitting ioc3eth
+> into a MFD and subdevice drivers, which will be submitted soon.
+> 
+> Changes in v3:
+> 
+> - dropped patches accepted by Paul
+> - moved IP27 specific __phys_to_dma/__dma_to_phys into its own file
+> - moved pcibios_to_node into IP27 specific file
+> - moved PCI bus address resources setup out of pci-xtalk code into
+>   IP27 specific code
+> - dropped bit from hub_irq_data and use hwirq from irq_data
+> - introduced intr_addr for setting up bridge interrupts (IP30 preperation)
+> 
+> Changes in v2:
+> 
+> - replaced HUB_L/HUB_S by __raw_readq/__raw_writeq
+> - removed union bridge_ate
+> - replaced remaing fields in slice_data by per_cpu data
+> - use generic_handle_irq instead of do_IRQ
+> - use hierarchy irq domain for stacking bridge and hub interrupt
+> - moved __dma_to_phys/__phy_to_dma to mach-ip27/dma-direct.h
+> - use dev_to_node() for pcibus_to_node() implementation
+> 
+> Thomas Bogendoerfer (3):
+>   MIPS: SGI-IP27: move IP27 specific code out of pci-ip27.c into new
+>     file
+>   MIPS: SGI-IP27: use generic PCI driver
+>   MIPS: SGI-IP27: abstract chipset irq from bridge
+> 
+>  arch/mips/Kconfig                          |   3 +
+>  arch/mips/include/asm/mach-ip27/topology.h |  11 +-
+>  arch/mips/include/asm/pci/bridge.h         |  14 +-
+>  arch/mips/include/asm/sn/irq_alloc.h       |  11 +
+>  arch/mips/include/asm/xtalk/xtalk.h        |   9 -
+>  arch/mips/pci/Makefile                     |   1 -
+>  arch/mips/pci/ops-bridge.c                 | 302 --------------
+>  arch/mips/pci/pci-ip27.c                   | 214 ----------
+>  arch/mips/sgi-ip27/Makefile                |   4 +-
+>  arch/mips/sgi-ip27/ip27-init.c             |   2 +
+>  arch/mips/sgi-ip27/ip27-irq.c              | 191 ++++-----
+>  arch/mips/sgi-ip27/ip27-pci.c              |  30 ++
+>  arch/mips/sgi-ip27/ip27-xtalk.c            |  61 ++-
+>  drivers/pci/controller/Kconfig             |   3 +
+>  drivers/pci/controller/Makefile            |   1 +
+>  drivers/pci/controller/pci-xtalk-bridge.c  | 610 +++++++++++++++++++++++++++++
+>  include/linux/platform_data/xtalk-bridge.h |  22 ++
+>  17 files changed, 822 insertions(+), 667 deletions(-)
+>  create mode 100644 arch/mips/include/asm/sn/irq_alloc.h
+>  delete mode 100644 arch/mips/pci/ops-bridge.c
+>  delete mode 100644 arch/mips/pci/pci-ip27.c
+>  create mode 100644 arch/mips/sgi-ip27/ip27-pci.c
+>  create mode 100644 drivers/pci/controller/pci-xtalk-bridge.c
+>  create mode 100644 include/linux/platform_data/xtalk-bridge.h
+> 
+> -- 
+> 2.13.7
+> 

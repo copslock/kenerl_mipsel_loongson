@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-7.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56DEEC10F0E
-	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 04:32:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AFB6C10F0B
+	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 04:42:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 259622184B
-	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 04:32:35 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 543032183E
+	for <linux-mips@archiver.kernel.org>; Thu, 18 Apr 2019 04:42:33 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="BwFdgFLF"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="OLkbJU7m"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725710AbfDREce (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 18 Apr 2019 00:32:34 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:42926 "EHLO
+        id S1725888AbfDREmd (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 18 Apr 2019 00:42:33 -0400
+Received: from mail-vs1-f66.google.com ([209.85.217.66]:40737 "EHLO
         mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725987AbfDREcd (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 18 Apr 2019 00:32:33 -0400
-Received: by mail-vs1-f66.google.com with SMTP id f15so443655vsk.9
-        for <linux-mips@vger.kernel.org>; Wed, 17 Apr 2019 21:32:33 -0700 (PDT)
+        with ESMTP id S1725883AbfDREmc (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 18 Apr 2019 00:42:32 -0400
+Received: by mail-vs1-f66.google.com with SMTP id f22so457742vso.7
+        for <linux-mips@vger.kernel.org>; Wed, 17 Apr 2019 21:42:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=emqG7/19kpW5wZ57vs/jCWwiZdoRZXGDohb1D974Avc=;
-        b=BwFdgFLFNee7q4d/odil7gkB/UOuVM/QIlnvE7TGVcPxV0znLQ4z7fs87fH9FD/p2Q
-         QIWn2YByOZWf2cz5EWUgLnTt8H1YHdlzqE3vWASVSstFIxPSA4Jhvnkwf4hkz5pNBDia
-         3hMlCG7M0QDEQlArREt5/8jUB1Ed/r+jW9qXM=
+        bh=92tRgfUMbeMv1ITsQnVX2nfQxbImxEmC6NtEESfsrL8=;
+        b=OLkbJU7m0JSpwXyWqa9ZSVBZbJJbsitwwGD9ZFTANpCONTXMGZ81AhxDTno9r38sEv
+         Z0JotjuwKOUss922IFDFo/63cZ+UAJRNvTAAAwjPU190WnPbTuipbvAcYF0az0veXucS
+         uACiUuIuiBILnxrE6ReQLiWsvSB24QasvXBQc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=emqG7/19kpW5wZ57vs/jCWwiZdoRZXGDohb1D974Avc=;
-        b=EXjK95D/XPt5zIVJbyjDz7VzZuJct+EhsMJKWi+fyrwhcdZIGd9EYO1d1Xc3sO/ywE
-         6IrMbnpW2IZhyqePlgWhwXUkoRrGXeEkOCXNuALPp4I2bgxE+8foUApRmbztO7XVXVNb
-         lLJzPhsZM7KJgNEZIeK+LFZJTQy2sukodBqX4rktIK2SoSes3Ckzjyhn3IM0HkX3cGbm
-         SlP3GA6OtpNTTWXm6b3YAMUumF2+jw5l8Z3OWBBZK86C4tjdKp99LWc2ellLm2QWvmT0
-         Z8Eb79/DvCMPSib+KDCeNTlMaf/W0fevULamsi1AsIc6kzne6m6Mw/LeQw2F8phiGy+s
-         vOrw==
-X-Gm-Message-State: APjAAAV/IJ+pTrxik5ZUo7Wz6oqR6WbkmlA10yDVbCGyBUbHjYqnU3oK
-        EiAkq21IffE4KqUMgPPZqN1BBCBGVqA=
-X-Google-Smtp-Source: APXvYqyx052ED9G9p+XbJjtjRDk747O4yF3mUvZuOlDua2XuSl8p4KZpuusgx9XjmBP54Xv+qrDMtw==
-X-Received: by 2002:a67:7e90:: with SMTP id z138mr49758433vsc.204.1555561951900;
-        Wed, 17 Apr 2019 21:32:31 -0700 (PDT)
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com. [209.85.217.48])
-        by smtp.gmail.com with ESMTPSA id c204sm472530vkd.14.2019.04.17.21.32.29
+        bh=92tRgfUMbeMv1ITsQnVX2nfQxbImxEmC6NtEESfsrL8=;
+        b=Upgc++dDyssrrvvjLKO2+6Nuy4JfUL3VNeXxXthEvl7393EinSLDywI8NhdQCyrPU2
+         XvJM6kW2mV2JREnsxIDLD7wmUULX7YEkS7mkwrvnGtGSaiKEbFkxl8GakfXkexb+6L3l
+         RYE0Uf54uu3fC1dNn6Xdz0kUfKlwUZLQcp7mxkxeGP+Urva/NrWwyxhA1pSAnRNJqNUa
+         fwwlauaYyEFmS+RgVH/ufMW2gl2r7V3ud6bx+S2OFQDZbbuV46Ba0r5bDEUUcQKLsaaC
+         kLWnoQAfZ1lHKufRJ4UbdCKwI5Qur7anxCy7IHW7Fv64Qkopex6CkIdJaOEqbDaDC95F
+         ob7A==
+X-Gm-Message-State: APjAAAXf/uzWab9FPa4+P5P869GflYP2YVf9dIQZ555I4fcUMWYHwcwj
+        MUe1kPpkPe6qorepR4dM6znug/YqOQs=
+X-Google-Smtp-Source: APXvYqwT4baoeKYwPk6CHkXWg7GXv9z+QrAWDintRI9Y8vjTwq9eLZYuyAodZwSjkSTVbgOJRcFQOw==
+X-Received: by 2002:a67:fc90:: with SMTP id x16mr2504363vsp.219.1555562551651;
+        Wed, 17 Apr 2019 21:42:31 -0700 (PDT)
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com. [209.85.217.51])
+        by smtp.gmail.com with ESMTPSA id r63sm243213vsc.15.2019.04.17.21.42.31
         for <linux-mips@vger.kernel.org>
         (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Wed, 17 Apr 2019 21:32:30 -0700 (PDT)
-Received: by mail-vs1-f48.google.com with SMTP id s2so455792vsi.5
-        for <linux-mips@vger.kernel.org>; Wed, 17 Apr 2019 21:32:29 -0700 (PDT)
-X-Received: by 2002:a67:bc13:: with SMTP id t19mr2517845vsn.222.1555561949440;
- Wed, 17 Apr 2019 21:32:29 -0700 (PDT)
+        Wed, 17 Apr 2019 21:42:31 -0700 (PDT)
+Received: by mail-vs1-f51.google.com with SMTP id f22so457726vso.7
+        for <linux-mips@vger.kernel.org>; Wed, 17 Apr 2019 21:42:31 -0700 (PDT)
+X-Received: by 2002:a67:7c8a:: with SMTP id x132mr50675686vsc.172.1555562232106;
+ Wed, 17 Apr 2019 21:37:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190417052247.17809-1-alex@ghiti.fr> <20190417052247.17809-3-alex@ghiti.fr>
-In-Reply-To: <20190417052247.17809-3-alex@ghiti.fr>
+References: <20190417052247.17809-1-alex@ghiti.fr> <20190417052247.17809-4-alex@ghiti.fr>
+In-Reply-To: <20190417052247.17809-4-alex@ghiti.fr>
 From:   Kees Cook <keescook@chromium.org>
-Date:   Wed, 17 Apr 2019 23:32:17 -0500
-X-Gmail-Original-Message-ID: <CAGXu5jKVa2YgAkWH1e26kxd2j6C4WsJ38+Z3K1z7JRvr_jDX6Q@mail.gmail.com>
-Message-ID: <CAGXu5jKVa2YgAkWH1e26kxd2j6C4WsJ38+Z3K1z7JRvr_jDX6Q@mail.gmail.com>
-Subject: Re: [PATCH v3 02/11] arm64: Make use of is_compat_task instead of
- hardcoding this test
+Date:   Wed, 17 Apr 2019 23:37:00 -0500
+X-Gmail-Original-Message-ID: <CAGXu5jKo26zXw=jfKSzr_pnfx5Zux+fVbY7V9bJwEMApDcFi8w@mail.gmail.com>
+Message-ID: <CAGXu5jKo26zXw=jfKSzr_pnfx5Zux+fVbY7V9bJwEMApDcFi8w@mail.gmail.com>
+Subject: Re: [PATCH v3 03/11] arm64: Consider stack randomization for mmap
+ base only when necessary
 To:     Alexandre Ghiti <alex@ghiti.fr>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Christoph Hellwig <hch@lst.de>,
@@ -90,12 +90,13 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Wed, Apr 17, 2019 at 12:25 AM Alexandre Ghiti <alex@ghiti.fr> wrote:
+On Wed, Apr 17, 2019 at 12:26 AM Alexandre Ghiti <alex@ghiti.fr> wrote:
 >
-> Each architecture has its own way to determine if a task is a compat task,
-> by using is_compat_task in arch_mmap_rnd, it allows more genericity and
-> then it prepares its moving to mm/.
->
+> Do not offset mmap base address because of stack randomization if
+> current task does not want randomization.
+
+Maybe mention that this makes this logic match the existing x86 behavior too?
+
 > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 
 Acked-by: Kees Cook <keescook@chromium.org>
@@ -103,22 +104,26 @@ Acked-by: Kees Cook <keescook@chromium.org>
 -Kees
 
 > ---
->  arch/arm64/mm/mmap.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/arm64/mm/mmap.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 >
 > diff --git a/arch/arm64/mm/mmap.c b/arch/arm64/mm/mmap.c
-> index 842c8a5fcd53..ed4f9915f2b8 100644
+> index ed4f9915f2b8..ac89686c4af8 100644
 > --- a/arch/arm64/mm/mmap.c
 > +++ b/arch/arm64/mm/mmap.c
-> @@ -54,7 +54,7 @@ unsigned long arch_mmap_rnd(void)
->         unsigned long rnd;
+> @@ -65,7 +65,11 @@ unsigned long arch_mmap_rnd(void)
+>  static unsigned long mmap_base(unsigned long rnd, struct rlimit *rlim_stack)
+>  {
+>         unsigned long gap = rlim_stack->rlim_cur;
+> -       unsigned long pad = (STACK_RND_MASK << PAGE_SHIFT) + stack_guard_gap;
+> +       unsigned long pad = stack_guard_gap;
+> +
+> +       /* Account for stack randomization if necessary */
+> +       if (current->flags & PF_RANDOMIZE)
+> +               pad += (STACK_RND_MASK << PAGE_SHIFT);
 >
->  #ifdef CONFIG_COMPAT
-> -       if (test_thread_flag(TIF_32BIT))
-> +       if (is_compat_task())
->                 rnd = get_random_long() & ((1UL << mmap_rnd_compat_bits) - 1);
->         else
->  #endif
+>         /* Values close to RLIM_INFINITY can overflow. */
+>         if (gap + pad > gap)
 > --
 > 2.20.1
 >

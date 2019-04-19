@@ -7,36 +7,36 @@ X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 761E2C282DF
-	for <linux-mips@archiver.kernel.org>; Fri, 19 Apr 2019 18:22:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E149C282E0
+	for <linux-mips@archiver.kernel.org>; Fri, 19 Apr 2019 18:23:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 46BA6222AF
-	for <linux-mips@archiver.kernel.org>; Fri, 19 Apr 2019 18:22:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 231CE222AF
+	for <linux-mips@archiver.kernel.org>; Fri, 19 Apr 2019 18:23:09 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=nifty.com header.i=@nifty.com header.b="oudVdW/d"
+	dkim=pass (2048-bit key) header.d=nifty.com header.i=@nifty.com header.b="LZ5W5Sbt"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727833AbfDSSWy (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 19 Apr 2019 14:22:54 -0400
-Received: from condef-09.nifty.com ([202.248.20.74]:54152 "EHLO
-        condef-09.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727580AbfDSSWw (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 19 Apr 2019 14:22:52 -0400
-Received: from conuserg-08.nifty.com ([10.126.8.71])by condef-09.nifty.com with ESMTP id x3J9nQSm030507;
-        Fri, 19 Apr 2019 18:49:26 +0900
+        id S1727046AbfDSSWV (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 19 Apr 2019 14:22:21 -0400
+Received: from condef-08.nifty.com ([202.248.20.73]:19737 "EHLO
+        condef-08.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727205AbfDSSWU (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 19 Apr 2019 14:22:20 -0400
+Received: from conuserg-08.nifty.com ([10.126.8.71])by condef-08.nifty.com with ESMTP id x3J9nRpa012747;
+        Fri, 19 Apr 2019 18:49:27 +0900
 Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
-        by conuserg-08.nifty.com with ESMTP id x3J9mDiQ012304;
-        Fri, 19 Apr 2019 18:48:21 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com x3J9mDiQ012304
+        by conuserg-08.nifty.com with ESMTP id x3J9mDiR012304;
+        Fri, 19 Apr 2019 18:48:22 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com x3J9mDiR012304
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1555667302;
-        bh=i5XCWis3VrTykYK/RrX/WLSMvw74LO5onG7SxOwG69A=;
+        s=dec2015msa; t=1555667303;
+        bh=may15rFpYiMjCv7Gx5d6Hnsbnx9+yCkdoijkrZ87+8A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oudVdW/dFWq56OuDzP6kKUzuEWhB1LghoeXto+rXOPNib4DV9Uy/SJlJzj1AbmWfp
-         mevr0XhyqB2vZq4Cz+Z1v2JvWwOv56OiugvEABew3D+o/TOnkAQFO0IulE/o2RPA/B
-         +sTZx4hUEh4VtZpZbGYRBLePR5ICQudFoYOaeslkPILaHXz1Ak62JsBLFHuo6nXW+A
-         HdImamYXzb7Yk06Xdrpl/c4BLwIZGHF/XfL1anllWbvNDOtJizhoIHVpekzfvHeQsK
-         kLoe+3N8CTYNLyxpT4B5He8gmcUsZrbdL7Q+2LWqM5b83Cr/r8gBn0MoV7tumFH5RV
-         2DmcgtWPSyNuw==
+        b=LZ5W5SbtA5B2oGV0h5lwznB9JKhiilqmHNUldJhrjUQTSZY9vxebvU3V7wW56NkbJ
+         Rnc6SQfGcsB1yMXTT+NdVLIhmHL7U1Z4tH9i+YXCl33cqFQ7SJd9WsB/oZJXRgygOI
+         YKzZqdsmMW2A3uMDwjeooQdN420x/jTTBNIWOjFmEDNg1gF3/PyTiLDOXwX8pu7ByU
+         lEDznHHJXJN1BHX3WLczN7spS778ABE8MnFmpxa63+ccInS3ZWvDEHfu0ez4+mDf8B
+         8Xtzq+72fPoa1Remq9MZ6OTJJTm0MBQ7h8USCIRhuHh5oWB6nWd5uVtKxJPxM9yyu6
+         FUEmIviUowLIg==
 X-Nifty-SrcIP: [153.142.97.92]
 From:   Masahiro Yamada <yamada.masahiro@socionext.com>
 To:     Andrew Morton <akpm@linux-foundation.org>,
@@ -50,15 +50,12 @@ Cc:     linux-s390@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         Christophe Leroy <christophe.leroy@c-s.fr>,
         Masahiro Yamada <yamada.masahiro@socionext.com>
-Subject: [PATCH v2 05/11] mtd: rawnand: vf610_nfc: add initializer to avoid -Wmaybe-uninitialized
-Date:   Fri, 19 Apr 2019 18:47:48 +0900
-Message-Id: <20190419094754.24667-6-yamada.masahiro@socionext.com>
+Subject: [PATCH v2 06/11] MIPS: mark __fls() as __always_inline
+Date:   Fri, 19 Apr 2019 18:47:49 +0900
+Message-Id: <20190419094754.24667-7-yamada.masahiro@socionext.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190419094754.24667-1-yamada.masahiro@socionext.com>
 References: <20190419094754.24667-1-yamada.masahiro@socionext.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
@@ -67,43 +64,37 @@ X-Mailing-List: linux-mips@vger.kernel.org
 This prepares to move CONFIG_OPTIMIZE_INLINING from x86 to a common
 place. We need to eliminate potential issues beforehand.
 
-Kbuild test robot has never reported -Wmaybe-uninitialized warning
-for this probably because vf610_nfc_run() is inlined by the x86
-compiler's inlining heuristic.
+If it is enabled for mips, the following errors are reported:
 
-If CONFIG_OPTIMIZE_INLINING is enabled for a different architecture
-and vf610_nfc_run() is not inlined, the following warning is reported:
-
-drivers/mtd/nand/raw/vf610_nfc.c: In function ‘vf610_nfc_cmd’:
-drivers/mtd/nand/raw/vf610_nfc.c:455:3: warning: ‘offset’ may be used uninitialized in this function [-Wmaybe-uninitialized]
-   vf610_nfc_rd_from_sram(instr->ctx.data.buf.in + offset,
-   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            nfc->regs + NFC_MAIN_AREA(0) + offset,
-            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            trfr_sz, !nfc->data_access);
-            ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arch/mips/mm/sc-mips.o: In function `mips_sc_prefetch_enable.part.2':
+sc-mips.c:(.text+0x98): undefined reference to `mips_gcr_base'
+sc-mips.c:(.text+0x9c): undefined reference to `mips_gcr_base'
+sc-mips.c:(.text+0xbc): undefined reference to `mips_gcr_base'
+sc-mips.c:(.text+0xc8): undefined reference to `mips_gcr_base'
+sc-mips.c:(.text+0xdc): undefined reference to `mips_gcr_base'
+arch/mips/mm/sc-mips.o:sc-mips.c:(.text.unlikely+0x44): more undefined references to `mips_gcr_base'
 
 Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 ---
 
 Changes in v2:
-  - split into a separate patch
+  - new patch
 
- drivers/mtd/nand/raw/vf610_nfc.c | 2 +-
+ arch/mips/include/asm/bitops.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/vf610_nfc.c b/drivers/mtd/nand/raw/vf610_nfc.c
-index a662ca1970e5..19792d725ec2 100644
---- a/drivers/mtd/nand/raw/vf610_nfc.c
-+++ b/drivers/mtd/nand/raw/vf610_nfc.c
-@@ -364,7 +364,7 @@ static int vf610_nfc_cmd(struct nand_chip *chip,
+diff --git a/arch/mips/include/asm/bitops.h b/arch/mips/include/asm/bitops.h
+index 830c93a010c3..6a26ead1c2b6 100644
+--- a/arch/mips/include/asm/bitops.h
++++ b/arch/mips/include/asm/bitops.h
+@@ -482,7 +482,7 @@ static inline void __clear_bit_unlock(unsigned long nr, volatile unsigned long *
+  * Return the bit position (0..63) of the most significant 1 bit in a word
+  * Returns -1 if no 1 bit exists
+  */
+-static inline unsigned long __fls(unsigned long word)
++static __always_inline unsigned long __fls(unsigned long word)
  {
- 	const struct nand_op_instr *instr;
- 	struct vf610_nfc *nfc = chip_to_nfc(chip);
--	int op_id = -1, trfr_sz = 0, offset;
-+	int op_id = -1, trfr_sz = 0, offset = 0;
- 	u32 col = 0, row = 0, cmd1 = 0, cmd2 = 0, code = 0;
- 	bool force8bit = false;
+ 	int num;
  
 -- 
 2.17.1

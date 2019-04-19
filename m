@@ -4,39 +4,38 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C604C282DF
-	for <linux-mips@archiver.kernel.org>; Fri, 19 Apr 2019 18:23:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A82AC282DF
+	for <linux-mips@archiver.kernel.org>; Fri, 19 Apr 2019 18:23:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5E590222AF
-	for <linux-mips@archiver.kernel.org>; Fri, 19 Apr 2019 18:23:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CEBBC222CC
+	for <linux-mips@archiver.kernel.org>; Fri, 19 Apr 2019 18:23:37 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=nifty.com header.i=@nifty.com header.b="WiSRLVOq"
+	dkim=pass (2048-bit key) header.d=nifty.com header.i=@nifty.com header.b="jiH6HICA"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727522AbfDSSXK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 19 Apr 2019 14:23:10 -0400
-Received: from condef-10.nifty.com ([202.248.20.75]:45377 "EHLO
-        condef-10.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727400AbfDSSXJ (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 19 Apr 2019 14:23:09 -0400
-Received: from conuserg-08.nifty.com ([10.126.8.71])by condef-10.nifty.com with ESMTP id x3J9nQic020060;
+        id S1727719AbfDSSXc (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 19 Apr 2019 14:23:32 -0400
+Received: from condef-07.nifty.com ([202.248.20.72]:39435 "EHLO
+        condef-07.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727216AbfDSSXb (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 19 Apr 2019 14:23:31 -0400
+Received: from conuserg-08.nifty.com ([10.126.8.71])by condef-07.nifty.com with ESMTP id x3J9nQPl028233;
         Fri, 19 Apr 2019 18:49:26 +0900
 Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
-        by conuserg-08.nifty.com with ESMTP id x3J9mDiN012304;
-        Fri, 19 Apr 2019 18:48:16 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com x3J9mDiN012304
+        by conuserg-08.nifty.com with ESMTP id x3J9mDiU012304;
+        Fri, 19 Apr 2019 18:48:26 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com x3J9mDiU012304
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1555667298;
-        bh=dMl5gVEKTwHtHLItB6x+dFSf7lYx8Jwln2yhWkFBTvk=;
+        s=dec2015msa; t=1555667307;
+        bh=ZmcBGqsNIopkSvb/z9Yz7Nb+RmV19Ubtd5G31RF7cjs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WiSRLVOq5x+2GONqtPqhDRF0aPfIywfLdfErEYoMZ6RdK4yxqxbz+tqQyKktdhALJ
-         ZC0EplHjQIRsO0bd4gcGfzAfZvD/aZnFksxkFraObipxhINcqZ0PBSvY8jP7SQORTj
-         OdwwG7dSJR9Ks0cIkNw5+63IypkzGIp2FzucD1i4uYJDoYimo4nbOjq/sRUowzAGQ1
-         QTqrvjrKruMK94jkE7107MwTjbAocK+Sd13vTiuxVIU+g1yxn93hj2IB7cRrCttREk
-         ukMFwTu/ORTnKIYRmeM4Q/nWhGHfxQ8cKORzjRHv45JA6SZBgy5cI77VTMvNyhSKnq
-         lgNKqF1IATJUA==
+        b=jiH6HICApN78Kk5hFdRE9UlFB3DbHyO32Exybcj2tFMz2jpLTLwgX2JIw8K1qWK4T
+         E1O0Ew8v+k/nfXa5VI4SNERYU2iuWyUszoCaY8TIGwtXn/On+OQ6Cf6HlcF4EZFBOu
+         QDInHPQIydJH4bbzuu6Xa9Ps+zAFaqOuDnY00oHB3JgAOWUEXovFVa0xxzWMI/qUqh
+         9sOeDdWNiIdD62ji12XR1RvY2JL7XWAKfttdTlSoHNIoaNkVqvDLCzimUvF2iPf2Z9
+         j2/vL15IZ64QIadnS1igjZWzEXPL/nGG8jrU+NfUOpmpPCXsyZoz4Ce0wDf84uAPVx
+         cNXO0eCfrYgCg==
 X-Nifty-SrcIP: [153.142.97.92]
 From:   Masahiro Yamada <yamada.masahiro@socionext.com>
 To:     Andrew Morton <akpm@linux-foundation.org>,
@@ -50,9 +49,9 @@ Cc:     linux-s390@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         Christophe Leroy <christophe.leroy@c-s.fr>,
         Masahiro Yamada <yamada.masahiro@socionext.com>
-Subject: [PATCH v2 02/11] arm64: mark (__)cpus_have_const_cap as __always_inline
-Date:   Fri, 19 Apr 2019 18:47:45 +0900
-Message-Id: <20190419094754.24667-3-yamada.masahiro@socionext.com>
+Subject: [PATCH v2 09/11] powerpc/mm/radix: mark __radix__flush_tlb_range_psize() as __always_inline
+Date:   Fri, 19 Apr 2019 18:47:52 +0900
+Message-Id: <20190419094754.24667-10-yamada.masahiro@socionext.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190419094754.24667-1-yamada.masahiro@socionext.com>
 References: <20190419094754.24667-1-yamada.masahiro@socionext.com>
@@ -64,23 +63,13 @@ X-Mailing-List: linux-mips@vger.kernel.org
 This prepares to move CONFIG_OPTIMIZE_INLINING from x86 to a common
 place. We need to eliminate potential issues beforehand.
 
-If it is enabled for arm64, the following errors are reported:
+If it is enabled for powerpc, the following error is reported:
 
-In file included from ././include/linux/compiler_types.h:68,
-                 from <command-line>:
-./arch/arm64/include/asm/jump_label.h: In function 'cpus_have_const_cap':
-./include/linux/compiler-gcc.h:120:38: warning: asm operand 0 probably doesn't match constraints
- #define asm_volatile_goto(x...) do { asm goto(x); asm (""); } while (0)
-                                      ^~~
-./arch/arm64/include/asm/jump_label.h:32:2: note: in expansion of macro 'asm_volatile_goto'
-  asm_volatile_goto(
-  ^~~~~~~~~~~~~~~~~
-./include/linux/compiler-gcc.h:120:38: error: impossible constraint in 'asm'
- #define asm_volatile_goto(x...) do { asm goto(x); asm (""); } while (0)
-                                      ^~~
-./arch/arm64/include/asm/jump_label.h:32:2: note: in expansion of macro 'asm_volatile_goto'
-  asm_volatile_goto(
-  ^~~~~~~~~~~~~~~~~
+arch/powerpc/mm/tlb-radix.c: In function '__radix__flush_tlb_range_psize':
+arch/powerpc/mm/tlb-radix.c:104:2: error: asm operand 3 probably doesn't match constraints [-Werror]
+  asm volatile(PPC_TLBIEL(%0, %4, %3, %2, %1)
+  ^~~
+arch/powerpc/mm/tlb-radix.c:104:2: error: impossible constraint in 'asm'
 
 Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 ---
@@ -88,31 +77,22 @@ Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 Changes in v2:
   - split into a separate patch
 
- arch/arm64/include/asm/cpufeature.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/mm/tlb-radix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
-index e505e1fbd2b9..77d1aa57323e 100644
---- a/arch/arm64/include/asm/cpufeature.h
-+++ b/arch/arm64/include/asm/cpufeature.h
-@@ -406,7 +406,7 @@ static inline bool cpu_have_feature(unsigned int num)
+diff --git a/arch/powerpc/mm/tlb-radix.c b/arch/powerpc/mm/tlb-radix.c
+index 6a23b9ebd2a1..a2b2848f0ae3 100644
+--- a/arch/powerpc/mm/tlb-radix.c
++++ b/arch/powerpc/mm/tlb-radix.c
+@@ -928,7 +928,7 @@ void radix__tlb_flush(struct mmu_gather *tlb)
+ 	tlb->need_flush_all = 0;
  }
  
- /* System capability check for constant caps */
--static inline bool __cpus_have_const_cap(int num)
-+static __always_inline bool __cpus_have_const_cap(int num)
+-static inline void __radix__flush_tlb_range_psize(struct mm_struct *mm,
++static __always_inline void __radix__flush_tlb_range_psize(struct mm_struct *mm,
+ 				unsigned long start, unsigned long end,
+ 				int psize, bool also_pwc)
  {
- 	if (num >= ARM64_NCAPS)
- 		return false;
-@@ -420,7 +420,7 @@ static inline bool cpus_have_cap(unsigned int num)
- 	return test_bit(num, cpu_hwcaps);
- }
- 
--static inline bool cpus_have_const_cap(int num)
-+static __always_inline bool cpus_have_const_cap(int num)
- {
- 	if (static_branch_likely(&arm64_const_caps_ready))
- 		return __cpus_have_const_cap(num);
 -- 
 2.17.1
 

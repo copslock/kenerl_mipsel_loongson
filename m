@@ -1,132 +1,101 @@
-Return-Path: <SRS0=tbi8=SW=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=LSmN=SY=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_NEOMUTT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C53D1C282DD
-	for <linux-mips@archiver.kernel.org>; Sat, 20 Apr 2019 10:51:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 01063C282E1
+	for <linux-mips@archiver.kernel.org>; Mon, 22 Apr 2019 05:14:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 947BC21479
-	for <linux-mips@archiver.kernel.org>; Sat, 20 Apr 2019 10:51:22 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EwO+gArl"
+	by mail.kernel.org (Postfix) with ESMTP id CC1B620811
+	for <linux-mips@archiver.kernel.org>; Mon, 22 Apr 2019 05:14:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726126AbfDTKvO (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 20 Apr 2019 06:51:14 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:43770 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725920AbfDTKvN (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 20 Apr 2019 06:51:13 -0400
-Received: by mail-qk1-f194.google.com with SMTP id p19so1762402qkm.10;
-        Sat, 20 Apr 2019 03:51:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=kaS+veCYE7ao8csQbi/ZAdwFn2xeuMRJDTxk7kh9MmQ=;
-        b=EwO+gArlEBVQK/nJT5vZKE02dfSFFoeHd/43vZOndrjFwkjrhjJgbW66CULGd/qp8M
-         CAKK4/fa+yfKDft5ldNSlPt0B6rGPqndRHkFtb4MayLgZRwIeW+bjjxZxoS2RPm+NmrM
-         5J8qu7sm0tvit9z1Ptm9VeGVZYEOilIUa4FqMFKftvJ8C1sr9isBTWCvBqkSLuRkQFnC
-         /JfrzCUu4i4VMVxMXiNW5Pt1t1KcV3H7PonI7MF2Vn8rgAvwSZzAmsvqnBS5yxoNSCFk
-         Cki0HCuHLWy/0V7zOngTErhlDLx+7wgLUrHt9aXGhXBRdZrcx1OCpXV7iZBdhZmXdUlW
-         Hvng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kaS+veCYE7ao8csQbi/ZAdwFn2xeuMRJDTxk7kh9MmQ=;
-        b=h9tMq1rT3zIKjiFSfQs4Fc7ZxbpRAZuPUxAp8xJfDC8aIa1spnUR6LIPs4pfVA3SDn
-         Sej76RQ2aXoaKkRoRx+GNVwpt88m8C/M0elJn89D34I/LJkflfzqEQERw6p4PYxEzIwU
-         oEu2mWZcgRKqey6Lo3/dXHcXRb/Ze9dJo9ZkhcKtNXkkZssWeVdMhPj68ApjD3iHPdMn
-         PshhtX1tiXEgqxauhBZBsbwYa2Zj3vmdOlgnFLvBQZ61l+RsLIZ4j3s6ARUD9eKYjjEx
-         QwyjQ+/znKxwvC+o93Q/JMNuV3094rxdqAoKyHZRdCyNDwH4NZH6CKrsMFhkRbfWVeUt
-         h/bQ==
-X-Gm-Message-State: APjAAAWULUlE87g9p7a7GnkpjZupZPsqTqrCc2IrWvr/zq79XPTaKAKj
-        qg6Up6xFCh0UgQesjQCfpD5iTaqs1mEmGtqfAIc=
-X-Google-Smtp-Source: APXvYqwATcAIlW4nr9QShhMxeCWgd4J//S9gB2/UnHehq87+pPLyQ1o9lMaZFrSTSc7CUnr7ubTUZZuLbaGHeINqWkU=
-X-Received: by 2002:a37:6886:: with SMTP id d128mr907042qkc.158.1555757472269;
- Sat, 20 Apr 2019 03:51:12 -0700 (PDT)
+        id S1726294AbfDVFOB (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 22 Apr 2019 01:14:01 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:51645 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726284AbfDVFOB (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 22 Apr 2019 01:14:01 -0400
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <ore@pengutronix.de>)
+        id 1hIRH7-0007F6-09; Mon, 22 Apr 2019 07:13:53 +0200
+Received: from ore by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ore@pengutronix.de>)
+        id 1hIRH3-0004YP-Vg; Mon, 22 Apr 2019 07:13:49 +0200
+Date:   Mon, 22 Apr 2019 07:13:49 +0200
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     David Miller <davem@davemloft.net>
+Cc:     paul.burton@mips.com, ralf@linux-mips.org, jhogan@kernel.org,
+        robh+dt@kernel.org, jcliburn@gmail.com, chris.snook@gmail.com,
+        mark.rutland@arm.com, kernel@pengutronix.de,
+        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, john@phrozen.org, nbd@nbd.name,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] net: ethernet: add ag71xx driver
+Message-ID: <20190422051349.67awwpyat5sjbd7j@pengutronix.de>
+References: <20190418052620.20835-1-o.rempel@pengutronix.de>
+ <20190418052620.20835-4-o.rempel@pengutronix.de>
+ <20190419.143519.94034508850689697.davem@davemloft.net>
 MIME-Version: 1.0
-References: <20190414091452.22275-1-shyam.saini@amarulasolutions.com> <C398B8C9-6A54-4590-AA88-58D514BAEB71@oracle.com>
-In-Reply-To: <C398B8C9-6A54-4590-AA88-58D514BAEB71@oracle.com>
-From:   Shyam Saini <mayhs11saini@gmail.com>
-Date:   Sat, 20 Apr 2019 16:21:00 +0530
-Message-ID: <CAOfkYf7vn7UnYzZDh9==agVu61sYyFWzvo6hQBt3KfaKrWC-6Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] include: linux: Regularise the use of FIELD_SIZEOF macro
-To:     William Kucharski <william.kucharski@oracle.com>
-Cc:     Shyam Saini <shyam.saini@amarulasolutions.com>,
-        Kernel Hardening <kernel-hardening@lists.openwall.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        intel-gvt-dev@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Network Development <netdev@vger.kernel.org>,
-        linux-ext4@vger.kernel.org, devel@lists.orangefs.org,
-        linux-mm <linux-mm@kvack.org>, linux-sctp@vger.kernel.org,
-        bpf <bpf@vger.kernel.org>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190419.143519.94034508850689697.davem@davemloft.net>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 07:12:35 up 93 days,  9:54, 71 users,  load average: 0.01, 0.02,
+ 0.00
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mips@vger.kernel.org
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi William,
+Hi,
 
-Sorry for the late reply.
-
-> > Currently, there are 3 different macros, namely sizeof_field, SIZEOF_FIELD
-> > and FIELD_SIZEOF which are used to calculate the size of a member of
-> > structure, so to bring uniformity in entire kernel source tree lets use
-> > FIELD_SIZEOF and replace all occurrences of other two macros with this.
-> >
-> > For this purpose, redefine FIELD_SIZEOF in include/linux/stddef.h and
-> > tools/testing/selftests/bpf/bpf_util.h and remove its defination from
-> > include/linux/kernel.h
->
->
-> > --- a/include/linux/stddef.h
-> > +++ b/include/linux/stddef.h
-> > @@ -20,6 +20,15 @@ enum {
-> > #endif
-> >
-> > /**
-> > + * FIELD_SIZEOF - get the size of a struct's field
-> > + * @t: the target struct
-> > + * @f: the target struct's field
-> > + * Return: the size of @f in the struct definition without having a
-> > + * declared instance of @t.
-> > + */
-> > +#define FIELD_SIZEOF(t, f) (sizeof(((t *)0)->f))
+On Fri, Apr 19, 2019 at 02:35:19PM -0700, David Miller wrote:
+> From: Oleksij Rempel <o.rempel@pengutronix.de>
+> Date: Thu, 18 Apr 2019 07:26:20 +0200
+> 
+> > +static int ag71xx_remove(struct platform_device *pdev)
+> > +{
+> > +	struct net_device *ndev = platform_get_drvdata(pdev);
+> > +	struct ag71xx *ag;
 > > +
-> > +/**
-> >  * sizeof_field(TYPE, MEMBER)
-> >  *
-> >  * @TYPE: The structure containing the field of interest
-> > @@ -34,6 +43,6 @@ enum {
-> >  * @MEMBER: The member within the structure to get the end offset of
-> >  */
-> > #define offsetofend(TYPE, MEMBER) \
-> > -     (offsetof(TYPE, MEMBER) + sizeof_field(TYPE, MEMBER))
-> > +     (offsetof(TYPE, MEMBER) + FIELD_SIZEOF(TYPE, MEMBER))
->
-> If you're doing this, why are you leaving the definition of sizeof_field() in
-> stddef.h untouched?
+> > +	if (!ndev)
+> > +		return 0;
+> > +
+> > +	ag = netdev_priv(ndev);
+> > +	ag71xx_phy_disconnect(ag);
+> > +	ag71xx_mdio_remove(ag);
+> > +	unregister_netdev(ndev);
+> > +	platform_set_drvdata(pdev, NULL);
+> > +
+> > +	return 0;
+> > +}
+> 
+> You should unregister the netdev before you disconnect the PHY and remove
+> the MDIO.
 
-I have removed definition of sizeof_field in [1/2] patch.
+ok.
 
-> Given the way this has worked historically, if you are leaving it in place for
-> source compatibility reasons, shouldn't it be redefined in terms of
-> FIELD_SIZEOF(), e.g.:
->
-> #define sizeof_field(TYPE, MEMBER) FIELD_SIZEOF(TYPE, MEMBER)
+> Also you need to call free_netdev() afterwards otherwise you will leak it.
 
-Actually, never thought this way. So,Thanks a lot for this valuable feedback.
+ndev is allocated with devm_alloc_etherdev(). Are you sure free_netdev()
+should be used here?
 
-I'll re-spin and post again.
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |

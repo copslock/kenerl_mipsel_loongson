@@ -6,21 +6,21 @@ X-Spam-Status: No, score=-5.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_MUTT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4967BC282E1
-	for <linux-mips@archiver.kernel.org>; Mon, 22 Apr 2019 19:54:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 232D2C282CE
+	for <linux-mips@archiver.kernel.org>; Mon, 22 Apr 2019 19:54:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 22A052075A
-	for <linux-mips@archiver.kernel.org>; Mon, 22 Apr 2019 19:54:07 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E990820643
+	for <linux-mips@archiver.kernel.org>; Mon, 22 Apr 2019 19:54:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730773AbfDVTyA (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 22 Apr 2019 15:54:00 -0400
-Received: from verein.lst.de ([213.95.11.211]:41690 "EHLO newverein.lst.de"
+        id S1730268AbfDVTyd (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 22 Apr 2019 15:54:33 -0400
+Received: from verein.lst.de ([213.95.11.211]:41724 "EHLO newverein.lst.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731237AbfDVTyA (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 22 Apr 2019 15:54:00 -0400
+        id S1728831AbfDVTyd (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 22 Apr 2019 15:54:33 -0400
 Received: by newverein.lst.de (Postfix, from userid 2407)
-        id 44CDD68B02; Mon, 22 Apr 2019 21:53:43 +0200 (CEST)
-Date:   Mon, 22 Apr 2019 21:53:41 +0200
+        id EDBB668B20; Mon, 22 Apr 2019 21:54:16 +0200 (CEST)
+Date:   Mon, 22 Apr 2019 21:54:14 +0200
 From:   Christoph Hellwig <hch@lst.de>
 To:     Alexandre Ghiti <alex@ghiti.fr>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
@@ -38,25 +38,31 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Kees Cook <keescook@chromium.org>,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 03/11] arm64: Consider stack randomization for mmap
- base only when necessary
-Message-ID: <20190422195341.GB2224@lst.de>
-References: <20190417052247.17809-1-alex@ghiti.fr> <20190417052247.17809-4-alex@ghiti.fr>
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH v3 04/11] arm64, mm: Move generic mmap layout functions
+ to mm
+Message-ID: <20190422195414.GC2224@lst.de>
+References: <20190417052247.17809-1-alex@ghiti.fr> <20190417052247.17809-5-alex@ghiti.fr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190417052247.17809-4-alex@ghiti.fr>
+In-Reply-To: <20190417052247.17809-5-alex@ghiti.fr>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Wed, Apr 17, 2019 at 01:22:39AM -0400, Alexandre Ghiti wrote:
-> Do not offset mmap base address because of stack randomization if
-> current task does not want randomization.
+On Wed, Apr 17, 2019 at 01:22:40AM -0400, Alexandre Ghiti wrote:
+> arm64 handles top-down mmap layout in a way that can be easily reused
+> by other architectures, so make it available in mm.
+> It then introduces a new config ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
+> that can be set by other architectures to benefit from those functions.
+> Note that this new config depends on MMU being enabled, if selected
+> without MMU support, a warning will be thrown.
 > 
+> Suggested-by: Christoph Hellwig <hch@infradead.org>
 > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 
 Looks good,

@@ -2,220 +2,136 @@ Return-Path: <SRS0=+ZmA=SZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_MUTT autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5915AC10F03
-	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 15:52:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 098DEC10F03
+	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 17:52:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 1FC282175B
-	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 15:52:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CE251214AE
+	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 17:52:13 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QH4+OEEi"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="nfBksAXk"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728404AbfDWPwP (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 23 Apr 2019 11:52:15 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:34952 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728233AbfDWPwO (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 23 Apr 2019 11:52:14 -0400
-Received: by mail-pg1-f196.google.com with SMTP id g8so7830729pgf.2;
-        Tue, 23 Apr 2019 08:52:14 -0700 (PDT)
+        id S1727666AbfDWRwN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 23 Apr 2019 13:52:13 -0400
+Received: from mail-eopbgr790113.outbound.protection.outlook.com ([40.107.79.113]:2304
+        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726655AbfDWRwN (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 23 Apr 2019 13:52:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=+nZBYYs3xJAIUHfD9A1Bv8gWHxW5vdV7lozuu5wy9Zo=;
-        b=QH4+OEEiHYdEJkdSi5KfK01x3OxOiPVMekKtEd+meNY+51wbhH+YU5L827I3ulrkTx
-         eJykqE20j1Ra7jt8zZKybVysdshUW8O3yf0OOhuIdn8ukZxOH1DdHuRczNeHMIn9bw07
-         zm/1koXtMTBwU3bOph6tUGyUU3qdjwlW5iOUWADCpQwhigXKJJXgdlWxLkhPMaVh5xKg
-         EPnaet5tsqFTCfpKMoRmMkEDkAUi4TfRUcKnhanTZJ8jQ5nQQm0dCX2mrSjB3dLwG00W
-         QynoDeV1Q8WbvzWTFE5F4igkvVUiEcsqglwZuTSRY3k4qcWW0V/xubOmf4G1cIPanbOE
-         FFzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=+nZBYYs3xJAIUHfD9A1Bv8gWHxW5vdV7lozuu5wy9Zo=;
-        b=i4/2NiLdel+m2znMeScb3Ag924IUWqF5mPPpq1C5+ENkeTEzsVn60LGlve3VzyETFo
-         MhfIJ3uoibEMCQ7s8XsO9bT1xGsZBxee6zC88VrDjH4Q60UbfNuwi5feH77iuqdy/oER
-         xzYrTn1lmoqgMYwDqWiJZkYxczV76mTTi2txhPx7+fJBlFPfM7hJ2MkU0eWtBh3V7pEJ
-         yi7zsBo/vD2/6/4xNqA5Dh9Q2wY4MQuPlX39LM0taesSE6SrcbHC7Cami3jDV9zqjgcC
-         i4ReDpAFawViczS6xmu80yZDoIS5U3BCYPgc6kzh9PsdaiJueibe4d7BKcCTH+Wb7a09
-         IjwQ==
-X-Gm-Message-State: APjAAAX5Ix98QKFQe+Jt7kQoRCoWGO8UbzYwukVRjvtCASNaj18brcfr
-        864nQ3TxohM+8RllbN3agXY=
-X-Google-Smtp-Source: APXvYqx+wRtFNIE4h+aAA7UaRfM+s4kJOyF5ri3PshN/WkpUk6KhMAu4rVhYoT43rDwS7XANDalLeg==
-X-Received: by 2002:a63:7f0b:: with SMTP id a11mr23731274pgd.234.1556034733724;
-        Tue, 23 Apr 2019 08:52:13 -0700 (PDT)
-Received: from localhost.localdomain ([2601:644:8201:32e0:7256:81ff:febd:926d])
-        by smtp.gmail.com with ESMTPSA id l74sm30098971pfi.174.2019.04.23.08.52.12
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 23 Apr 2019 08:52:12 -0700 (PDT)
-Date:   Tue, 23 Apr 2019 08:52:10 -0700
-From:   Eduardo Valentin <edubezval@gmail.com>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     rui.zhang@intel.com, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Guenter Roeck <groeck@chromium.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1XiugHCmrQRiF7RFBG1yjeLPURULlzrMoP/GGJ/HpEQ=;
+ b=nfBksAXk5bRqeIDoQp32abuIFRBGK0McgU7QlHPddaYA1lmrOIE1E40M4sJBHrczx1TUkfS78mvNVgq5skCu+jEi7WakElDEI+JpdEy0Bg6zOswK1733VG5HK+zaGkgnZIi8k7l3EtTjpvulkUjm1dCxuopNEiD4pl9HE/5i5A8=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1087.namprd22.prod.outlook.com (10.174.169.149) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1813.17; Tue, 23 Apr 2019 17:52:06 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b9d6:bf19:ec58:2765]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b9d6:bf19:ec58:2765%7]) with mapi id 15.20.1813.017; Tue, 23 Apr 2019
+ 17:52:06 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Serge Semin <fancer.lancer@gmail.com>
+CC:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Christian Koenig <christian.koenig@amd.com>,
+        Huang Rui <ray.huang@amd.com>,
+        Junwei Zhang <Jerry.Zhang@amd.com>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, Guan Xuetao <gxt@pku.edu.cn>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexey Brodkin <alexey.brodkin@synopsys.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Daniel Mack <daniel@zonque.org>,
-        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
-        "open list:MIPS" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH 1/7] thermal/drivers/core: Remove the module Kconfig's
- option
-Message-ID: <20190423155208.GC16014@localhost.localdomain>
-References: <20190402161256.11044-1-daniel.lezcano@linaro.org>
+        James Hogan <jhogan@kernel.org>,
+        "Vadim V . Vlasov" <vadim.vlasov@t-platforms.ru>
+Subject: Re: [PATCH] drm: Permit video-buffers writecombine mapping for MIPS
+Thread-Topic: [PATCH] drm: Permit video-buffers writecombine mapping for MIPS
+Thread-Index: AQHU+dCYLc0FOHZW+USx3qmHwO4wf6ZKBuCA
+Date:   Tue, 23 Apr 2019 17:52:06 +0000
+Message-ID: <20190423175201.z7qfs2r5znx6uq5t@pburton-laptop>
+References: <20190423123122.32573-1-fancer.lancer@gmail.com>
+In-Reply-To: <20190423123122.32573-1-fancer.lancer@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR07CA0046.namprd07.prod.outlook.com
+ (2603:10b6:a03:60::23) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [67.207.99.198]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 8a8da22b-6082-49d4-d03e-08d6c814667a
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);SRVR:MWHPR2201MB1087;
+x-ms-traffictypediagnostic: MWHPR2201MB1087:
+x-microsoft-antispam-prvs: <MWHPR2201MB1087472F1291AE7923D8FA38C1230@MWHPR2201MB1087.namprd22.prod.outlook.com>
+x-forefront-prvs: 0016DEFF96
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(366004)(346002)(396003)(39850400004)(136003)(376002)(199004)(189003)(33716001)(6486002)(2906002)(8676002)(478600001)(66066001)(76176011)(81156014)(1076003)(229853002)(68736007)(52116002)(26005)(53936002)(81166006)(6436002)(97736004)(66946007)(25786009)(66476007)(6512007)(9686003)(73956011)(66556008)(64756008)(66446008)(186003)(42882007)(44832011)(54906003)(71190400001)(305945005)(486006)(316002)(71200400001)(6506007)(386003)(58126008)(4326008)(11346002)(7416002)(476003)(446003)(6916009)(14454004)(7736002)(8936002)(14444005)(256004)(99286004)(6246003)(6116002)(102836004)(5660300002)(3846002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1087;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: 1czuyezDR7T1C6d/jTufLOT/VKC5noPwi+SxbR7g3Cm5fAGug7rcKGTrAClirWgPEpKmPJmvDqOu+UgRHLtKeB4Qm25XvpoDLbM5SBLWQ6El1KKloZZ9QSjKbrrWHijaFudX8hYkF+87P5XBPHtEqC38Ja9efaDSHayw3HXtBDh0XyACwPZ0ylt11Syueb5R29vua8H9vfVo2gXhnx3khie4RnooHkcJs58FI1Rq17ZHx7Fmd9uHwKI2D5cXrv0TYct6tI1iX1sEmohPYBS2N9+YuuOTOo60it0j8ySsDrnuIrM1/Cm9rtiBE7Pg4jeCwWVpAvDrmTFW05+JALr9jiv3h5G930v8xCeg70Xq2mf9fge4gr6yyLa9LUAtnp1g7YhVOGh52eV9O1k55UhaEJoZ+Pg1Hm/gI+jXDiN/HL4=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <075AA6938F3D3945A0C8201A14729658@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190402161256.11044-1-daniel.lezcano@linaro.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8a8da22b-6082-49d4-d03e-08d6c814667a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Apr 2019 17:52:06.7372
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1087
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hello,
+Hi Serge,
 
-On Tue, Apr 02, 2019 at 06:12:44PM +0200, Daniel Lezcano wrote:
-> The module support for the thermal subsystem makes little sense:
->  - some subsystems relying on it are not modules, thus forcing the
->    framework to be compiled in
->  - it is compiled in for almost every configs, the remaining ones
->    are a few platforms where I don't see why we can not switch the thermal
->    to 'y'. The drivers can stay in tristate.
->  - platforms need the thermal to be ready as soon as possible at boot time
->    in order to mitigate
-> 
-> Usually the subsystems framework are compiled-in and the plugs are as module.
-> 
-> Remove the module option. The removal of the module related dead code will
-> come after this patch gets in or is acked.
-
-
-I remember some buzilla entry around this some time back.
-
-Rui, do you remember why you made this to be module?
-
-I dont have strong opinion here, but I would like to see
-a better description why we are going this direction rather
-than "most people dont use it as module". Was there any particular
-specific technical motivation?
-
-
-> 
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Acked-by: Guenter Roeck <groeck@chromium.org>
-> For mini2440:
-> Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
+On Tue, Apr 23, 2019 at 03:31:22PM +0300, Serge Semin wrote:
+> Since commit 4b050ba7a66c ("MIPS: pgtable.h: Implement the
+> pgprot_writecombine function for MIPS") and commit c4687b15a848 ("MIPS: F=
+ix
+> definition of pgprot_writecombine()") write-combine vma mapping is
+> available to be used by kernel subsystems for MIPS. In particular the
+> uncached accelerated attribute is requested to be set by ioremap_wc()
+> method and by generic PCI memory pages/ranges mapping methods. The same
+> is done by the drm_io_prot()/ttm_io_prot() functions in case if
+> write-combine flag is set for vma's passed for mapping. But for some
+> reason the pgprot_writecombine() method calling is ifdefed to be a
+> platform-specific with MIPS system being marked as lacking of one. At the
+> very least it doesn't reflect the current MIPS platform implementation.
+> So in order to improve the DRM subsystem performance on MIPS with UCA
+> mapping enabled, we need to have pgprot_writecombine() called for buffers=
+,
+> which need store operations being combined. In case if particular MIPS
+> chip doesn't support the UCA attribute, the mapping will fall back to
+> noncached.
+>=20
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Paul Burton <paul.burton@mips.com>
+> Cc: James Hogan <jhogan@kernel.org>
+> Signed-off-by: Vadim V. Vlasov <vadim.vlasov@t-platforms.ru>
+> Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 > ---
->  arch/arm/configs/mini2440_defconfig        | 2 +-
->  arch/arm/configs/pxa_defconfig             | 2 +-
->  arch/mips/configs/ip22_defconfig           | 2 +-
->  arch/mips/configs/ip27_defconfig           | 2 +-
->  arch/unicore32/configs/unicore32_defconfig | 2 +-
->  drivers/thermal/Kconfig                    | 4 ++--
->  6 files changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/arm/configs/mini2440_defconfig b/arch/arm/configs/mini2440_defconfig
-> index d95a8059d30b..0cf1c120c4bb 100644
-> --- a/arch/arm/configs/mini2440_defconfig
-> +++ b/arch/arm/configs/mini2440_defconfig
-> @@ -152,7 +152,7 @@ CONFIG_SPI_S3C24XX=y
->  CONFIG_SPI_SPIDEV=y
->  CONFIG_GPIO_SYSFS=y
->  CONFIG_SENSORS_LM75=y
-> -CONFIG_THERMAL=m
-> +CONFIG_THERMAL=y
->  CONFIG_WATCHDOG=y
->  CONFIG_S3C2410_WATCHDOG=y
->  CONFIG_FB=y
-> diff --git a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
-> index d4654755b09c..d4f9dda3a52f 100644
-> --- a/arch/arm/configs/pxa_defconfig
-> +++ b/arch/arm/configs/pxa_defconfig
-> @@ -387,7 +387,7 @@ CONFIG_SENSORS_LM75=m
->  CONFIG_SENSORS_LM90=m
->  CONFIG_SENSORS_LM95245=m
->  CONFIG_SENSORS_NTC_THERMISTOR=m
-> -CONFIG_THERMAL=m
-> +CONFIG_THERMAL=y
->  CONFIG_WATCHDOG=y
->  CONFIG_XILINX_WATCHDOG=m
->  CONFIG_SA1100_WATCHDOG=m
-> diff --git a/arch/mips/configs/ip22_defconfig b/arch/mips/configs/ip22_defconfig
-> index ff40fbc2f439..21a1168ae301 100644
-> --- a/arch/mips/configs/ip22_defconfig
-> +++ b/arch/mips/configs/ip22_defconfig
-> @@ -228,7 +228,7 @@ CONFIG_SERIAL_IP22_ZILOG=m
->  # CONFIG_HW_RANDOM is not set
->  CONFIG_RAW_DRIVER=m
->  # CONFIG_HWMON is not set
-> -CONFIG_THERMAL=m
-> +CONFIG_THERMAL=y
->  CONFIG_WATCHDOG=y
->  CONFIG_INDYDOG=m
->  # CONFIG_VGA_CONSOLE is not set
-> diff --git a/arch/mips/configs/ip27_defconfig b/arch/mips/configs/ip27_defconfig
-> index 81c47e18131b..54db5dedf776 100644
-> --- a/arch/mips/configs/ip27_defconfig
-> +++ b/arch/mips/configs/ip27_defconfig
-> @@ -271,7 +271,7 @@ CONFIG_I2C_PARPORT_LIGHT=m
->  CONFIG_I2C_TAOS_EVM=m
->  CONFIG_I2C_STUB=m
->  # CONFIG_HWMON is not set
-> -CONFIG_THERMAL=m
-> +CONFIG_THERMAL=y
->  CONFIG_MFD_PCF50633=m
->  CONFIG_PCF50633_ADC=m
->  CONFIG_PCF50633_GPIO=m
-> diff --git a/arch/unicore32/configs/unicore32_defconfig b/arch/unicore32/configs/unicore32_defconfig
-> index aebd01fc28e5..360cc9abcdb0 100644
-> --- a/arch/unicore32/configs/unicore32_defconfig
-> +++ b/arch/unicore32/configs/unicore32_defconfig
-> @@ -119,7 +119,7 @@ CONFIG_I2C_PUV3=y
->  #	Hardware Monitoring support
->  #CONFIG_SENSORS_LM75=m
->  #	Generic Thermal sysfs driver
-> -#CONFIG_THERMAL=m
-> +#CONFIG_THERMAL=y
->  #CONFIG_THERMAL_HWMON=y
->  
->  #	Multimedia support
-> diff --git a/drivers/thermal/Kconfig b/drivers/thermal/Kconfig
-> index 653aa27a25a4..ccf5b9408d7a 100644
-> --- a/drivers/thermal/Kconfig
-> +++ b/drivers/thermal/Kconfig
-> @@ -3,7 +3,7 @@
->  #
->  
->  menuconfig THERMAL
-> -	tristate "Generic Thermal sysfs driver"
-> +	bool "Generic Thermal sysfs driver"
->  	help
->  	  Generic Thermal Sysfs driver offers a generic mechanism for
->  	  thermal management. Usually it's made up of one or more thermal
-> @@ -11,7 +11,7 @@ menuconfig THERMAL
->  	  Each thermal zone contains its own temperature, trip points,
->  	  cooling devices.
->  	  All platforms with ACPI thermal support can use this driver.
-> -	  If you want this support, you should say Y or M here.
-> +	  If you want this support, you should say Y here.
->  
->  if THERMAL
->  
-> -- 
-> 2.17.1
-> 
+>  drivers/gpu/drm/drm_vm.c          | 5 +++--
+>  drivers/gpu/drm/ttm/ttm_bo_util.c | 4 ++--
+>  2 files changed, 5 insertions(+), 4 deletions(-)
+
+Looks good to me:
+
+    Reviewed-by: Paul Burton <paul.burton@mips.com>
+
+Thanks,
+    Paul

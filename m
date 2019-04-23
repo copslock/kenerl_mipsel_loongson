@@ -2,136 +2,102 @@ Return-Path: <SRS0=+ZmA=SZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-16.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT,
+	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 098DEC10F03
-	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 17:52:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 952B9C10F03
+	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 20:55:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id CE251214AE
-	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 17:52:13 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 62EC7218D3
+	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 20:55:30 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="nfBksAXk"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NIm7S/05"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727666AbfDWRwN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 23 Apr 2019 13:52:13 -0400
-Received: from mail-eopbgr790113.outbound.protection.outlook.com ([40.107.79.113]:2304
-        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726655AbfDWRwN (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 23 Apr 2019 13:52:13 -0400
+        id S1728069AbfDWUz3 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 23 Apr 2019 16:55:29 -0400
+Received: from mail-pg1-f202.google.com ([209.85.215.202]:53574 "EHLO
+        mail-pg1-f202.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728059AbfDWUz3 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 23 Apr 2019 16:55:29 -0400
+Received: by mail-pg1-f202.google.com with SMTP id f7so10701818pgi.20
+        for <linux-mips@vger.kernel.org>; Tue, 23 Apr 2019 13:55:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1XiugHCmrQRiF7RFBG1yjeLPURULlzrMoP/GGJ/HpEQ=;
- b=nfBksAXk5bRqeIDoQp32abuIFRBGK0McgU7QlHPddaYA1lmrOIE1E40M4sJBHrczx1TUkfS78mvNVgq5skCu+jEi7WakElDEI+JpdEy0Bg6zOswK1733VG5HK+zaGkgnZIi8k7l3EtTjpvulkUjm1dCxuopNEiD4pl9HE/5i5A8=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1087.namprd22.prod.outlook.com (10.174.169.149) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1813.17; Tue, 23 Apr 2019 17:52:06 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::b9d6:bf19:ec58:2765]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::b9d6:bf19:ec58:2765%7]) with mapi id 15.20.1813.017; Tue, 23 Apr 2019
- 17:52:06 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Serge Semin <fancer.lancer@gmail.com>
-CC:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Huang Rui <ray.huang@amd.com>,
-        Junwei Zhang <Jerry.Zhang@amd.com>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        "Vadim V . Vlasov" <vadim.vlasov@t-platforms.ru>
-Subject: Re: [PATCH] drm: Permit video-buffers writecombine mapping for MIPS
-Thread-Topic: [PATCH] drm: Permit video-buffers writecombine mapping for MIPS
-Thread-Index: AQHU+dCYLc0FOHZW+USx3qmHwO4wf6ZKBuCA
-Date:   Tue, 23 Apr 2019 17:52:06 +0000
-Message-ID: <20190423175201.z7qfs2r5znx6uq5t@pburton-laptop>
-References: <20190423123122.32573-1-fancer.lancer@gmail.com>
-In-Reply-To: <20190423123122.32573-1-fancer.lancer@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR07CA0046.namprd07.prod.outlook.com
- (2603:10b6:a03:60::23) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-user-agent: NeoMutt/20180716
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [67.207.99.198]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 8a8da22b-6082-49d4-d03e-08d6c814667a
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);SRVR:MWHPR2201MB1087;
-x-ms-traffictypediagnostic: MWHPR2201MB1087:
-x-microsoft-antispam-prvs: <MWHPR2201MB1087472F1291AE7923D8FA38C1230@MWHPR2201MB1087.namprd22.prod.outlook.com>
-x-forefront-prvs: 0016DEFF96
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(366004)(346002)(396003)(39850400004)(136003)(376002)(199004)(189003)(33716001)(6486002)(2906002)(8676002)(478600001)(66066001)(76176011)(81156014)(1076003)(229853002)(68736007)(52116002)(26005)(53936002)(81166006)(6436002)(97736004)(66946007)(25786009)(66476007)(6512007)(9686003)(73956011)(66556008)(64756008)(66446008)(186003)(42882007)(44832011)(54906003)(71190400001)(305945005)(486006)(316002)(71200400001)(6506007)(386003)(58126008)(4326008)(11346002)(7416002)(476003)(446003)(6916009)(14454004)(7736002)(8936002)(14444005)(256004)(99286004)(6246003)(6116002)(102836004)(5660300002)(3846002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1087;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 1czuyezDR7T1C6d/jTufLOT/VKC5noPwi+SxbR7g3Cm5fAGug7rcKGTrAClirWgPEpKmPJmvDqOu+UgRHLtKeB4Qm25XvpoDLbM5SBLWQ6El1KKloZZ9QSjKbrrWHijaFudX8hYkF+87P5XBPHtEqC38Ja9efaDSHayw3HXtBDh0XyACwPZ0ylt11Syueb5R29vua8H9vfVo2gXhnx3khie4RnooHkcJs58FI1Rq17ZHx7Fmd9uHwKI2D5cXrv0TYct6tI1iX1sEmohPYBS2N9+YuuOTOo60it0j8ySsDrnuIrM1/Cm9rtiBE7Pg4jeCwWVpAvDrmTFW05+JALr9jiv3h5G930v8xCeg70Xq2mf9fge4gr6yyLa9LUAtnp1g7YhVOGh52eV9O1k55UhaEJoZ+Pg1Hm/gI+jXDiN/HL4=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <075AA6938F3D3945A0C8201A14729658@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8a8da22b-6082-49d4-d03e-08d6c814667a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Apr 2019 17:52:06.7372
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1087
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=EMjKTluV8E+qBr/4JM2DWbyEMJk+9Wk2onaYSOfzL3s=;
+        b=NIm7S/05ZnH3qtSdKADbfTY64hdv5puEmb7cOttJ23jX52RR8fRJsVEYkmjLF/niXk
+         YTIbsO2K8SM/EdFXrfI+5AkBhka6+UMRMajoINN60ZhFDIeTgmWHRR9JLbag5vwvHZn6
+         91OO8vbyzb89Dja+8e5HqPyZ/L/C5YYakWNe+f9MtPR7MWu6YN+zKBCS6gv/jS/dd8Jx
+         6jJNSgk5Sn1x4rxgcgai1aayaDo5PxU4rNXle+s4o6Lf61unG9R/4LCwl47P12Kei6sI
+         /E23WgzfDuVUO/Q6Ibw3S3fhO6hkTwfB68qvjemloY/tyKt2otsjPCLwjMoVeO4T0Olx
+         At4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=EMjKTluV8E+qBr/4JM2DWbyEMJk+9Wk2onaYSOfzL3s=;
+        b=U7EPKyfeDfjafP7KfR9sxd7SVmQWl6gQ2T7H6N31HysPVvPluPAtlZkNlUkBxTdpww
+         wwa428yax41pEgg00IoAbeMryGrH/DUa9beQwToEL5U1vi/h837JP3ALA30xpYcQrS6p
+         FZKGt43Tix06M9JWWoerwQUvYV5o8NkHlebVshaPZDTpyrhCvG16k2SO0nwzIF89Z7oB
+         DB6X7RJkziGnXZpOvWYw1+sCbyzdcnFZKgY2yiSh1kog51TCZOP5IuxIclvoc09w28pO
+         383ggUD7BdtQpOpcwR6l4ZnzR3W/1pKGGFK9I+Z6LCq+K+WCKZn1OIMNQA3SuhbrAC2u
+         jtDg==
+X-Gm-Message-State: APjAAAUrq8NWQ4wurkQYx9IY91MjPwjMma0ugw/lRf/aYY97tbpGdnlp
+        B2aYtJNMnx3hUH25mY/4f8uQaTQ7ElUHTqFvtgA=
+X-Google-Smtp-Source: APXvYqz4gAhA8k5Maz6flj/armSFK/B7DYFTv591B0Q4kozBMJs1VxRJUbgCP+ZR3eXLbvMT5uQBs7xd44PmAuvSalU=
+X-Received: by 2002:a63:2b0d:: with SMTP id r13mr27028919pgr.400.1556052928509;
+ Tue, 23 Apr 2019 13:55:28 -0700 (PDT)
+Date:   Tue, 23 Apr 2019 13:55:19 -0700
+Message-Id: <20190423205521.246828-1-ndesaulniers@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.21.0.593.g511ec345e18-goog
+Subject: [PATCH] mips: vdso: drop unnecessary cc-ldoption
+From:   Nick Desaulniers <ndesaulniers@google.com>
+To:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        clang-built-linux@googlegroups.com,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        Joel Stanley <joel@jms.id.au>,
+        Hassan Naveed <hnaveed@wavecomp.com>,
+        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Serge,
+Towards the goal of removing cc-ldoption, it seems that --hash-style=
+was added to binutils 2.17.50.0.2 in 2006. The minimal required version
+of binutils for the kernel according to
+Documentation/process/changes.rst is 2.20.
 
-On Tue, Apr 23, 2019 at 03:31:22PM +0300, Serge Semin wrote:
-> Since commit 4b050ba7a66c ("MIPS: pgtable.h: Implement the
-> pgprot_writecombine function for MIPS") and commit c4687b15a848 ("MIPS: F=
-ix
-> definition of pgprot_writecombine()") write-combine vma mapping is
-> available to be used by kernel subsystems for MIPS. In particular the
-> uncached accelerated attribute is requested to be set by ioremap_wc()
-> method and by generic PCI memory pages/ranges mapping methods. The same
-> is done by the drm_io_prot()/ttm_io_prot() functions in case if
-> write-combine flag is set for vma's passed for mapping. But for some
-> reason the pgprot_writecombine() method calling is ifdefed to be a
-> platform-specific with MIPS system being marked as lacking of one. At the
-> very least it doesn't reflect the current MIPS platform implementation.
-> So in order to improve the DRM subsystem performance on MIPS with UCA
-> mapping enabled, we need to have pgprot_writecombine() called for buffers=
-,
-> which need store operations being combined. In case if particular MIPS
-> chip doesn't support the UCA attribute, the mapping will fall back to
-> noncached.
->=20
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Paul Burton <paul.burton@mips.com>
-> Cc: James Hogan <jhogan@kernel.org>
-> Signed-off-by: Vadim V. Vlasov <vadim.vlasov@t-platforms.ru>
-> Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-> ---
->  drivers/gpu/drm/drm_vm.c          | 5 +++--
->  drivers/gpu/drm/ttm/ttm_bo_util.c | 4 ++--
->  2 files changed, 5 insertions(+), 4 deletions(-)
+--build-id was added in 2.18 according to binutils-gdb/ld/NEWS.
 
-Looks good to me:
+Link: https://gcc.gnu.org/ml/gcc/2007-01/msg01141.html
+Cc: clang-built-linux@googlegroups.com
+Suggested-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+---
+ arch/mips/vdso/Makefile | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-    Reviewed-by: Paul Burton <paul.burton@mips.com>
+diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
+index 0ede4deb8181..7221df24cb23 100644
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -46,9 +46,7 @@ endif
+ VDSO_LDFLAGS := \
+ 	-Wl,-Bsymbolic -Wl,--no-undefined -Wl,-soname=linux-vdso.so.1 \
+ 	$(addprefix -Wl$(comma),$(filter -E%,$(KBUILD_CFLAGS))) \
+-	-nostdlib -shared \
+-	$(call cc-ldoption, -Wl$(comma)--hash-style=sysv) \
+-	$(call cc-ldoption, -Wl$(comma)--build-id)
++	-nostdlib -shared -Wl,--hash-style=sysv -Wl,--build-id
+ 
+ GCOV_PROFILE := n
+ UBSAN_SANITIZE := n
+-- 
+2.21.0.593.g511ec345e18-goog
 
-Thanks,
-    Paul

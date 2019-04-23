@@ -2,110 +2,157 @@ Return-Path: <SRS0=+ZmA=SZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
-	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DB825C10F03
-	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 21:55:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92751C10F03
+	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 22:49:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id A5F1D218D2
-	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 21:55:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5E833218D3
+	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 22:49:03 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="KrFesCvp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="uqIRqg1R"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726665AbfDWVzc (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 23 Apr 2019 17:55:32 -0400
-Received: from mail-eopbgr750113.outbound.protection.outlook.com ([40.107.75.113]:38022
-        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726029AbfDWVzc (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 23 Apr 2019 17:55:32 -0400
+        id S1726075AbfDWWtC (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 23 Apr 2019 18:49:02 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:39457 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727189AbfDWWtC (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 23 Apr 2019 18:49:02 -0400
+Received: by mail-lj1-f196.google.com with SMTP id l7so15002257ljg.6;
+        Tue, 23 Apr 2019 15:49:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BHgGNdaLBcLUJ9Ifka6idJUg8dmHKSWnSp/HRFayExo=;
- b=KrFesCvpReRWHXgZlshKhyjk3C6SFsr/pG7KcFfcGbLuobucVu+KPWGujGI4NB5LXAmXTToznWa3qQ2ZC+l4SEBwXO4BfQe2vN7ajVQ/OCWRD5AnOSDmM6wn3OepnsyWTWMYNt070tiVepIGmuqAK+UXLd7k3JXC6HwrxNkTjyY=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1054.namprd22.prod.outlook.com (10.174.169.140) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1813.14; Tue, 23 Apr 2019 21:55:29 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::b9d6:bf19:ec58:2765]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::b9d6:bf19:ec58:2765%7]) with mapi id 15.20.1813.017; Tue, 23 Apr 2019
- 21:55:29 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Nick Desaulniers <ndesaulniers@google.com>
-CC:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        Paul Burton <pburton@wavecomp.com>,
-        "jhogan@kernel.org" <jhogan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        "clang-built-linux@googlegroups.com" 
-        <clang-built-linux@googlegroups.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=GFAcF+BNJAUspNATnW1zZ1un5px4lM5fhU2ckCqOLfU=;
+        b=uqIRqg1RjFNLtTkHdroYCCfX3hLuyGL5DDMo1x9QQHSQSGSRS5qzObRovEnyXQ1/zE
+         FTy/qxX/kLTiS2sxTmJHK8WgKYjp7yneJyNe3tdwOJtS2jBKkMkjUzahG3QnG1dSvmLj
+         CM1QFUj2MP1o6TZAxfeeaBFFTKHrNMh4++g9nVp28iVHW7eGXsJXTPK32ioKiaXMTlpP
+         6IfbbYkYfMGKvaXj3TgKGLSordovkXdTWSH+IqndUWhh+Z3xMM+KC763ZIU6IcszCk/6
+         ySM2s2zVLgso4EHhsEnN7y7F6+8PRuGQlF/buTpXBnLJXmtbYOxR/pYijuk0asOrA2L4
+         XR1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=GFAcF+BNJAUspNATnW1zZ1un5px4lM5fhU2ckCqOLfU=;
+        b=nWKu4Q1ZwIa0YLHwATGddQEtugDE1z4FvLO4qsWPTfETVMbSZip45rt4Ey6HGt6h3P
+         sBTjQybLN0K7BRm1VOVfSkJitXOwj9J4svbTkHCXmw+x/NNlOsSot4ptgMqz2tNv+oX3
+         hxRFHdevKBWklszrLzqiv1TAYREa5/wySKMc+x12YcSe2x4WF+TCuWx6P/10bkWljlQb
+         w1e+8aAmeaK1GCVd0IwRMYu6PbzO4PX/sDyAqhBRmvPOSzRlJdLWcKl6Aoigt83xd5Lz
+         phlKcecyEp6IUCB+xtfihysyFNOmttnQyx0o6+AMgARUaH6MN8ExaCa8vVbuudfi5snS
+         /mQA==
+X-Gm-Message-State: APjAAAX4rhsXCCoUnKXExV+YaGbcXnNghyM6hUBv6LABZP0vhDMkw/Fa
+        1TAQGtNMcRbEId1saBr5FFc=
+X-Google-Smtp-Source: APXvYqxrJla13/QY5XcjVmsD+3mKA6DpwhKSbOeaIHJPhSl4jAZ0vBJf8k8SZ85FOT+TRef1iQU5Sw==
+X-Received: by 2002:a2e:8446:: with SMTP id u6mr15394840ljh.71.1556059740001;
+        Tue, 23 Apr 2019 15:49:00 -0700 (PDT)
+Received: from localhost.localdomain ([5.164.240.123])
+        by smtp.gmail.com with ESMTPSA id w2sm4904722lfa.63.2019.04.23.15.48.58
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 23 Apr 2019 15:48:59 -0700 (PDT)
+From:   Serge Semin <fancer.lancer@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
         Matt Redfearn <matt.redfearn@mips.com>,
-        Joel Stanley <joel@jms.id.au>,
-        Hassan Naveed <hnaveed@wavecomp.com>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH] mips: vdso: drop unnecessary cc-ldoption
-Thread-Topic: [PATCH] mips: vdso: drop unnecessary cc-ldoption
-Thread-Index: AQHU+hbjECdZlMB6i0mRyTkBYrCWf6ZKSlEA
-Date:   Tue, 23 Apr 2019 21:55:28 +0000
-Message-ID: <MWHPR2201MB12770545C4358E70F24344F6C1230@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20190423205521.246828-1-ndesaulniers@google.com>
-In-Reply-To: <20190423205521.246828-1-ndesaulniers@google.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR08CA0071.namprd08.prod.outlook.com
- (2603:10b6:a03:117::48) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:24::17)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [67.207.99.198]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 7b940d39-514d-48a9-d0ed-08d6c83665d7
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600141)(711020)(4605104)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:MWHPR2201MB1054;
-x-ms-traffictypediagnostic: MWHPR2201MB1054:
-x-ms-exchange-purlcount: 1
-x-microsoft-antispam-prvs: <MWHPR2201MB1054028F4932A0FC0EFB79B7C1230@MWHPR2201MB1054.namprd22.prod.outlook.com>
-x-forefront-prvs: 0016DEFF96
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(376002)(396003)(366004)(39850400004)(136003)(199004)(189003)(14454004)(26005)(8676002)(66556008)(44832011)(66476007)(71200400001)(81156014)(68736007)(25786009)(97736004)(186003)(76176011)(8936002)(478600001)(476003)(6436002)(102836004)(229853002)(81166006)(966005)(71190400001)(4326008)(52116002)(2906002)(7696005)(6306002)(6246003)(256004)(5660300002)(6916009)(9686003)(386003)(73956011)(66946007)(99286004)(64756008)(3846002)(52536014)(6116002)(6506007)(55016002)(316002)(486006)(53936002)(42882007)(446003)(33656002)(11346002)(305945005)(54906003)(7736002)(74316002)(66066001)(66446008)(4744005);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1054;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: Sihll9NH6PM3TRm0bBGoEwKXNFbGEQFazmbMqCSYb6gLZCjYgfHkRkpLSWzbfJ8AM7/YOuDbi/sgoyFtLmPEf+5eFiPZfa6H0n81ujEwZ7Wmj30qXQkWPwjv5rwUAcprf7dApHNFgG637cVGgGutrhNb5ozUDFkNcw2BZAHEatzefSER8c4+z2poyzrv1x8SdpwZjpFfbg9t20UXfbImHf4MmErxTzxq3aKlZ66o0wMm0z6g9riiR5yy+NT8lUPL3VqgkM4ZdFNiukmWnVDBrig812jZgh7wqx23vD2nc0+6Zb0VlYMQzs8bYbgjbKR4NF0qz+q9AdLPU0MGwjjOAXGPAcxnYdoweNCCFYvUbB/jNSTsYuI3z+WQpj/7bD2cyzJFx3Ca4XeSUg5DgrAcccIYsTbf93uwLBquV9cj+VY=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+        Huacai Chen <chenhc@lemote.com>,
+        Stefan Agner <stefan@agner.ch>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Juergen Gross <jgross@suse.com>
+Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Serge Semin <fancer.lancer@gmail.com>
+Subject: [PATCH 00/12] mips: Post-bootmem-memblock transition fixes
+Date:   Wed, 24 Apr 2019 01:47:36 +0300
+Message-Id: <20190423224748.3765-1-fancer.lancer@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b940d39-514d-48a9-d0ed-08d6c83665d7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Apr 2019 21:55:28.8160
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1054
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-SGVsbG8sDQoNCk5pY2sgRGVzYXVsbmllcnMgd3JvdGU6DQo+IFRvd2FyZHMgdGhlIGdvYWwgb2Yg
-cmVtb3ZpbmcgY2MtbGRvcHRpb24sIGl0IHNlZW1zIHRoYXQgLS1oYXNoLXN0eWxlPQ0KPiB3YXMg
-YWRkZWQgdG8gYmludXRpbHMgMi4xNy41MC4wLjIgaW4gMjAwNi4gVGhlIG1pbmltYWwgcmVxdWly
-ZWQgdmVyc2lvbg0KPiBvZiBiaW51dGlscyBmb3IgdGhlIGtlcm5lbCBhY2NvcmRpbmcgdG8NCj4g
-RG9jdW1lbnRhdGlvbi9wcm9jZXNzL2NoYW5nZXMucnN0IGlzIDIuMjAuDQo+IA0KPiAtLWJ1aWxk
-LWlkIHdhcyBhZGRlZCBpbiAyLjE4IGFjY29yZGluZyB0byBiaW51dGlscy1nZGIvbGQvTkVXUy4N
-Cj4gDQo+IExpbms6IGh0dHBzOi8vZ2NjLmdudS5vcmcvbWwvZ2NjLzIwMDctMDEvbXNnMDExNDEu
-aHRtbA0KPiBDYzogY2xhbmctYnVpbHQtbGludXhAZ29vZ2xlZ3JvdXBzLmNvbQ0KPiBTdWdnZXN0
-ZWQtYnk6IE1hc2FoaXJvIFlhbWFkYSA8eWFtYWRhLm1hc2FoaXJvQHNvY2lvbmV4dC5jb20+DQo+
-IFNpZ25lZC1vZmYtYnk6IE5pY2sgRGVzYXVsbmllcnMgPG5kZXNhdWxuaWVyc0Bnb29nbGUuY29t
-Pg0KDQpBcHBsaWVkIHRvIG1pcHMtbmV4dC4NCg0KVGhhbmtzLA0KICAgIFBhdWwNCg0KWyBUaGlz
-IG1lc3NhZ2Ugd2FzIGF1dG8tZ2VuZXJhdGVkOyBpZiB5b3UgYmVsaWV2ZSBhbnl0aGluZyBpcyBp
-bmNvcnJlY3QNCiAgdGhlbiBwbGVhc2UgZW1haWwgcGF1bC5idXJ0b25AbWlwcy5jb20gdG8gcmVw
-b3J0IGl0LiBdDQo=
+First attempt of making the MIPS subsystem utilizing the memblock early memory
+allocator was done by me a few years ago. I created a patchset with
+21 patches [1]. It turned out to be too complicated and I decided to resend a
+reworked patchset with smaller number of changes [2]. I did this and after a
+small review process a v2 patchset was also posted. Then my spare
+time was over and I couldn't proceed with the patchset support and
+resubmission.
+
+In a year Mike Rapoport took charge in this task and posted a small
+patch which essentially did the bootmem allocator removal from MIPS
+subsystem [3]. A single small patch did in general the whole thing my huge
+patchsetes were intended for in the first place (though it lacked a few fixes).
+Mike even went further and completely removed the bootmem allocator from
+kernel code, so all the subsystems would need to use the only one early
+memory allocator. This significantly simplified the platforms code as well
+as removed a deprecated subsystem with duplicated functionality. Million
+credits to Mike for this.
+
+Getting back to the MIPS subsystem and it memblock allocator usage. Even
+though the patch suggested by Mike [3] fixed most of the problems caused
+by enabling the memblock allocator usage, some of them have been left
+uncovered by it. First of all the PFNs calculation algorithm hasn't been
+fully refactored. A reserved memory declaration loop has been left
+untouched though it was clearly over-complicated for the new initialization
+procedure. Secondly the MIPS platform code reserved the whole space below
+kernel start address, which doesn't seem right since kernel can be
+located much higher than memory space really starts. Thirdly CMA if it
+is enabled reserves memory regions by means of memblock in the first place.
+So the bootmem-init code doesn't need to do it again. Fifthly at early
+platform initialization stage non of bootmem-left methods can be called
+since there is no memory pages mapping at that moment, so __nosave* region
+must be reserved by means of memblock allocator. Finally aside from memblock
+allocator introduction my early patchsets included a series of useful
+alterations like "nomap" property implementation for "reserved-memory"
+dts-nodes, memblock_dump_all() method call after early memory allocator
+initialization for debugging, low-memory test procedure, kernel memory
+mapping printout at boot-time, and so on. So all of these fixes and
+alterations are introduced in this new patchset. Please review. Hope
+this time I'll be more responsive and finish this series up until it
+is merged.
+
+[1] https://lkml.org/lkml/2016/12/18/195
+[2] https://lkml.org/lkml/2018/1/17/1201
+[3] https://lkml.org/lkml/2018/9/10/302
+
+NOTE I added a few "Reviewed-by:  Matt Redfearn <matt.redfearn@mips.com>"
+since some patches of this series have been picked up from my earlier
+patchsets, which Matt's already reviewed. I didn't add the tag for patches,
+which were either new or partially ported.
+
+Serge Semin (12):
+  mips: Make sure kernel .bss exists in boot mem pool
+  mips: Discard rudiments from bootmem_init
+  mips: Combine memblock init and memory reservation loops
+  mips: Reserve memory for the kernel image resources
+  mips: Discard post-CMA-init foreach loop
+  mips: Use memblock to reserve the __nosave memory range
+  mips: Add reserve-nomap memory type support
+  mips: Dump memblock regions for debugging
+  mips: Perform early low memory test
+  mips: Print the kernel virtual mem layout on debugging
+  mips: Make sure dt memory regions are valid
+  mips: Enable OF_RESERVED_MEM config
+
+ arch/mips/Kconfig                |   1 +
+ arch/mips/include/asm/bootinfo.h |   1 +
+ arch/mips/kernel/prom.c          |  18 ++++-
+ arch/mips/kernel/setup.c         | 129 +++++++++----------------------
+ arch/mips/mm/init.c              |  49 ++++++++++++
+ 5 files changed, 102 insertions(+), 96 deletions(-)
+
+-- 
+2.21.0
+

@@ -2,107 +2,132 @@ Return-Path: <SRS0=+ZmA=SZ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C8C3AC282DD
-	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 03:23:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E9547C282DD
+	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 03:24:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 94A3620B1F
-	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 03:23:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B76D920843
+	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 03:24:23 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=nifty.com header.i=@nifty.com header.b="RQl+05KO"
+	dkim=pass (2048-bit key) header.d=nifty.com header.i=@nifty.com header.b="P91ZeAMh"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731375AbfDWDWr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 22 Apr 2019 23:22:47 -0400
-Received: from conuserg-09.nifty.com ([210.131.2.76]:57703 "EHLO
-        conuserg-09.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728527AbfDWDWq (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 22 Apr 2019 23:22:46 -0400
-Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
-        by conuserg-09.nifty.com with ESMTP id x3N3L8LD031384;
-        Tue, 23 Apr 2019 12:21:10 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-09.nifty.com x3N3L8LD031384
+        id S1727407AbfDWDYX (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 22 Apr 2019 23:24:23 -0400
+Received: from conssluserg-04.nifty.com ([210.131.2.83]:52904 "EHLO
+        conssluserg-04.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727306AbfDWDYX (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 22 Apr 2019 23:24:23 -0400
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50]) (authenticated)
+        by conssluserg-04.nifty.com with ESMTP id x3N3OCIE026091;
+        Tue, 23 Apr 2019 12:24:13 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com x3N3OCIE026091
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1555989671;
-        bh=Uo1hU/pOzqv1Q6UwWPC8xpA1XS41uzJeh8wwHc0qw10=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RQl+05KOKoPFyxSI2FuyZ89MGQq0gLVxtR0GWFgEWNRsXcCy0ywyMCoApyQXmEl2n
-         io077/9bKRr3TeYS3JcPQpAgG+CgbDwSbEuJjT7Lmm7Jw6tR92Yz0nQViiui/FvOYz
-         OHEdmjKD4ngKPNZFO6+CjberrgaPoe16v9aVfe5TB6AkQWrH8BAv1i7oqy5w8xLaj2
-         RzbqB8+k+ccjgH7NZYljMP+UkT7M08F+jN4dlBRwqq5ZGhZlN6W78e7n79Ti0CPVAz
-         o9Klq/jAOFriEnk7sGfoNu3h+Jeytk82FTnBT3j7jCa2JpKnKNKSS7Hd5r/0KKb6Z/
-         rdh6GlVxkt4pA==
-X-Nifty-SrcIP: [153.142.97.92]
+        s=dec2015msa; t=1555989853;
+        bh=ZaFZ1e3X9NvA8jIq/O0HE8feh53sYwHuO++fFuOS9nA=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=P91ZeAMhtMqYylWUwrm0osI7w4pI/iDlLSWG/rgtuV4n4+wggoIrtADSDmDO1F8IT
+         9SwLYRNBLbn0b744T8wkCcKdwRp1bFydxoBb/Ez/b9cQ25oEEeJ8fGba2msUkgzzN7
+         RVgAZWUxJsGwNQ1bWOAqoinA3tgIU6FXaJx5B1L/jq2wQU/LA3xl6qMAHwZmrwSwQr
+         zRfXO4olxBoW18m482H250QJqKYOMqrg5Rb5U/oSnXgQXE947uj84smCxuOU3bNZk6
+         XQX+9jSnBFsERD0tttKHFup0w0hnVx0NFKRLwUi8nadx+s4K1Nt/08Gj7JqtqRc3FH
+         xGxtXeWji4Okg==
+X-Nifty-SrcIP: [209.85.222.50]
+Received: by mail-ua1-f50.google.com with SMTP id c6so4301914uan.1;
+        Mon, 22 Apr 2019 20:24:13 -0700 (PDT)
+X-Gm-Message-State: APjAAAUjKMvZKY6A3TzUKyUja3hKKYKBnxvd4QgelcLWTMR9KGoetZNB
+        xO7ziDVt7aZqc53MYUALLcQkZKwYHn6wdUpVJOE=
+X-Google-Smtp-Source: APXvYqy2+X5gAZU5b5JBqG8lKaQqh8mqoq4bQSgIgGHvQKLEeXzwh1sBxjABZmsDHRTa0MRWHTkc9sQeXvoau4eItSo=
+X-Received: by 2002:ab0:7008:: with SMTP id k8mr11599996ual.40.1555989851968;
+ Mon, 22 Apr 2019 20:24:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190419094754.24667-1-yamada.masahiro@socionext.com>
+ <20190419094754.24667-7-yamada.masahiro@socionext.com> <CA+7wUsygTo=AN_giku_X6_a4mQWdJL48RoVbVB4hBqkZSKkP0Q@mail.gmail.com>
+In-Reply-To: <CA+7wUsygTo=AN_giku_X6_a4mQWdJL48RoVbVB4hBqkZSKkP0Q@mail.gmail.com>
 From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-arch <linux-arch@vger.kernel.org>
-Cc:     linux-s390@vger.kernel.org,
+Date:   Tue, 23 Apr 2019 12:23:35 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQjQKu9GFyCyDJsQcyQjbeSGoJJPJV8YEtSXuV9JDqhqQ@mail.gmail.com>
+Message-ID: <CAK7LNAQjQKu9GFyCyDJsQcyQjbeSGoJJPJV8YEtSXuV9JDqhqQ@mail.gmail.com>
+Subject: Re: [PATCH v2 06/11] MIPS: mark __fls() as __always_inline
+To:     Mathieu Malaterre <malat@debian.org>
+Cc:     linux-arch <linux-arch@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, X86 ML <x86@kernel.org>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org,
-        x86@kernel.org, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        linux-mtd@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Mathieu Malaterre <malat@debian.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>
-Subject: [PATCH v3 02/10] MIPS: mark mult_sh_align_mod() as __always_inline
-Date:   Tue, 23 Apr 2019 12:20:58 +0900
-Message-Id: <20190423032106.11960-3-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190423032106.11960-1-yamada.masahiro@socionext.com>
-References: <20190423032106.11960-1-yamada.masahiro@socionext.com>
+        linux-mips@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        linux-mtd <linux-mtd@lists.infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-This prepares to move CONFIG_OPTIMIZE_INLINING from x86 to a common
-place. We need to eliminate potential issues beforehand.
+On Sat, Apr 20, 2019 at 12:45 AM Mathieu Malaterre <malat@debian.org> wrote:
+>
+> Hi,
+>
+> On Fri, Apr 19, 2019 at 12:06 PM Masahiro Yamada
+> <yamada.masahiro@socionext.com> wrote:
+> >
+> > This prepares to move CONFIG_OPTIMIZE_INLINING from x86 to a common
+> > place. We need to eliminate potential issues beforehand.
+> >
+> > If it is enabled for mips, the following errors are reported:
+> >
+> > arch/mips/mm/sc-mips.o: In function `mips_sc_prefetch_enable.part.2':
+> > sc-mips.c:(.text+0x98): undefined reference to `mips_gcr_base'
+> > sc-mips.c:(.text+0x9c): undefined reference to `mips_gcr_base'
+> > sc-mips.c:(.text+0xbc): undefined reference to `mips_gcr_base'
+> > sc-mips.c:(.text+0xc8): undefined reference to `mips_gcr_base'
+> > sc-mips.c:(.text+0xdc): undefined reference to `mips_gcr_base'
+> > arch/mips/mm/sc-mips.o:sc-mips.c:(.text.unlikely+0x44): more undefined references to `mips_gcr_base'
+>
+> Tested with success on ppc32/G4. But on CI20 (ci20_defconfig from
+> master), I get:
 
-If it is enabled for mips, the following error is reported:
 
-arch/mips/kernel/cpu-bugs64.c: In function 'mult_sh_align_mod.constprop':
-arch/mips/kernel/cpu-bugs64.c:33:2: error: asm operand 1 probably doesn't match constraints [-Werror]
-  asm volatile(
-  ^~~
-arch/mips/kernel/cpu-bugs64.c:33:2: error: asm operand 1 probably doesn't match constraints [-Werror]
-  asm volatile(
-  ^~~
-arch/mips/kernel/cpu-bugs64.c:33:2: error: impossible constraint in 'asm'
-  asm volatile(
-  ^~~
-arch/mips/kernel/cpu-bugs64.c:33:2: error: impossible constraint in 'asm'
-  asm volatile(
-  ^~~
+Thanks for the test!
 
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
----
+OK, I saw this error for ci20_defconfig.
 
-Changes in v3: None
-Changes in v2:
-  - split into a separate patch
+I inline'd __ffs() to fix it
+and sumitted v3.
 
- arch/mips/kernel/cpu-bugs64.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thank you.
 
-diff --git a/arch/mips/kernel/cpu-bugs64.c b/arch/mips/kernel/cpu-bugs64.c
-index bada74af7641..c04b97aace4a 100644
---- a/arch/mips/kernel/cpu-bugs64.c
-+++ b/arch/mips/kernel/cpu-bugs64.c
-@@ -42,8 +42,8 @@ static inline void align_mod(const int align, const int mod)
- 		: "n"(align), "n"(mod));
- }
- 
--static inline void mult_sh_align_mod(long *v1, long *v2, long *w,
--				     const int align, const int mod)
-+static __always_inline void mult_sh_align_mod(long *v1, long *v2, long *w,
-+					      const int align, const int mod)
- {
- 	unsigned long flags;
- 	int m1, m2;
+
+
+>   MODPOST vmlinux.o
+> mipsel-linux-gnu-ld: arch/mips/kernel/traps.o: in function
+> `addr_gcr_err_control':
+> /home/mathieu/tmp/linux/linux/ci20/../arch/mips/include/asm/mips-cm.h:169:
+> undefined reference to `mips_gcr_base'
+> mipsel-linux-gnu-ld:
+> /home/mathieu/linux/linux/ci20/../arch/mips/include/asm/mips-cm.h:169:
+> undefined reference to `mips_gcr_base'
+> mipsel-linux-gnu-ld: arch/mips/mm/sc-mips.o: in function
+> `addr_gcr_l2_pft_control':
+> /home/mathieu/linux/linux/ci20/../arch/mips/include/asm/mips-cm.h:246:
+> undefined reference to `mips_gcr_base'
+> mipsel-linux-gnu-ld:
+> /home/mathieu/linux/linux/ci20/../arch/mips/include/asm/mips-cm.h:246:
+> undefined reference to `mips_gcr_base'
+> mipsel-linux-gnu-ld:
+> /home/mathieu/linux/linux/ci20/../arch/mips/include/asm/mips-cm.h:246:
+> undefined reference to `mips_gcr_base'
+> mipsel-linux-gnu-ld:
+> arch/mips/mm/sc-mips.o:/home/mathieu/linux/linux/ci20/../arch/mips/include/asm/mips-cm.h:246:
+> more undefined references to `mips_gcr_base' follow
+
+
+
+
 -- 
-2.17.1
-
+Best Regards
+Masahiro Yamada

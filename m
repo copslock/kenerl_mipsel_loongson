@@ -7,53 +7,53 @@ X-Spam-Status: No, score=-8.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B406EC282DD
-	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 22:50:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA7F5C10F03
+	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 22:50:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 7FDB2218D3
-	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 22:50:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 88912218D3
+	for <linux-mips@archiver.kernel.org>; Tue, 23 Apr 2019 22:50:24 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RL7nJj2A"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="t8OafW3s"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728603AbfDWWtc (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 23 Apr 2019 18:49:32 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:40414 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728350AbfDWWta (ORCPT
+        id S1728684AbfDWWuT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 23 Apr 2019 18:50:19 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:45988 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726075AbfDWWta (ORCPT
         <rfc822;linux-mips@vger.kernel.org>); Tue, 23 Apr 2019 18:49:30 -0400
-Received: by mail-lj1-f195.google.com with SMTP id q66so14984975ljq.7;
-        Tue, 23 Apr 2019 15:49:29 -0700 (PDT)
+Received: by mail-lj1-f196.google.com with SMTP id y6so14964746ljd.12;
+        Tue, 23 Apr 2019 15:49:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=kL5scIjwN0bnNKZh/MvkqfH0S+/rftNhOfsf9udhKXo=;
-        b=RL7nJj2AP0HIjtqrrU7fZT1SPPW3Q7aOlP+LazRT5TRh7JlanscVoo3IB8u1my4em0
-         3wHtkzlNbjMCiZ/ROm9mg2ShF/y+1S/UdZzCD66KhP5V9aKJ6DyZP+LPJZVrzy7UHTrd
-         3qBdEQFqteAoeefh4HtRRW91SMHlshy4Up23Zi891elRwf2sfU6gqFu/NVfFfdBVe0N/
-         24olgUFdAofsNaO2cg4ZqeTewGCp/PHoN0eieY0W1CiskXLfi9/zF3pCZO/ieiwxRr+u
-         FGD83jHs+iQvA64j3I4QajnwaC/B88ZJqV2XedGoN9TndOARXHGFMe5tN5nBVHwmNaYM
-         3Idg==
+        bh=nf5p2Hszyn7zksK8vUlbN9/At8QF1xygcv19ymXYW3s=;
+        b=t8OafW3s67dc/e2f5ea3EKPsRNwVMA+tSDMPuKeRJfh+A7l7j3BT+LhzhKkcgV9Djy
+         YQ75W3UTwjty7OcwReU8rwTZlkmf3YzYQpGlLorRFGY+/j7bXViz3vX3cetkHN4Iz2Qw
+         TqM4NitL9g1h5fz8ZcQh3mT0GGosgBZX2kvNxkfxcoP4ioMBqpuiCcw1sZhrBx/DDzyA
+         KexhVilA/my06BDZM6oeb+oZ72yMNVj3PiSdwODG9QZl+dzQb9grqg3qjGgzlvGHBuQI
+         EW9Tq2juRtaSST6bZXW7cQWxAzSjuuVMnUBrMc6awP+8fptOxjvIXEGKGdMbdN3XHDgc
+         RZ6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=kL5scIjwN0bnNKZh/MvkqfH0S+/rftNhOfsf9udhKXo=;
-        b=n/lc6o+y4wQ5EiE6SaAWhxxUKM4CcTGbhV1GJsYe8TC0V9bZM43ce2+b/QUT2ppEP6
-         qoil68389EhgvWMNC8Zste4H7B79+xviqHMZF0VC/0CkMtDLNBXypMoxuTTUY4Of7NiI
-         Itdwm/wfmML1z22XWSlwGN9pf3MUKjKh9CAQqAckZ6fB2pbTi0bIIuKt56jS2nBcHMJO
-         sCVqG9hmP1lBsIHlJ72yzoI/ti2XtlNJbnhzGkmp96/528Od91GRTvkfvKRgrBJej/fk
-         pFlIjE6/6/TaiFX96/bhb7XhfLLhyOcJ497i79oY3NTyVjxQw3B4xAReaTlsj/3+AZUK
-         Smww==
-X-Gm-Message-State: APjAAAVJvBHtZEN5Qdj3a4KxqOdHbJBFl0gKx7nQJkr8V5w3a2tvXZ6C
-        4o94xggEAD8mK8GTn7N09Cg=
-X-Google-Smtp-Source: APXvYqyHxLB2YUcQTKUlMkatOsiRjG5aj7qenaEg42Q+Vt1Mc0MuOkVgotaJK5cYFdfXlOG5eCNVTw==
-X-Received: by 2002:a2e:93d0:: with SMTP id p16mr14767084ljh.197.1556059768630;
-        Tue, 23 Apr 2019 15:49:28 -0700 (PDT)
-Received: from localhost.localdomain ([5.164.240.123])
-        by smtp.gmail.com with ESMTPSA id w2sm4904722lfa.63.2019.04.23.15.49.27
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        bh=nf5p2Hszyn7zksK8vUlbN9/At8QF1xygcv19ymXYW3s=;
+        b=thtozZOTsocJ0iKrUppW984pipSwDZYs3QOVR6be6w4GHTqYjcC5hAj9ncfYaYL2+U
+         /P5/xmQxYW/wtXM7Ujs6MZqeqzI1YgRS9O0kXMrxXm+P62bIyuLbf7ceDUPa3tVSJPlT
+         SVUPB2qMZJpJQZ3m8i06fKS3TGGiT+xBUO3oS9RqiVvKH1UXW7sDFpKmlS58UMsFlkPN
+         yOuxXvV+W/Xo/13kysSicbPpqtcbu00u6yuV2nnP97Ey+6MxbwLsbLrrkm04Uoy/bRUp
+         le1OaQMBXhyhzccu0u1KZMdrYr7iHqn1Q+gVgKVLnfjAm92Hn7NDEWIva2PFUFasRDiE
+         tgJA==
+X-Gm-Message-State: APjAAAUULnGdlrAnChhult5Bf81ada12LQuTQyYDIYiiUkMr8Zc7jqr2
+        dVJDXJXrz1pcedf3N/OKOqc=
+X-Google-Smtp-Source: APXvYqx3NfW75naO0rRCrxSVqpPFHGqC3Y3W2/GsE/V2uKHOBfmNUOiAcTk9Si95omHfgqBDlsCJsw==
+X-Received: by 2002:a2e:97d3:: with SMTP id m19mr1224671ljj.63.1556059767142;
         Tue, 23 Apr 2019 15:49:27 -0700 (PDT)
+Received: from localhost.localdomain ([5.164.240.123])
+        by smtp.gmail.com with ESMTPSA id w2sm4904722lfa.63.2019.04.23.15.49.25
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 23 Apr 2019 15:49:26 -0700 (PDT)
 From:   Serge Semin <fancer.lancer@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
@@ -71,9 +71,9 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
         Juergen Gross <jgross@suse.com>
 Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
         Serge Semin <fancer.lancer@gmail.com>
-Subject: [PATCH 04/12] mips: Reserve memory for the kernel image resources
-Date:   Wed, 24 Apr 2019 01:47:40 +0300
-Message-Id: <20190423224748.3765-5-fancer.lancer@gmail.com>
+Subject: [PATCH 03/12] mips: Combine memblock init and memory reservation loops
+Date:   Wed, 24 Apr 2019 01:47:39 +0300
+Message-Id: <20190423224748.3765-4-fancer.lancer@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190423224748.3765-1-fancer.lancer@gmail.com>
 References: <20190423224748.3765-1-fancer.lancer@gmail.com>
@@ -84,80 +84,100 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The reserved_end variable had been used by the bootmem_init() code
-to find a lowest limit of memory available for memmap blob. The original
-code just tried to find a free memory space higher than kernel was placed.
-This limitation seems justified for the memmap ragion search process, but
-I can't see any obvious reason to reserve the unused space below kernel
-seeing some platforms place it much higher than standard 1MB. Moreover
-the RELOCATION config enables it to be loaded at any memory address.
-So lets reserve the memory occupied by the kernel only, leaving the region
-below being free for allocations. After doing this we can now discard the
-code freeing a space between kernel _text and VMLINUX_LOAD_ADDRESS symbols
-since it's going to be free anyway (unless marked as reserved by
-platforms).
+Before bootmem was completely removed from the kernel, the last loop
+in the bootmem_init() had been used to reserve the correspondingly
+marked regions, initialize sparsemem sections and to free the low memory
+pages, which then would be used for early memory allocations. After the
+bootmem removing patchset had been merged the loop was left to do the first
+two things only. But it didn't do them quite well.
+
+First of all it leaves the BOOT_MEM_INIT_RAM memory types unreserved,
+which is definitely bug (although it isn't noticeable due to being used
+by the kernel region only, which is fully marked as reserved). Secondly
+the reservation is supposed to be done for any memory including the
+high one. (I couldn't figure out why the highmem was ignored in the first
+place, since platforms and dts' may declare any memory region for
+reservation) Thirdly the reserved_end variable had been used here to not
+accidentally free memory occupied by kernel. Since we already reserved the
+corresponding region higher in this method there is no need in using the
+variable here anymore. Fourthly the sparsemem should be aware of all the
+memory types in the system including the ROM_DATA even if it is going to
+be reserved for the whole system uptime. Finally after all these notes are
+fixed the loop of memory reservation can be freely merged into the memory
+installation loop as it's done in this patch.
 
 Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 ---
- arch/mips/kernel/setup.c | 30 +++---------------------------
- 1 file changed, 3 insertions(+), 27 deletions(-)
+ arch/mips/kernel/setup.c | 48 ++++++----------------------------------
+ 1 file changed, 7 insertions(+), 41 deletions(-)
 
 diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 185e0e42e009..f71a7d32a687 100644
+index 53d93a727d1a..185e0e42e009 100644
 --- a/arch/mips/kernel/setup.c
 +++ b/arch/mips/kernel/setup.c
-@@ -371,7 +371,6 @@ static void __init bootmem_init(void)
+@@ -483,55 +483,21 @@ static void __init bootmem_init(void)
+ 			continue;
  
- static void __init bootmem_init(void)
- {
--	unsigned long reserved_end;
- 	phys_addr_t ramstart = PHYS_ADDR_MAX;
- 	int i;
+ 		memblock_add_node(PFN_PHYS(start), PFN_PHYS(end - start), 0);
+-	}
+-
+-	/*
+-	 * Register fully available low RAM pages with the bootmem allocator.
+-	 */
+-	for (i = 0; i < boot_mem_map.nr_map; i++) {
+-		unsigned long start, end, size;
+-
+-		start = PFN_UP(boot_mem_map.map[i].addr);
+-		end   = PFN_DOWN(boot_mem_map.map[i].addr
+-				    + boot_mem_map.map[i].size);
  
-@@ -382,10 +381,10 @@ static void __init bootmem_init(void)
- 	 * will reserve the area used for the initrd.
- 	 */
- 	init_initrd();
--	reserved_end = (unsigned long) PFN_UP(__pa_symbol(&_end));
+-		/*
+-		 * Reserve usable memory.
+-		 */
++		/* Reserve any memory except the ordinary RAM ranges. */
+ 		switch (boot_mem_map.map[i].type) {
+ 		case BOOT_MEM_RAM:
+ 			break;
+-		case BOOT_MEM_INIT_RAM:
+-			memory_present(0, start, end);
+-			continue;
+-		default:
+-			/* Not usable memory */
+-			if (start > min_low_pfn && end < max_low_pfn)
+-				memblock_reserve(boot_mem_map.map[i].addr,
+-						boot_mem_map.map[i].size);
+-
+-			continue;
++		default: /* Reserve the rest of the memory types at boot time */
++			memblock_reserve(PFN_PHYS(start), PFN_PHYS(end - start));
++			break;
+ 		}
  
--	memblock_reserve(PHYS_OFFSET,
--			 (reserved_end << PAGE_SHIFT) - PHYS_OFFSET);
-+	/* Reserve memory occupied by kernel. */
-+	memblock_reserve(__pa_symbol(&_text),
-+			__pa_symbol(&_end) - __pa_symbol(&_text));
- 
- 	/*
- 	 * max_low_pfn is not a number of pages. The number of pages
-@@ -501,29 +500,6 @@ static void __init bootmem_init(void)
+ 		/*
+-		 * We are rounding up the start address of usable memory
+-		 * and at the end of the usable range downwards.
+-		 */
+-		if (start >= max_low_pfn)
+-			continue;
+-		if (start < reserved_end)
+-			start = reserved_end;
+-		if (end > max_low_pfn)
+-			end = max_low_pfn;
+-
+-		/*
+-		 * ... finally, is the area going away?
++		 * In any case the added to the memblock memory regions
++		 * (highmem/lowmem, available/reserved, etc) are considered
++		 * as present, so inform sparsemem about them.
+ 		 */
+-		if (end <= start)
+-			continue;
+-		size = end - start;
+-
+-		/* Register lowmem ranges */
  		memory_present(0, start, end);
  	}
  
--#ifdef CONFIG_RELOCATABLE
--	/*
--	 * The kernel reserves all memory below its _end symbol as bootmem,
--	 * but the kernel may now be at a much higher address. The memory
--	 * between the original and new locations may be returned to the system.
--	 */
--	if (__pa_symbol(_text) > __pa_symbol(VMLINUX_LOAD_ADDRESS)) {
--		unsigned long offset;
--		extern void show_kernel_relocation(const char *level);
--
--		offset = __pa_symbol(_text) - __pa_symbol(VMLINUX_LOAD_ADDRESS);
--		memblock_free(__pa_symbol(VMLINUX_LOAD_ADDRESS), offset);
--
--#if defined(CONFIG_DEBUG_KERNEL) && defined(CONFIG_DEBUG_INFO)
--		/*
--		 * This information is necessary when debugging the kernel
--		 * But is a security vulnerability otherwise!
--		 */
--		show_kernel_relocation(KERN_INFO);
--#endif
--	}
--#endif
--
- 	/*
- 	 * Reserve initrd memory if needed.
- 	 */
 -- 
 2.21.0
 

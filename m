@@ -2,42 +2,41 @@ Return-Path: <SRS0=tpP8=S2=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_NEOMUTT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FE9EC282E1
-	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 22:30:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ED19BC282E1
+	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 22:43:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id DDD1D208E4
-	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 22:30:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BB324214C6
+	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 22:43:55 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="KVNM243R"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="HS5skURq"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726154AbfDXWak (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 24 Apr 2019 18:30:40 -0400
-Received: from mail-eopbgr750111.outbound.protection.outlook.com ([40.107.75.111]:12351
-        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
+        id S1726622AbfDXWnz (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 24 Apr 2019 18:43:55 -0400
+Received: from mail-eopbgr780139.outbound.protection.outlook.com ([40.107.78.139]:52692
+        "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726048AbfDXWaj (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 24 Apr 2019 18:30:39 -0400
+        id S1726425AbfDXWnz (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 24 Apr 2019 18:43:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=72Tw1zzJdCHUrBG7HPZTycTaz6pOpioofLHaBGaemMU=;
- b=KVNM243Ry39gJBL3Z698Fl+UgyfERjQDiCAAbhC89l7vJ3gdheiRtDa2eW6WaK8s0SYHmpJuVFOm2gP1wsElNtvdPyARBDoVGxHzPcjTm5r7snae/G8Pah7WOuGTnV71Ra8tPO2PdZL2oUUXzMohl6IrdhbDs8HzGU5936ebcBI=
+ bh=kX3ChMlM5yboIQo3KtQkNAUMotgxjG6U43BH9cPshA4=;
+ b=HS5skURqt8N2LQUTE7V3A+VglBM5tAmwrBqKWDTOaiZU78YEoBBi9M9FSTgm7ipRIYXo9pYT/uZ5ph6M67gPc0FPAZYOjrHaRW7uZDJiAx+3apMj5LAcMzzY+RJ2oeA93zWvngOr7rMg89jrxOxjjNJgDZVGPDccozpgJQdm1wI=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1038.namprd22.prod.outlook.com (10.174.167.27) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1813.17; Wed, 24 Apr 2019 22:30:36 +0000
+ MWHPR2201MB1438.namprd22.prod.outlook.com (10.174.169.165) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1813.16; Wed, 24 Apr 2019 22:43:48 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::b9d6:bf19:ec58:2765]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::b9d6:bf19:ec58:2765%7]) with mapi id 15.20.1813.017; Wed, 24 Apr 2019
- 22:30:36 +0000
+ 22:43:48 +0000
 From:   Paul Burton <paul.burton@mips.com>
 To:     Serge Semin <fancer.lancer@gmail.com>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <pburton@wavecomp.com>,
         James Hogan <jhogan@kernel.org>,
         Matt Redfearn <matt.redfearn@mips.com>,
         Mike Rapoport <rppt@linux.ibm.com>,
@@ -51,66 +50,96 @@ CC:     Ralf Baechle <ralf@linux-mips.org>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Juergen Gross <jgross@suse.com>,
         "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH 02/12] mips: Discard rudiments from bootmem_init
-Thread-Topic: [PATCH 02/12] mips: Discard rudiments from bootmem_init
-Thread-Index: AQHU+ibPJx/995poAk2Zs09GW4PaOaZL5l2A
-Date:   Wed, 24 Apr 2019 22:30:36 +0000
-Message-ID: <MWHPR2201MB12776A057ABA75850F66771DC13C0@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20190423224748.3765-3-fancer.lancer@gmail.com>
-In-Reply-To: <20190423224748.3765-3-fancer.lancer@gmail.com>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 04/12] mips: Reserve memory for the kernel image resources
+Thread-Topic: [PATCH 04/12] mips: Reserve memory for the kernel image
+ resources
+Thread-Index: AQHU+ibQQIEJaXUkgEWNBapHcAUrdaZL6giA
+Date:   Wed, 24 Apr 2019 22:43:48 +0000
+Message-ID: <20190424224343.4skr727fszycwksq@pburton-laptop>
+References: <20190423224748.3765-1-fancer.lancer@gmail.com>
+ <20190423224748.3765-5-fancer.lancer@gmail.com>
+In-Reply-To: <20190423224748.3765-5-fancer.lancer@gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR07CA0035.namprd07.prod.outlook.com
- (2603:10b6:a02:bc::48) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: BYAPR05CA0035.namprd05.prod.outlook.com
+ (2603:10b6:a03:c0::48) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:24::17)
+user-agent: NeoMutt/20180716
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [67.207.99.198]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 116a36ca-a2c9-4504-ab65-08d6c90478c1
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);SRVR:MWHPR2201MB1038;
-x-ms-traffictypediagnostic: MWHPR2201MB1038:
-x-microsoft-antispam-prvs: <MWHPR2201MB1038FFB8DCEC97B8263207DEC13C0@MWHPR2201MB1038.namprd22.prod.outlook.com>
+x-ms-office365-filtering-correlation-id: ea70e2ad-7267-448a-93d4-08d6c90650de
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);SRVR:MWHPR2201MB1438;
+x-ms-traffictypediagnostic: MWHPR2201MB1438:
+x-microsoft-antispam-prvs: <MWHPR2201MB1438217D7689E0DADE3905C0C13C0@MWHPR2201MB1438.namprd22.prod.outlook.com>
 x-forefront-prvs: 00179089FD
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(346002)(376002)(396003)(39850400004)(136003)(189003)(199004)(8676002)(7416002)(102836004)(7696005)(52116002)(4326008)(76176011)(7736002)(6506007)(54906003)(305945005)(99286004)(316002)(6246003)(386003)(53936002)(2906002)(14454004)(97736004)(25786009)(74316002)(9686003)(55016002)(478600001)(6116002)(3846002)(66556008)(256004)(4744005)(66446008)(66066001)(446003)(81156014)(6436002)(26005)(6916009)(42882007)(68736007)(81166006)(73956011)(66946007)(66476007)(71190400001)(71200400001)(44832011)(52536014)(186003)(8936002)(229853002)(486006)(476003)(5660300002)(64756008)(11346002)(33656002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1038;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(366004)(396003)(346002)(136003)(39850400004)(376002)(189003)(199004)(54906003)(1076003)(186003)(5660300002)(386003)(66476007)(478600001)(99286004)(102836004)(6916009)(66946007)(6506007)(66556008)(64756008)(66446008)(7416002)(26005)(8936002)(14454004)(66066001)(52116002)(81166006)(81156014)(25786009)(8676002)(73956011)(76176011)(71190400001)(58126008)(7736002)(6116002)(305945005)(4326008)(2906002)(3846002)(229853002)(6246003)(486006)(316002)(71200400001)(6486002)(97736004)(14444005)(11346002)(33716001)(68736007)(256004)(446003)(53936002)(44832011)(476003)(6512007)(9686003)(42882007)(6436002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1438;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: eJjcAHYX1P2SSVjw4J2RovDueTVY6wGRrsZ6P7mIhMdIfCclW8ZFYFNynoQSaDGSIdhzMiQ4q9c7dzHh7R4lhlbDBrsxcCc04UnTSAXA/FEp4kjivIHk+ZIusXI8/dvXYKnUUGShryGSds/5r34riYjiPGYzC1FgZT3+2yMiW2NS+Y7WLqp/AjwTgU2P1r7UgEGWkGZLFKqqL1X5hTu2XPFdFS7dBszaHDnmvslBDvotiTUryQ1442JR2ncTPVPbmQ4WGm4gX8/V+Io5+bGvMTfV5ow24bZRFVy1uPO4qRnWN8Q4k8OUGsxkTzff7DyclcgT8nMXuBCx7l/l+zc34VhsBQ0PJpeEkyuQpHZxSgx1rBzJjUDoaR9jJbycSATkgI3SUm16pMWhheTcKd40pVxVzf13FGDsKJqGEQZAB/U=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+x-microsoft-antispam-message-info: Z+e5h7gjZSiXIEywpsHfuDVPj7/6k7V7ZtT1JaVSLgoSOYOhonLyLqcWDBTfpmcZ3oBF2wvJfnLz0d4Cgw6k71qcduHYFDNUo+bVfdTEnswGSzKfeGzMZuuchjVXAaNcWSIZvfsBZ2eiRFnzgovJiOWLn8XUuMcSAhg6CnRVOSS8pjdKomlCJwmhEgNIc0vi3U3Nfupj3LSA0cQCetQAt6cy548IpgcRpuWZxQfmKRvNZ4b6MLAyJAHIoeJHCrwTGPz26+T1Q+vHOGhChG5iQFKh9zvGRkERwWpjrxzyDpBTBdrNjQlq/4Aqy18RiBhr9i0aWrBQ0mJr9jD83gbHkVa6nJFpVL8xG44xEW1iJb93f1oxva2AaSS6Rj6S3ylx3E/+MCPQcFfG7X+A69sUJqXcokxaQqYcU9uFXEJNq1w=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <540AEEF9F0062F4A9ECB970A6E9C99EB@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 116a36ca-a2c9-4504-ab65-08d6c90478c1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Apr 2019 22:30:36.5386
+X-MS-Exchange-CrossTenant-Network-Message-Id: ea70e2ad-7267-448a-93d4-08d6c90650de
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Apr 2019 22:43:48.5966
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1038
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1438
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-SGVsbG8sDQoNClNlcmdlIFNlbWluIHdyb3RlOg0KPiBUaGVyZSBpcyBhIHBvaW50bGVzcyBjb2Rl
-IGxlZnQgaW4gdGhlIGJvb3RtZW1faW5pdCgpIG1ldGhvZCBzaW5jZQ0KPiB0aGUgYm9vdG1lbSBh
-bGxvY2F0b3IgcmVtb3ZhbC4gRmlyc3QgcGFydCByZXNpZGVzIHRoZSBQRk4gcmFuZ2VzDQo+IGNh
-bGN1bGF0aW9uIGxvb3AuIFRoZSBjb25kaXRpb25hbCBleHByZXNzaW9ucyBhbmQgY29udGludWUg
-b3BlcmF0b3INCj4gYXJlIHVzZWxlc3MgdGhlcmUsIHNpbmNlIG5vdGhpbmcgaXMgZG9uZSBhZnRl
-ciB0aGVtLiBTZWNvbmQgcGFydCBpcw0KPiBpbiBSQU0gcmFuZ2VzIGluc3RhbGxhdGlvbiBsb29w
-LiBXZSBjYW4gc2ltcGxpZnkgdGhlIGNvbmRpdGlvbnMgY2FzY2FkZQ0KPiBhIGJpdCB3aXRob3V0
-IG11Y2ggb2YgdGhlIGxvZ2ljIHJlZGVmaW5pdGlvbiwgc28gdG8gcmVkdWNlIHRoZSBjb2RlDQo+
-IGxlbmd0aC4gSW4gcGFydGljdWxhciB0aGUgZW5kIGJvdW5kYXJ5IHZhbHVlIGNhbiBiZSB2ZXJp
-ZmllZCBhZnRlcg0KPiB0aGUgcG9zc2libGUgcmVkdWN0aW9uIHRvIGJlIGJlbG93IG1heF9sb3df
-cGZuLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogU2VyZ2UgU2VtaW4gPGZhbmNlci5sYW5jZXJAZ21h
-aWwuY29tPg0KDQpBcHBsaWVkIHRvIG1pcHMtbmV4dC4NCg0KVGhhbmtzLA0KICAgIFBhdWwNCg0K
-WyBUaGlzIG1lc3NhZ2Ugd2FzIGF1dG8tZ2VuZXJhdGVkOyBpZiB5b3UgYmVsaWV2ZSBhbnl0aGlu
-ZyBpcyBpbmNvcnJlY3QNCiAgdGhlbiBwbGVhc2UgZW1haWwgcGF1bC5idXJ0b25AbWlwcy5jb20g
-dG8gcmVwb3J0IGl0LiBdDQo=
+Hi Serge,
+
+On Wed, Apr 24, 2019 at 01:47:40AM +0300, Serge Semin wrote:
+> The reserved_end variable had been used by the bootmem_init() code
+> to find a lowest limit of memory available for memmap blob. The original
+> code just tried to find a free memory space higher than kernel was placed=
+.
+> This limitation seems justified for the memmap ragion search process, but
+> I can't see any obvious reason to reserve the unused space below kernel
+> seeing some platforms place it much higher than standard 1MB.
+
+There are 2 reasons I'm aware of:
+
+ 1) Older systems generally had something like an ISA bus which used
+    addresses below the kernel, and bootloaders like YAMON left behind
+    functions that could be called right at the start of RAM. This sort
+    of thing should be accounted for by /memreserve/ in DT or similar
+    platform-specific reservations though rather than generically, and
+    at least Malta & SEAD-3 DTs already have /memreserve/ entries for
+    it. So this part I think is OK. Some other older platforms might
+    need updating, but that's fine.
+
+ 2) trap_init() only allocates memory for the exception vector if using
+    a vectored interrupt mode. In other cases it just uses CAC_BASE
+    which currently gets reserved as part of this region between
+    PHYS_OFFSET & _text.
+
+    I think this behavior is bogus, and we should instead:
+
+    - Allocate the exception vector memory using memblock_alloc() for
+      CPUs implementing MIPSr2 or higher (ie. CPUs with a programmable
+      EBase register). If we're not using vectored interrupts then
+      allocating one page will do, and we already have the size
+      calculation for if we are.
+
+    - Otherwise use CAC_BASE but call memblock_reserve() on the first
+      page.
+
+    I think we should make that change before this one goes in. I can
+    try to get to it tomorrow, but feel free to beat me to it.
+
+Thanks,
+    Paul

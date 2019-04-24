@@ -2,185 +2,115 @@ Return-Path: <SRS0=tpP8=S2=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_NEOMUTT
+X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C308CC10F11
-	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 21:36:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 143A8C10F11
+	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 22:30:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8375920835
-	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 21:36:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D36EC208E4
+	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 22:30:38 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="f6pQzgrC"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="oFPPXYeq"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730461AbfDXVgQ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 24 Apr 2019 17:36:16 -0400
-Received: from mail-eopbgr810129.outbound.protection.outlook.com ([40.107.81.129]:64512
-        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
+        id S1726058AbfDXWai (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 24 Apr 2019 18:30:38 -0400
+Received: from mail-eopbgr750111.outbound.protection.outlook.com ([40.107.75.111]:12351
+        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730260AbfDXVgQ (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 24 Apr 2019 17:36:16 -0400
+        id S1725977AbfDXWai (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 24 Apr 2019 18:30:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sRfh9iE8YWY++mEcbJtwePIH6foZ7X8y8Eh448UbgYY=;
- b=f6pQzgrCbbA9QwF3UzsFij4t0e5on20UXCplZUug+uPdX7ZCXx4pZtBRFT9zdZWXaQbGh5Hwwb/GU4qJ6qCYLu9X+Sh8xMFiKraHRn4mE0XGzUJLuBJDuIbaqx09d6J2+HpwGXn1gLRh22QQzR88Uj/kjbVkHYimcGapHtTaot0=
+ bh=BF1EMoGsJj/vdH2szJkWXiOHpPwfEoI5SfXGFZfWsJY=;
+ b=oFPPXYeqdNaBtv33oNnHxxUAIP64vJtfMA3qTyhANUuROWV9ANCTgBfp3WxBxC6lHdPlwRCOgUCNudLvthW6JN+1ll1YoJCZp2sw3/HzUhb+8Jtz/nl7Q3HZZMhVnwvJis4Avs/W8y6kNbpdnHBKRRFZDotLsjbYWCexKFF+hdY=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1039.namprd22.prod.outlook.com (10.174.167.28) with Microsoft SMTP
+ MWHPR2201MB1038.namprd22.prod.outlook.com (10.174.167.27) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1813.18; Wed, 24 Apr 2019 21:36:12 +0000
+ 15.20.1813.17; Wed, 24 Apr 2019 22:30:34 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::b9d6:bf19:ec58:2765]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::b9d6:bf19:ec58:2765%7]) with mapi id 15.20.1813.017; Wed, 24 Apr 2019
- 21:36:12 +0000
+ 22:30:34 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Horatiu Vultur <horatiu.vultur@microchip.com>
-CC:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "jhogan@kernel.org" <jhogan@kernel.org>,
+To:     Serge Semin <fancer.lancer@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <pburton@wavecomp.com>,
+        James Hogan <jhogan@kernel.org>,
+        Matt Redfearn <matt.redfearn@mips.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+        Huacai Chen <chenhc@lemote.com>,
+        Stefan Agner <stefan@agner.ch>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Juergen Gross <jgross@suse.com>,
         "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [Resend] arch: mips: Fix initrd_start and initrd_end when read
- from DT
-Thread-Topic: [Resend] arch: mips: Fix initrd_start and initrd_end when read
- from DT
-Thread-Index: AQHU9D29gHbzBFCLD0GOCgvAiyCd3qZD+84AgAdJugCAAJ1vgA==
-Date:   Wed, 24 Apr 2019 21:36:12 +0000
-Message-ID: <20190424213607.d6tzpqkndkxzgwrm@pburton-laptop>
-References: <1555409900-31278-1-git-send-email-horatiu.vultur@microchip.com>
- <20190419205456.uylahdin2jlkeyyy@pburton-laptop>
- <20190424121236.uadnsmgg3ctvljdo@soft-dev3.microsemi.net>
-In-Reply-To: <20190424121236.uadnsmgg3ctvljdo@soft-dev3.microsemi.net>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Subject: Re: [PATCH 01/12] mips: Make sure kernel .bss exists in boot mem pool
+Thread-Topic: [PATCH 01/12] mips: Make sure kernel .bss exists in boot mem
+ pool
+Thread-Index: AQHU+ibOG+PsMBZAKUiYJPpqSM8lrKZL5lUA
+Date:   Wed, 24 Apr 2019 22:30:34 +0000
+Message-ID: <MWHPR2201MB1277E5898485758E08C6AD95C13C0@MWHPR2201MB1277.namprd22.prod.outlook.com>
+References: <20190423224748.3765-2-fancer.lancer@gmail.com>
+In-Reply-To: <20190423224748.3765-2-fancer.lancer@gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR03CA0013.namprd03.prod.outlook.com
- (2603:10b6:a02:a8::26) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: BYAPR03CA0009.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::22) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:24::17)
-user-agent: NeoMutt/20180716
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [67.207.99.198]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 5b20a20d-9688-44db-e9a1-08d6c8fcdf55
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);SRVR:MWHPR2201MB1039;
-x-ms-traffictypediagnostic: MWHPR2201MB1039:
-x-microsoft-antispam-prvs: <MWHPR2201MB1039C88A2E97DDD19FC86ED1C13C0@MWHPR2201MB1039.namprd22.prod.outlook.com>
+x-ms-office365-filtering-correlation-id: b16e16ab-b88d-4bc1-fd70-08d6c9047792
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);SRVR:MWHPR2201MB1038;
+x-ms-traffictypediagnostic: MWHPR2201MB1038:
+x-microsoft-antispam-prvs: <MWHPR2201MB1038CD01DC96C66FD18FBAC6C13C0@MWHPR2201MB1038.namprd22.prod.outlook.com>
 x-forefront-prvs: 00179089FD
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(396003)(136003)(366004)(376002)(346002)(39850400004)(199004)(189003)(316002)(9686003)(14444005)(186003)(5660300002)(53936002)(68736007)(58126008)(6512007)(6246003)(26005)(386003)(6506007)(102836004)(256004)(99286004)(2906002)(71190400001)(71200400001)(14454004)(66556008)(33716001)(6486002)(81166006)(66946007)(8936002)(44832011)(478600001)(4326008)(81156014)(64756008)(73956011)(8676002)(6116002)(6436002)(66446008)(486006)(305945005)(7736002)(1076003)(97736004)(66066001)(11346002)(54906003)(25786009)(52116002)(446003)(76176011)(3846002)(229853002)(66476007)(6916009)(42882007)(476003);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1039;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(346002)(376002)(396003)(39850400004)(136003)(189003)(199004)(8676002)(7416002)(102836004)(7696005)(52116002)(4326008)(76176011)(7736002)(6506007)(54906003)(305945005)(99286004)(316002)(6246003)(386003)(53936002)(2906002)(14454004)(97736004)(25786009)(74316002)(9686003)(55016002)(478600001)(6116002)(3846002)(66556008)(256004)(4744005)(66446008)(66066001)(446003)(81156014)(6436002)(26005)(6916009)(42882007)(68736007)(81166006)(73956011)(66946007)(66476007)(71190400001)(71200400001)(44832011)(52536014)(186003)(8936002)(229853002)(486006)(476003)(5660300002)(64756008)(11346002)(33656002)(142923001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1038;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: Zw8ja9XU/Sf4JN57F2v22z2/IvewsGmLXjGqh1rOeWNTmqCUzTHdNueN0giiWu5dWgKoSNPWa6vP7NMx8SPPMSaFV5dbnr0Jcx+riAvD5wmTC77gD6Qm0UkW+fbCPEWj4iJFuqouVs+qJUfZUoToSreeXJfSVLtWzzqAR36YMU11kXGYPAImmxgHVAWBnDlEB0N/X8DPmiIluBAPo+qy5aDzTa17u6d5WdOjtyVAzB+o019FdonE5U1eJ/4kA6wzyu3n6fg3qyIEBxTSv/N6M48HHu1/OkzUR22ZWb33M836vFYImOwyGSGjQPlDAR5u7idJrk7yeXYsWPvLGTGWY+i3RrjHtZfL33Hck0eyDV2dxu8ThtN6SQnCVEQQMS+npzyW+dzHP3Uwfz4G1jsK55ShancUKeh3VE9w+zfzkUg=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <8BB58791AB4E0544952B460276C7BB12@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+x-microsoft-antispam-message-info: B9fQG92x46c1hWRI1KJp/nCCFZY0PWYitFdayrluhGYYl8bT9Lcs1qk6M0j7GkG2ouCXVx08IQn5tEg+O/xRDDrEtGIkTXAuc5ZUQmf354ClITBvJE/KIOGcMAihRMuDkhNkQJ78/WAshNAue1Kuv/VHtwju/kht1jfR+IKIDBrxlq7iGRnylvKQzJe6dAfV+5GYvqEcGBm4AZICOmO4IDnht9JB+bR7zPmADH28T3atBAEq+VgzXkx9L1zAUEhEpiAiJYReYul/YfnOs47DsFBypIyzLxtleF7kWpkLHNauSSWA2eB9Wwbusb2/aJ3kfmN5ZP3mVNabCm+jGyPIyKbGXnseyVHRVUkoC1rp0nEO9G//SPZm9eKYrvsME97/5ZLOzBn7kF7Y06gTFKbyUZYHZUMAv2HluuZb2O8dgnY=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b20a20d-9688-44db-e9a1-08d6c8fcdf55
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Apr 2019 21:36:12.6009
+X-MS-Exchange-CrossTenant-Network-Message-Id: b16e16ab-b88d-4bc1-fd70-08d6c9047792
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Apr 2019 22:30:34.4819
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1039
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1038
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Horatiu,
-
-On Wed, Apr 24, 2019 at 02:12:38PM +0200, Horatiu Vultur wrote:
-> The 04/19/2019 20:55, Paul Burton wrote:
-> > On Tue, Apr 16, 2019 at 12:18:20PM +0200, Horatiu Vultur wrote:
-> > > When the bootloader passes arguments to linux kernel through device t=
-ree,
-> > > it passes the address of initrd_start and initrd_stop, which are in k=
-seg0.
-> > > But when linux kernel reads these addresses from device tree, it conv=
-erts
-> > > them to virtual addresses inside the function
-> > > __early_init_dt_declare_initrd.
-> >=20
-> > I'm not sure I follow - if the bootloader provides an address in kseg0
-> > then it's already a virtual address.
->=20
-> So I am just a novice in this, but in my case the bootloader(Uboot) passe=
-s
-> the address in kseg0(e.g 0x9f8a6000), but if I understand correctly
-> this is just cached access to location 0x1f8a6000.
-
-That's right.
-
-In this case the virtual address is 0x9f8a6000, which is in kseg0. That
-means the cache-coherency attribute (CCA) is taken from the cop0 config
-register's K0 field & is typically some form of cached access.
-
-The physical address is 0x1f8a6000.
-
-> > It looks like __early_init_dt_declare_initrd expects the DT to provide
-> > physical addresses, which fits in well with the fact that DTs generally
-> > use physical addresses for everything else.
-> >=20
-> > __early_init_dt_declare_initrd calling __va on a virtual address will
-> > give you something bogus, and it looks like you're just cancelling this
-> > out below. In practice for a typical system where PAGE_OFFSET is the
-> > start of kseg0 (0x80000000) the bogus address you get will happen to be
-> > the same as the physical address, but that's not guaranteed.
-> >=20
-> > > At a later point then in the function init_initrd, it is checking for
-> > > initrd_start to be lower than PAGE_OFFSET, which for a 32 CPU it is n=
-ot,
-> > > therefore it would disable the initrd by setting 0 to initrd_start an=
-d
-> > > initrd_stop.
-> >=20
-> > The check you mention here is to make sure initrd_start looks like a
-> > virtual address - if it's lower than PAGE_OFFSET (typically 0x80000000)
-> > then it looks bad & initrd is disabled. I think your comment is
-> > backwards - what you have is a physical address, entirely by accident,
-> > and you're converting it back to a virtual address again by accident
-> > which keeps the check happy.
->=20
-> I am a little bit confused here. so the initrd_start has to have a
-> virtual address(in kseg0) inside the function init_initrd. Meaning that
-> when the bootloader passes the arguments to linux through a command line,
-> then initrd_start has to be already a virtual address? Because I
-> couldn't see a place where it converts the initrd_start. But when the
-> bootloader pass the arguments through DT it has to be physical address?
-
-Hmm, that's a good point - it does look like we expect virtual addresses
-when passed on the command line. That inconsistency with DT is
-unfortunate, but I still think keeping the DT itself consistent &
-keeping MIPS consistent with other architectures as far as DT goes makes
-it worthwhile to use physical addresses in the DT.
-
-> > > The fix consists of checking if linux kernel received a device tree a=
-nd not
-> > > having enable extended virtual address and in that case convert them =
-back
-> > > to physical addresses that point in kseg0 as expected.
-> >=20
-> > Can you instead just have your bootloader provide physical addresses in
-> > the DT?
->=20
-> Yes, I have done few tests and it seems to work fine, but I need to
-> understand it better.
-
-I hope the above helps makes sense of that. I think overall that using
-the physical address of the initrd in the DT makes more sense than using
-the virtual address. It is afterall what's specified in the DT binding
-documentation too, see Documentation/devicetree/bindings/chosen.txt:
-
-> linux,initrd-start and linux,initrd-end
-> ---------------------------------------
->=20
-> These properties hold the physical start and end address of an initrd
-> that's loaded by the bootloader.
->%
-
-Thanks,
-    Paul
+SGVsbG8sDQoNClNlcmdlIFNlbWluIHdyb3RlOg0KPiBDdXJyZW50IE1JUFMgcGxhdGZvcm0gY29k
+ZSBtYWtlcyBzdXJlIHRoZSBrZXJuZWwgdGV4dCwgZGF0YSBhbmQgaW5pdA0KPiBzZWN0aW9ucyBh
+cmUgYWRkZWQgdG8gdGhlIGJvb3QgbWVtb3J5IG1hcCBwb29sIHJpZ2h0IGFmdGVyIHRoZQ0KPiBh
+cmNoLXNwZWNpZmljIG1lbW9yeSBzZXR1cCBtZXRob2QgaGFzIGJlZW4gZXhlY3V0ZWQuIEJ1dCBm
+b3Igc29tZSByZWFzb24NCj4gdGhlIE1JUFMgcGxhdGZvcm0gY29kZSBza2lwcGVkIHRoZSBrZXJu
+ZWwgLmJzcyBzZWN0aW9uLCB3aGljaCBkZWZpbml0ZWx5DQo+IHNob3VsZCBiZSBpbiB0aGUgYm9v
+dCBtZW0gcG9vbCBhcyB3ZWxsIGluIGFueSBjYXNlLiBMZXRzIGZpeCB0aGlzIGp1c3QgYmUNCj4g
+YWRkaW5nIHRoZSBzcGFjZSBiZXR3ZWVuIF9fYnNzX3N0YXJ0IGFuZCBfX2Jzc19zdG9wLg0KPiAN
+Cj4gUmV2aWV3ZWQtYnk6IE1hdHQgUmVkZmVhcm4gPG1hdHQucmVkZmVhcm5AbWlwcy5jb20+DQo+
+IFNpZ25lZC1vZmYtYnk6IFNlcmdlIFNlbWluIDxmYW5jZXIubGFuY2VyQGdtYWlsLmNvbT4NCg0K
+QXBwbGllZCB0byBtaXBzLW5leHQuDQoNClRoYW5rcywNCiAgICBQYXVsDQoNClsgVGhpcyBtZXNz
+YWdlIHdhcyBhdXRvLWdlbmVyYXRlZDsgaWYgeW91IGJlbGlldmUgYW55dGhpbmcgaXMgaW5jb3Jy
+ZWN0DQogIHRoZW4gcGxlYXNlIGVtYWlsIHBhdWwuYnVydG9uQG1pcHMuY29tIHRvIHJlcG9ydCBp
+dC4gXQ0K

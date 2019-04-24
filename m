@@ -5,61 +5,63 @@ X-Spam-Level:
 X-Spam-Status: No, score=-8.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no version=3.4.0
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7036BC10F11
-	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 14:20:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 93C93C10F11
+	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 14:35:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 42732218FC
-	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 14:20:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 59A642089F
+	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 14:35:22 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N8f9LisL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z5Tj96r/"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725935AbfDXOUT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 24 Apr 2019 10:20:19 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:42416 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725921AbfDXOUT (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 24 Apr 2019 10:20:19 -0400
-Received: by mail-lf1-f65.google.com with SMTP id w23so14807075lfc.9;
-        Wed, 24 Apr 2019 07:20:17 -0700 (PDT)
+        id S1731348AbfDXOfV (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 24 Apr 2019 10:35:21 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:45841 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731322AbfDXOfR (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 24 Apr 2019 10:35:17 -0400
+Received: by mail-lj1-f196.google.com with SMTP id y6so17079372ljd.12;
+        Wed, 24 Apr 2019 07:35:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=OLcf/MSErvvrE3bJG/rihIFJSAmMyrgPapsSpo9KmaE=;
-        b=N8f9LisLDmcx/lUbIR+vStrDtygxhUgU3PZz6qn6PVwbXxSpft0WAQeLczwucGOXly
-         Ci3MdEwCb5rmbiyFjzUwVFl8IPirbgmN57fDZYwo7L/w2rSS4b0NYLe1f8ACb7boVIYz
-         hdfs5pJZom5k90kTxfFjPPPTEaJzg/XGrwgiPIN4CrIqK7pCNktaDWxt1qnP69R2lVxh
-         XRk8wODzBkJ0RQa9sfib8jiRB02ysUMquRjDjdEAD6wI9T4wzXpzeptL+ZUT7eDyQUZL
-         Op7AcasloAMALTVlugu0BbNLbXNwB8iLib3M9fzODyfBf/LJjOaZcmppqb2PKz8eAp7J
-         sTGA==
+        bh=Dg0jS/e6KyZQfSlGUUgaQ9gBLRxQL95NBWNKL/lRFIQ=;
+        b=Z5Tj96r/vtMbuAq0GpwwChB4HPVtU9C2E+BY6DZEtTSlxrGzQmHCLgN5XqCsQ5n1sm
+         ued5wfSpySFJPN2UckkJLRwUIHQSBdkECYVoNNwmHowgOMctFRGzCHDwLSIcrn0mjAVh
+         apQ62RuB6tm+yq8KODPVlEDBb/bQE1nZhI14pwzrCaYK9aKb6W2wbOCiTVQMcuTe+ckt
+         Qo74QfhLhOQzuAsuGhDyOwb0envbiEhSCc0Nv6owgIG/NC7ID0KyxsWSfx1baH/jsAmY
+         Qn6W86v2Tlm4i4ISuDZE/Xcao2PCtfk2pq0cNWg5SH3qqCAPibD147ntzbPxgJiYdAGM
+         ljYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=OLcf/MSErvvrE3bJG/rihIFJSAmMyrgPapsSpo9KmaE=;
-        b=jmBTRJXukk7gIhafO4UrTDnvZdQzwcEFpTA2YkRA5J8Hdd/Gm5ysJxhPAMJRC6o+Mj
-         VD7S6Mt0yfHqw8oxfIbaXq9kUjYpfwQbhJLNjBlWNCCIzMTjkGzO2b6fWKHyOdtZOtAL
-         Z6+2ZXRWRZi6Q2TmWYZEBA7perzcAE01VCSOwqQzYCSJyCuBgqn3iH9QX0/KtNezNVj1
-         oa3cgmwmupYC7oG2DfiDSkqz9P1Bn9Nj0XyYRbYpQVf9etUeBfHjqOQGMWnD5Kq3i8n+
-         44K/OsePMoHnIwp935YxcK/rkvYhJe6mAxNzkTQ5Lg3tGpbuBUQ2Jzc+Ju8BHdO65Urt
-         k+mw==
-X-Gm-Message-State: APjAAAXxBGK/VZ21iJLEqHU9JpdLCq8iYQ7Kdl+yvci70KqOg1zJ1ZDf
-        A2cLtpT1gnt0SI4fCrb3SGU=
-X-Google-Smtp-Source: APXvYqwJ3uXWd+fEv/YsbYsSoGDjBF+KsjEKZI67imLJM70S+L5DO138c9I3dA7SxKrPlyUIRnEzEQ==
-X-Received: by 2002:ac2:5455:: with SMTP id d21mr16970071lfn.60.1556115617156;
-        Wed, 24 Apr 2019 07:20:17 -0700 (PDT)
+        bh=Dg0jS/e6KyZQfSlGUUgaQ9gBLRxQL95NBWNKL/lRFIQ=;
+        b=tT9TAUcNsqQhQFrOKX1vUHKNdjczR4coVGDDABcMqbnDMnX3nudWPvdSgq1rYhbcZg
+         nHrGDKoZO+GcSh8gZcaFpKHrZFNzOns0H3+1cSmWFeLzjcws9VAXNJ9QXcXSBZqetUbc
+         q/+n8oOTHTTzOxbAoPJBEEulQeWNDygUyIoXdRmUKzeojcKJURyAaHBpUyPfI8Hw9beR
+         dU5ZuydUkJhy2PP3OmUU75YFHHf6XM/2iRWpsF26XS/LTh2+LkjBFGfg2zdJYMqgdV5O
+         NwSZV0k7S0Ywc7eQ158BIXBnthNvaFIwkFCOnR/aGDJnAH5j7CKuvS+txpDGhc1G/xNk
+         dB0A==
+X-Gm-Message-State: APjAAAUhDp5qMkRM4SPmFaHJnlWeqMCbSoozeeh+5mxnfi6XRAl+aZfI
+        5bN/iuVWfCSnmwkK7qINiWU=
+X-Google-Smtp-Source: APXvYqzs8a5zlHbh9398lzVKt6Z5xMctYUwPuqtayYy0lMkrwGairYdrpDUIUr5fqklnQcFZxTeW3w==
+X-Received: by 2002:a2e:89da:: with SMTP id c26mr17341237ljk.186.1556116514540;
+        Wed, 24 Apr 2019 07:35:14 -0700 (PDT)
 Received: from mobilestation ([5.164.240.123])
-        by smtp.gmail.com with ESMTPSA id a2sm4417352lfi.13.2019.04.24.07.20.15
+        by smtp.gmail.com with ESMTPSA id j13sm591869lfb.34.2019.04.24.07.35.13
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Wed, 24 Apr 2019 07:20:16 -0700 (PDT)
-Date:   Wed, 24 Apr 2019 17:20:14 +0300
+        Wed, 24 Apr 2019 07:35:13 -0700 (PDT)
+Date:   Wed, 24 Apr 2019 17:35:11 +0300
 From:   Serge Semin <fancer.lancer@gmail.com>
 To:     Mike Rapoport <rppt@linux.ibm.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
+        Matt Redfearn <matt.redfearn@mips.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Michal Hocko <mhocko@suse.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -70,58 +72,126 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Juergen Gross <jgross@suse.com>, linux-mips@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 08/12] mips: Dump memblock regions for debugging
-Message-ID: <20190424142012.rvdfikcsz63pjcgw@mobilestation>
+Subject: Re: [PATCH 10/12] mips: Print the kernel virtual mem layout on
+ debugging
+Message-ID: <20190424143510.ahzq2hpdje7iddzm@mobilestation>
 References: <20190423224748.3765-1-fancer.lancer@gmail.com>
- <20190423224748.3765-9-fancer.lancer@gmail.com>
- <20190424134547.GD6278@rapoport-lnx>
+ <20190423224748.3765-11-fancer.lancer@gmail.com>
+ <20190424134711.GE6278@rapoport-lnx>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190424134547.GD6278@rapoport-lnx>
+In-Reply-To: <20190424134711.GE6278@rapoport-lnx>
 User-Agent: NeoMutt/20180716
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Wed, Apr 24, 2019 at 04:45:47PM +0300, Mike Rapoport wrote:
-> On Wed, Apr 24, 2019 at 01:47:44AM +0300, Serge Semin wrote:
-> > It is useful to have the whole memblock memory space printed to console
-> > when basic memlock initializations are done. It can be performed by
-> > ready-to-use method memblock_dump_all(), which prints the available
-> > and reserved memory spaces if MEMBLOCK_DEBUG config is enabled.
-> 
-> Nit: there's no MEMBLOCK_DEBUG config option but rather memblock=debug
-> command line parameter ;-)
-> 
-
-Right. Thanks. I'll reword the message in the next patchset revision.
-
--Sergey
-
-> > Lets call it at the very end of arch_mem_init() function, when
-> > all memblock memory and reserved regions are defined, but before
-> > any serious allocation is performed.
+On Wed, Apr 24, 2019 at 04:47:11PM +0300, Mike Rapoport wrote:
+> On Wed, Apr 24, 2019 at 01:47:46AM +0300, Serge Semin wrote:
+> > It is useful at least for debugging to have the kernel virtual
+> > memory layout printed at boot time so to have the full information
+> > about the booted kernel. Make the printing optional and available
+> > only when DEBUG_KERNEL config is enabled so not to leak a sensitive
+> > kernel information.
 > > 
 > > Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 > > ---
-> >  arch/mips/kernel/setup.c | 2 ++
-> >  1 file changed, 2 insertions(+)
+> >  arch/mips/mm/init.c | 49 +++++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 49 insertions(+)
 > > 
-> > diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> > index 2a1b2e7a1bc9..ca493fdf69b0 100644
-> > --- a/arch/mips/kernel/setup.c
-> > +++ b/arch/mips/kernel/setup.c
-> > @@ -824,6 +824,8 @@ static void __init arch_mem_init(char **cmdline_p)
-> >  	/* Reserve for hibernation. */
-> >  	memblock_reserve(__pa_symbol(&__nosave_begin),
-> >  		__pa_symbol(&__nosave_end) - __pa_symbol(&__nosave_begin));
-> > +
-> > +	memblock_dump_all();
-> >  }
+> > diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+> > index bbb196ad5f26..c338bbd03b2a 100644
+> > --- a/arch/mips/mm/init.c
+> > +++ b/arch/mips/mm/init.c
+> > @@ -31,6 +31,7 @@
+> >  #include <linux/gfp.h>
+> >  #include <linux/kcore.h>
+> >  #include <linux/initrd.h>
+> > +#include <linux/sizes.h>
 > >  
-> >  static void __init resource_init(void)
+> >  #include <asm/bootinfo.h>
+> >  #include <asm/cachectl.h>
+> > @@ -56,6 +57,53 @@ unsigned long empty_zero_page, zero_page_mask;
+> >  EXPORT_SYMBOL_GPL(empty_zero_page);
+> >  EXPORT_SYMBOL(zero_page_mask);
+> >  
+> > +/*
+> > + * Print out the kernel virtual memory layout
+> > + */
+> > +#define MLK(b, t) (void *)b, (void *)t, ((t) - (b)) >> 10
+> > +#define MLM(b, t) (void *)b, (void *)t, ((t) - (b)) >> 20
+> > +#define MLK_ROUNDUP(b, t) (void *)b, (void *)t, DIV_ROUND_UP(((t) - (b)), SZ_1K)
+> > +static void __init mem_print_kmap_info(void)
+> > +{
+> > +#ifdef CONFIG_DEBUG_KERNEL
+> 
+> Maybe CONFIG_DEBUG_VM?
+> 
+
+Last time I posted this patch Matt suggested to use CONFIG_DEBUG_KERNEL [1].
+On the other hand arm platform prints this table unconditionally, but uses %lx
+format for low-memory ranges and %p for kernel segments. I even more inclined
+in the arm solution. But if selecting between DEBUG_KERNEL and DEBUG_VM I'd
+stick with DEBUG_KERNEL, since VM-debug config help text states it is
+intended for special performance checks: "Enable this to turn on extended
+checks in the virtual-memory system that may impact performance," and
+not for memory layout.
+
+-Sergey
+
+[1] https://lkml.org/lkml/2018/2/13/494
+
+> > +	pr_notice("Kernel virtual memory layout:\n"
+> > +		  "    lowmem  : 0x%px - 0x%px  (%4ld MB)\n"
+> > +		  "      .text : 0x%px - 0x%px  (%4td kB)\n"
+> > +		  "      .data : 0x%px - 0x%px  (%4td kB)\n"
+> > +		  "      .init : 0x%px - 0x%px  (%4td kB)\n"
+> > +		  "      .bss  : 0x%px - 0x%px  (%4td kB)\n"
+> > +		  "    vmalloc : 0x%px - 0x%px  (%4ld MB)\n"
+> > +#ifdef CONFIG_HIGHMEM
+> > +		  "    pkmap   : 0x%px - 0x%px  (%4ld MB)\n"
+> > +#endif
+> > +		  "    fixmap  : 0x%px - 0x%px  (%4ld kB)\n",
+> > +		  MLM(PAGE_OFFSET, (unsigned long)high_memory),
+> > +		  MLK_ROUNDUP(_text, _etext),
+> > +		  MLK_ROUNDUP(_sdata, _edata),
+> > +		  MLK_ROUNDUP(__init_begin, __init_end),
+> > +		  MLK_ROUNDUP(__bss_start, __bss_stop),
+> > +		  MLM(VMALLOC_START, VMALLOC_END),
+> > +#ifdef CONFIG_HIGHMEM
+> > +		  MLM(PKMAP_BASE, (PKMAP_BASE) + (LAST_PKMAP)*(PAGE_SIZE)),
+> > +#endif
+> > +		  MLK(FIXADDR_START, FIXADDR_TOP));
+> > +
+> > +	/* Check some fundamental inconsistencies. May add something else? */
+> > +#ifdef CONFIG_HIGHMEM
+> > +	BUILD_BUG_ON(VMALLOC_END < PAGE_OFFSET);
+> > +	BUG_ON(VMALLOC_END < (unsigned long)high_memory);
+> > +	BUILD_BUG_ON((PKMAP_BASE) + (LAST_PKMAP)*(PAGE_SIZE) < PAGE_OFFSET);
+> > +	BUG_ON((PKMAP_BASE) + (LAST_PKMAP)*(PAGE_SIZE) <
+> > +		(unsigned long)high_memory);
+> > +#endif
+> > +	BUILD_BUG_ON(FIXADDR_TOP < PAGE_OFFSET);
+> > +	BUG_ON(FIXADDR_TOP < (unsigned long)high_memory);
+> > +#endif /* CONFIG_DEBUG_KERNEL */
+> > +}
+> > +#undef MLK
+> > +#undef MLM
+> > +#undef MLK_ROUNDUP
+> > +
+> >  /*
+> >   * Not static inline because used by IP27 special magic initialization code
+> >   */
+> > @@ -479,6 +527,7 @@ void __init mem_init(void)
+> >  	setup_zero_pages();	/* Setup zeroed pages.  */
+> >  	mem_init_free_highmem();
+> >  	mem_init_print_info(NULL);
+> > +	mem_print_kmap_info();
+> >  
+> >  #ifdef CONFIG_64BIT
+> >  	if ((unsigned long) &_text > (unsigned long) CKSEG0)
 > > -- 
 > > 2.21.0
 > > 

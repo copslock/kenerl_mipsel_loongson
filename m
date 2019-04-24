@@ -2,117 +2,393 @@ Return-Path: <SRS0=tpP8=S2=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_NEOMUTT
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 517E0C10F11
-	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 08:34:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A9927C10F11
+	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 10:36:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 198172148D
-	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 08:34:49 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZhAZ7r8+"
+	by mail.kernel.org (Postfix) with ESMTP id 6BC7721773
+	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 10:36:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727046AbfDXIes (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 24 Apr 2019 04:34:48 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:44267 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726878AbfDXIes (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 24 Apr 2019 04:34:48 -0400
-Received: by mail-lj1-f194.google.com with SMTP id h16so3490396ljg.11;
-        Wed, 24 Apr 2019 01:34:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=G0WmltTj/+joqyqfbRku5uL9E9QNxLminkJqp2CcUSE=;
-        b=ZhAZ7r8+CrVd4bzDRKTyW9f8eONSIFJD5swkp0EP5bovli40UAfw5s8PjDwQqb/U82
-         ynVZRt8caxTyIvzUije4Eyw6SiRw/Nedb3m2kFpy4/5LuNBEtu87bAUMOO3HJeO+Z3sy
-         IJI7M1/pUtjlccbJ557k2FsqtLP4ntZjN+m7pwPboPF7M7D6jnv1JkccYSwn78spHN5z
-         2/gO6spT7PyRB1weipNTKhQYiKko1BX7e7kXRNU5t7sHnGH2JG84YmlKhkfH+oi7E5iS
-         0d/q7YmIi2d8mbcpY6eP3URuAt2IJICVbHiJt93yf0EaUVqFPTmlrrLupfNZkKO2DqO8
-         o5Pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=G0WmltTj/+joqyqfbRku5uL9E9QNxLminkJqp2CcUSE=;
-        b=KeHeyhkkjlmKneZ+zK5vZplGH0BlspbYJuRjdK8nNuy10uj6lcK+VOsct0pVOZ1YRg
-         LrfRx4ZVRNNwz2AUq+Frm+q6PeE+Z2TnX6l55O/NybnLStFpAbhXaLN2VRMG/jDfMFDF
-         WwFTCLBC410wKLfPQTtwfQkj5hPnDmrKl7kIK5FFYI/4Nx8zmEYA/xoqXvYIgSff+vKy
-         fK0bW8B+mUAPyl7EecfsAZojVgSJf4C1hTw1G1DCLbPEvLEdn/nmIpcCe4XmGvSmF0YP
-         5O3w2wXcCxXNBvIhShXl9Az6cmjLm0yDbZzI+vK7wGbqUO/xshLV8gbDsYFZ6l7ilq9B
-         nGeQ==
-X-Gm-Message-State: APjAAAXLPOF2g2hLmdZuF3tKU13yBOzdrdphAbBvijjHpNNGvjkK3QmG
-        pJVe20gXMtpi7rOzkrwH+1Y=
-X-Google-Smtp-Source: APXvYqw4gE/3QVSgVcF9sFRJkaTH9o9pDpxx58f7NNzKpu6CQ7jckQIqYGvLRYYAzuoHejYT9a0uYw==
-X-Received: by 2002:a2e:7007:: with SMTP id l7mr16387341ljc.101.1556094886084;
-        Wed, 24 Apr 2019 01:34:46 -0700 (PDT)
-Received: from mobilestation ([5.164.240.123])
-        by smtp.gmail.com with ESMTPSA id a17sm4225433lfg.88.2019.04.24.01.34.44
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Wed, 24 Apr 2019 01:34:45 -0700 (PDT)
-Date:   Wed, 24 Apr 2019 11:34:42 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        id S1727461AbfDXKgJ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 24 Apr 2019 06:36:09 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:44546 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727644AbfDXKgJ (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 24 Apr 2019 06:36:09 -0400
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x3OAXS9Y010094
+        for <linux-mips@vger.kernel.org>; Wed, 24 Apr 2019 06:36:08 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2s2mwxuv74-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@vger.kernel.org>; Wed, 24 Apr 2019 06:36:07 -0400
+Received: from localhost
+        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@vger.kernel.org> from <rppt@linux.ibm.com>;
+        Wed, 24 Apr 2019 11:36:04 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Wed, 24 Apr 2019 11:35:56 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x3OAZtRN50987200
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 24 Apr 2019 10:35:55 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 3206B4C04A;
+        Wed, 24 Apr 2019 10:35:55 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BBBA04C046;
+        Wed, 24 Apr 2019 10:35:51 +0000 (GMT)
+Received: from rapoport-lnx (unknown [9.148.8.112])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Wed, 24 Apr 2019 10:35:51 +0000 (GMT)
+Received: by rapoport-lnx (sSMTP sendmail emulation); Wed, 24 Apr 2019 13:35:51 +0300
+From:   Mike Rapoport <rppt@linux.ibm.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Matt Redfearn <matt.redfearn@mips.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-        Huacai Chen <chenhc@lemote.com>,
-        Stefan Agner <stefan@agner.ch>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Juergen Gross <jgross@suse.com>, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 12/12] mips: Enable OF_RESERVED_MEM config
-Message-ID: <20190424083441.ceo5qovy5amnocp6@mobilestation>
-References: <20190423224748.3765-1-fancer.lancer@gmail.com>
- <20190423224748.3765-13-fancer.lancer@gmail.com>
- <20190424061750.GA30717@infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190424061750.GA30717@infradead.org>
-User-Agent: NeoMutt/20180716
+        Ley Foon Tan <lftan@altera.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Eric Biederman <ebiederm@xmission.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-mm@kvack.org, kexec@lists.infradead.org,
+        Mike Rapoport <rppt@linux.ibm.com>
+Subject: [PATCH] memblock: make keeping memblock memory opt-in rather than opt-out
+Date:   Wed, 24 Apr 2019 13:35:50 +0300
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-GCONF: 00
+x-cbid: 19042410-4275-0000-0000-0000032C01A3
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19042410-4276-0000-0000-0000383B49D5
+Message-Id: <1556102150-32517-1-git-send-email-rppt@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-04-24_07:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=694 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1904240088
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Tue, Apr 23, 2019 at 11:17:50PM -0700, Christoph Hellwig wrote:
+Most architectures do not need the memblock memory after the page allocator
+is initialized, but only few enable ARCH_DISCARD_MEMBLOCK in the
+arch Kconfig.
 
-Hello Christoph
+Replacing ARCH_DISCARD_MEMBLOCK with ARCH_KEEP_MEMBLOCK and inverting the
+logic makes it clear which architectures actually use memblock after system
+initialization and skips the necessity to add ARCH_DISCARD_MEMBLOCK to the
+architectures that are still missing that option.
 
-> On Wed, Apr 24, 2019 at 01:47:48AM +0300, Serge Semin wrote:
-> > Since memblock-patchset was introduced the reserved-memory nodes are
-> > supported being declared in dt-files. So these nodes are actually parsed
-> > during the arch setup procedure when the early_init_fdt_scan_reserved_mem()
-> > method is called. But some of the features like private reserved memory
-> > pools aren't available at the moment, since OF_RESERVED_MEM isn't enabled
-> > for the MIPS platform. Lets fix it by enabling the config.
-> > 
-> > But due to the arch-specific boot mem_map container utilization we need
-> > to manually call the fdt_init_reserved_mem() method after all the available
-> > and reserved memory has been moved to memblock. The function call performed
-> > before bootmem_init() fails due to the lack of any memblock memory regions
-> > to allocate from at that stage.
-> 
-> Architectures should not select this symbol directly, it will be
-> automatically enabled if either DMA_DECLARE_COHERENT or DMA_CMA
-> are enabled, which are required for the actual underlying memory
-> allocators.
+Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+---
+ arch/arm/Kconfig         |  2 +-
+ arch/arm64/Kconfig       |  1 +
+ arch/hexagon/Kconfig     |  1 -
+ arch/ia64/Kconfig        |  1 -
+ arch/m68k/Kconfig        |  1 -
+ arch/mips/Kconfig        |  1 -
+ arch/nios2/Kconfig       |  1 -
+ arch/powerpc/Kconfig     |  1 +
+ arch/s390/Kconfig        |  1 +
+ arch/sh/Kconfig          |  1 -
+ arch/x86/Kconfig         |  1 -
+ include/linux/memblock.h |  3 ++-
+ kernel/kexec_file.c      | 16 ++++++++--------
+ mm/Kconfig               |  2 +-
+ mm/memblock.c            |  6 +++---
+ mm/page_alloc.c          |  3 +--
+ 16 files changed, 19 insertions(+), 23 deletions(-)
 
-Thanks for the comment. I should have checked this before porting the patch from
-kernel 4.9. This symbol has been selected there by the platforms. I'll remove the
-forcible selection of the config in the next patchset revision.
-
--Sergey
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 850b480..7073436 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -4,7 +4,6 @@ config ARM
+ 	default y
+ 	select ARCH_32BIT_OFF_T
+ 	select ARCH_CLOCKSOURCE_DATA
+-	select ARCH_DISCARD_MEMBLOCK if !HAVE_ARCH_PFN_VALID && !KEXEC
+ 	select ARCH_HAS_DEBUG_VIRTUAL if MMU
+ 	select ARCH_HAS_DEVMEM_IS_ALLOWED
+ 	select ARCH_HAS_ELF_RANDOMIZE
+@@ -21,6 +20,7 @@ config ARM
+ 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
+ 	select ARCH_HAVE_CUSTOM_GPIO_H
+ 	select ARCH_HAS_GCOV_PROFILE_ALL
++	select ARCH_KEEP_MEMBLOCK if HAVE_ARCH_PFN_VALID || KEXEC
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select ARCH_NO_SG_CHAIN if !ARM_HAS_SG_CHAIN
+ 	select ARCH_OPTIONAL_KERNEL_RWX if ARCH_HAS_STRICT_KERNEL_RWX
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 7e34b9e..d71f043 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -58,6 +58,7 @@ config ARM64
+ 	select ARCH_INLINE_SPIN_UNLOCK_BH if !PREEMPT
+ 	select ARCH_INLINE_SPIN_UNLOCK_IRQ if !PREEMPT
+ 	select ARCH_INLINE_SPIN_UNLOCK_IRQRESTORE if !PREEMPT
++	select ARCH_KEEP_MEMBLOCK
+ 	select ARCH_USE_CMPXCHG_LOCKREF
+ 	select ARCH_USE_QUEUED_RWLOCKS
+ 	select ARCH_USE_QUEUED_SPINLOCKS
+diff --git a/arch/hexagon/Kconfig b/arch/hexagon/Kconfig
+index ac44168..bbe3819 100644
+--- a/arch/hexagon/Kconfig
++++ b/arch/hexagon/Kconfig
+@@ -22,7 +22,6 @@ config HEXAGON
+ 	select GENERIC_IRQ_SHOW
+ 	select HAVE_ARCH_KGDB
+ 	select HAVE_ARCH_TRACEHOOK
+-	select ARCH_DISCARD_MEMBLOCK
+ 	select NEED_SG_DMA_LENGTH
+ 	select NO_IOPORT_MAP
+ 	select GENERIC_IOMAP
+diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+index 8d7396b..bd51d3b 100644
+--- a/arch/ia64/Kconfig
++++ b/arch/ia64/Kconfig
+@@ -33,7 +33,6 @@ config IA64
+ 	select ARCH_HAS_DMA_COHERENT_TO_PFN if SWIOTLB
+ 	select ARCH_HAS_SYNC_DMA_FOR_CPU if SWIOTLB
+ 	select VIRT_TO_BUS
+-	select ARCH_DISCARD_MEMBLOCK
+ 	select GENERIC_IRQ_PROBE
+ 	select GENERIC_PENDING_IRQ if SMP
+ 	select GENERIC_IRQ_SHOW
+diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
+index b542064..7d1e5d9 100644
+--- a/arch/m68k/Kconfig
++++ b/arch/m68k/Kconfig
+@@ -27,7 +27,6 @@ config M68K
+ 	select MODULES_USE_ELF_RELA
+ 	select OLD_SIGSUSPEND3
+ 	select OLD_SIGACTION
+-	select ARCH_DISCARD_MEMBLOCK
+ 
+ config CPU_BIG_ENDIAN
+ 	def_bool y
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 4a5f5b0..8b9298b 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -5,7 +5,6 @@ config MIPS
+ 	select ARCH_32BIT_OFF_T if !64BIT
+ 	select ARCH_BINFMT_ELF_STATE if MIPS_FP_SUPPORT
+ 	select ARCH_CLOCKSOURCE_DATA
+-	select ARCH_DISCARD_MEMBLOCK
+ 	select ARCH_HAS_ELF_RANDOMIZE
+ 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
+diff --git a/arch/nios2/Kconfig b/arch/nios2/Kconfig
+index 4ef15a6..dc4239c 100644
+--- a/arch/nios2/Kconfig
++++ b/arch/nios2/Kconfig
+@@ -23,7 +23,6 @@ config NIOS2
+ 	select SPARSE_IRQ
+ 	select USB_ARCH_HAS_HCD if USB_SUPPORT
+ 	select CPU_NO_EFFICIENT_FFS
+-	select ARCH_DISCARD_MEMBLOCK
+ 
+ config GENERIC_CSUM
+ 	def_bool y
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 2d0be82..39877b9 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -143,6 +143,7 @@ config PPC
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
+ 	select ARCH_HAS_ZONE_DEVICE		if PPC_BOOK3S_64
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
++	select ARCH_KEEP_MEMBLOCK
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select ARCH_MIGHT_HAVE_PC_SERIO
+ 	select ARCH_OPTIONAL_KERNEL_RWX		if ARCH_HAS_STRICT_KERNEL_RWX
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index b6e3d06..3eaf660 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -106,6 +106,7 @@ config S390
+ 	select ARCH_INLINE_WRITE_UNLOCK_BH
+ 	select ARCH_INLINE_WRITE_UNLOCK_IRQ
+ 	select ARCH_INLINE_WRITE_UNLOCK_IRQRESTORE
++	select ARCH_KEEP_MEMBLOCK
+ 	select ARCH_SAVE_PAGE_KEYS if HIBERNATION
+ 	select ARCH_SUPPORTS_ATOMIC_RMW
+ 	select ARCH_SUPPORTS_NUMA_BALANCING
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index b1c91ea..418e928 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -10,7 +10,6 @@ config SUPERH
+ 	select DMA_DECLARE_COHERENT
+ 	select HAVE_IDE if HAS_IOPORT_MAP
+ 	select HAVE_MEMBLOCK_NODE_MAP
+-	select ARCH_DISCARD_MEMBLOCK
+ 	select HAVE_OPROFILE
+ 	select HAVE_ARCH_TRACEHOOK
+ 	select HAVE_PERF_EVENTS
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 62fc3fd..80bc582 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -48,7 +48,6 @@ config X86
+ 	select ARCH_32BIT_OFF_T			if X86_32
+ 	select ARCH_CLOCKSOURCE_DATA
+ 	select ARCH_CLOCKSOURCE_INIT
+-	select ARCH_DISCARD_MEMBLOCK
+ 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
+ 	select ARCH_HAS_DEBUG_VIRTUAL
+ 	select ARCH_HAS_DEVMEM_IS_ALLOWED
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index 294d5d8..6ba69ba 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -96,13 +96,14 @@ struct memblock {
+ extern struct memblock memblock;
+ extern int memblock_debug;
+ 
+-#ifdef CONFIG_ARCH_DISCARD_MEMBLOCK
++#ifndef CONFIG_ARCH_KEEP_MEMBLOCK
+ #define __init_memblock __meminit
+ #define __initdata_memblock __meminitdata
+ void memblock_discard(void);
+ #else
+ #define __init_memblock
+ #define __initdata_memblock
++static inline void memblock_discard(void) {}
+ #endif
+ 
+ #define memblock_dbg(fmt, ...) \
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index f1d0e00..623b022 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -500,13 +500,7 @@ static int locate_mem_hole_callback(struct resource *res, void *arg)
+ 	return locate_mem_hole_bottom_up(start, end, kbuf);
+ }
+ 
+-#ifdef CONFIG_ARCH_DISCARD_MEMBLOCK
+-static int kexec_walk_memblock(struct kexec_buf *kbuf,
+-			       int (*func)(struct resource *, void *))
+-{
+-	return 0;
+-}
+-#else
++#ifdef CONFIG_ARCH_KEEP_MEMBLOCK
+ static int kexec_walk_memblock(struct kexec_buf *kbuf,
+ 			       int (*func)(struct resource *, void *))
+ {
+@@ -550,6 +544,12 @@ static int kexec_walk_memblock(struct kexec_buf *kbuf,
+ 
+ 	return ret;
+ }
++#else
++static int kexec_walk_memblock(struct kexec_buf *kbuf,
++			       int (*func)(struct resource *, void *))
++{
++	return 0;
++}
+ #endif
+ 
+ /**
+@@ -589,7 +589,7 @@ int kexec_locate_mem_hole(struct kexec_buf *kbuf)
+ 	if (kbuf->mem != KEXEC_BUF_MEM_UNKNOWN)
+ 		return 0;
+ 
+-	if (IS_ENABLED(CONFIG_ARCH_DISCARD_MEMBLOCK))
++	if (!IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK))
+ 		ret = kexec_walk_resources(kbuf, locate_mem_hole_callback);
+ 	else
+ 		ret = kexec_walk_memblock(kbuf, locate_mem_hole_callback);
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 25c71eb..1e1c6ce 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -136,7 +136,7 @@ config HAVE_MEMBLOCK_PHYS_MAP
+ config HAVE_GENERIC_GUP
+ 	bool
+ 
+-config ARCH_DISCARD_MEMBLOCK
++config ARCH_KEEP_MEMBLOCK
+ 	bool
+ 
+ config MEMORY_ISOLATION
+diff --git a/mm/memblock.c b/mm/memblock.c
+index e7665cf..d6b5755 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -94,7 +94,7 @@
+  * :c:func:`mem_init` function frees all the memory to the buddy page
+  * allocator.
+  *
+- * If an architecure enables %CONFIG_ARCH_DISCARD_MEMBLOCK, the
++ * Unless an architecure enables %CONFIG_ARCH_KEEP_MEMBLOCK, the
+  * memblock data structures will be discarded after the system
+  * initialization compltes.
+  */
+@@ -375,7 +375,7 @@ static void __init_memblock memblock_remove_region(struct memblock_type *type, u
+ 	}
+ }
+ 
+-#ifdef CONFIG_ARCH_DISCARD_MEMBLOCK
++#ifndef CONFIG_ARCH_KEEP_MEMBLOCK
+ /**
+  * memblock_discard - discard memory and reserved arrays if they were allocated
+  */
+@@ -1923,7 +1923,7 @@ unsigned long __init memblock_free_all(void)
+ 	return pages;
+ }
+ 
+-#if defined(CONFIG_DEBUG_FS) && !defined(CONFIG_ARCH_DISCARD_MEMBLOCK)
++#if defined(CONFIG_DEBUG_FS) && defined(CONFIG_ARCH_KEEP_MEMBLOCK)
+ 
+ static int memblock_debug_show(struct seq_file *m, void *private)
+ {
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index c6ce20a..a1825e9 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1831,10 +1831,9 @@ void __init page_alloc_init_late(void)
+ 	/* Reinit limits that are based on free pages after the kernel is up */
+ 	files_maxfiles_init();
+ #endif
+-#ifdef CONFIG_ARCH_DISCARD_MEMBLOCK
++
+ 	/* Discard memblock private memory */
+ 	memblock_discard();
+-#endif
+ 
+ 	for_each_populated_zone(zone)
+ 		set_zone_contiguous(zone);
+-- 
+2.7.4
 

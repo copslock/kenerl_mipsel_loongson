@@ -2,58 +2,64 @@ Return-Path: <SRS0=tpP8=S2=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_MUTT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BB438C10F11
-	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 13:47:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7036BC10F11
+	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 14:20:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9668C218DA
-	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 13:47:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 42732218FC
+	for <linux-mips@archiver.kernel.org>; Wed, 24 Apr 2019 14:20:20 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N8f9LisL"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727403AbfDXNrZ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 24 Apr 2019 09:47:25 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:37152 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726505AbfDXNrZ (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 24 Apr 2019 09:47:25 -0400
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x3ODeJiR173284
-        for <linux-mips@vger.kernel.org>; Wed, 24 Apr 2019 09:47:23 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2s2qfu58ce-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@vger.kernel.org>; Wed, 24 Apr 2019 09:47:23 -0400
-Received: from localhost
-        by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@vger.kernel.org> from <rppt@linux.ibm.com>;
-        Wed, 24 Apr 2019 14:47:21 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
-        by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Wed, 24 Apr 2019 14:47:15 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x3ODlEUv48758842
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 24 Apr 2019 13:47:14 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BFC6EAE051;
-        Wed, 24 Apr 2019 13:47:14 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9A550AE059;
-        Wed, 24 Apr 2019 13:47:13 +0000 (GMT)
-Received: from rapoport-lnx (unknown [9.148.8.112])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Wed, 24 Apr 2019 13:47:13 +0000 (GMT)
-Date:   Wed, 24 Apr 2019 16:47:11 +0300
-From:   Mike Rapoport <rppt@linux.ibm.com>
-To:     Serge Semin <fancer.lancer@gmail.com>
+        id S1725935AbfDXOUT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 24 Apr 2019 10:20:19 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:42416 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725921AbfDXOUT (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 24 Apr 2019 10:20:19 -0400
+Received: by mail-lf1-f65.google.com with SMTP id w23so14807075lfc.9;
+        Wed, 24 Apr 2019 07:20:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=OLcf/MSErvvrE3bJG/rihIFJSAmMyrgPapsSpo9KmaE=;
+        b=N8f9LisLDmcx/lUbIR+vStrDtygxhUgU3PZz6qn6PVwbXxSpft0WAQeLczwucGOXly
+         Ci3MdEwCb5rmbiyFjzUwVFl8IPirbgmN57fDZYwo7L/w2rSS4b0NYLe1f8ACb7boVIYz
+         hdfs5pJZom5k90kTxfFjPPPTEaJzg/XGrwgiPIN4CrIqK7pCNktaDWxt1qnP69R2lVxh
+         XRk8wODzBkJ0RQa9sfib8jiRB02ysUMquRjDjdEAD6wI9T4wzXpzeptL+ZUT7eDyQUZL
+         Op7AcasloAMALTVlugu0BbNLbXNwB8iLib3M9fzODyfBf/LJjOaZcmppqb2PKz8eAp7J
+         sTGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=OLcf/MSErvvrE3bJG/rihIFJSAmMyrgPapsSpo9KmaE=;
+        b=jmBTRJXukk7gIhafO4UrTDnvZdQzwcEFpTA2YkRA5J8Hdd/Gm5ysJxhPAMJRC6o+Mj
+         VD7S6Mt0yfHqw8oxfIbaXq9kUjYpfwQbhJLNjBlWNCCIzMTjkGzO2b6fWKHyOdtZOtAL
+         Z6+2ZXRWRZi6Q2TmWYZEBA7perzcAE01VCSOwqQzYCSJyCuBgqn3iH9QX0/KtNezNVj1
+         oa3cgmwmupYC7oG2DfiDSkqz9P1Bn9Nj0XyYRbYpQVf9etUeBfHjqOQGMWnD5Kq3i8n+
+         44K/OsePMoHnIwp935YxcK/rkvYhJe6mAxNzkTQ5Lg3tGpbuBUQ2Jzc+Ju8BHdO65Urt
+         k+mw==
+X-Gm-Message-State: APjAAAXxBGK/VZ21iJLEqHU9JpdLCq8iYQ7Kdl+yvci70KqOg1zJ1ZDf
+        A2cLtpT1gnt0SI4fCrb3SGU=
+X-Google-Smtp-Source: APXvYqwJ3uXWd+fEv/YsbYsSoGDjBF+KsjEKZI67imLJM70S+L5DO138c9I3dA7SxKrPlyUIRnEzEQ==
+X-Received: by 2002:ac2:5455:: with SMTP id d21mr16970071lfn.60.1556115617156;
+        Wed, 24 Apr 2019 07:20:17 -0700 (PDT)
+Received: from mobilestation ([5.164.240.123])
+        by smtp.gmail.com with ESMTPSA id a2sm4417352lfi.13.2019.04.24.07.20.15
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 24 Apr 2019 07:20:16 -0700 (PDT)
+Date:   Wed, 24 Apr 2019 17:20:14 +0300
+From:   Serge Semin <fancer.lancer@gmail.com>
+To:     Mike Rapoport <rppt@linux.ibm.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Matt Redfearn <matt.redfearn@mips.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Michal Hocko <mhocko@suse.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -64,126 +70,63 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Juergen Gross <jgross@suse.com>, linux-mips@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 10/12] mips: Print the kernel virtual mem layout on
- debugging
+Subject: Re: [PATCH 08/12] mips: Dump memblock regions for debugging
+Message-ID: <20190424142012.rvdfikcsz63pjcgw@mobilestation>
 References: <20190423224748.3765-1-fancer.lancer@gmail.com>
- <20190423224748.3765-11-fancer.lancer@gmail.com>
+ <20190423224748.3765-9-fancer.lancer@gmail.com>
+ <20190424134547.GD6278@rapoport-lnx>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190423224748.3765-11-fancer.lancer@gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-TM-AS-GCONF: 00
-x-cbid: 19042413-0028-0000-0000-00000365163A
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19042413-0029-0000-0000-000024246895
-Message-Id: <20190424134711.GE6278@rapoport-lnx>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-04-24_09:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=550 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1904240109
+In-Reply-To: <20190424134547.GD6278@rapoport-lnx>
+User-Agent: NeoMutt/20180716
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Wed, Apr 24, 2019 at 01:47:46AM +0300, Serge Semin wrote:
-> It is useful at least for debugging to have the kernel virtual
-> memory layout printed at boot time so to have the full information
-> about the booted kernel. Make the printing optional and available
-> only when DEBUG_KERNEL config is enabled so not to leak a sensitive
-> kernel information.
+On Wed, Apr 24, 2019 at 04:45:47PM +0300, Mike Rapoport wrote:
+> On Wed, Apr 24, 2019 at 01:47:44AM +0300, Serge Semin wrote:
+> > It is useful to have the whole memblock memory space printed to console
+> > when basic memlock initializations are done. It can be performed by
+> > ready-to-use method memblock_dump_all(), which prints the available
+> > and reserved memory spaces if MEMBLOCK_DEBUG config is enabled.
 > 
-> Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-> ---
->  arch/mips/mm/init.c | 49 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 49 insertions(+)
+> Nit: there's no MEMBLOCK_DEBUG config option but rather memblock=debug
+> command line parameter ;-)
 > 
-> diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-> index bbb196ad5f26..c338bbd03b2a 100644
-> --- a/arch/mips/mm/init.c
-> +++ b/arch/mips/mm/init.c
-> @@ -31,6 +31,7 @@
->  #include <linux/gfp.h>
->  #include <linux/kcore.h>
->  #include <linux/initrd.h>
-> +#include <linux/sizes.h>
->  
->  #include <asm/bootinfo.h>
->  #include <asm/cachectl.h>
-> @@ -56,6 +57,53 @@ unsigned long empty_zero_page, zero_page_mask;
->  EXPORT_SYMBOL_GPL(empty_zero_page);
->  EXPORT_SYMBOL(zero_page_mask);
->  
-> +/*
-> + * Print out the kernel virtual memory layout
-> + */
-> +#define MLK(b, t) (void *)b, (void *)t, ((t) - (b)) >> 10
-> +#define MLM(b, t) (void *)b, (void *)t, ((t) - (b)) >> 20
-> +#define MLK_ROUNDUP(b, t) (void *)b, (void *)t, DIV_ROUND_UP(((t) - (b)), SZ_1K)
-> +static void __init mem_print_kmap_info(void)
-> +{
-> +#ifdef CONFIG_DEBUG_KERNEL
 
-Maybe CONFIG_DEBUG_VM?
+Right. Thanks. I'll reword the message in the next patchset revision.
 
-> +	pr_notice("Kernel virtual memory layout:\n"
-> +		  "    lowmem  : 0x%px - 0x%px  (%4ld MB)\n"
-> +		  "      .text : 0x%px - 0x%px  (%4td kB)\n"
-> +		  "      .data : 0x%px - 0x%px  (%4td kB)\n"
-> +		  "      .init : 0x%px - 0x%px  (%4td kB)\n"
-> +		  "      .bss  : 0x%px - 0x%px  (%4td kB)\n"
-> +		  "    vmalloc : 0x%px - 0x%px  (%4ld MB)\n"
-> +#ifdef CONFIG_HIGHMEM
-> +		  "    pkmap   : 0x%px - 0x%px  (%4ld MB)\n"
-> +#endif
-> +		  "    fixmap  : 0x%px - 0x%px  (%4ld kB)\n",
-> +		  MLM(PAGE_OFFSET, (unsigned long)high_memory),
-> +		  MLK_ROUNDUP(_text, _etext),
-> +		  MLK_ROUNDUP(_sdata, _edata),
-> +		  MLK_ROUNDUP(__init_begin, __init_end),
-> +		  MLK_ROUNDUP(__bss_start, __bss_stop),
-> +		  MLM(VMALLOC_START, VMALLOC_END),
-> +#ifdef CONFIG_HIGHMEM
-> +		  MLM(PKMAP_BASE, (PKMAP_BASE) + (LAST_PKMAP)*(PAGE_SIZE)),
-> +#endif
-> +		  MLK(FIXADDR_START, FIXADDR_TOP));
-> +
-> +	/* Check some fundamental inconsistencies. May add something else? */
-> +#ifdef CONFIG_HIGHMEM
-> +	BUILD_BUG_ON(VMALLOC_END < PAGE_OFFSET);
-> +	BUG_ON(VMALLOC_END < (unsigned long)high_memory);
-> +	BUILD_BUG_ON((PKMAP_BASE) + (LAST_PKMAP)*(PAGE_SIZE) < PAGE_OFFSET);
-> +	BUG_ON((PKMAP_BASE) + (LAST_PKMAP)*(PAGE_SIZE) <
-> +		(unsigned long)high_memory);
-> +#endif
-> +	BUILD_BUG_ON(FIXADDR_TOP < PAGE_OFFSET);
-> +	BUG_ON(FIXADDR_TOP < (unsigned long)high_memory);
-> +#endif /* CONFIG_DEBUG_KERNEL */
-> +}
-> +#undef MLK
-> +#undef MLM
-> +#undef MLK_ROUNDUP
-> +
->  /*
->   * Not static inline because used by IP27 special magic initialization code
->   */
-> @@ -479,6 +527,7 @@ void __init mem_init(void)
->  	setup_zero_pages();	/* Setup zeroed pages.  */
->  	mem_init_free_highmem();
->  	mem_init_print_info(NULL);
-> +	mem_print_kmap_info();
->  
->  #ifdef CONFIG_64BIT
->  	if ((unsigned long) &_text > (unsigned long) CKSEG0)
+-Sergey
+
+> > Lets call it at the very end of arch_mem_init() function, when
+> > all memblock memory and reserved regions are defined, but before
+> > any serious allocation is performed.
+> > 
+> > Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+> > ---
+> >  arch/mips/kernel/setup.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> > index 2a1b2e7a1bc9..ca493fdf69b0 100644
+> > --- a/arch/mips/kernel/setup.c
+> > +++ b/arch/mips/kernel/setup.c
+> > @@ -824,6 +824,8 @@ static void __init arch_mem_init(char **cmdline_p)
+> >  	/* Reserve for hibernation. */
+> >  	memblock_reserve(__pa_symbol(&__nosave_begin),
+> >  		__pa_symbol(&__nosave_end) - __pa_symbol(&__nosave_begin));
+> > +
+> > +	memblock_dump_all();
+> >  }
+> >  
+> >  static void __init resource_init(void)
+> > -- 
+> > 2.21.0
+> > 
+> 
 > -- 
-> 2.21.0
+> Sincerely yours,
+> Mike.
 > 
-
--- 
-Sincerely yours,
-Mike.
-

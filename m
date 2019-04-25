@@ -2,156 +2,120 @@ Return-Path: <SRS0=AFgm=S3=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+X-Spam-Status: No, score=-2.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A2FACC10F03
-	for <linux-mips@archiver.kernel.org>; Thu, 25 Apr 2019 08:21:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E7D64C43219
+	for <linux-mips@archiver.kernel.org>; Thu, 25 Apr 2019 15:41:27 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 68736217FA
-	for <linux-mips@archiver.kernel.org>; Thu, 25 Apr 2019 08:21:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 23F1B206C1
+	for <linux-mips@archiver.kernel.org>; Thu, 25 Apr 2019 15:41:28 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tGBxc+Yz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MRGBfi4+"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727329AbfDYIVK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 25 Apr 2019 04:21:10 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:34426 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725951AbfDYIVJ (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 25 Apr 2019 04:21:09 -0400
-Received: by mail-io1-f68.google.com with SMTP id h26so3456017ioj.1;
-        Thu, 25 Apr 2019 01:21:08 -0700 (PDT)
+        id S1726813AbfDYPl1 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 25 Apr 2019 11:41:27 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:34160 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725900AbfDYPl1 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 25 Apr 2019 11:41:27 -0400
+Received: by mail-wr1-f65.google.com with SMTP id c6so120895wrm.1;
+        Thu, 25 Apr 2019 08:41:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=rnJZSZFnULCRsZrHYmQhLyhrB7ogDN8kv1Uyzro7gws=;
-        b=tGBxc+YzDWpHYkIvmCSgRz956C16OLgKkbIcmhzC+1xXoGO6zp3loSiQ7dXl+7dO+q
-         9StlZmvfbiUnPNYQCH6g6kNLO/fcc9I9e6HlaKBYOH4O0skD4iSsKeo0vtbuRwZitAhS
-         sx3eh3uobQKJ9ACBEilhlzVsxOJK2STZm67gzsaxAdNGfexgEMp+EEh/Gjpsgrzc3FBJ
-         EBzN73jWiZOYyCgq4sejX8cT1j0yr8PLJZbUjiwQReQQgjGWuq4qkSNdY9hdmMlxGQaB
-         xS6VTR8IHc7sS24lufmtVw2KfS2/pkns3U9hws2n8C14h18FNCMJkWO26IVJOUOfll6v
-         BY0g==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=THSF3Xpz2phunaGLH3/uW/mOh0mb8AvQYIwvd+2yrsA=;
+        b=MRGBfi4+8T1MCw1VzyP5Iw0RGMC4a0Rtv1tYP5S4LsQicF4jwEnQdZRWbO6yfoIRYS
+         4LaCz0QSvEOVViUBymjpiSoXb3u6V9PeFm9xxzCP7rGoO1UfyUT17Em5RuoFQfR/Jt62
+         hn0Tn8KRFF2AJz0fG46PiQK61F1gquOhUcRwerudY0QY5uAxPO3ZCCGc5nrkVdV7HfZL
+         mXY1V3bROv80Z+Sibas85VcTk+WcQ/iDvI3QX45d/nM5OjDQG7mCJQrvKPExpvujKMIE
+         ctebXwu5Vqep96hy6i6AinuwkOWXmR289rpTgBFrtweK2/i3E898zUjnuD6S+4SvSqNt
+         LyTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rnJZSZFnULCRsZrHYmQhLyhrB7ogDN8kv1Uyzro7gws=;
-        b=CzAaK2uxRKK5jVAw2uPFbdBOTuoNNG8UCWf0tTrv8mxVUt2JbN68vk9rkJUlMDhSxb
-         AOhj6ANHrZ4QmIq02dP84SPCvNk3akGHmb2Ly0mJlkz+w7cUrHPYG7gOVI5HLh5DKBEz
-         Gu6ABQvx+T291YDmVTixOqE2Q+qMpapQyQZTVQqJAAYa8vUj48Xw1I77nNGgsojcfo2M
-         STFcQY31SScZ9HDRttsl4wBmPfyNS94d5+ekdHxOOXvtQ0JH+na3feOPFZLXWGGsSmoT
-         /+RpNnQpyAueraAxEwvTfsInO4yHU//zRvqsn6ZKZqH/fRlrIOpqum5D9Yq8e4a6Q0Kt
-         ARbw==
-X-Gm-Message-State: APjAAAUekyz/WnMX7ujoIJAQ1BVUxMEpagjmkpUOiu+xAkJloa2MeQSC
-        f+qQIRQy3V6d+IWJowfgJz2TOBTTbGGpXiQSmQ==
-X-Google-Smtp-Source: APXvYqyZF0VJ6H/W0KkhLLQMHoR91SLrqlZTBjABevwCr1pHSQAf6ZYLvaN8f4DDJv+zIohe3tXE9+56Cg1iuZAtgHk=
-X-Received: by 2002:a6b:b54b:: with SMTP id e72mr645706iof.106.1556180468500;
- Thu, 25 Apr 2019 01:21:08 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=THSF3Xpz2phunaGLH3/uW/mOh0mb8AvQYIwvd+2yrsA=;
+        b=NZ6hDClR+ai9t2GMqkXu3NEeiJFpzgMfNlwBPZ9FiOlIGfP3VKemI031qatHvYwtcl
+         50AeCenXgZdcQLaeF8Mz/egHT+SeodbinXeowTFjycOo0sQ19a/57Hh/gCXDFX4pvFSL
+         uQoG4vLnxC8PSaH/jRl3fG9MYoFkKaHwyNbq8kINjsn+tUT5ApMaDN/P8vhWz7SoJoBK
+         KQwHbQg0OJySdhIHkPuC2pqcSxrAzp4fsws9eqNyehhpLgUrsiPwnwI9dM6yKrVHxot3
+         Xm6nAJiGpi3fV290YyTu295eqNgJ9El6/3uK/g3GGKsj1V6ttAo/+FtC0NzmM0GESlGs
+         Q7sA==
+X-Gm-Message-State: APjAAAUI/t1+Gx/n5Z70FcGJu/3Mcyp0HitgiNbiPsi296dC1rLd3n1I
+        0H45aJ/IOTlUCkRZKv847HM=
+X-Google-Smtp-Source: APXvYqxReYZ0nJjjeV9RVFnLNiw5OAw+vEW7DKlf/dsYfzbirRhGUTe0C3Xa4lvjvBicbWD0W8/HVw==
+X-Received: by 2002:a5d:5542:: with SMTP id g2mr3887796wrw.58.1556206884990;
+        Thu, 25 Apr 2019 08:41:24 -0700 (PDT)
+Received: from localhost.localdomain (216.red-79-159-55.dynamicip.rima-tde.net. [79.159.55.216])
+        by smtp.gmail.com with ESMTPSA id r9sm21793674wmh.38.2019.04.25.08.41.23
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 25 Apr 2019 08:41:24 -0700 (PDT)
+From:   Sergio Paracuellos <sergio.paracuellos@gmail.com>
+To:     kishon@ti.com
+Cc:     linux-kernel@vger.kernel.org,
+        driverdev-devel@linuxdriverproject.org, devicetree@vger.kernel.org,
+        john@phrozen.org, linux-mips@vger.kernel.org, robh+dt@kernel.org,
+        neil@brown.name
+Subject: [PATCH v3 0/2] MT7621 PCIe PHY
+Date:   Thu, 25 Apr 2019 17:41:20 +0200
+Message-Id: <20190425154122.24122-1-sergio.paracuellos@gmail.com>
+X-Mailer: git-send-email 2.19.1
 MIME-Version: 1.0
-References: <1556087581-14513-1-git-send-email-kernelfans@gmail.com> <10dc5468-6cd9-85c7-ba66-1dfa5aa922b7@suse.com>
-In-Reply-To: <10dc5468-6cd9-85c7-ba66-1dfa5aa922b7@suse.com>
-From:   Pingfan Liu <kernelfans@gmail.com>
-Date:   Thu, 25 Apr 2019 16:20:57 +0800
-Message-ID: <CAFgQCTstd667wP6g+maxYekz4u3iBR2R=FHUiS1V=XxTs6MKUw@mail.gmail.com>
-Subject: Re: [PATCHv2] kernel/crash: make parse_crashkernel()'s return value
- more indicant
-To:     Matthias Brugger <mbrugger@suse.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>, Rich Felker <dalias@libc.org>,
-        linux-ia64@vger.kernel.org,
-        Julien Thierry <julien.thierry@arm.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Palmer Dabbelt <palmer@sifive.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>, x86@kernel.org,
-        linux-mips@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-s390@vger.kernel.org,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-sh@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
-        David Hildenbrand <david@redhat.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Ingo Molnar <mingo@redhat.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        James Hogan <jhogan@kernel.org>,
-        Dave Young <dyoung@redhat.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Will Deacon <will.deacon@arm.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        Ananth N Mavinakayanahalli <ananth@linux.vnet.ibm.com>,
-        Borislav Petkov <bp@alien8.de>, Stefan Agner <stefan@agner.ch>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Jens Axboe <axboe@kernel.dk>, Tony Luck <tony.luck@intel.com>,
-        Baoquan He <bhe@redhat.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-        Paul Burton <paul.burton@mips.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Greg Hackmann <ghackmann@android.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Wed, Apr 24, 2019 at 4:31 PM Matthias Brugger <mbrugger@suse.com> wrote:
->
->
-[...]
-> > @@ -139,6 +141,8 @@ static int __init parse_crashkernel_simple(char *cmdline,
-> >               pr_warn("crashkernel: unrecognized char: %c\n", *cur);
-> >               return -EINVAL;
-> >       }
-> > +     if (*crash_size == 0)
-> > +             return -EINVAL;
->
-> This covers the case where I pass an argument like "crashkernel=0M" ?
-> Can't we fix that by using kstrtoull() in memparse and check if the return value
-> is < 0? In that case we could return without updating the retptr and we will be
-> fine.
->
-It seems that kstrtoull() treats 0M as invalid parameter, while
-simple_strtoull() does not.
+This series adds support for the PCIe PHY found in the Mediatek
+MT7621 SoC.
 
-If changed like your suggestion, then all the callers of memparse()
-will treats 0M as invalid parameter. This affects many components
-besides kexec.  Not sure this can be done or not.
+This is the first attempt to get feedback of what is missing in
+this driver to be promoted from staging.
 
-Regards,
-Pingfan
+There is also a 'mt7621-pci' driver which is the controller part
+which is still in staging and is a client of this phy.
 
-> >
-> >       return 0;
-> >  }
-> > @@ -181,6 +185,8 @@ static int __init parse_crashkernel_suffix(char *cmdline,
-> >               pr_warn("crashkernel: unrecognized char: %c\n", *cur);
-> >               return -EINVAL;
-> >       }
-> > +     if (*crash_size == 0)
-> > +             return -EINVAL;
->
-> Same here.
->
-> >
-> >       return 0;
-> >  }
-> > @@ -266,6 +272,8 @@ static int __init __parse_crashkernel(char *cmdline,
-> >  /*
-> >   * That function is the entry point for command line parsing and should be
-> >   * called from the arch-specific code.
-> > + * On success 0. On error for either syntax error or crash_size=0, -EINVAL is
-> > + * returned.
-> >   */
-> >  int __init parse_crashkernel(char *cmdline,
-> >                            unsigned long long system_ram,
-> >
+Both drivers have been tested together in a gnubee1 board.
+
+Changes in v3:
+    - Recollect Rob's Reviewed-by of bindings.
+    - Make Kishon Vijay suggested changes in v2:
+    (See https://lkml.org/lkml/2019/4/17/53)
+        - Kconfig:
+            * Add depends on COMPILE_TEST
+            * Select REGMAP_MMIO
+        - Make use of 'soc_device_attribute' and 'soc_device_match'
+        - Use regmap mmio API instead of directly 'readl' and 'writel'.
+        - Use 'platform_get_resource' instead of 'of_address_to_resource'.
+
+Changes in v2:
+    - Reorder patches to get bindings first in the series.
+    - Don't use child nodes in the device tree. Use #phy-cells=1 instead.
+    - Update driver code with new 'xlate' function for the new device tree.
+    - Minor changes in driver's macros changing some spaces to tabs.
+
+Thanks in advance for your time.
+
+Best regards,
+    Sergio Paracuellos
+
+Sergio Paracuellos (2):
+  dt-bindings: phy: Add binding for Mediatek MT7621 PCIe PHY
+  phy: ralink: Add PHY driver for MT7621 PCIe PHY
+
+ .../bindings/phy/mediatek,mt7621-pci-phy.txt  |  28 ++
+ drivers/phy/ralink/Kconfig                    |   8 +
+ drivers/phy/ralink/Makefile                   |   1 +
+ drivers/phy/ralink/phy-mt7621-pci.c           | 423 ++++++++++++++++++
+ 4 files changed, 460 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/phy/mediatek,mt7621-pci-phy.txt
+ create mode 100644 drivers/phy/ralink/phy-mt7621-pci.c
+
+-- 
+2.19.1
+

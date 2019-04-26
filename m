@@ -1,145 +1,166 @@
-Return-Path: <SRS0=AFgm=S3=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=03uL=S4=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,
+	USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B8991C43219
-	for <linux-mips@archiver.kernel.org>; Thu, 25 Apr 2019 19:29:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CABB0C43218
+	for <linux-mips@archiver.kernel.org>; Fri, 26 Apr 2019 00:00:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id DDF4B20717
-	for <linux-mips@archiver.kernel.org>; Thu, 25 Apr 2019 19:29:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1556220594;
-	bh=O7CZtgQWz7ZqtzXavLJGzCtCNruVZi0wytFo4SHqKuU=;
-	h=In-Reply-To:References:Cc:From:Subject:To:Date:List-ID:From;
-	b=aCLjspG44H1vF4/FXRIUc80spn+XxnDdu4HLAYBmeTI7nSSS2LM6T6g9wczAnjIe2
-	 tszgbpxp8ialqBfLdj76XAYR2xbXcMOaQHtwhhzd+NI0ef2yDaAn2whWg67QKekc64
-	 oyYClq4kHhvcmhDt6SGg9U5MWYIHmszwhSye8rZM=
+	by mail.kernel.org (Postfix) with ESMTP id B67E22084F
+	for <linux-mips@archiver.kernel.org>; Fri, 26 Apr 2019 00:00:42 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="POxsyX3l"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729712AbfDYT3y (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 25 Apr 2019 15:29:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56614 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726202AbfDYT3y (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 25 Apr 2019 15:29:54 -0400
-Received: from localhost (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6472020685;
-        Thu, 25 Apr 2019 19:29:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1556220593;
-        bh=O7CZtgQWz7ZqtzXavLJGzCtCNruVZi0wytFo4SHqKuU=;
-        h=In-Reply-To:References:Cc:From:Subject:To:Date:From;
-        b=UKBX7OSBiCNNey6nlAW/SC7S/ODODRgqMVbvRk+rFSQ1h7Urcz1jFBQOpHQoug77g
-         93I3iOT/IKcxHn/vRiViAAF52OY0dk2itUeJKfCkjkgF5h0e6HPHEBH1i3zeR4OJ5n
-         4YzC9X2ACWI3bVGsUOof6WLIuj3K3S/2df2woGKM=
-Content-Type: text/plain; charset="utf-8"
+        id S1727179AbfDZAAm (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 25 Apr 2019 20:00:42 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:39857 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726719AbfDZAAm (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 25 Apr 2019 20:00:42 -0400
+Received: by mail-lj1-f193.google.com with SMTP id q10so1223280ljc.6;
+        Thu, 25 Apr 2019 17:00:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=Xopw6scoY8m69fGtQCLNxKBU4lVmXTJmtD/S5txEm8w=;
+        b=POxsyX3lPLAOzigv0zF0gMxbogHXm6apiwkxGZpgZegq1cdTZknM8TsxshClJM64o4
+         V/BGr57OiHHV3jOFVkfS/af4V+uGWrlabZsrKY7TDW1UKZzsjNHT1wQCHhteMwuiVCT3
+         pykmf38z56NYDPpR4D7M9dZaL0XEO/sLzWhwlhrFvTJMwKv71DYXMb9oNwSReWpenTlI
+         dxsIJicarRltZ80m/SrdWywXB6Nu0vxu3Q8A4T28/qE4WJNpMHnWi0WaKfKyBqEZ4h+x
+         ex0cNJp+CqfSDs3QcO4eYuJqaMgprjsE4Wz/jjwEw+7Lzns9KPPVq9RXM9ssXqlE+FAh
+         chvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Xopw6scoY8m69fGtQCLNxKBU4lVmXTJmtD/S5txEm8w=;
+        b=YRxBuDyLl/hDcf+op/e6JDTAhevJbzlVDXzqC/pRFFk37nxnSUYxWwDLAMdKBiUGbU
+         P1YPiXK+8NLrWqUu8TjPt4hJqwlQKQGc/OJUQ/fESIuXP38rk/bSO3JE2XpV7c/Kpc08
+         Djh7H1SF6UTYN2RNIAfs2OFt6bL7Yf9WC3XxPjco4KGwamT8v2nXPXxwzPpPoTKnEe73
+         gzL19qqLrkIYNNg/ftJkU5xzrYiLNvcxutLp5hNCftfRAbW8yTFuXTdqVUEj8e7oO20C
+         ZPvbvYoyzJ0Zpr+DgxGipiQxW5w9SPRGde+3/8HtaYMnwRFjeLAEBjvT7cMXMXA1HR/Y
+         /Igg==
+X-Gm-Message-State: APjAAAVHIBLzv7hUW2nwahlbgEyGuKmtF49iCPp/+2HwuFZ/CQNQa5Of
+        rs461TH64jd1uq6eHhiqzyQ=
+X-Google-Smtp-Source: APXvYqzlZFunU266yZ4pdZvz52IUxSs+hesamVoPNnAMxJhgsO23ZBhTFgWZyowIGHidvZoPhr6UrA==
+X-Received: by 2002:a2e:9941:: with SMTP id r1mr7162693ljj.168.1556236839893;
+        Thu, 25 Apr 2019 17:00:39 -0700 (PDT)
+Received: from mobilestation ([5.164.240.123])
+        by smtp.gmail.com with ESMTPSA id m23sm4893350ljh.93.2019.04.25.17.00.38
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 25 Apr 2019 17:00:38 -0700 (PDT)
+Date:   Fri, 26 Apr 2019 03:00:36 +0300
+From:   Serge Semin <fancer.lancer@gmail.com>
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+        Huacai Chen <chenhc@lemote.com>,
+        Stefan Agner <stefan@agner.ch>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Juergen Gross <jgross@suse.com>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 04/12] mips: Reserve memory for the kernel image resources
+Message-ID: <20190426000035.yfonfvrapmm4j3fg@mobilestation>
+References: <20190423224748.3765-1-fancer.lancer@gmail.com>
+ <20190423224748.3765-5-fancer.lancer@gmail.com>
+ <20190424224343.4skr727fszycwksq@pburton-laptop>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20190405000129.19331-3-drvlabo@gmail.com>
-References: <20190405000129.19331-1-drvlabo@gmail.com> <20190405000129.19331-3-drvlabo@gmail.com>
-Cc:     Michael Turquette <mturquette@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-mips@vger.kernel.org, linux-clk@vger.kernel.org,
-        NOGUCHI Hiroshi <drvlabo@gmail.com>
-From:   Stephen Boyd <sboyd@kernel.org>
-Subject: Re: [RFC v2 2/5] dt-bindings: clk: add document for ralink clock driver
-To:     John Crispin <john@phrozen.org>,
-        NOGUCHI Hiroshi <drvlabo@gmail.com>
-Message-ID: <155622059236.15276.15417177789148260137@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.8
-Date:   Thu, 25 Apr 2019 12:29:52 -0700
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190424224343.4skr727fszycwksq@pburton-laptop>
+User-Agent: NeoMutt/20180716
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Quoting NOGUCHI Hiroshi (2019-04-04 17:01:26)
-> Signed-off-by: NOGUCHI Hiroshi <drvlabo@gmail.com>
-> ---
->  .../bindings/clock/ralink,rt2880-clock.txt    | 58 +++++++++++++++++++
->  1 file changed, 58 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/clock/ralink,rt2880=
--clock.txt
->=20
-> diff --git a/Documentation/devicetree/bindings/clock/ralink,rt2880-clock.=
-txt b/Documentation/devicetree/bindings/clock/ralink,rt2880-clock.txt
-> new file mode 100644
-> index 000000000000..2fc0d622e01e
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/clock/ralink,rt2880-clock.txt
-> @@ -0,0 +1,58 @@
-> +* Clock bindings for Ralink/Mediatek MIPS based SoCs
-> +
-> +Required properties:
-> + - compatible: must be "ralink,rt2880-clock"
-> + - #clock-cells: must be 1
-> + - ralink,sysctl: a phandle to a ralink syscon register region
-> + - clock-indices: identifying number.
-> +       These must correspond to the bit number in CLKCFG1.
+On Wed, Apr 24, 2019 at 10:43:48PM +0000, Paul Burton wrote:
+> Hi Serge,
+> 
+> On Wed, Apr 24, 2019 at 01:47:40AM +0300, Serge Semin wrote:
+> > The reserved_end variable had been used by the bootmem_init() code
+> > to find a lowest limit of memory available for memmap blob. The original
+> > code just tried to find a free memory space higher than kernel was placed.
+> > This limitation seems justified for the memmap ragion search process, but
+> > I can't see any obvious reason to reserve the unused space below kernel
+> > seeing some platforms place it much higher than standard 1MB.
+> 
+> There are 2 reasons I'm aware of:
+> 
+>  1) Older systems generally had something like an ISA bus which used
+>     addresses below the kernel, and bootloaders like YAMON left behind
+>     functions that could be called right at the start of RAM. This sort
+>     of thing should be accounted for by /memreserve/ in DT or similar
+>     platform-specific reservations though rather than generically, and
+>     at least Malta & SEAD-3 DTs already have /memreserve/ entries for
+>     it. So this part I think is OK. Some other older platforms might
+>     need updating, but that's fine.
+> 
 
-These look like driver level details that we're putting in the DT so we
-can compress the number space that consumers use. Is that right? If so,
-I don't get it. Can we not use this property?
+Regarding ISA. As far as I remember devices on that bus can DMA only to the
+lowest 16MB. So in case if kernel is too big or placed pretty much high,
+they may be left even without reachable memory at all in current
+implementation.
 
-> +       Clock consumers use one of them as #clock-cells index.
-> + - clock-output-names: array of gating clocks' names
-> + - clocks: array of phandles which points the parent clock
-> +       for gating clocks.
-> +       If gating clock does not need parent clock linkage,
-> +       we bind to dummy clock whose frequency is zero.
-> +
-> +
-> +Example:
-> +
-> +/* dummy parent clock node */
-> +dummy_ck: dummy_ck {
-> +       #clock-cells =3D <0>;
-> +       compatible =3D "fixed-clock";
-> +       clock-frequency =3D <0>;
-> +};
+>  2) trap_init() only allocates memory for the exception vector if using
+>     a vectored interrupt mode. In other cases it just uses CAC_BASE
+>     which currently gets reserved as part of this region between
+>     PHYS_OFFSET & _text.
+> 
+>     I think this behavior is bogus, and we should instead:
+> 
+>     - Allocate the exception vector memory using memblock_alloc() for
+>       CPUs implementing MIPSr2 or higher (ie. CPUs with a programmable
+>       EBase register). If we're not using vectored interrupts then
+>       allocating one page will do, and we already have the size
+>       calculation for if we are.
+> 
+>     - Otherwise use CAC_BASE but call memblock_reserve() on the first
+>       page.
+> 
+>     I think we should make that change before this one goes in. I can
+>     try to get to it tomorrow, but feel free to beat me to it.
+> 
 
-Would this ever exist in practice? If not, please remove from the
-example so we don't get the wrong idea.
+As far as I understood you and the code this should be enough to fix
+the problem:
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 98ca55d62201..f680253e2617 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -2326,6 +2326,8 @@ void __init trap_init(void)
+ 				ebase += (read_c0_ebase() & 0x3ffff000);
+ 			}
+ 		}
++
++		memblock_reserve(ebase, PAGE_SIZE);
+ 	}
+ 
+ 	if (cpu_has_mmips) {
+---
 
-> +
-> +clkctrl: clkctrl {
-> +       compatible =3D "ralink,rt2880-clock";
-> +       #clock-cells =3D <1>;
-> +       ralink,sysctl =3D <&sysc>;
-> +
-> +       clock-indices =3D
-> +                       <12>,
-> +                       <16>, <17>, <18>, <19>,
-> +                       <20>,
-> +                       <26>;
-> +       clock-output-names =3D
-> +                       "uart0",
-> +                       "i2c", "i2s", "spi", "uart1",
-> +                       "uart2",
-> +                       "pcie0";
-> +       clocks =3D
-> +                       <&pll MT7620_CLK_PERIPH>,
-> +                       <&pll MT7620_CLK_PERIPH>, <&pll MT7620_CLK_PCMI2S=
->, <&pll MT7620_CLK_SYS>, <&pll MT7620_CLK_PERIPH>,
-> +                       <&pll MT7620_CLK_PERIPH>,
-> +                       <&dummy_ck>;
-> +       };
-> +};
-> +
-> +/* consumer which refers "uart0" clock */
-> +uart0: uartlite@c00 {
-> +       compatible =3D "ns16550a";
-> +       reg =3D <0xc00 0x100>;
-> +
-> +       clocks =3D <&clkctrl 12>;
+Allocation has already been implemented in the if-branch under the
+(cpu_has_veic || cpu_has_vint) condition. So we don't need to change
+there anything.
+In case if vectored interrupts aren't supported the else-clause is
+taken and we need to reserve whatever is set in the exception base
+address variable.
 
-So 12 matches in indices and then that is really "uart0" clk?
+I'll add this patch between 3d and 4th ones if you are ok with it.
 
-> +       clock-names =3D "uart0";
-> +
+-Sergey
+
+> Thanks,
+>     Paul

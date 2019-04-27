@@ -3,24 +3,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 339B8C43218
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:55:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3CAEC43219
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:55:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 0DADF2087C
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:55:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 806262087C
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:55:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727158AbfD0MxU (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 27 Apr 2019 08:53:20 -0400
-Received: from mout.kundenserver.de ([212.227.126.130]:47445 "EHLO
+        id S1727350AbfD0MzG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 27 Apr 2019 08:55:06 -0400
+Received: from mout.kundenserver.de ([212.227.126.135]:55429 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727088AbfD0MxT (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 27 Apr 2019 08:53:19 -0400
+        with ESMTP id S1727076AbfD0MxU (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 27 Apr 2019 08:53:20 -0400
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MG9c4-1hYhE40ZmG-00GaDP; Sat, 27 Apr 2019 14:52:56 +0200
+ 1MRCFw-1h5zEz3V3s-00N8iN; Sat, 27 Apr 2019 14:52:57 +0200
 From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     gregkh@linuxfoundation.org, andrew@aj.id.au,
@@ -32,62 +32,58 @@ Cc:     gregkh@linuxfoundation.org, andrew@aj.id.au,
         linux-mips@vger.kernel.org, linux-serial@vger.kernel.org,
         linux-ia64@vger.kernel.org, linux-amlogic@lists.infradead.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
-Subject: [PATCH 26/41] drivers: tty: serial: sunzilog: use dev_info() instead of printk()
-Date:   Sat, 27 Apr 2019 14:52:07 +0200
-Message-Id: <1556369542-13247-27-git-send-email-info@metux.net>
+Subject: [PATCH 28/41] drivers: tty: serial: sunzilog: fix includes
+Date:   Sat, 27 Apr 2019 14:52:09 +0200
+Message-Id: <1556369542-13247-29-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:mAhDCbido9+iZFtRE4TdsCbv1vAr9Joy1VbiPU+XYBGA3j+D1i7
- 8tBC3ZCd802YRf6g/j2wz/Rpr+rNfM3/C9qVun5TY7ecwFsuAGNQ9PkxsomQbrK7CQSqD9t
- lNVdEtEZXMG24nxtzJ9rZ1N16lMRzqr8eSk0ACn+9ciZWtRdbmtCGj6cenKYS6p9eJZMPGK
- +Gf+FP3wxSs4kFyyMktug==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0SWS/YPHXl4=:xXTpK4xlmi8jyBmh5+ECF2
- 2f9XUV5idTnhYPicmiA4uN9epzHkr0tM2wgGgfiaPSshMy4/xofCE6fehmo0kVhDKiF8UVbMG
- XR8itAO4whaeeAqp9zT5DYaaSKJ2vtlF2N3zWHCsj7pHbAGbhkSM9yxnLE5xXWK/rrI3rNFKs
- YIL05g1WGyY8xdJe4HFEc4NcJhKh0f6h9LUIcxhmKvH9XKe8ycd0Xe3RywlvzHmnWjcU1z9Vj
- T6vHj0osI3kq595a3frTeGB0+jpxTiEP9p6T6XiuZvNJcMFcVfR19rf4Gj2yDgphVYvMsQryv
- Ksrc5FpwDCtuUawC5zqz/Epzic7ZckEfLjO0q7+UoqsY0qU2w5PVM0DrEJwWrMmVrMhIrOFFw
- 81XKksVUTD4AuR+sXqurAVCxRwn6CXlYCaUeQij0f2JVzNuq7fbmsbAgJpeEfV5/tIPLtdEaR
- vBt9XarGGDlzVuyi92jSjgdBgtKrY7LZr+9m6ioeJxy2ufRg0N32AcwiJeOcaGThmWCpht23Y
- m1ocX1+Dlr8+TlglVKRnWgCqKWI2lhH9KcTZN8l27ajs49owlLXy8zkyJUHaswH8NaJ7Vo4HJ
- /Q2JJ0/z9DlIk0AXgG0IJq1NdJttYEUAtvhk5Ms9Ad6jVBqAzeWwQ3FXaB1XSVn+7YmVjffw6
- nb8ej0Ia5DlAdpZ4D1aTwGxiigyP+2TidNSBWB6whE/gbiB9kfqBscb0vJZXs8WN/bVMk7qiH
- gIjVcmF0qrPRPdGta3xTuJy8beZywXyoAWaOnw==
+X-Provags-ID: V03:K1:Vc4oNRhzaq0GImBAR5CgiZ+whb77bqy0PxtEF5afHcYFvx1oVZb
+ siNewF36P93CZkzncVMQnr4mlIS/A8kCZTaukIk2D/GuBtTc3OHRLhlyKjwaq32J2XmrRlB
+ f2vNOVy/3BrWxRfFIWguM5CtYi1a+WcUK3nW67RriXOHA4rE+69skktXGN0uJRmUq+H07n0
+ K1/tFtsXXjzqS2NXo4RKA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:WBmzZwx4lgo=:NspLTi8etU0+1fQAgbr3D+
+ 7NJFSTzzIk8QcOgiGlxnnfA2ff9WuC2M+mUQl8CvyQPR1cl5KPNVz+Gs6GXBQgE3j+OdFEawT
+ DF05YFVSL08zlHfEFGE/TaD2nZByEqUJeW9HwLJGSeckhVexHLC2nadK/PuPkZ8nQB9SDQC3m
+ ggNu6zfAJ11Ymokt621Nqj/cAvK8z2g4R951W43UVyRBAPjNJLZnAWzl69dWoVEF6khz0dvoy
+ NB6mQKt80tpbAIibungsiH8r/5jjf6cFypWqPbSnSL8aM68Agdeu6XvXr9NvzuK6v7vttxLz1
+ XLkGi5Z7QILTWz1PWT2CP+pScInyi2KU5cWyYES+DQae3LncVeZn/UZqqvSmcV5vRuSUbWG1S
+ ASupKOd9PdBnOLF7fgH4kGptvX4+k+m8hh+/IHKlLFPs4Z5V07XsPTjGP43ir6PzrBAkofC8R
+ 6L72iwY6PeL8WMTHw/dSgL2YdMYSLFOpnbyHooEr5hYrThcvmcHJ+TqqxR/35kt8iKd/n6kpY
+ SnCPBvP/ssZHx6Ve5P17ibQdCA38lmObFRnsxaRCxeO8ceOqqJJVhD0Rnj9qz0JmfcH23axV0
+ Cqo9n5OxSPdnKd10oAo8jAWkFqZFJHT3aNUP47SCVF6v8Hc030w7nv5Wy3TQJrANkYGs2zaDK
+ CGdtJifVuhg6VVTvqYCedOdrWh+OZuszAW+DcmULVA8NOVb5UD1WF6EvFALLrnahi67Xh1A+O
+ 1a1p4u9mxM+I2OORa29atLFeiS8iBIPcjEkwbg==
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Using dev_info() instead of printk() for more consistent output.
-(prints device name, etc).
+Fix checkpatch warning:
+
+    WARNING: Use #include <linux/io.h> instead of <asm/io.h>
+    #38: FILE: drivers/tty/serial/sunzilog.c:38:
+    +#include <asm/io.h>
 
 Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
- drivers/tty/serial/sunzilog.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/tty/serial/sunzilog.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/tty/serial/sunzilog.c b/drivers/tty/serial/sunzilog.c
-index bc7af8b..6285bba 100644
+index 17b0520..85edb0d 100644
 --- a/drivers/tty/serial/sunzilog.c
 +++ b/drivers/tty/serial/sunzilog.c
-@@ -1489,14 +1489,12 @@ static int zs_probe(struct platform_device *op)
- 		}
- 		uart_inst++;
- 	} else {
--		printk(KERN_INFO "%s: Keyboard at MMIO 0x%llx (irq = %d) "
-+		dev_info(&op->dev, "Keyboard at MMIO 0x%llx (irq = %d) "
- 		       "is a %s\n",
--		       dev_name(&op->dev),
- 		       (unsigned long long) up[0].port.mapbase,
- 		       op->archdata.irqs[0], sunzilog_type(&up[0].port));
--		printk(KERN_INFO "%s: Mouse at MMIO 0x%llx (irq = %d) "
-+		dev_info(&op->dev, "Mouse at MMIO 0x%llx (irq = %d) "
- 		       "is a %s\n",
--		       dev_name(&op->dev),
- 		       (unsigned long long) up[1].port.mapbase,
- 		       op->archdata.irqs[0], sunzilog_type(&up[1].port));
- 		kbm_inst++;
+@@ -34,8 +34,8 @@
+ #endif
+ #include <linux/init.h>
+ #include <linux/of_device.h>
++#include <linux/io.h>
+ 
+-#include <asm/io.h>
+ #include <asm/irq.h>
+ #include <asm/prom.h>
+ #include <asm/setup.h>
 -- 
 1.9.1
 

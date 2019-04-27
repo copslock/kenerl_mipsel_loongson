@@ -7,37 +7,37 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A714C43219
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 01:50:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 23F03C43218
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 01:55:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C76A0206BA
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 01:50:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E4734206E0
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 01:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1556329838;
-	bh=m8Uv4mu0G420dZMTfAaTAzt4QTqiurP9GomMjd4p7P8=;
+	s=default; t=1556330130;
+	bh=yLydhsBpfmEzTUr/+hOGnIw4nvHw3oyal+y1wotLDs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=DRirbzjd0X5ut5oMbC1sFr4YInB7j/yA6W93pRKA7zd/JsdvXNwkCFYdJ+9jEeQBL
-	 bV3uyZbXAmU3j+MR9Fy9LRmGVX/3eTXwhs86P623BeQeVd3+siKIYBMhrRuHkNtTSZ
-	 +HSR/kGQcAWrBUodcPckK314ltYqki4YcUbr2zPs=
+	b=UYCGcoN00FE3E0MlLWTl3v5VeX9OVC/DVGavlqIrNTsa9yglV5n8FimaVTgj+mTSY
+	 CMY24jQ/esCjx8di3zKUu6QJR/4Fus+tbzOHRv9mpmvuirBRLekSu1EDjJLPV1OG/m
+	 RNZDUzu/tqDSMmMsCYSecv7RwmAho5ZopWDBqcMo=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727670AbfD0BlZ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 26 Apr 2019 21:41:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45218 "EHLO mail.kernel.org"
+        id S1727578AbfD0BjT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 26 Apr 2019 21:39:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42318 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728264AbfD0BlY (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 26 Apr 2019 21:41:24 -0400
+        id S1727562AbfD0BjP (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 26 Apr 2019 21:39:15 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D692320C01;
-        Sat, 27 Apr 2019 01:41:22 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 84ACF2084F;
+        Sat, 27 Apr 2019 01:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1556329284;
-        bh=m8Uv4mu0G420dZMTfAaTAzt4QTqiurP9GomMjd4p7P8=;
+        s=default; t=1556329154;
+        bh=yLydhsBpfmEzTUr/+hOGnIw4nvHw3oyal+y1wotLDs4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UhsLBDh/sKUeel18zywKqX4u5pVsq0VQ4sG/oIW/6FMyt1x288ZP/9ZeKmDtPCTDv
-         uXHHtN8sf+M+B3pNFIHbEh/9mAq6esllkrMGM/WdlmD+lAbv55dtjUfi6lj8M8dVaI
-         xegMIY+z4ASTaGHtGBFdJ55JAmeqmnU4WWwysZfg=
+        b=Df36bUnTeA+gnSMgQvzurS74IgdmYx5j70Bo75lLtv18ajAYWe2f3KLI+6BPtb0y4
+         300h7KAHjPoSTwuNPZN409EBiU/PmRwXd+DvuzqixKnUWacKMgImeNnGbLTkZomGle
+         fBoLL8IfZwYrqukPUR+vtzd3uCTHOrSEBxXQZEcg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Chong Qiao <qiaochong@loongson.cn>,
@@ -47,12 +47,12 @@ Cc:     Chong Qiao <qiaochong@loongson.cn>,
         Will Deacon <will.deacon@arm.com>,
         Christophe Leroy <christophe.leroy@c-s.fr>,
         linux-mips@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 21/53] MIPS: KGDB: fix kgdb support for SMP platforms.
-Date:   Fri, 26 Apr 2019 21:40:18 -0400
-Message-Id: <20190427014051.7522-21-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.0 27/79] MIPS: KGDB: fix kgdb support for SMP platforms.
+Date:   Fri, 26 Apr 2019 21:37:46 -0400
+Message-Id: <20190427013838.6596-27-sashal@kernel.org>
 X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20190427014051.7522-1-sashal@kernel.org>
-References: <20190427014051.7522-1-sashal@kernel.org>
+In-Reply-To: <20190427013838.6596-1-sashal@kernel.org>
+References: <20190427013838.6596-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -89,7 +89,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/arch/mips/kernel/kgdb.c b/arch/mips/kernel/kgdb.c
-index eb6c0d582626..2c1e30ca7ee4 100644
+index 149100e1bc7c..90f37626100f 100644
 --- a/arch/mips/kernel/kgdb.c
 +++ b/arch/mips/kernel/kgdb.c
 @@ -33,6 +33,7 @@
@@ -100,7 +100,7 @@ index eb6c0d582626..2c1e30ca7ee4 100644
  
  static struct hard_trap_info {
  	unsigned char tt;	/* Trap type code for MIPS R3xxx and R4xxx */
-@@ -214,7 +215,7 @@ static void kgdb_call_nmi_hook(void *ignored)
+@@ -214,7 +215,7 @@ void kgdb_call_nmi_hook(void *ignored)
  	old_fs = get_fs();
  	set_fs(get_ds());
  

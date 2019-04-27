@@ -2,101 +2,99 @@ Return-Path: <SRS0=nL/W=S5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,USER_AGENT_MUTT autolearn=ham
+X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B0AD1C43218
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 13:32:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87397C43218
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 15:19:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 78DB4208CB
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 13:32:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1556371938;
-	bh=F/Ri3rbRNbdBS8CeJ3YkqZ5ALE9RaYzYV4i/TX+VbhY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=Jvp/qQfDHYRtwy/t7rN6ArXIrSzE24Rpq33pXaazFdeyM6jWe3u2sRTu9EyPbx9ee
-	 5vlFIzI4kcY/WWPjEnYSPwiqILpQygv526i1gASGP6SUBRE5DGrEzUaoI6zT0WU1ha
-	 rR+tAn/oUSrJuz4Dtoi/sai8uI60kCvuFfSeVKVU=
+	by mail.kernel.org (Postfix) with ESMTP id 56986206A3
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 15:19:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726071AbfD0NcS (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 27 Apr 2019 09:32:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36986 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725902AbfD0NcS (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sat, 27 Apr 2019 09:32:18 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E433F2087F;
-        Sat, 27 Apr 2019 13:32:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1556371937;
-        bh=F/Ri3rbRNbdBS8CeJ3YkqZ5ALE9RaYzYV4i/TX+VbhY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nexBWa1sKOnsIU/+eE/Arr0X7crav6ldqrhFgjM7W8ztYCtpv+iiTXftfvQTPlJG3
-         Z8PjosvAL9baHK8g4HVoOep4odQGPEL6uE1Db+W4FngO8Erm7fuwx70sU6Qt1CWHRh
-         QbmdhCLabzZBpyFVy53w/oRoRA4SbXzVCZ0vDS90=
-Date:   Sat, 27 Apr 2019 15:32:15 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
-Cc:     linux-kernel@vger.kernel.org, andrew@aj.id.au,
-        andriy.shevchenko@linux.intel.com, macro@linux-mips.org,
-        vz@mleia.com, slemieux.tyco@gmail.com, khilman@baylibre.com,
-        liviu.dudau@arm.com, sudeep.holla@arm.com,
-        lorenzo.pieralisi@arm.com, davem@davemloft.net, jacmet@sunsite.dk,
-        linux@prisktech.co.nz, matthias.bgg@gmail.com,
-        linux-mips@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH 10/41] drivers: tty: serial: sb1250-duart: fix missing
- parentheses
-Message-ID: <20190427133215.GD11368@kroah.com>
-References: <1556369542-13247-1-git-send-email-info@metux.net>
- <1556369542-13247-11-git-send-email-info@metux.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+        id S1727847AbfD0PTV (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 27 Apr 2019 11:19:21 -0400
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:34116 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727659AbfD0PPh (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 27 Apr 2019 11:15:37 -0400
+Received: from [192.168.4.242] (helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1hKP37-00014H-44; Sat, 27 Apr 2019 16:15:33 +0100
+Received: from ben by deadeye with local (Exim 4.92)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1hKP2j-0004TZ-Lw; Sat, 27 Apr 2019 16:15:09 +0100
+Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
-In-Reply-To: <1556369542-13247-11-git-send-email-info@metux.net>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+CC:     akpm@linux-foundation.org, Denis Kirjanov <kda@linux-powerpc.org>,
+        "Paul Burton" <paul.burton@mips.com>, linux-mips@vger.kernel.org,
+        "Aaro Koskinen" <aaro.koskinen@iki.fi>
+Date:   Sat, 27 Apr 2019 16:13:09 +0100
+Message-ID: <lsq.1556377989.524195039@decadent.org.uk>
+X-Mailer: LinuxStableQueue (scripts by bwh)
+X-Patchwork-Hint: ignore
+Subject: [PATCH 3.16 074/202] MIPS: OCTEON: don't set octeon_dma_bar_type
+ if PCI is disabled
+In-Reply-To: <lsq.1556377988.384060557@decadent.org.uk>
+X-SA-Exim-Connect-IP: 192.168.4.242
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Sat, Apr 27, 2019 at 02:51:51PM +0200, Enrico Weigelt, metux IT consult wrote:
-> Fix checkpatch warning:
-> 
->     ERROR: Macros with complex values should be enclosed in parentheses
->     #911: FILE: drivers/tty/serial/sb1250-duart.c:911:
->     +#define SERIAL_SB1250_DUART_CONSOLE	&sbd_console
-> 
-> Signed-off-by: Enrico Weigelt <info@metux.net>
-> ---
->  drivers/tty/serial/sb1250-duart.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/tty/serial/sb1250-duart.c b/drivers/tty/serial/sb1250-duart.c
-> index 1184226..ec74f09 100644
-> --- a/drivers/tty/serial/sb1250-duart.c
-> +++ b/drivers/tty/serial/sb1250-duart.c
-> @@ -908,7 +908,7 @@ static int __init sbd_serial_console_init(void)
->  
->  console_initcall(sbd_serial_console_init);
->  
-> -#define SERIAL_SB1250_DUART_CONSOLE	&sbd_console
-> +#define SERIAL_SB1250_DUART_CONSOLE	(&sbd_console)
+3.16.66-rc1 review patch.  If anyone has any objections, please let me know.
 
-No, that's foolish.
+------------------
 
-checkpatch is a hint, it's not always right.
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-Also, checkpatch cleanups for really old drivers is not generally a good
-idea, especially if you do not have the hardware for them.  Please don't
-cause unneeded churn for this type of thing in this subsystem, unless
-you have the hardware.
+commit dcf300a69ac307053dfb35c2e33972e754a98bce upstream.
 
-thanks,
+Don't set octeon_dma_bar_type if PCI is disabled. This avoids creation
+of the MSI irqchip later on, and saves a bit of memory.
 
-greg k-h
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Fixes: a214720cbf50 ("Disable MSI also when pcie-octeon.pcie_disable on")
+Cc: linux-mips@vger.kernel.org
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+---
+ arch/mips/pci/pci-octeon.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+--- a/arch/mips/pci/pci-octeon.c
++++ b/arch/mips/pci/pci-octeon.c
+@@ -575,6 +575,11 @@ static int __init octeon_pci_setup(void)
+ 	if (octeon_has_feature(OCTEON_FEATURE_PCIE))
+ 		return 0;
+ 
++	if (!octeon_is_pci_host()) {
++		pr_notice("Not in host mode, PCI Controller not initialized\n");
++		return 0;
++	}
++
+ 	/* Point pcibios_map_irq() to the PCI version of it */
+ 	octeon_pcibios_map_irq = octeon_pci_pcibios_map_irq;
+ 
+@@ -586,11 +591,6 @@ static int __init octeon_pci_setup(void)
+ 	else
+ 		octeon_dma_bar_type = OCTEON_DMA_BAR_TYPE_BIG;
+ 
+-	if (!octeon_is_pci_host()) {
+-		pr_notice("Not in host mode, PCI Controller not initialized\n");
+-		return 0;
+-	}
+-
+ 	/* PCI I/O and PCI MEM values */
+ 	set_io_port_base(OCTEON_PCI_IOSPACE_BASE);
+ 	ioport_resource.start = 0;
+

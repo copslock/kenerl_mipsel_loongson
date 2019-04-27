@@ -6,21 +6,21 @@ X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 43883C43219
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:55:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 74804C43219
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:55:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 1DDAC20C01
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:55:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4B48A20C01
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:55:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727454AbfD0Mzj (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 27 Apr 2019 08:55:39 -0400
-Received: from mout.kundenserver.de ([212.227.126.134]:43639 "EHLO
+        id S1726945AbfD0MxN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 27 Apr 2019 08:53:13 -0400
+Received: from mout.kundenserver.de ([212.227.126.135]:40281 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726906AbfD0MxN (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 27 Apr 2019 08:53:13 -0400
+        with ESMTP id S1726861AbfD0MxM (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 27 Apr 2019 08:53:12 -0400
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1Mspy4-1gVqbT38iO-00tCHb; Sat, 27 Apr 2019 14:52:51 +0200
+ 1Mdvyo-1gklM610Mw-00b6vt; Sat, 27 Apr 2019 14:52:48 +0200
 From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     gregkh@linuxfoundation.org, andrew@aj.id.au,
@@ -32,82 +32,98 @@ Cc:     gregkh@linuxfoundation.org, andrew@aj.id.au,
         linux-mips@vger.kernel.org, linux-serial@vger.kernel.org,
         linux-ia64@vger.kernel.org, linux-amlogic@lists.infradead.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
-Subject: [PATCH 21/41] drivers: tty: serial: cpm_uart: fix includes
-Date:   Sat, 27 Apr 2019 14:52:02 +0200
-Message-Id: <1556369542-13247-22-git-send-email-info@metux.net>
+Subject: [PATCH 17/41] drivers: tty: serial: apbuart: fix logging calls
+Date:   Sat, 27 Apr 2019 14:51:58 +0200
+Message-Id: <1556369542-13247-18-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:xQq23jU9i9rUL2fNQuvkwl6eGPDVSQvpkDbQ/zveful4zboC1HW
- oNd3D0zOYk84zfCJ0Xuzpmh6YQ79oPwoYvw/oeAO14yaLEcslLKcMENViWN+rlXtE9vM1qv
- 1jCwWuLOXgdLjw4fxAGT3BB8TcpKk2wNp9jWPWPgaYVVv0WEj/TEQ/U7sklnKXLuZSVuAgG
- ee5Mn3D1VCygJnSepJUyg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:xWgBbp/LG7s=:wi8MuLImVy2CGGeEYyoQB2
- KMmBNwIQx4fsztqkOwXtcxcWItI9eedJWvICvmKhOlHgaY8MtQ25FTCVmfHiYt3j9gS36aZaa
- q9Y5EIjEBd+qyl0GLPKh4hpFw2Y9xorJzSRbpppCWg9Lng+zZdTe/MiFG1F7kXNVSzq4lt2hL
- ezKmIOR+0ajJU88S0pj4Kvx7tgnm1+AxaE/XtB3sMY5Kc/X02sDkvp4m476q2eExmeEHf7yl3
- SS9ZDZappKf9esZiUUvzR4FWzO/lGAkyPEM5TbSsWcKPe4Hwz2W19UfQilH2TsF2+lwHqakd/
- 0zYcoNC9JBhT5LyMi+bJ4ixLs9s35MALlLW9l9uhuIfzTde5AJ+qVyxmXzjZs7+sgMLLy16T8
- wQ26qYtWIfsOeVfD03mLnlq295RwRXRcppjT2NdxNgQCjA8w3sUfILoNLj9Dn8itEgJAMtfl7
- V8Cx1WCsQKAgggypWMvmWuYLBZW9OCxv/vxSRFHvIZxRwPaRxNeKsu+/Fbb3nzWRANHyooXV/
- DsfRL+yilOXWQavlpzHDrWwcLFWzf4Q6C/lHFEf1NO221QjdJBnEIHiVYjdfQrgI7DXvLr6y0
- OOEW7gT7Kv/C1gTmxJIHJCzbWkK13YeuK27LFOraKAE3hMCkeL/cdQE0Eb+TGViA6xDeL5nsA
- 9JTsphma2cCsaVd+QVzhXQsK2WCBYwcJMcIA1O1vu+w/HuFJbyuBL4ArPqi6deE6sKSH4G7JK
- UZVfxUQPRjkUPT6CoClRC35MnUhRE+eqWHNnlA==
+X-Provags-ID: V03:K1:74q7QZbgRgRsAUkPp9HoIcby/AiA8t4Mu2TUa7cvirQmdem+3Am
+ 8EQGnLshuK8zT/JT/rXJ1jMsYvUFcIBhmVWtNocXE1OdQlrcN6zxnc0lOKUkbKlCtWRyBOs
+ SfDclKxIBbTDIEFobqRgxh4RYW3wCVdlAW+GkkAV2vRB5P9CXtzp+iTfXlW2e2cAPKtq+p3
+ x9rgoBVikwGuHrHXLrrgQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:eYy4U1g0WLc=:NNFGO3HSiL3iJ9KcFjVqxr
+ L5C8Q9zl9SvmSbmk/WXj0EtqOWebYE+T7FuU8NbONX8KrKJZIyetKuuIZvT8JMDBFYYByMJZS
+ ZsFYAvVpW3OFJvRwTYlig7Z7pR26iD35iZ9qIWBGrEIbU0eFvBZQ71UaNgyABlpQP25ws5FXx
+ zrLsNqdWLdTYHD+VbjQ2gcBFD+6RdC1lVS7GjBn6O6RXVwO/iyuYzHrqd5SEOWYe1mDV/xpcT
+ firFlNyM/Y3UYi3z9yFwOZm/mLwOjrKLozqyAUIs5Ee1Dmld6FQR8HBR0gglIETNeESeoBwlk
+ j+oqvl9LqtcoRzBeZIaDULJqLJ4PYBQl+ouSd6ruS0W1erDls6LCPPf+9fmou3wGiubPjT5zT
+ ZbgpAa+a1FPjCO83yXjVKgwftQDqhNYdtBRkumaxJv167CNq/8HacT+etLB6xjbv0OqTHED+j
+ UvHg77KbgPh+lW5z+3aUS+YSda3oF0cX02uC6pzmIguLQ6peLHzvjrLLNo+veCHi5xqdsuTc3
+ 1tIcr/FtqrUmGyJUAz09ZrsHVYJ13qXd7jVIIkZlpH+9sVbqBaFk0ImoQJTKOflNY7Mfb14LT
+ WYOkAkc2qSUAf3D4KAVdI2JRi0lez/a/5/g0MNrh/HEtZiDvSBJaDosnHksn31H+JuOZRTpBV
+ XhT4gdKHIwiv+Itmb2O00YCnnIBT4FoF90IGJGwKRMu7AvSI5rBVKeCNSHQbXqFGnfcMvGqVG
+ qH3e6Ibc4dkf9y2PyMnfIib4diOFSWqdZxE4aQ==
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Fixing checkpatch warning:
+Fix checkpatch warnings:
 
-    WARNING: Use #include <linux/io.h> instead of <asm/io.h>
-    #25: FILE: drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c:25:
-    +#include <asm/io.h>
+    WARNING: Prefer using '"%s...", __func__' to using 'apbuart_console_setup', this function's name, in a string
+    #491: FILE: drivers/tty/serial/apbuart.c:491:
+    +	pr_debug("apbuart_console_setup co=%p, co->index=%i, options=%s\n",
 
-    WARNING: Use #include <linux/io.h> instead of <asm/io.h>
-    +#include <asm/io.h>
+    WARNING: Prefer [subsystem eg: netdev]_info([subsystem]dev, ... then dev_info(dev, ... then pr_info(...  to printk(KERN_INFO ...
+    #661: FILE: drivers/tty/serial/apbuart.c:661:
+    +	printk(KERN_INFO "Serial: GRLIB APBUART driver\n");
 
-    WARNING: Use #include <linux/delay.h> instead of <asm/delay.h>
-    +#include <asm/delay.h>
+    WARNING: Prefer [subsystem eg: netdev]_err([subsystem]dev, ... then dev_err(dev, ... then pr_err(...  to printk(KERN_ERR ...
+    #666: FILE: drivers/tty/serial/apbuart.c:666:
+    +		printk(KERN_ERR "%s: uart_register_driver failed (%i)\n",
+
+    WARNING: Prefer [subsystem eg: netdev]_err([subsystem]dev, ... then dev_err(dev, ... then pr_err(...  to printk(KERN_ERR ...
+    #673: FILE: drivers/tty/serial/apbuart.c:673:
+    +		printk(KERN_ERR
 
 Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
- drivers/tty/serial/cpm_uart/cpm_uart_core.c | 4 ++--
- drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/tty/serial/apbuart.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_core.c b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-index 374b8bb..c831d31 100644
---- a/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-+++ b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-@@ -33,10 +33,10 @@
- #include <linux/gpio.h>
- #include <linux/of_gpio.h>
- #include <linux/clk.h>
-+#include <linux/io.h>
-+#include <linux/delay.h>
+diff --git a/drivers/tty/serial/apbuart.c b/drivers/tty/serial/apbuart.c
+index 60cd133..d2b86f7 100644
+--- a/drivers/tty/serial/apbuart.c
++++ b/drivers/tty/serial/apbuart.c
+@@ -482,8 +482,8 @@ static int __init apbuart_console_setup(struct console *co, char *options)
+ 	int parity = 'n';
+ 	int flow = 'n';
  
--#include <asm/io.h>
- #include <asm/irq.h>
--#include <asm/delay.h>
- #include <asm/fs_pd.h>
- #include <asm/udbg.h>
+-	pr_debug("apbuart_console_setup co=%p, co->index=%i, options=%s\n",
+-		 co, co->index, options);
++	pr_debug("%s() co=%p, co->index=%i, options=%s\n",
++		 __func__, co, co->index, options);
  
-diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c b/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
-index ef1ae08..40cfcf4 100644
---- a/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
-+++ b/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
-@@ -21,8 +21,8 @@
- #include <linux/device.h>
- #include <linux/memblock.h>
- #include <linux/dma-mapping.h>
-+#include <linux/io.h>
+ 	/*
+ 	 * Check whether an invalid uart number has been specified, and
+@@ -650,21 +650,20 @@ static int __init grlib_apbuart_init(void)
+ 	if (ret)
+ 		return ret;
  
--#include <asm/io.h>
- #include <asm/irq.h>
- #include <asm/fs_pd.h>
- #include <asm/prom.h>
+-	printk(KERN_INFO "Serial: GRLIB APBUART driver\n");
++	pr_info("Serial: GRLIB APBUART driver\n");
+ 
+ 	ret = uart_register_driver(&grlib_apbuart_driver);
+ 
+ 	if (ret) {
+-		printk(KERN_ERR "%s: uart_register_driver failed (%i)\n",
+-		       __FILE__, ret);
++		pr_err("%s: uart_register_driver failed (%i)\n",
++		       __func__, ret);
+ 		return ret;
+ 	}
+ 
+ 	ret = platform_driver_register(&grlib_apbuart_of_driver);
+ 	if (ret) {
+-		printk(KERN_ERR
+-		       "%s: platform_driver_register failed (%i)\n",
+-		       __FILE__, ret);
++		pr_err("%s: platform_driver_register failed (%i)\n",
++		       __func__, ret);
+ 		uart_unregister_driver(&grlib_apbuart_driver);
+ 		return ret;
+ 	}
 -- 
 1.9.1
 

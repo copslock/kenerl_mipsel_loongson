@@ -4,39 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06FFAC43219
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 01:48:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A714C43219
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 01:50:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C251C20873
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 01:48:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C76A0206BA
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 01:50:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1556329683;
+	s=default; t=1556329838;
 	bh=m8Uv4mu0G420dZMTfAaTAzt4QTqiurP9GomMjd4p7P8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=GtzF2o7vEGirdaCnKrzwNL4bjZQvEIrDdzArH/AR7n3s0S7b98MwIa7g5efbNBbui
-	 Zy79Nt2Q6bNca1L4eti9Gpxa+uW7CT36xQn4y/hmwp4v4r4W42KRL3IwUYHHkkQA1i
-	 KlnKD8Ej/f5IHjNVDt9KqDVG2sEvUUcGxHnz3EVk=
+	b=DRirbzjd0X5ut5oMbC1sFr4YInB7j/yA6W93pRKA7zd/JsdvXNwkCFYdJ+9jEeQBL
+	 bV3uyZbXAmU3j+MR9Fy9LRmGVX/3eTXwhs86P623BeQeVd3+siKIYBMhrRuHkNtTSZ
+	 +HSR/kGQcAWrBUodcPckK314ltYqki4YcUbr2zPs=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728612AbfD0Bmn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 26 Apr 2019 21:42:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46826 "EHLO mail.kernel.org"
+        id S1727670AbfD0BlZ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 26 Apr 2019 21:41:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45218 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727674AbfD0Bmm (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 26 Apr 2019 21:42:42 -0400
+        id S1728264AbfD0BlY (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 26 Apr 2019 21:41:24 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1C7BC20675;
-        Sat, 27 Apr 2019 01:42:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D692320C01;
+        Sat, 27 Apr 2019 01:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1556329362;
+        s=default; t=1556329284;
         bh=m8Uv4mu0G420dZMTfAaTAzt4QTqiurP9GomMjd4p7P8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hWROIURlp+tsxaUfEC9Mo8goW3hJ8db/zR7uH3DhJxgi4Wy3yK8YVgeGeyE5MHl1J
-         lNiWcfw8aObWT/bI3xG2+t5tmaYINZHktIKj/4nuLq1atfIEG0ZJlEYmEb1cJWleAK
-         Nk6WxD61KfXP+MkESuFAyQYEW9DQ4Byv84YSeXZs=
+        b=UhsLBDh/sKUeel18zywKqX4u5pVsq0VQ4sG/oIW/6FMyt1x288ZP/9ZeKmDtPCTDv
+         uXHHtN8sf+M+B3pNFIHbEh/9mAq6esllkrMGM/WdlmD+lAbv55dtjUfi6lj8M8dVaI
+         xegMIY+z4ASTaGHtGBFdJ55JAmeqmnU4WWwysZfg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Chong Qiao <qiaochong@loongson.cn>,
@@ -46,12 +47,12 @@ Cc:     Chong Qiao <qiaochong@loongson.cn>,
         Will Deacon <will.deacon@arm.com>,
         Christophe Leroy <christophe.leroy@c-s.fr>,
         linux-mips@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 10/32] MIPS: KGDB: fix kgdb support for SMP platforms.
-Date:   Fri, 26 Apr 2019 21:42:01 -0400
-Message-Id: <20190427014224.8274-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 21/53] MIPS: KGDB: fix kgdb support for SMP platforms.
+Date:   Fri, 26 Apr 2019 21:40:18 -0400
+Message-Id: <20190427014051.7522-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20190427014224.8274-1-sashal@kernel.org>
-References: <20190427014224.8274-1-sashal@kernel.org>
+In-Reply-To: <20190427014051.7522-1-sashal@kernel.org>
+References: <20190427014051.7522-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore

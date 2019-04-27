@@ -6,21 +6,21 @@ X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 040F6C43219
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:53:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF452C43219
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:53:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D3FEE2087C
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:53:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8DC6F208C2
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:53:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726644AbfD0MxI (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 27 Apr 2019 08:53:08 -0400
-Received: from mout.kundenserver.de ([212.227.126.134]:38839 "EHLO
+        id S1727226AbfD0MxY (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 27 Apr 2019 08:53:24 -0400
+Received: from mout.kundenserver.de ([212.227.126.130]:52931 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726486AbfD0MxH (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 27 Apr 2019 08:53:07 -0400
+        with ESMTP id S1727177AbfD0MxX (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 27 Apr 2019 08:53:23 -0400
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1N8XHV-1gh8Cp1oHJ-014PTe; Sat, 27 Apr 2019 14:52:34 +0200
+ 1N5G1V-1gbeYR2mc1-0118EA; Sat, 27 Apr 2019 14:52:58 +0200
 From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     gregkh@linuxfoundation.org, andrew@aj.id.au,
@@ -32,74 +32,81 @@ Cc:     gregkh@linuxfoundation.org, andrew@aj.id.au,
         linux-mips@vger.kernel.org, linux-serial@vger.kernel.org,
         linux-ia64@vger.kernel.org, linux-amlogic@lists.infradead.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
-Subject: [PATCH 01/41] drivers: tty: serial: dz: use dev_err() instead of printk()
-Date:   Sat, 27 Apr 2019 14:51:42 +0200
-Message-Id: <1556369542-13247-2-git-send-email-info@metux.net>
+Subject: [PATCH 29/41] drivers: tty: serial: sunzilog: cleanup logging
+Date:   Sat, 27 Apr 2019 14:52:10 +0200
+Message-Id: <1556369542-13247-30-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:ZsvBvAt/rLDu1xNT1sLalxIcX9jz7QA0qevymQS/WxRCH2zr6Wl
- xgtlPQz+G8tT6HFrUdOePnL/g6Nz/IIjRENpXyf+TYdtSi3HrsJGdjKV+IdrLIpqWKUpGIr
- dGZH3/KAvVSKXLhp+eDtJ5SZp4iM/k7bWZWc3G+D3RpE/VH31kx+tVU+u8Iwg2ZCwcrt7Md
- VmQRsAPpOo0raWOEg8/zQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:j2N/FCIfxd4=:bTewDVrnVLOaptDPWAeuYB
- qRyMUvP7ZPhCmHnVLyv7ju+39CHpoR56I6eeSo+QPHPGCZx3Dqb1I60yuGCld7+3VbN8mYQwM
- 2ZbCjusuSxTA2+bf+ln2gKOriFRvIYv03fZTu+YI/5yLbx6CSI9l+bTwHEvU0H3ta1wkb3w1G
- M+LRWzsJhzU1D+iabrBiJqQulwdI3SOWT2P39DSrBTgj2TeG0p6nM0OK9s4d0AagkEnaTtFDS
- GvIWfSoCbR2/5PkucHigRUl586888kNEamyG3pD+K1ZnRZUvnQt/2bPJMzgLfbBVnFR2n0rOH
- DsIz1uuQuxZ7xJAdCE1i2GlN5DwfyIfqrtAA5c9XnIO0mqFGZSvMUtg1KOyuRQsHPdH2C4Nkh
- 8yh/9sHWREWoAj6h1c/8kcQJwWpF/j89Q7lN01agcyFr3XDqClCzOiVbL/cuH2l5+wBbKl4nd
- gSsSwspQkSoDZm31+uFKkJY6eYFb8qq5u5vRxi5/XyLnlD6Y22WLY90exJLjhzbZ1RBv3msRT
- j5X6PznC/2y4lrGdO5AgaDwAv8zPI5drxxuPiWfijNEnfgb8HX+g/xkSO/S8J4vLbq4psstD7
- q9QxcVenJmTkCoZUZ8DCf0pUWm4fjCG/QmMLXdJHruAEAQLXD/UUAuMqcTlPi/svDYKKsH8aC
- NgqmkYONc/sKFoFcNypfgkXrsyaRmZhIleuG7ABCNJPmKzGwbidMFStX+km4vIUZ/Cnup6GQS
- oGpzEdn60+VNwCX/u7Jnm8SJFhRmTuBbIh4ULA==
+X-Provags-ID: V03:K1:uxxvCa66CYSGi3Em4nuMPvtSzL45VE6ce5qM7EP5uZ2jwnJH/Rf
+ VzWdbFvPirBwCJNu9f+Jwyc9lVwLpUGhejFkC7ldZJdxwR7DA2BRn+Vl0BQckBceQIF7qXC
+ WyxgtztRffigF7v1SzndzvbVeMKNS2DbGfpYfH4EV+kNq293CGWXupsg6VWK6tqIR7aTFMf
+ +tRlOKQpyia0QglzkJKNA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:y11A1qYqUqI=:8rPS9vSRvAXoCM5mb5BhuI
+ WjE5yIVWUmfvDmA/AQ4ypZ+srkteIQs198t/oJOqUwZx5Rp3SPAGlO++llU7eG0RNjUsALBZq
+ ZUvb6zw3f9sYxfEGhrGcIODhWtEO5jSQT4jIVhGurbVttXmC6195bA40SA690OEhhnFI/qCEi
+ WSwQCTE70G9mH5ZlezP2NFueEhbG7kWFhxlgd96LRp1M9Nb1RFDllOpLiSlWwuEgrwYc/txEZ
+ Jz5ZQj7Ur9cWxizBCpYX6lQ8MA/6iwg/+OwOBQFBaO9/oRTiS2RJak0h4ldhbLbwq2zihGidG
+ 1rGx2U2IrRbLZ4JMDQtJAaneQYfRx5ecqZDD3UkLCP4Ei05fNui5iI8OpZLsbkAWQMiKsryvO
+ 2kCFC0VRHePJTFZPqt9Ik9I0+gIoWPxwpdB8LfjEbEvj6k6/XPYQgonaBdL12TN97JkTvX7X2
+ zPhIz62y5IwAPzLzViaQBeYU5gJWmkOIO+mcjozxcMghEPjcS0OHpgnDA8TYNsChOcClWQN5U
+ ZTY0rQijbKo7+Fr6crZw1sEjpHfTqC53E74pOXaRvnpUsI/uBenbneEDtTlLAdpaHpm6wTBvF
+ WLYWF5qQwW7fPx/YeqvLiajUl4U2/pvABrvxsQRwW6Zi/tOfEaKerfDWvrHkfNX97OpQ9rjqO
+ aqTj8y5/k3NSG39yLJhNMUwbIOnBHg3Ua0eJn7jjxkxpYM82/aUzhOuEWTDJOxHkTsenB2gj8
+ mCkokTH7YsmuOy7tzDvemUKChz641N4UkAKV+w==
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Using dev_err() instead of printk() for more consistent output.
-(prints device name, etc).
+Fix checkpatch warning:
+
+    WARNING: Prefer [subsystem eg: netdev]_info([subsystem]dev, ... then dev_info(dev, ... then pr_info(...  to printk(KERN_INFO ...
+    #1238: FILE: drivers/tty/serial/sunzilog.c:1238:
+    +	printk(KERN_INFO "Console: ttyS%d (SunZilog zs%d)\n",
 
 Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
- drivers/tty/serial/dz.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/tty/serial/sunzilog.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/tty/serial/dz.c b/drivers/tty/serial/dz.c
-index 7b57e84..96e35af 100644
---- a/drivers/tty/serial/dz.c
-+++ b/drivers/tty/serial/dz.c
-@@ -416,7 +416,7 @@ static int dz_startup(struct uart_port *uport)
- 			  IRQF_SHARED, "dz", mux);
- 	if (ret) {
- 		atomic_add(-1, &mux->irq_guard);
--		printk(KERN_ERR "dz: Cannot get IRQ %d!\n", dport->port.irq);
-+		dev_err(uport->dev, "Cannot get IRQ %d!\n", dport->port.irq);
- 		return ret;
- 	}
+diff --git a/drivers/tty/serial/sunzilog.c b/drivers/tty/serial/sunzilog.c
+index 85edb0d..dba723c 100644
+--- a/drivers/tty/serial/sunzilog.c
++++ b/drivers/tty/serial/sunzilog.c
+@@ -1235,7 +1235,7 @@ static int __init sunzilog_console_setup(struct console *con, char *options)
+ 	if (up->port.type != PORT_SUNZILOG)
+ 		return -1;
  
-@@ -680,7 +680,7 @@ static int dz_map_port(struct uart_port *uport)
- 		uport->membase = ioremap_nocache(uport->mapbase,
- 						 dec_kn_slot_size);
- 	if (!uport->membase) {
--		printk(KERN_ERR "dz: Cannot map MMIO\n");
-+		dev_err(uport->dev, "Cannot map MMIO\n");
- 		return -ENOMEM;
- 	}
- 	return 0;
-@@ -697,8 +697,8 @@ static int dz_request_port(struct uart_port *uport)
- 		if (!request_mem_region(uport->mapbase, dec_kn_slot_size,
- 					"dz")) {
- 			atomic_add(-1, &mux->map_guard);
--			printk(KERN_ERR
--			       "dz: Unable to reserve MMIO resource\n");
-+			dev_err(uport->dev,
-+				"Unable to reserve MMIO resource\n");
- 			return -EBUSY;
- 		}
- 	}
+-	printk(KERN_INFO "Console: ttyS%d (SunZilog zs%d)\n",
++	pr_info("Console: ttyS%d (SunZilog zs%d)\n",
+ 	       (sunzilog_reg.minor - 64) + con->index, con->index);
+ 
+ 	/* Get firmware console settings.  */
+@@ -1615,9 +1615,8 @@ static int __init sunzilog_init(void)
+ 		while (up) {
+ 			struct zilog_channel __iomem *channel;
+ 
+-			/* printk(KERN_INFO
+-			 *        "Enable IRQ for ZILOG Hardware %p\n",
+-			 *        up);
++			/* pr_info("Enable IRQ for ZILOG Hardware %p\n",
++			 *         up);
+ 			 */
+ 			channel          = ZILOG_CHANNEL_FROM_PORT(&up->port);
+ 			up->flags       |= SUNZILOG_FLAG_ISR_HANDLER;
+@@ -1655,9 +1654,8 @@ static void __exit sunzilog_exit(void)
+ 		while (up) {
+ 			struct zilog_channel __iomem *channel;
+ 
+-			/* printk(KERN_INFO
+-			 *        "Disable IRQ for ZILOG Hardware %p\n",
+-			 *        up);
++			/* pr_info("Disable IRQ for ZILOG Hardware %p\n",
++			 *         up);
+ 			 */
+ 			channel          = ZILOG_CHANNEL_FROM_PORT(&up->port);
+ 			up->flags       &= ~SUNZILOG_FLAG_ISR_HANDLER;
 -- 
 1.9.1
 

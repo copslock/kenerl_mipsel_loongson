@@ -2,113 +2,104 @@ Return-Path: <SRS0=nL/W=S5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 23F03C43218
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 01:55:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 040F6C43219
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:53:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E4734206E0
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 01:55:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1556330130;
-	bh=yLydhsBpfmEzTUr/+hOGnIw4nvHw3oyal+y1wotLDs4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=UYCGcoN00FE3E0MlLWTl3v5VeX9OVC/DVGavlqIrNTsa9yglV5n8FimaVTgj+mTSY
-	 CMY24jQ/esCjx8di3zKUu6QJR/4Fus+tbzOHRv9mpmvuirBRLekSu1EDjJLPV1OG/m
-	 RNZDUzu/tqDSMmMsCYSecv7RwmAho5ZopWDBqcMo=
+	by mail.kernel.org (Postfix) with ESMTP id D3FEE2087C
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:53:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727578AbfD0BjT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 26 Apr 2019 21:39:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42318 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727562AbfD0BjP (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 26 Apr 2019 21:39:15 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 84ACF2084F;
-        Sat, 27 Apr 2019 01:39:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1556329154;
-        bh=yLydhsBpfmEzTUr/+hOGnIw4nvHw3oyal+y1wotLDs4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Df36bUnTeA+gnSMgQvzurS74IgdmYx5j70Bo75lLtv18ajAYWe2f3KLI+6BPtb0y4
-         300h7KAHjPoSTwuNPZN409EBiU/PmRwXd+DvuzqixKnUWacKMgImeNnGbLTkZomGle
-         fBoLL8IfZwYrqukPUR+vtzd3uCTHOrSEBxXQZEcg=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Chong Qiao <qiaochong@loongson.cn>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Will Deacon <will.deacon@arm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        linux-mips@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.0 27/79] MIPS: KGDB: fix kgdb support for SMP platforms.
-Date:   Fri, 26 Apr 2019 21:37:46 -0400
-Message-Id: <20190427013838.6596-27-sashal@kernel.org>
-X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20190427013838.6596-1-sashal@kernel.org>
-References: <20190427013838.6596-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+        id S1726644AbfD0MxI (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 27 Apr 2019 08:53:08 -0400
+Received: from mout.kundenserver.de ([212.227.126.134]:38839 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726486AbfD0MxH (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 27 Apr 2019 08:53:07 -0400
+Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
+ (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1N8XHV-1gh8Cp1oHJ-014PTe; Sat, 27 Apr 2019 14:52:34 +0200
+From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
+To:     linux-kernel@vger.kernel.org
+Cc:     gregkh@linuxfoundation.org, andrew@aj.id.au,
+        andriy.shevchenko@linux.intel.com, macro@linux-mips.org,
+        vz@mleia.com, slemieux.tyco@gmail.com, khilman@baylibre.com,
+        liviu.dudau@arm.com, sudeep.holla@arm.com,
+        lorenzo.pieralisi@arm.com, davem@davemloft.net, jacmet@sunsite.dk,
+        linux@prisktech.co.nz, matthias.bgg@gmail.com,
+        linux-mips@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
+Subject: [PATCH 01/41] drivers: tty: serial: dz: use dev_err() instead of printk()
+Date:   Sat, 27 Apr 2019 14:51:42 +0200
+Message-Id: <1556369542-13247-2-git-send-email-info@metux.net>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
+References: <1556369542-13247-1-git-send-email-info@metux.net>
+X-Provags-ID: V03:K1:ZsvBvAt/rLDu1xNT1sLalxIcX9jz7QA0qevymQS/WxRCH2zr6Wl
+ xgtlPQz+G8tT6HFrUdOePnL/g6Nz/IIjRENpXyf+TYdtSi3HrsJGdjKV+IdrLIpqWKUpGIr
+ dGZH3/KAvVSKXLhp+eDtJ5SZp4iM/k7bWZWc3G+D3RpE/VH31kx+tVU+u8Iwg2ZCwcrt7Md
+ VmQRsAPpOo0raWOEg8/zQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:j2N/FCIfxd4=:bTewDVrnVLOaptDPWAeuYB
+ qRyMUvP7ZPhCmHnVLyv7ju+39CHpoR56I6eeSo+QPHPGCZx3Dqb1I60yuGCld7+3VbN8mYQwM
+ 2ZbCjusuSxTA2+bf+ln2gKOriFRvIYv03fZTu+YI/5yLbx6CSI9l+bTwHEvU0H3ta1wkb3w1G
+ M+LRWzsJhzU1D+iabrBiJqQulwdI3SOWT2P39DSrBTgj2TeG0p6nM0OK9s4d0AagkEnaTtFDS
+ GvIWfSoCbR2/5PkucHigRUl586888kNEamyG3pD+K1ZnRZUvnQt/2bPJMzgLfbBVnFR2n0rOH
+ DsIz1uuQuxZ7xJAdCE1i2GlN5DwfyIfqrtAA5c9XnIO0mqFGZSvMUtg1KOyuRQsHPdH2C4Nkh
+ 8yh/9sHWREWoAj6h1c/8kcQJwWpF/j89Q7lN01agcyFr3XDqClCzOiVbL/cuH2l5+wBbKl4nd
+ gSsSwspQkSoDZm31+uFKkJY6eYFb8qq5u5vRxi5/XyLnlD6Y22WLY90exJLjhzbZ1RBv3msRT
+ j5X6PznC/2y4lrGdO5AgaDwAv8zPI5drxxuPiWfijNEnfgb8HX+g/xkSO/S8J4vLbq4psstD7
+ q9QxcVenJmTkCoZUZ8DCf0pUWm4fjCG/QmMLXdJHruAEAQLXD/UUAuMqcTlPi/svDYKKsH8aC
+ NgqmkYONc/sKFoFcNypfgkXrsyaRmZhIleuG7ABCNJPmKzGwbidMFStX+km4vIUZ/Cnup6GQS
+ oGpzEdn60+VNwCX/u7Jnm8SJFhRmTuBbIh4ULA==
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Chong Qiao <qiaochong@loongson.cn>
+Using dev_err() instead of printk() for more consistent output.
+(prints device name, etc).
 
-[ Upstream commit ab8a6d821179ab9bea1a9179f535ccba6330c1ed ]
-
-KGDB_call_nmi_hook is called by other cpu through smp call.
-MIPS smp call is processed in ipi irq handler and regs is saved in
- handle_int.
-So kgdb_call_nmi_hook get regs by get_irq_regs and regs will be passed
- to kgdb_cpu_enter.
-
-Signed-off-by: Chong Qiao <qiaochong@loongson.cn>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Will Deacon <will.deacon@arm.com>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: linux-mips@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: QiaoChong <qiaochong@loongson.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
- arch/mips/kernel/kgdb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tty/serial/dz.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/kernel/kgdb.c b/arch/mips/kernel/kgdb.c
-index 149100e1bc7c..90f37626100f 100644
---- a/arch/mips/kernel/kgdb.c
-+++ b/arch/mips/kernel/kgdb.c
-@@ -33,6 +33,7 @@
- #include <asm/processor.h>
- #include <asm/sigcontext.h>
- #include <linux/uaccess.h>
-+#include <asm/irq_regs.h>
+diff --git a/drivers/tty/serial/dz.c b/drivers/tty/serial/dz.c
+index 7b57e84..96e35af 100644
+--- a/drivers/tty/serial/dz.c
++++ b/drivers/tty/serial/dz.c
+@@ -416,7 +416,7 @@ static int dz_startup(struct uart_port *uport)
+ 			  IRQF_SHARED, "dz", mux);
+ 	if (ret) {
+ 		atomic_add(-1, &mux->irq_guard);
+-		printk(KERN_ERR "dz: Cannot get IRQ %d!\n", dport->port.irq);
++		dev_err(uport->dev, "Cannot get IRQ %d!\n", dport->port.irq);
+ 		return ret;
+ 	}
  
- static struct hard_trap_info {
- 	unsigned char tt;	/* Trap type code for MIPS R3xxx and R4xxx */
-@@ -214,7 +215,7 @@ void kgdb_call_nmi_hook(void *ignored)
- 	old_fs = get_fs();
- 	set_fs(get_ds());
- 
--	kgdb_nmicallback(raw_smp_processor_id(), NULL);
-+	kgdb_nmicallback(raw_smp_processor_id(), get_irq_regs());
- 
- 	set_fs(old_fs);
- }
+@@ -680,7 +680,7 @@ static int dz_map_port(struct uart_port *uport)
+ 		uport->membase = ioremap_nocache(uport->mapbase,
+ 						 dec_kn_slot_size);
+ 	if (!uport->membase) {
+-		printk(KERN_ERR "dz: Cannot map MMIO\n");
++		dev_err(uport->dev, "Cannot map MMIO\n");
+ 		return -ENOMEM;
+ 	}
+ 	return 0;
+@@ -697,8 +697,8 @@ static int dz_request_port(struct uart_port *uport)
+ 		if (!request_mem_region(uport->mapbase, dec_kn_slot_size,
+ 					"dz")) {
+ 			atomic_add(-1, &mux->map_guard);
+-			printk(KERN_ERR
+-			       "dz: Unable to reserve MMIO resource\n");
++			dev_err(uport->dev,
++				"Unable to reserve MMIO resource\n");
+ 			return -EBUSY;
+ 		}
+ 	}
 -- 
-2.19.1
+1.9.1
 

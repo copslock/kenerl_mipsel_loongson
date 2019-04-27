@@ -2,25 +2,25 @@ Return-Path: <SRS0=nL/W=S5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 93354C43219
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:55:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FC10C43218
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:55:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6D0C82087C
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:55:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 287AA208C2
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:55:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727071AbfD0MxR (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 27 Apr 2019 08:53:17 -0400
-Received: from mout.kundenserver.de ([212.227.126.130]:37453 "EHLO
+        id S1726004AbfD0MzZ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 27 Apr 2019 08:55:25 -0400
+Received: from mout.kundenserver.de ([212.227.126.135]:48977 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726958AbfD0MxP (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 27 Apr 2019 08:53:15 -0400
+        with ESMTP id S1727002AbfD0MxR (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 27 Apr 2019 08:53:17 -0400
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1M2OEw-1hM22x2IWM-003z2b; Sat, 27 Apr 2019 14:52:33 +0200
+ 1MPooN-1h7uVt3Uzj-00MrCK; Sat, 27 Apr 2019 14:52:51 +0200
 From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     gregkh@linuxfoundation.org, andrew@aj.id.au,
@@ -32,56 +32,86 @@ Cc:     gregkh@linuxfoundation.org, andrew@aj.id.au,
         linux-mips@vger.kernel.org, linux-serial@vger.kernel.org,
         linux-ia64@vger.kernel.org, linux-amlogic@lists.infradead.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
-Subject: serial drivers polishing
-Date:   Sat, 27 Apr 2019 14:51:41 +0200
-Message-Id: <1556369542-13247-1-git-send-email-info@metux.net>
+Subject: [PATCH 20/41] drivers: tty: serial: cpm_uart: use dev_err()/dev_warn() instead of printk()
+Date:   Sat, 27 Apr 2019 14:52:01 +0200
+Message-Id: <1556369542-13247-21-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
-X-Provags-ID: V03:K1:KJDamy/sLPxVA6+e/xJ3QUvJO2vZRQRZ7H0KMjcX3Xau2yWekpn
- NpGyWcv0BdxhaW7aX7/vr2xwwxMEX+6774NoAKSIMs3MmeEZ+xYywOxnE2TTovvdXTrh2yJ
- RNeD0ze+njam53jHsvoBAF38TFF8FCMFOboXlpNsaf5RaLhhCCBqtkthfNYpeDWcM41q4C0
- CVkuapPP3KK3JkmPsaT5g==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:UgSrRnCWrUY=:7fJ0rhQipVcqjbOMouuuLX
- HpGMJ1r9jBZF63ISf/g4eJR7MR4pim7nBhig4Jl6mL9rhhjlxhwR2qh1N4i4VbbUFcAAJS4Ir
- 3ehiLQX6cqWnF50zJ7z21t0eDxTtPggAbzQRa+2t5Cjiod8h5Wb5R4iORC6PmyUH6vKKXXUM+
- R9rHMmPwJ7xow24gQslekOboEkjLcPhRKBzHll9gB05PrKyGQOO6IpPuj6JsGixD3/SV3rmAI
- WRreW0Q86/xSc9xzAZ/s0Tg16UGmFtYYzADiDOPYcz3bsuoRYHOUzjkSUBY7pks4GDFdjYMMY
- J/JvztrHNATKtF+xcSdHOfYpteSdbEr/adF2EdyGRbxXQKt/TrGXW7mmq08GeH8Pf+Ddxxi57
- gX4f5PaLFHVVAJwJNkdrPkVeh2oB4ZHHOgB7VwynKoG66tYGIwGyrt4JIE1NQxJ6/CCNQokSN
- tV88raPuIGD29SSpSBLoPwxN2NaH59lI0OHOA+RLEySArhq2aDwIEO1siM+Ym55O0C23LpHF/
- hhfoTRUvhYjfKChKVcwQzaBKOc6JX3KasD/lLqJOlFd4rOiG+bk5N2aqTqu9WhMZGPdByTTNn
- dZijwtgoeZ/ESNSagGa5Wp6TuGjsZnfKLyqzZ9EJkEAL0lFMwoIHRDBYlKB3pdj5Z6vK9cpbZ
- wU/2h8/Ce7j4rFZJwmpQfbVxZ6ipvpbPepnAyc6fl580YIKcwbDd50N+z74IAAonMBK2/PlY6
- SM9MoLwOFEsiV5jP9jDXm+Fk2osf8+pzyh1JcQ==
+In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
+References: <1556369542-13247-1-git-send-email-info@metux.net>
+X-Provags-ID: V03:K1:gPxg0pvaNEeq5x+UwAsDbHdgypnsGOsK9o3j3foMhaID5KFRvEv
+ 8AvtdT3OHQsnwoPSUVUVgaG7uGVOSNulOF2BUp5euWPO4xOffryfhmOQh75bfkqTrattPsp
+ QFI8+vQMDSRQJ10o81AgQsbvofwXHCA01N/KdcAMGoHFdvQFXnI8JYKNCiQeBe0EpQIxX+K
+ rRBN+WvzZqwD0ZWGZ/IRQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:2ju8YRhuhXY=:onNlvZ0aDrqH1/5VH3xxRk
+ 97sCatc+DPnq24Zb7ZJM6qAh6b3iT6iWeaqZSLN5g857Y4q/gZkpStxTSY0y7/0vVZ2W2K8eN
+ hrg8KTsBqdMCfc4qz0COMhhaiMomIx6Ezqf1jP899W3P6VFeOiJceFdEaDUqJ2x0mkdvjcSjR
+ P3IZevKXifgjbgM0+HGLwqyrJOuozz0fGHG6voJYrbtD0tdC2lAYE9WFwuLR1ujJzxSkwStdT
+ lkylIMBo9lhsNzylPGYzyv4UI8ZZMZrpvojOg3lgZ0vpcI+NQUoteI0P+Wz5lfIyPfcI+6QP5
+ bcBDKc9LVTJUAbZrZZUPykDkm6du6zW2r19As2FmM093PScDZCbPR2np4C9780LIVQFScmK7B
+ cS6pvNLxOjZG7VrdBAeBHYqG35dNFeg7Y4G/O2pavGZMM/m9VfYlslnOpQpaOA7biLCwDiZ3g
+ ORABcZsNz/R1affuaIPOyjUXod5AymqWkBo/t+ZeZW+oS7GqagtrFM+tD6HiEmEJQjSZyfhnf
+ bbhVVvk5eNalCXzlFJXa8G2brsHEUR05O/eTzVUCsjKTbU69zjG5Y9jitLl1WIhvZoR1wWDxa
+ R6dA3fagJAV0pXITce+DpVexGE7gqSXQvcl0BHe49TekWK+zRLUg8fQRepiwCRKCXuJeJeQ5m
+ uDJWEO3RV24ra1DasOhJ8L4Y3zxtMI650z5aczoHnbcvIKn7BzWRl4VXH6ecpN1d35iAhdifu
+ qDIdgE2pptfSyvUIDQnzvzrSEC1fksYnQ5U6ig==
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hello folks,
+Using dev_err()/dev_warn() instead of printk() for more consistent output.
+(prints device name, etc).
 
+Signed-off-by: Enrico Weigelt <info@metux.net>
+---
+ drivers/tty/serial/cpm_uart/cpm_uart_core.c | 6 +++---
+ drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-here's another attempt of polishing the serial drivers:
-
-* lots of minor cleanups to make checkpatch happier
-  (eg. formatting, includes, inttypes, ...)
-
-* use appropriate logging helpers instead of printk()
-
-* consequent use of mapsize/mapbase fields:
-  the basic idea is, all drivers should fill mapbase/mapbase fields at
-  init time and later only use those fields, instead of hardcoded values
-  (later on, we can add generic helpers for the map/unmap stuff, etc)
-
-* untwisting serial8250_port_size() at all:
-  move the iomem size probing to initialization time, move out some
-  platform specific magic to corresponding platform code, etc.
-
-
-Unfortunately, I don't have the actual hardware to really test all
-the code, so please let me know if there's something broken in here.
-
-
-have fun,
-
---mtx
+diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_core.c b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
+index b929c7a..374b8bb 100644
+--- a/drivers/tty/serial/cpm_uart/cpm_uart_core.c
++++ b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
+@@ -265,7 +265,7 @@ static void cpm_uart_int_rx(struct uart_port *port)
+ 		 * later, which will be the next rx-interrupt or a timeout
+ 		 */
+ 		if (tty_buffer_request_room(tport, i) < i) {
+-			printk(KERN_WARNING "No room in flip buffer\n");
++			dev_warn(port->dev, "No room in flip buffer\n");
+ 			return;
+ 		}
+ 
+@@ -1155,7 +1155,7 @@ static int cpm_uart_init_port(struct device_node *np,
+ 	if (!pinfo->clk) {
+ 		data = of_get_property(np, "fsl,cpm-brg", &len);
+ 		if (!data || len != 4) {
+-			printk(KERN_ERR "CPM UART %pOFn has no/invalid "
++			dev_err(port->dev, "CPM UART %pOFn has no/invalid "
+ 			                "fsl,cpm-brg property.\n", np);
+ 			return -EINVAL;
+ 		}
+@@ -1164,7 +1164,7 @@ static int cpm_uart_init_port(struct device_node *np,
+ 
+ 	data = of_get_property(np, "fsl,cpm-command", &len);
+ 	if (!data || len != 4) {
+-		printk(KERN_ERR "CPM UART %pOFn has no/invalid "
++		dev_err(port->dev, "CPM UART %pOFn has no/invalid "
+ 		                "fsl,cpm-command property.\n", np);
+ 		return -EINVAL;
+ 	}
+diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c b/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
+index 6a1cd03..ef1ae08 100644
+--- a/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
++++ b/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
+@@ -67,7 +67,7 @@ void __iomem *cpm_uart_map_pram(struct uart_cpm_port *port,
+ 		return pram;
+ 
+ 	if (len != 2) {
+-		printk(KERN_WARNING "cpm_uart[%d]: device tree references "
++		dev_warn(port->dev, "cpm_uart[%d]: device tree references "
+ 			"SMC pram, using boot loader/wrapper pram mapping. "
+ 			"Please fix your device tree to reference the pram "
+ 			"base register instead.\n",
+-- 
+1.9.1
 

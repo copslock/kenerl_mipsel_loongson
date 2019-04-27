@@ -4,23 +4,23 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74804C43219
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:55:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DA425C43219
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:55:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 4B48A20C01
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:55:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B454720C01
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:55:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726945AbfD0MxN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 27 Apr 2019 08:53:13 -0400
-Received: from mout.kundenserver.de ([212.227.126.135]:40281 "EHLO
+        id S1726791AbfD0Mz4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 27 Apr 2019 08:55:56 -0400
+Received: from mout.kundenserver.de ([212.227.126.130]:43467 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726861AbfD0MxM (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 27 Apr 2019 08:53:12 -0400
+        with ESMTP id S1726817AbfD0MxL (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 27 Apr 2019 08:53:11 -0400
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1Mdvyo-1gklM610Mw-00b6vt; Sat, 27 Apr 2019 14:52:48 +0200
+ 1Mspy4-1gVqbE43aa-00tCHb; Sat, 27 Apr 2019 14:52:37 +0200
 From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     gregkh@linuxfoundation.org, andrew@aj.id.au,
@@ -32,28 +32,28 @@ Cc:     gregkh@linuxfoundation.org, andrew@aj.id.au,
         linux-mips@vger.kernel.org, linux-serial@vger.kernel.org,
         linux-ia64@vger.kernel.org, linux-amlogic@lists.infradead.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
-Subject: [PATCH 17/41] drivers: tty: serial: apbuart: fix logging calls
-Date:   Sat, 27 Apr 2019 14:51:58 +0200
-Message-Id: <1556369542-13247-18-git-send-email-info@metux.net>
+Subject: [PATCH 04/41] drivers: tty: serial: dz: fix use fix bare 'unsigned'
+Date:   Sat, 27 Apr 2019 14:51:45 +0200
+Message-Id: <1556369542-13247-5-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:74q7QZbgRgRsAUkPp9HoIcby/AiA8t4Mu2TUa7cvirQmdem+3Am
- 8EQGnLshuK8zT/JT/rXJ1jMsYvUFcIBhmVWtNocXE1OdQlrcN6zxnc0lOKUkbKlCtWRyBOs
- SfDclKxIBbTDIEFobqRgxh4RYW3wCVdlAW+GkkAV2vRB5P9CXtzp+iTfXlW2e2cAPKtq+p3
- x9rgoBVikwGuHrHXLrrgQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:eYy4U1g0WLc=:NNFGO3HSiL3iJ9KcFjVqxr
- L5C8Q9zl9SvmSbmk/WXj0EtqOWebYE+T7FuU8NbONX8KrKJZIyetKuuIZvT8JMDBFYYByMJZS
- ZsFYAvVpW3OFJvRwTYlig7Z7pR26iD35iZ9qIWBGrEIbU0eFvBZQ71UaNgyABlpQP25ws5FXx
- zrLsNqdWLdTYHD+VbjQ2gcBFD+6RdC1lVS7GjBn6O6RXVwO/iyuYzHrqd5SEOWYe1mDV/xpcT
- firFlNyM/Y3UYi3z9yFwOZm/mLwOjrKLozqyAUIs5Ee1Dmld6FQR8HBR0gglIETNeESeoBwlk
- j+oqvl9LqtcoRzBeZIaDULJqLJ4PYBQl+ouSd6ruS0W1erDls6LCPPf+9fmou3wGiubPjT5zT
- ZbgpAa+a1FPjCO83yXjVKgwftQDqhNYdtBRkumaxJv167CNq/8HacT+etLB6xjbv0OqTHED+j
- UvHg77KbgPh+lW5z+3aUS+YSda3oF0cX02uC6pzmIguLQ6peLHzvjrLLNo+veCHi5xqdsuTc3
- 1tIcr/FtqrUmGyJUAz09ZrsHVYJ13qXd7jVIIkZlpH+9sVbqBaFk0ImoQJTKOflNY7Mfb14LT
- WYOkAkc2qSUAf3D4KAVdI2JRi0lez/a/5/g0MNrh/HEtZiDvSBJaDosnHksn31H+JuOZRTpBV
- XhT4gdKHIwiv+Itmb2O00YCnnIBT4FoF90IGJGwKRMu7AvSI5rBVKeCNSHQbXqFGnfcMvGqVG
- qH3e6Ibc4dkf9y2PyMnfIib4diOFSWqdZxE4aQ==
+X-Provags-ID: V03:K1:CBJBinnswYpZ8Sdk7wFOAsULywVOOhB0O51QI1ZS6aG2XtvP5Ax
+ rUdddfq4rw+u/9EFqOQzXc3/JM5V7fsK23L/z85bPCOANxd2GuzAoLWyurSK9Ii+GNlroRp
+ D+hqD+3RuR/9qgEHat/Ucs2oZfFOYySxVG+wr6Q+wrWn6MY4YELLqYiMi6+Z1GHMHZ9Sbi6
+ A0dnBU9i+mqDN3d/fmLxg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:MH/lZafoCx0=:C6VQMV1HsKH9OxnmfiwWwi
+ ls6ASJ0mneciKIXS+1V+wSxBJcpan2IpZ08XLTD6SYv7YXOIMII1L/KWbG0T9oFUOLphs/Fg3
+ l2AlwPRiDgZqonUsBVKpGTsKSv27ETHk1u8CP6XiFhZ9cNW2T3FLm/M/RZiJJEVU+b4hat+oG
+ V/t5hoDjxIiN6XeMIGY3ZKep3tzRsiG+Yf5WrxF7xmHK3ns0GM3BNTiW1nXz2EqwNDtGAyeZq
+ Vvqo3PBXcwPXiB6IUXXnKOdfKgojhgqctY7SufpZAYrm+1D2LBSe3PgUHcGQeS6y3DDBI1EER
+ ik2lMkxjtSrUzyrZhTKgo1kjcSBthFwMG5B29FUWZC9SlsTzEYflKLY1mlrZ/DBKrktMH6+KG
+ e3fXGk80CchhUtjMmL7Eyykp3o924p2zhQIBYAL0puuxE6/cYR/3HyeTlGe42KZuMH9EZn0+g
+ n/3ogS9RFBh7aesoWqrAsTgXRq6ILeiUjg/9gPYWefwJguOeS1NTOW2WOOrphR2Dfrcvy72gC
+ mu2hsdgjoNnA4njyhs3XxuFnlYyWLsuBOT3jqHXTTXDPK9vFMOFSfp50AeuB6lwEo12Rxs0Ip
+ 8eo0NdOrxwE+PMaT+iD6IJzKHMvoTFwflMb6JOcc69Pg8tOMFpOm2QWk0WlCbVyrrlaOAVFD2
+ JxVH/iny2tox/lLVNnjx1smE1j9T7d7BKieB2e6XjF/H3MzZFm2Qw/hD3pnmYq+Kcy8sdTENK
+ uVS7NH13R3Km3ewXsX6v4Ea4yuju79Q+cCDxjQ==
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
@@ -61,69 +61,40 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 Fix checkpatch warnings:
 
-    WARNING: Prefer using '"%s...", __func__' to using 'apbuart_console_setup', this function's name, in a string
-    #491: FILE: drivers/tty/serial/apbuart.c:491:
-    +	pr_debug("apbuart_console_setup co=%p, co->index=%i, options=%s\n",
+    WARNING: Prefer 'unsigned int' to bare use of 'unsigned'
+    #103: FILE: dz.c:103:
+    +static u16 dz_in(struct dz_port *dport, unsigned offset)
 
-    WARNING: Prefer [subsystem eg: netdev]_info([subsystem]dev, ... then dev_info(dev, ... then pr_info(...  to printk(KERN_INFO ...
-    #661: FILE: drivers/tty/serial/apbuart.c:661:
-    +	printk(KERN_INFO "Serial: GRLIB APBUART driver\n");
-
-    WARNING: Prefer [subsystem eg: netdev]_err([subsystem]dev, ... then dev_err(dev, ... then pr_err(...  to printk(KERN_ERR ...
-    #666: FILE: drivers/tty/serial/apbuart.c:666:
-    +		printk(KERN_ERR "%s: uart_register_driver failed (%i)\n",
-
-    WARNING: Prefer [subsystem eg: netdev]_err([subsystem]dev, ... then dev_err(dev, ... then pr_err(...  to printk(KERN_ERR ...
-    #673: FILE: drivers/tty/serial/apbuart.c:673:
-    +		printk(KERN_ERR
+    WARNING: Prefer 'unsigned int' to bare use of 'unsigned'
+    #110: FILE: dz.c:110:
+    +static void dz_out(struct dz_port *dport, unsigned offset, u16 value)
 
 Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
- drivers/tty/serial/apbuart.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/tty/serial/dz.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/apbuart.c b/drivers/tty/serial/apbuart.c
-index 60cd133..d2b86f7 100644
---- a/drivers/tty/serial/apbuart.c
-+++ b/drivers/tty/serial/apbuart.c
-@@ -482,8 +482,8 @@ static int __init apbuart_console_setup(struct console *co, char *options)
- 	int parity = 'n';
- 	int flow = 'n';
+diff --git a/drivers/tty/serial/dz.c b/drivers/tty/serial/dz.c
+index b3e9313..559d076 100644
+--- a/drivers/tty/serial/dz.c
++++ b/drivers/tty/serial/dz.c
+@@ -100,14 +100,14 @@ static inline struct dz_port *to_dport(struct uart_port *uport)
+  * ------------------------------------------------------------
+  */
  
--	pr_debug("apbuart_console_setup co=%p, co->index=%i, options=%s\n",
--		 co, co->index, options);
-+	pr_debug("%s() co=%p, co->index=%i, options=%s\n",
-+		 __func__, co, co->index, options);
+-static u16 dz_in(struct dz_port *dport, unsigned offset)
++static u16 dz_in(struct dz_port *dport, unsigned int offset)
+ {
+ 	void __iomem *addr = dport->port.membase + offset;
  
- 	/*
- 	 * Check whether an invalid uart number has been specified, and
-@@ -650,21 +650,20 @@ static int __init grlib_apbuart_init(void)
- 	if (ret)
- 		return ret;
+ 	return readw(addr);
+ }
  
--	printk(KERN_INFO "Serial: GRLIB APBUART driver\n");
-+	pr_info("Serial: GRLIB APBUART driver\n");
+-static void dz_out(struct dz_port *dport, unsigned offset, u16 value)
++static void dz_out(struct dz_port *dport, unsigned int offset, u16 value)
+ {
+ 	void __iomem *addr = dport->port.membase + offset;
  
- 	ret = uart_register_driver(&grlib_apbuart_driver);
- 
- 	if (ret) {
--		printk(KERN_ERR "%s: uart_register_driver failed (%i)\n",
--		       __FILE__, ret);
-+		pr_err("%s: uart_register_driver failed (%i)\n",
-+		       __func__, ret);
- 		return ret;
- 	}
- 
- 	ret = platform_driver_register(&grlib_apbuart_of_driver);
- 	if (ret) {
--		printk(KERN_ERR
--		       "%s: platform_driver_register failed (%i)\n",
--		       __FILE__, ret);
-+		pr_err("%s: platform_driver_register failed (%i)\n",
-+		       __func__, ret);
- 		uart_unregister_driver(&grlib_apbuart_driver);
- 		return ret;
- 	}
 -- 
 1.9.1
 

@@ -3,24 +3,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DE509C43219
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:56:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D19AC43219
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:56:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B984B2087C
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:56:29 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E98E82087C
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:56:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727653AbfD0M4I (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        id S1727649AbfD0M4I (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
         Sat, 27 Apr 2019 08:56:08 -0400
-Received: from mout.kundenserver.de ([212.227.126.187]:56161 "EHLO
+Received: from mout.kundenserver.de ([212.227.126.131]:40151 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726688AbfD0MxK (ORCPT
+        with ESMTP id S1726804AbfD0MxK (ORCPT
         <rfc822;linux-mips@vger.kernel.org>); Sat, 27 Apr 2019 08:53:10 -0400
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MHoZS-1hX2X90am6-00EvFl; Sat, 27 Apr 2019 14:52:49 +0200
+ 1MmDAW-1gu8kq1m7s-00iDvn; Sat, 27 Apr 2019 14:52:40 +0200
 From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     gregkh@linuxfoundation.org, andrew@aj.id.au,
@@ -32,54 +32,81 @@ Cc:     gregkh@linuxfoundation.org, andrew@aj.id.au,
         linux-mips@vger.kernel.org, linux-serial@vger.kernel.org,
         linux-ia64@vger.kernel.org, linux-amlogic@lists.infradead.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
-Subject: [PATCH 18/41] drivers: tty: serial: apbuart: use dev_info() instead of printk()
-Date:   Sat, 27 Apr 2019 14:51:59 +0200
-Message-Id: <1556369542-13247-19-git-send-email-info@metux.net>
+Subject: [PATCH 08/41] drivers: tty: serial: sb1250-duart: fix checkpatch warning on printk()
+Date:   Sat, 27 Apr 2019 14:51:49 +0200
+Message-Id: <1556369542-13247-9-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:OVKGRVf0aXMWmtc1PHtqfEjiYENJhZU3hpSHmEA0npVSmInw18W
- peVVZAyjlFJAio3YAZ7zsEC8Fe2VQ89wyDlbJaIzUmZGMMp3iII6gzrN822v79B5j0vvLsh
- 71zzSbmGgmkHHfJu8peOu878gwp/4AQZkem15Rl7F+pbbfe+1IRXXc3iTGk/vbwXXy8feJ1
- A4wTh5WhUYxm3/nJIj4hw==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:kJPYxrqUW4Q=:IX4zfaBz7w6xvHD6+zvUEx
- 9lgTvdeuV59hcukEVZymu+p6tcoSHdR0K1YyNeMpb8uyuppx99cFXsn6a/2c3QwCqdTtaOI7b
- NM555G1mdTA4tx9beSLOpohIzVc1IAh0aF9aqOMLarv10YlFJVBypKsS7eozOr8YjLPwNCA7y
- xLNnSL9nvqoyuR6pmZ9cvRyyyP6/eYw4Fc/aHOZVjluv6XaHH1kDZqcwruoEvA55uYtvnSHac
- 9MjLs8ftcbsYmjTSWf1ukKC9wrnPzPU62l5wd6argIoQ2M9shIoE9+TB45W0N7bfJyq0mDbaX
- TJHKhxyRPW+/7p9yUNV10hZ7DQE+aMsD5fm2A2ANmTrYm1EOuOJrwHBgNOvOC8EJ4+jTkk6/W
- BwDYOySXQ80cH6wqZIg+DXq1/w/mFQHSkmwtbd0oqKoJWF1i+ZJF+Ic9yETZqxb/VKtT1JjId
- aY7KauvC1h+u+2i6Ia65kuNV1gsqfMmGLLZjy0AiXOjEvc13FOU1AbsdYNOJA5WSEPHUqWLHT
- SoAIo9fOAKbG2KsIwCu7Zo2mryl45CvXBMMMbNQ9jt5fV9nD8v7BkFwLkMucoFwqTowZs8u5T
- g8EDSIiimu5RjbwcGKHM6HD5X5/g/5FrZKGvHbfpY29hrmOad8MLWYtKwnASbuVRUr6XWpvrq
- WJJr4n5/Cu72gbTk0oEBe4AhzNbI9tMroHYK2nYqhfZrYtIznaI/92IoE9ZcqFvyCxwmiSEKp
- 6Y0UpIDYj+h2G2Yvy0Vj7nMLmkVAnbhBJyzm0A==
+X-Provags-ID: V03:K1:9XC3q0bfB2HQ4mApDU4u33n5sD/YoC7EqQPmqP5NMOedGA7sE7R
+ zQ+4UMW4bXxRANtgf2zvHO2GKXDxkdKE28JdO/iNudeY0F3mJ+xc3fTNvs7ITqMXpD+h9nY
+ QJb/I3M0+a59qd+LyzEcKpCXtBXjQ/BRgErxc0fambEKaAP14TyYVth7y55V4vy+3k5d+oN
+ x/fGxgcPqoZSgK+QJd3pA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:KbQ0fHA3Nqk=:FuSxcrnKlCstL3CnqMetR8
+ enSY2gm0q2GMzPD3zuPC8fZO7HmPN6yxLTvM8eVFp60ICRPcNK4tMFyvmEXAwQhCqV+QlhVfY
+ /3SomP72AOXBFjUdm37A6u738T8AWaYhzD3ax41xd/91uO6TvCLXB01NFygTZ69KjGGvd6dHl
+ J9lyE8nv3ouQZE4YSkwJ+QPVxRnzV+nPfZBZk/QPt3B8dqdrBa8sVikNqDUZSkcX6lYQS36SE
+ LOscWWeMcd9cDI+xfMIg49C4I58k/YvzfJVXt4DERZ2OqnsDVF39SPQ6mxZd8kyZyvkWY68FT
+ v4aBhQVWDfpD1t0GubgtmYzo8UOl2KV+/SB6VWAzR3um3S2sxVGVPm3DwToX97W+XO2x/IxZK
+ Q6Pr1u8NIEMSywIsghBEkavAFQJyp6Kw1JS9qBGMdHI80KFXdjgfG+6C3hhkvcy6C1d4Y3nMS
+ g+SUL9XMx7ynle+l8ySONYsf3S9/5LAeIgUVPU0xC0OjIcIwKL5yM7en/m6fRkNDK5yzev23m
+ aXQatsJ5bHJbeQqA6Vbp/dppRd+sjlJA37mRBhWORrP0GnCiSK/iBZGK1z624u2RV/axQxVU8
+ FgXt6VT4izE0gGVOenS522mBiI0JYa1/T+aqrIxVh2Mgd9NqSega9IxAQlHRGjbwRynjJt5Sg
+ 1101agAP9tCRr5Tje2tMwCcYDgbVyx7BPu9adznbugp+wmE/O4zeZ31tCdtTIo7gfOhkLPJ0f
+ XXLVpK9o1Fyph8MTqd6Mt+RVaDYvSrfKML+CcA==
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Using dev_err() instead of printk() for more consistent output.
-(prints device name, etc).
+checkpatch complaints:
+
+    WARNING: printk() should include KERN_<LEVEL> facility level
+    #698: FILE: drivers/tty/serial/sb1250-duart.c:698:
+    +		printk(err);
+
+    WARNING: printk() should include KERN_<LEVEL> facility level
+    #706: FILE: drivers/tty/serial/sb1250-duart.c:706:
+    +			printk(err);
+
+Even though it's a false alarm here (the string is already prefixed
+w/ KERN_ERR), it's nicer to use pr_err() here, which also makes
+checkpatch happy.
 
 Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
- drivers/tty/serial/apbuart.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/sb1250-duart.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/serial/apbuart.c b/drivers/tty/serial/apbuart.c
-index d2b86f7..89e19b6 100644
---- a/drivers/tty/serial/apbuart.c
-+++ b/drivers/tty/serial/apbuart.c
-@@ -568,7 +568,7 @@ static int apbuart_probe(struct platform_device *op)
+diff --git a/drivers/tty/serial/sb1250-duart.c b/drivers/tty/serial/sb1250-duart.c
+index b4342c8..227af87 100644
+--- a/drivers/tty/serial/sb1250-duart.c
++++ b/drivers/tty/serial/sb1250-duart.c
+@@ -689,13 +689,13 @@ static int sbd_map_port(struct uart_port *uport)
  
- 	apbuart_flush_fifo((struct uart_port *) port);
+ static int sbd_request_port(struct uart_port *uport)
+ {
+-	const char *err = KERN_ERR "sbd: Unable to reserve MMIO resource\n";
++	const char *err = "sbd: Unable to reserve MMIO resource\n";
+ 	struct sbd_duart *duart = to_sport(uport)->duart;
+ 	int ret = 0;
  
--	printk(KERN_INFO "grlib-apbuart at 0x%llx, irq %d\n",
-+	dev_info(&pdev->pdev, "grlib-apbuart at 0x%llx, irq %d\n",
- 	       (unsigned long long) port->mapbase, port->irq);
- 	return 0;
- }
+ 	if (!request_mem_region(uport->mapbase, DUART_CHANREG_SPACING,
+ 				"sb1250-duart")) {
+-		printk(err);
++		pr_err(err);
+ 		return -EBUSY;
+ 	}
+ 	refcount_inc(&duart->map_guard);
+@@ -703,7 +703,7 @@ static int sbd_request_port(struct uart_port *uport)
+ 		if (!request_mem_region(duart->mapctrl, DUART_CHANREG_SPACING,
+ 					"sb1250-duart")) {
+ 			refcount_dec(&duart->map_guard);
+-			printk(err);
++			pr_err(err);
+ 			ret = -EBUSY;
+ 		}
+ 	}
 -- 
 1.9.1
 

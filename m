@@ -4,23 +4,23 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1E84C43219
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:56:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F07BBC43218
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:57:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9CA7A2087C
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:56:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C8A092087C
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Apr 2019 12:57:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727021AbfD0M4t (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 27 Apr 2019 08:56:49 -0400
-Received: from mout.kundenserver.de ([212.227.126.133]:59117 "EHLO
+        id S1726608AbfD0MxH (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 27 Apr 2019 08:53:07 -0400
+Received: from mout.kundenserver.de ([212.227.126.135]:57935 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726611AbfD0MxJ (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 27 Apr 2019 08:53:09 -0400
+        with ESMTP id S1726488AbfD0MxH (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 27 Apr 2019 08:53:07 -0400
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1M7JvQ-1hPrWb2KvE-007on1; Sat, 27 Apr 2019 14:52:45 +0200
+ 1MNss4-1h9I592Io4-00OFB5; Sat, 27 Apr 2019 14:52:39 +0200
 From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     gregkh@linuxfoundation.org, andrew@aj.id.au,
@@ -32,63 +32,57 @@ Cc:     gregkh@linuxfoundation.org, andrew@aj.id.au,
         linux-mips@vger.kernel.org, linux-serial@vger.kernel.org,
         linux-ia64@vger.kernel.org, linux-amlogic@lists.infradead.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
-Subject: [PATCH 14/41] drivers: tty: serial: uartlite: remove unnecessary braces
-Date:   Sat, 27 Apr 2019 14:51:55 +0200
-Message-Id: <1556369542-13247-15-git-send-email-info@metux.net>
+Subject: [PATCH 07/41] drivers: tty: serial: sb1250-duart: include <linux/io.h> instead of <asm/io.h>
+Date:   Sat, 27 Apr 2019 14:51:48 +0200
+Message-Id: <1556369542-13247-8-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:HNae7PjeMCnI/fvVc5Vcn1UOQeHvus2cVjs+T9ya7m11++AcCzd
- Uql6NzhkB+oflvXltCOBqXEgUK5TSZ1hR8ffTPAYNbY/DvgKZZPbUn10MDN7ED70JOmLeJq
- 1lKUaLw3MrCqMLhiaWDxWKIAGg5En0Qog7emS9vPAAPWKLAw46CPLHZiyXdcej2Fh8Ze+9P
- mQVxOOn3Z+MSiWhjBR3rg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:3t+Nw4JPEJE=:S64AQuvF2U7F25wvtc5XCm
- nSGvWcPttt+54CgkTz8WBMvqDdTZV1KbKhC11oN+8c/mvl2xjunvnZND4PK83mMayEeOKveGL
- Rd93v52I09dnYOeNp45XUqp/QksQLz9BPG1DLrjEYZz+ZHPu+6Pe0Rw0dPQ1h1bZtuLIyI8JZ
- WKqry4ildM4OTi6jM5nTBC+ZbuVxxi0Ov25WThAFtVMLRA+VFSGJ9FwUj5E18pRLO4JnVzA1A
- /At2a2dq0VbZWlVppOKC3+Wri1v58c0QMeOGg/TTlUbU51qerw8V3YktudCxe4coHD947lYRX
- hVMg9GHS0eWGn0Zi0jczAgtOciNOv6laK9FPaHZCa/UocjUZFekiZ8I6192ltw0IapPP69sBO
- ooWqzCwPdibwHdZEY1wGSmtnUFvvz1hDSiMogIa4x22PefBAr9KyHtc++v1P3qbPTaEGS+Eun
- tEzlO3f6xNCtXADxjqVYUZ3hDlrNQHHJsQI/I9gXDEaMMqxbQKYBUlU4mr+fc9XQ3jwDyNPdP
- GrbJW24PeowT2zhfXHQ51QUSwk/DyHpQtZxRjBLtbkqXILbsge0ytPII9Peb1wX53WnHrZ1EL
- uclEJEwocjxNPOvn1Qup74SBDKN2AM7ANqcGrVzZHb8TqKJw8Ksp/NvRXV6WwdAsJOh3ncIrl
- e2WYHXjOEtHoUrV3DEnBtI+k5GjpjNJViBLGkrTBGEWwCDP/t4KuiepcU5sAE3gMuV0ryxAFc
- 7LjvLNQI4W2HVfnMPR699cwLCgmbn4KrVtdc/g==
+X-Provags-ID: V03:K1:rdRXb5foI78ZUKXg0PVAe5Z5nzYlAxuzsWdK2nGI/ZCG+/6jRlM
+ hI3kp/kBUUgLKHfqLAS7fc8k7GQ2ADy4ZKXhqdqZiryVc7Z/Z2r9L5PNnJpvCGJ5Wm3QKlp
+ qfPO4bQ3xuErAjl1GwNDMV08O2NC44IuFF/UesW2Ttt/YM+Ee5ZbuxprWyPUKJV4WjcRcmA
+ KbeNYOb/RogJgZxW+H2Qg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:uIkJBFuyWwE=:my0C5wt5HQzdkDWW3sqLjW
+ G57X9rEDzrdejwTIohdfyXbnVkKKkUjsq7O2WO6aaWwA/K7asaaqwwpANJiqlYwmtNzUe3m2F
+ dIy98aX9m8AzimgrUpqTFcjmsVSy5jVNnA897BjXITdiOKUbqhDiJ8SEfxopoVvXA0ci4pE/u
+ sCpkkmo4B6+eALwD3PacR4l75/GBQIcgR/X9YlludU/jwMa2Liob4BAm+iUTx6dTWwQyokWeE
+ 5ueRRrNwERDVxlERN61XurD0oaRK6EZk3C+alaLfFflaumVLpveKjf8NF9QNOKUCoI5MVXyiX
+ HXunQn4iVV9oEPQo+yLEIGF4UfEE0Rsd1GkU6LkB/+Odbn2uQLNNWiC8KWt07Y56oarXOxrDk
+ lA4uTn5RNuonkl8BJC6IAyi1AfCnyQmAgAOJlNSl4m+3PYHPhOrGjM7sgGTlh19tXj+5/CybH
+ AVSJ2WFmYCNhq6mW/70XSDtRxr/UK1p1rzHbSTsjFAmr4I8RVMaqj3ZxfFotbghjdQK1581Pv
+ 69TkpSYev0ozeW+8xQuT5XGyqbrpcxKEzP7NDPBjAjIAKmwxFXVsCjrsmCQi802n4t/j7rgtj
+ p2/1WTI2ZaKz4ftVg0fU4hcU0pFIksjotyumR0cs9ECKOFII7ztSji+wY2fpiuHhZ8jQiu3Va
+ 80px75vPXYZJQn8SviB8k53dJGNllXCrNlg32KHH9lod8kduYDxsK8NA4RIZxyaO3IOTafLNX
+ tjDPR9hNlZyMzNBlAyzerGiY2oMGtk33LyAGRQ==
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-checkpatch complains:
+Fix checkpatch warning:
 
-    WARNING: braces {} are not necessary for any arm of this statement
-    #489: FILE: drivers/tty/serial/uartlite.c:489:
-    +	if (oops_in_progress) {
-    [...]
-    +	} else
-    [...]
+    WARNING: Use #include <linux/io.h> instead of <asm/io.h>
+    #41: FILE: drivers/tty/serial/sb1250-duart.c:41:
+    +#include <asm/io.h>
 
 Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
- drivers/tty/serial/uartlite.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/sb1250-duart.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/uartlite.c b/drivers/tty/serial/uartlite.c
-index c322ab6..4c28600 100644
---- a/drivers/tty/serial/uartlite.c
-+++ b/drivers/tty/serial/uartlite.c
-@@ -486,9 +486,9 @@ static void ulite_console_write(struct console *co, const char *s,
- 	unsigned int ier;
- 	int locked = 1;
+diff --git a/drivers/tty/serial/sb1250-duart.c b/drivers/tty/serial/sb1250-duart.c
+index 655961c..b4342c8 100644
+--- a/drivers/tty/serial/sb1250-duart.c
++++ b/drivers/tty/serial/sb1250-duart.c
+@@ -38,7 +38,7 @@
+ #include <linux/types.h>
  
--	if (oops_in_progress) {
-+	if (oops_in_progress)
- 		locked = spin_trylock_irqsave(&port->lock, flags);
--	} else
-+	else
- 		spin_lock_irqsave(&port->lock, flags);
+ #include <linux/refcount.h>
+-#include <asm/io.h>
++#include <linux/io.h>
+ #include <asm/war.h>
  
- 	/* save and disable interrupt */
+ #include <asm/sibyte/sb1250.h>
 -- 
 1.9.1
 

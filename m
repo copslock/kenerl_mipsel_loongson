@@ -2,124 +2,110 @@ Return-Path: <SRS0=X5PV=S6=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F8A2C4321B
-	for <linux-mips@archiver.kernel.org>; Sun, 28 Apr 2019 14:28:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 37772C43219
+	for <linux-mips@archiver.kernel.org>; Sun, 28 Apr 2019 15:18:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 7B277206E0
-	for <linux-mips@archiver.kernel.org>; Sun, 28 Apr 2019 14:28:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0BD38204FD
+	for <linux-mips@archiver.kernel.org>; Sun, 28 Apr 2019 15:18:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726701AbfD1O2C (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 28 Apr 2019 10:28:02 -0400
-Received: from relay5-d.mail.gandi.net ([217.70.183.197]:48145 "EHLO
-        relay5-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726659AbfD1O2B (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sun, 28 Apr 2019 10:28:01 -0400
-X-Originating-IP: 79.86.19.127
-Received: from [192.168.0.12] (127.19.86.79.rev.sfr.net [79.86.19.127])
-        (Authenticated sender: alex@ghiti.fr)
-        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 381E61C0005;
-        Sun, 28 Apr 2019 14:27:53 +0000 (UTC)
-Subject: Re: [PATCH v3 04/11] arm64, mm: Move generic mmap layout functions to
- mm
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Albert Ou <aou@eecs.berkeley.edu>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Palmer Dabbelt <palmer@sifive.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Linux-MM <linux-mm@kvack.org>,
-        Paul Burton <paul.burton@mips.com>,
-        linux-riscv@lists.infradead.org,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        James Hogan <jhogan@kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-mips@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Luis Chamberlain <mcgrof@kernel.org>
-References: <20190417052247.17809-1-alex@ghiti.fr>
- <20190417052247.17809-5-alex@ghiti.fr>
- <CAGXu5j+NV7nfQ044kvsqqSrWpuXH5J6aZEbvg7YpxyBFjdAHyw@mail.gmail.com>
- <fd2b02b3-5872-ccf6-9f52-53f692fba02d@ghiti.fr>
- <CAGXu5j+NkQ+nwRShuKeHMwuy6++3x0QMS9djE=wUzUUtAkVf3g@mail.gmail.com>
-From:   Alex Ghiti <alex@ghiti.fr>
-Message-ID: <cf4073ed-098f-779e-32e1-f3273622b115@ghiti.fr>
-Date:   Sun, 28 Apr 2019 10:27:52 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.4.0
+        id S1726769AbfD1PS5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 28 Apr 2019 11:18:57 -0400
+Received: from mga03.intel.com ([134.134.136.65]:34018 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726741AbfD1PS5 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sun, 28 Apr 2019 11:18:57 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 28 Apr 2019 08:18:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.60,406,1549958400"; 
+   d="scan'208";a="341531946"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
+  by fmsmga005.fm.intel.com with ESMTP; 28 Apr 2019 08:18:51 -0700
+Received: from andy by smile with local (Exim 4.92)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1hKlZo-0005Ys-RD; Sun, 28 Apr 2019 18:18:48 +0300
+Date:   Sun, 28 Apr 2019 18:18:48 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
+Cc:     linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
+        andrew@aj.id.au, macro@linux-mips.org, vz@mleia.com,
+        slemieux.tyco@gmail.com, khilman@baylibre.com, liviu.dudau@arm.com,
+        sudeep.holla@arm.com, lorenzo.pieralisi@arm.com,
+        davem@davemloft.net, jacmet@sunsite.dk, linux@prisktech.co.nz,
+        matthias.bgg@gmail.com, linux-mips@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-amlogic@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org
+Subject: Re: [PATCH 36/41] drivers: tty: serial: 8250: store mmio resource
+ size in port struct
+Message-ID: <20190428151848.GO9224@smile.fi.intel.com>
+References: <1556369542-13247-1-git-send-email-info@metux.net>
+ <1556369542-13247-37-git-send-email-info@metux.net>
 MIME-Version: 1.0
-In-Reply-To: <CAGXu5j+NkQ+nwRShuKeHMwuy6++3x0QMS9djE=wUzUUtAkVf3g@mail.gmail.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: sv-FI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1556369542-13247-37-git-send-email-info@metux.net>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On 4/18/19 10:19 AM, Kees Cook wrote:
-> On Thu, Apr 18, 2019 at 12:55 AM Alex Ghiti <alex@ghiti.fr> wrote:
->> Regarding the help text, I agree that it does not seem to be frequent to
->> place
->> comment above config like that, I'll let Christoph and you decide what's
->> best. And I'll
->> add the possibility for the arch to define its own STACK_RND_MASK.
-> Yeah, I think it's very helpful to spell out the requirements for new
-> architectures with these kinds of features in the help text (see
-> SECCOMP_FILTER for example).
->
->>> I think CONFIG_ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT should select
->>> CONFIG_ARCH_HAS_ELF_RANDOMIZE. It would mean moving
->>
->> I don't think we should link those 2 features together: an architecture
->> may want
->> topdown mmap and don't care about randomization right ?
-> Given that the mmap randomization and stack randomization are already
-> coming along for the ride, it seems weird to make brk randomization an
-> optional feature (especially since all the of the architectures you're
-> converting include it). I'd also like these kinds of security features
-> to be available by default. So, I think one patch to adjust the MIPS
-> brk randomization entropy and then you can just include it in this
-> move.
->
->> Actually, I had to add those ifdefs for mmap_rnd_compat_bits, not
->> is_compat_task.
-> Oh! In that case, use CONFIG_HAVE_ARCH_MMAP_RND_BITS. :) Actually,
-> what would be maybe cleaner would be to add mmap_rnd_bits_min/max
-> consts set to 0 for the non-CONFIG_HAVE_ARCH_MMAP_RND_BITS case at the
-> top of mm/mmap.c.
->
-> I really like this clean-up! I think we can move x86 to it too without
-> too much pain. :)
->
-Hi,
+On Sat, Apr 27, 2019 at 02:52:17PM +0200, Enrico Weigelt, metux IT consult wrote:
+> The io resource size is currently recomputed when it's needed but this
+> actually needs to be done once (or drivers could specify fixed values)
 
-Just a short note to indicate that while working on v4, I realized this 
-series had a some issues:
+io -> IO
 
-- I broke the case ARCH_HAS_ELF_RANDOMIZE selected but not
-   ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT (which can happen on arm 
-without MMU for example)
-- I use mmap_rnd_bits unconditionnally whereas it might not be defined 
-(it works for all arches I moved though)
+> 
+> Simplify that by doing this computation only once and storing the result
+> into the mapsize field. serial8250_register_8250_port() is now called
+> only once on driver init, the previous call sites now just fetch the
+> value from the mapsize field.
 
-The only clean solution I found for the first problem is to propose a 
-common implementation for arch_randomize_brk
-and arch_mmap_rnd, which is another series on its own and another good 
-cleanup since every architecture uses
-the same functions (except ppc, but that can be workarounded easily).
-Just like moving x86 deserves its own series since it adds up 8/9 commits.
-I am on vacations for 2 weeks, so I won't have time to submit another 
-patchset before, sorry about that.
+Do I understand correctly that this has no side effects?
 
-Thanks,
+Which hardware did you test this on?
 
-Alex
+> @@ -979,6 +979,9 @@ int serial8250_register_8250_port(struct uart_8250_port *up)
+>  	if (up->port.uartclk == 0)
+>  		return -EINVAL;
+>  
+> +	/* compute the mapsize in case the driver didn't specify one */
+> +	up->mapsize = serial8250_port_size(up);
+
+I don't know all quirks in 8250 drivers by heart, though can you guarantee that
+at this point the device reports correct IO resource size? (If I'm not mistaken
+some broken hardware needs some magic to be done before card can be properly
+handled)
+
+> -	unsigned int size = serial8250_port_size(up);
+>  	struct uart_port *port = &up->port;
+
+> -	int ret = 0;
+
+This and Co is a separate change that can be done in its own patch.
+
+> +			port->membase = ioremap_nocache(port->mapbase,
+> +							port->mapsize);
+
+You may increase readability by introducing temporary variables
+
+	... mapbase = port->mapbase;
+	... mapsize = port->mapsize;
+	...
+	port->membase = ioremap_nocache(mapbase, mapsize);
+	...
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 

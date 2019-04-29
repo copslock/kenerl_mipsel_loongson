@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+	SIGNED_OFF_BY,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 32335C43219
-	for <linux-mips@archiver.kernel.org>; Mon, 29 Apr 2019 15:56:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 288AAC43219
+	for <linux-mips@archiver.kernel.org>; Mon, 29 Apr 2019 15:59:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id F3F662063F
-	for <linux-mips@archiver.kernel.org>; Mon, 29 Apr 2019 15:56:24 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D7FF52064A
+	for <linux-mips@archiver.kernel.org>; Mon, 29 Apr 2019 15:59:08 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=c-s.fr header.i=@c-s.fr header.b="TCJfhTf+"
+	dkim=pass (1024-bit key) header.d=c-s.fr header.i=@c-s.fr header.b="L2NDNSrr"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728520AbfD2P4T (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 29 Apr 2019 11:56:19 -0400
-Received: from pegase1.c-s.fr ([93.17.236.30]:54573 "EHLO pegase1.c-s.fr"
+        id S1728493AbfD2P7I (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 29 Apr 2019 11:59:08 -0400
+Received: from pegase1.c-s.fr ([93.17.236.30]:57677 "EHLO pegase1.c-s.fr"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728516AbfD2P4S (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 29 Apr 2019 11:56:18 -0400
+        id S1728468AbfD2P7I (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 29 Apr 2019 11:59:08 -0400
 Received: from localhost (mailhub1-int [192.168.12.234])
-        by localhost (Postfix) with ESMTP id 44t8Qg1H7zz9vD3T;
-        Mon, 29 Apr 2019 17:56:11 +0200 (CEST)
+        by localhost (Postfix) with ESMTP id 44t8Tw6f7Qz9vD3V;
+        Mon, 29 Apr 2019 17:59:00 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
         reason="1024-bit key; insecure key"
-        header.d=c-s.fr header.i=@c-s.fr header.b=TCJfhTf+; dkim-adsp=pass;
+        header.d=c-s.fr header.i=@c-s.fr header.b=L2NDNSrr; dkim-adsp=pass;
         dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
         by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
-        with ESMTP id e4zvibUn7XuO; Mon, 29 Apr 2019 17:56:11 +0200 (CEST)
+        with ESMTP id hkeVVjfzCfqx; Mon, 29 Apr 2019 17:59:00 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase1.c-s.fr (Postfix) with ESMTP id 44t8Qg01MLz9vD3G;
-        Mon, 29 Apr 2019 17:56:11 +0200 (CEST)
+        by pegase1.c-s.fr (Postfix) with ESMTP id 44t8Tw5N2zz9vD3T;
+        Mon, 29 Apr 2019 17:59:00 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
-        t=1556553371; bh=MAsrBDvhnJttPasnsN8gBilzLEIc1tXHx2VDi8YmxeA=;
+        t=1556553540; bh=Kp+aYmFfv0JnYmtls8kr+xjU9L+AwS+/axPDLN7qAsk=;
         h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=TCJfhTf+GtIv6E3INZukOMu5Yh2lbbCEwQPfE+Jza9vNBWj1fGcVlvS9y5bh8WQEf
-         A7u5vGY3+mSGrzSQnBl5pVv9YKko+vqC2/RZ1Df503Iz9uiAHImnTg5AE5lZEFW3ho
-         5D0sxY1tKt7QvFSa0C7DrgwII8Apaq2alR/vHwLs=
+        b=L2NDNSrrHtZM9ifT2jdeIcFKfGkJFjJOEa3L/AgvNxvyqEk2zKI8+BQYvcm5iw3Cx
+         p57f+V5CMVuIh4MQHinoRagT8tQdRCW8S/7gN8XZdtSjCsG0WlJMUWEf5Y/qBOZcm0
+         fBe4xPw6PxTLgIKLcQcKMB6nrGtG9CNdp6aRGXqE=
 Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 325D98B8B4;
-        Mon, 29 Apr 2019 17:56:16 +0200 (CEST)
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id E91B88B8B4;
+        Mon, 29 Apr 2019 17:59:05 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
         by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id lnR_i6xj-pyv; Mon, 29 Apr 2019 17:56:16 +0200 (CEST)
+        with ESMTP id AeKoec8SOXJI; Mon, 29 Apr 2019 17:59:05 +0200 (CEST)
 Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.231.6])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id D48808B8B3;
-        Mon, 29 Apr 2019 17:56:15 +0200 (CEST)
-Subject: Re: [PATCH 23/41] drivers: tty: serial: cpm_uart: fix styling issues
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 3D02D8B8B3;
+        Mon, 29 Apr 2019 17:59:04 +0200 (CEST)
+Subject: Re: [PATCH 22/41] drivers: tty: serial: cpm_uart: fix logging calls
 To:     "Enrico Weigelt, metux IT consult" <info@metux.net>,
         linux-kernel@vger.kernel.org
 Cc:     lorenzo.pieralisi@arm.com, linux-ia64@vger.kernel.org,
@@ -64,14 +64,14 @@ Cc:     lorenzo.pieralisi@arm.com, linux-ia64@vger.kernel.org,
         andriy.shevchenko@linux.intel.com, linuxppc-dev@lists.ozlabs.org,
         davem@davemloft.net
 References: <1556369542-13247-1-git-send-email-info@metux.net>
- <1556369542-13247-24-git-send-email-info@metux.net>
+ <1556369542-13247-23-git-send-email-info@metux.net>
 From:   Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <df50792f-88bc-379a-d9e1-4f2dc1f4965a@c-s.fr>
-Date:   Mon, 29 Apr 2019 17:56:15 +0200
+Message-ID: <a00ba23b-e73e-c964-a6d0-347cb605b8c8@c-s.fr>
+Date:   Mon, 29 Apr 2019 17:59:04 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <1556369542-13247-24-git-send-email-info@metux.net>
+In-Reply-To: <1556369542-13247-23-git-send-email-info@metux.net>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -83,78 +83,85 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 
 Le 27/04/2019 à 14:52, Enrico Weigelt, metux IT consult a écrit :
-> Fix checkpatch errors:
-
-What the main purpose of this change ?
-
-If we apply this, any fix to stable will be a nightmare to backport. Is 
-it really worth it ?
-
-Anyway, a couple of comments in the patch below
-
-[...]
-
+> Fix checkpatch warnings by using pr_err():
 > 
+>      WARNING: Prefer [subsystem eg: netdev]_err([subsystem]dev, ... then dev_err(dev, ... then pr_err(...  to printk(KERN_ERR ...
+>      #109: FILE: drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c:109:
+>      +		printk(KERN_ERR
+> 
+>      WARNING: Prefer [subsystem eg: netdev]_err([subsystem]dev, ... then dev_err(dev, ... then pr_err(...  to printk(KERN_ERR ...
+>      #128: FILE: drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c:128:
+>      +		printk(KERN_ERR
+> 
+>      WARNING: Prefer [subsystem eg: netdev]_err([subsystem]dev, ... then dev_err(dev, ... then pr_err(...  to printk(KERN_ERR ...
+>      +           printk(KERN_ERR
+> 
+>      WARNING: Prefer [subsystem eg: netdev]_err([subsystem]dev, ... then dev_err(dev, ... then pr_err(...  to printk(KERN_ERR ...
+>      +           printk(KERN_ERR
 > 
 > Signed-off-by: Enrico Weigelt <info@metux.net>
-> ---
->   drivers/tty/serial/cpm_uart/cpm_uart.h      | 10 +--
->   drivers/tty/serial/cpm_uart/cpm_uart_core.c | 95 ++++++++++++++++-------------
->   drivers/tty/serial/cpm_uart/cpm_uart_cpm1.h |  4 +-
->   drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c |  6 +-
->   4 files changed, 64 insertions(+), 51 deletions(-)
 
-[...]
+Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
-> 
-> @@ -1048,9 +1058,10 @@ static void cpm_uart_early_write(struct uart_cpm_port *pinfo,
->   static int poll_wait_key(char *obuf, struct uart_cpm_port *pinfo)
->   {
->   	u_char		c, *cp;
-> -	volatile cbd_t	*bdp;
->   	int		i;
->   
-> +	volatile cbd_t	*bdp;
-> +
+But is that really worth doing those changes ?
 
-This was likely a false positive from checkpatch. The formatting was 
-good, and now it is wrong as it adds an unnecessary blank line.
-
->   	/* Get the address of the host memory buffer.
->   	 */
->   	bdp = pinfo->rx_cur;
-
-[...]
-
-> diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c b/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
-> index a0fccda..154ac19 100644
-> --- a/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
-> +++ b/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
-> @@ -117,8 +117,7 @@ int cpm_uart_allocbuf(struct uart_cpm_port *pinfo, unsigned int is_con)
->   	if (is_con) {
->   		mem_addr = kzalloc(memsz, GFP_NOWAIT);
->   		dma_addr = virt_to_bus(mem_addr);
-> -	}
-> -	else
-> +	} else
->   		mem_addr = dma_alloc_coherent(pinfo->port.dev, memsz, &dma_addr,
->   					      GFP_KERNEL);
-
-Checkpatch should have told you that in case first leg has braces, 
-second leg must have braces too even if it's a single line.
+If we want to do something useful, wouldn't it make more sense to 
+introduce the use of dev_err() in order to identify the faulting device 
+in the message ?
 
 Christophe
 
-
+> ---
+>   drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c | 6 ++----
+>   drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c | 6 ++----
+>   2 files changed, 4 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c b/drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c
+> index 56fc527..aed61e9 100644
+> --- a/drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c
+> +++ b/drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c
+> @@ -71,8 +71,7 @@ int cpm_uart_allocbuf(struct uart_cpm_port *pinfo, unsigned int is_con)
+>   	dpmemsz = sizeof(cbd_t) * (pinfo->rx_nrfifos + pinfo->tx_nrfifos);
+>   	dp_offset = cpm_dpalloc(dpmemsz, 8);
+>   	if (IS_ERR_VALUE(dp_offset)) {
+> -		printk(KERN_ERR
+> -		       "cpm_uart_cpm1.c: could not allocate buffer descriptors\n");
+> +		pr_err("cpm_uart_cpm1.c: could not allocate buffer descriptors\n");
+>   		return -ENOMEM;
+>   	}
+>   	dp_mem = cpm_dpram_addr(dp_offset);
+> @@ -90,8 +89,7 @@ int cpm_uart_allocbuf(struct uart_cpm_port *pinfo, unsigned int is_con)
 >   
-> @@ -148,7 +147,8 @@ void cpm_uart_freebuf(struct uart_cpm_port *pinfo)
->   	dma_free_coherent(pinfo->port.dev, L1_CACHE_ALIGN(pinfo->rx_nrfifos *
->   							  pinfo->rx_fifosize) +
->   			  L1_CACHE_ALIGN(pinfo->tx_nrfifos *
-> -					 pinfo->tx_fifosize), (void __force *)pinfo->mem_addr,
-> +					 pinfo->tx_fifosize),
-> +			  (void __force *)pinfo->mem_addr,
->   			  pinfo->dma_addr);
+>   	if (mem_addr == NULL) {
+>   		cpm_dpfree(dp_offset);
+> -		printk(KERN_ERR
+> -		       "cpm_uart_cpm1.c: could not allocate coherent memory\n");
+> +		pr_err("cpm_uart_cpm1.c: could not allocate coherent memory\n");
+>   		return -ENOMEM;
+>   	}
 >   
->   	cpm_dpfree(pinfo->dp_addr);
+> diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c b/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
+> index 40cfcf4..a0fccda 100644
+> --- a/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
+> +++ b/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
+> @@ -106,8 +106,7 @@ int cpm_uart_allocbuf(struct uart_cpm_port *pinfo, unsigned int is_con)
+>   	dpmemsz = sizeof(cbd_t) * (pinfo->rx_nrfifos + pinfo->tx_nrfifos);
+>   	dp_offset = cpm_dpalloc(dpmemsz, 8);
+>   	if (IS_ERR_VALUE(dp_offset)) {
+> -		printk(KERN_ERR
+> -		       "cpm_uart_cpm.c: could not allocate buffer descriptors\n");
+> +		pr_err("cpm_uart_cpm.c: could not allocate buffer descriptors\n");
+>   		return -ENOMEM;
+>   	}
+>   
+> @@ -125,8 +124,7 @@ int cpm_uart_allocbuf(struct uart_cpm_port *pinfo, unsigned int is_con)
+>   
+>   	if (mem_addr == NULL) {
+>   		cpm_dpfree(dp_offset);
+> -		printk(KERN_ERR
+> -		       "cpm_uart_cpm.c: could not allocate coherent memory\n");
+> +		pr_err("cpm_uart_cpm.c: could not allocate coherent memory\n");
+>   		return -ENOMEM;
+>   	}
+>   
 > 

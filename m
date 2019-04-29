@@ -2,39 +2,39 @@ Return-Path: <SRS0=t3Ks=S7=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+	SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E28F6C46470
-	for <linux-mips@archiver.kernel.org>; Mon, 29 Apr 2019 07:06:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92130C43219
+	for <linux-mips@archiver.kernel.org>; Mon, 29 Apr 2019 07:13:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id AB7402087B
-	for <linux-mips@archiver.kernel.org>; Mon, 29 Apr 2019 07:06:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 622472053B
+	for <linux-mips@archiver.kernel.org>; Mon, 29 Apr 2019 07:13:50 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=haabendal.dk header.i=@haabendal.dk header.b="J72ulJHK"
+	dkim=pass (1024-bit key) header.d=haabendal.dk header.i=@haabendal.dk header.b="lBNJsg0T"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727421AbfD2HGr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 29 Apr 2019 03:06:47 -0400
-Received: from mailrelay1-1.pub.mailoutpod1-cph3.one.com ([46.30.210.182]:37545
-        "EHLO mailrelay1-1.pub.mailoutpod1-cph3.one.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727356AbfD2HGr (ORCPT
+        id S1727440AbfD2HNu (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 29 Apr 2019 03:13:50 -0400
+Received: from mailrelay4-1.pub.mailoutpod1-cph3.one.com ([46.30.210.185]:30774
+        "EHLO mailrelay4-1.pub.mailoutpod1-cph3.one.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727405AbfD2HNt (ORCPT
         <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 29 Apr 2019 03:06:47 -0400
+        Mon, 29 Apr 2019 03:13:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=haabendal.dk; s=20140924;
         h=content-type:mime-version:message-id:in-reply-to:date:references:subject:cc:
          to:from:from;
-        bh=Rf8sJx3ur2QK6RYa5XV2vgfxSi64pRoBLm32TUjXvQ4=;
-        b=J72ulJHKQ5eRR7B3qrSTNdLv9fhmdBLHYdplxN71Kgqcrdgo5MySuk4ZXn9V8yxr3eOg/6LQPGt9z
-         tne8BVs+PM5pe6qif7+qjVZFmLlWRRmRD5cd/6UVv5y2i2zaREWePHqki8KPN48Pg0BL/QXjGGbA2X
-         p2Q/6XzJRGrQkj7U=
-X-HalOne-Cookie: c9f683bd629857cf1aa4cd2256f9c542bd663e00
-X-HalOne-ID: 58b9dc8e-6a4d-11e9-b614-d0431ea8a283
+        bh=6XgGXBZd9XuP2oE4RYwYzog341NRJDxtjWMZBSjiAvQ=;
+        b=lBNJsg0TqOZCs9zsmi7OlOlz1wKeTb8FI0J/+yKQeypPoT337WSvpPYP2/pyW3ht3JjaSTybk0hbz
+         c0LpDVQOhmRpZB7EFxCcruxLFgSmAMtfq2RxssZSD9SC3JZbOA2dkqsbdOav7qrmogx3ryl8zofC4J
+         4WA76c54x5vGgSFE=
+X-HalOne-Cookie: ee6e547916cc579600553f0a2d7cd6ab5b054162
+X-HalOne-ID: 164fce27-6a4c-11e9-a5a1-d0431ea8bb10
 Received: from localhost (unknown [193.163.1.7])
-        by mailrelay1.pub.mailoutpod1-cph3.one.com (Halon) with ESMTPSA
-        id 58b9dc8e-6a4d-11e9-b614-d0431ea8a283;
-        Mon, 29 Apr 2019 07:06:44 +0000 (UTC)
+        by mailrelay4.pub.mailoutpod1-cph3.one.com (Halon) with ESMTPSA
+        id 164fce27-6a4c-11e9-a5a1-d0431ea8bb10;
+        Mon, 29 Apr 2019 06:57:43 +0000 (UTC)
 From:   Esben Haabendal <esben@haabendal.dk>
 To:     "Enrico Weigelt\, metux IT consult" <info@metux.net>
 Cc:     linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
@@ -46,13 +46,13 @@ Cc:     linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
         linux-mips@vger.kernel.org, linux-serial@vger.kernel.org,
         linux-ia64@vger.kernel.org, linux-amlogic@lists.infradead.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH 35/41] drivers: tty: serial: 8250: add mapsize to platform data
+Subject: Re: [PATCH 40/41] drivers: tty: serial: helper for setting mmio range
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-        <1556369542-13247-36-git-send-email-info@metux.net>
-Date:   Mon, 29 Apr 2019 09:06:44 +0200
-In-Reply-To: <1556369542-13247-36-git-send-email-info@metux.net> (Enrico
-        Weigelt's message of "Sat, 27 Apr 2019 14:52:16 +0200")
-Message-ID: <87wojdxpbv.fsf@haabendal.dk>
+        <1556369542-13247-41-git-send-email-info@metux.net>
+Date:   Mon, 29 Apr 2019 08:57:43 +0200
+In-Reply-To: <1556369542-13247-41-git-send-email-info@metux.net> (Enrico
+        Weigelt's message of "Sat, 27 Apr 2019 14:52:21 +0200")
+Message-ID: <87muk9z4bc.fsf@haabendal.dk>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -63,53 +63,97 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 "Enrico Weigelt, metux IT consult" <info@metux.net> writes:
 
-> Adding a mapsize field for the 8250 port platform data struct,
-> so we can now set the resource size (eg. *1) and don't need
-> funny runtime detections like serial8250_port_size() anymore.
->
-> For now, serial8250_port_size() is called everytime we need
-> the io resource size. That function checks which chip we
-> actually have and returns the appropriate size. This approach
-> is a bit clumpsy and not entirely easy to understand, and
-> it's a violation of layers :p
->
-> Obviously, that information cannot change after the driver init,
-> so we can safely do that probing once on driver init and just
-> use the stored value later.
->
-> *1) arch/mips/alchemy/common/platform.c
->
-> Signed-off-by: Enrico Weigelt <info@metux.net>
-> ---
->  drivers/tty/serial/8250/8250_core.c | 1 +
->  include/linux/serial_8250.h         | 1 +
->  2 files changed, 2 insertions(+)
->
-> diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
-> index e441221..71a398b 100644
-> --- a/drivers/tty/serial/8250/8250_core.c
-> +++ b/drivers/tty/serial/8250/8250_core.c
-> @@ -814,6 +814,7 @@ static int serial8250_probe(struct platform_device *dev)
->  		uart.port.iotype	= p->iotype;
->  		uart.port.flags		= p->flags;
->  		uart.port.mapbase	= p->mapbase;
-> +		uart.port.mapsize	= p->mapsize;
->  		uart.port.hub6		= p->hub6;
->  		uart.port.private_data	= p->private_data;
->  		uart.port.type		= p->type;
-> diff --git a/include/linux/serial_8250.h b/include/linux/serial_8250.h
-> index 5a655ba..8b8183a 100644
-> --- a/include/linux/serial_8250.h
-> +++ b/include/linux/serial_8250.h
-> @@ -22,6 +22,7 @@ struct plat_serial8250_port {
->  	unsigned long	iobase;		/* io base address */
->  	void __iomem	*membase;	/* ioremap cookie or NULL */
->  	resource_size_t	mapbase;	/* resource base */
-> +	resource_size_t	mapsize;	/* resource size */
->  	unsigned int	irq;		/* interrupt number */
->  	unsigned long	irqflags;	/* request_irq flags */
->  	unsigned int	uartclk;	/* UART clock rate */
+> @@ -131,7 +133,8 @@ int __init hp300_setup_serial_console(void)
+>  		pr_info("Serial console is HP DCA at select code %d\n", scode);
+>  
+>  		port.uartclk = HPDCA_BAUD_BASE * 16;
+> -		port.mapbase = (pa + UART_OFFSET);
+> +
+> +		uart_memres_set_start_len(&port, (pa + UART_OFFSET));
 
-Or replace iobase, mapbase and mapsize with a struct resource value?
+Missing length argument here.
+
+>  		port.membase = (char *)(port.mapbase + DIO_VIRADDRBASE);
+>  		port.regshift = 1;
+>  		port.irq = DIO_IPL(pa + DIO_VIRADDRBASE);
+
+> diff --git a/drivers/tty/serial/xilinx_uartps.c b/drivers/tty/serial/xilinx_uartps.c
+> index cf8ca66..895c90c 100644
+> --- a/drivers/tty/serial/xilinx_uartps.c
+> +++ b/drivers/tty/serial/xilinx_uartps.c
+> @@ -1626,8 +1626,7 @@ static int cdns_uart_probe(struct platform_device *pdev)
+>  	 * This function also registers this device with the tty layer
+>  	 * and triggers invocation of the config_port() entry point.
+>  	 */
+> -	port->mapbase = res->start;
+> -	port->mapsize = CDNS_UART_REGISTER_SPACE;
+> +	uart_memres_set_start_len(res->start, CDNS_UART_REGISTER_SPACE);
+
+Missing 1st (port) argument here.
+
+>  	port->irq = irq;
+>  	port->dev = &pdev->dev;
+>  	port->uartclk = clk_get_rate(cdns_uart_data->uartclk);
+
+> diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+> index 5fe2b03..d891c8d 100644
+> --- a/include/linux/serial_core.h
+> +++ b/include/linux/serial_core.h
+> @@ -427,6 +427,46 @@ void uart_console_write(struct uart_port *port, const char *s,
+>  int uart_match_port(struct uart_port *port1, struct uart_port *port2);
+>  
+>  /*
+> + * set physical io range from struct resource
+> + * if resource is NULL, clear the fields
+> + * also set the iotype to UPIO_MEM
+> + */
+> +static inline void uart_memres_set_res(struct uart_port *port,
+> +				       struct resource *res)
+> +{
+> +	if (!res) {
+> +		port->mapsize = 0;
+> +		port->mapbase = 0;
+> +		port->iobase = 0;
+> +		return;
+> +	}
+> +
+> +	if (resource_type(res) == IORESOURCE_IO) {
+> +		port->iotype = UPIO_PORT;
+> +		port->iobase = resource->start;
+> +		return;
+> +	}
+> +
+> +	uart->mapbase = res->start;
+> +	uart->mapsize = resource_size(res);
+> +	uart->iotype  = UPIO_MEM;
+
+Hardcoding UPIO_MEM like does not work for drivers using other kind of
+memory access, like UPIO_MEM16, UPIO_MEM32 and UPIO_MEM32BE.
+
+Why not leave the control of iotype to drivers as before this patch?
+
+> +}
+> +
+> +/*
+> + * set physical io range by start address and length
+> + * if resource is NULL, clear the fields
+> + * also set the iotype to UPIO_MEM
+> + */
+> +static inline void uart_memres_set_start_len(struct uart_driver *uart,
+> +					     resource_size_t start,
+> +					     resource_size_t len)
+> +{
+> +	uart->mapbase = start;
+> +	uart->mapsize = len;
+> +	uart->iotype  = UPIO_MEM;
+
+Same here, other iotype values must be possible.
+
+> +}
+> +
+> +/*
+>   * Power Management
+>   */
+>  int uart_suspend_port(struct uart_driver *reg, struct uart_port *port);
 
 /Esben

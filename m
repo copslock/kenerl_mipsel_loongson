@@ -2,89 +2,83 @@ Return-Path: <SRS0=t3Ks=S7=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 88F95C43219
-	for <linux-mips@archiver.kernel.org>; Mon, 29 Apr 2019 06:49:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 846C7C43219
+	for <linux-mips@archiver.kernel.org>; Mon, 29 Apr 2019 07:03:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 58A50205ED
-	for <linux-mips@archiver.kernel.org>; Mon, 29 Apr 2019 06:49:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4852B2053B
+	for <linux-mips@archiver.kernel.org>; Mon, 29 Apr 2019 07:03:20 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=haabendal.dk header.i=@haabendal.dk header.b="CP2vSNy7"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727112AbfD2Gtb (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 29 Apr 2019 02:49:31 -0400
-Received: from mout.kundenserver.de ([217.72.192.75]:53559 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726764AbfD2Gtb (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 29 Apr 2019 02:49:31 -0400
-Received: from [192.168.1.110] ([77.9.18.117]) by mrelayeu.kundenserver.de
- (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1Mcp3E-1gl7730n7C-00ZzhK; Mon, 29 Apr 2019 08:48:59 +0200
-Subject: Re: [PATCH 37/41] drivers: tty: serial: 8250: simplify io resource
- size computation
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>
+        id S1727314AbfD2HDU (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 29 Apr 2019 03:03:20 -0400
+Received: from mailrelay1-1.pub.mailoutpod1-cph3.one.com ([46.30.210.182]:11876
+        "EHLO mailrelay1-1.pub.mailoutpod1-cph3.one.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727407AbfD2HDT (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 29 Apr 2019 03:03:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=haabendal.dk; s=20140924;
+        h=content-type:mime-version:message-id:in-reply-to:date:references:subject:cc:
+         to:from:from;
+        bh=2zPNY/cLW+90UYWtDhMxkbIjGVuo2/qwkZPK5J1aSCw=;
+        b=CP2vSNy756Mu3PtV+/tCzfX6N6bBGGfZKwlgWUT2H2cArhP/z70fnh24zaD9CdWJ/CVftTTS4gt2y
+         lzy6ywMHBUcRWoNQim3ZF/6tQSSjIgSDKBsymx0AH22Qz5W85tgTTNBnRrDn0B9XKmkxbmpYhfGqah
+         6+ZKk6oxQnrQyZZY=
+X-HalOne-Cookie: 03bc1ce83dc9ecce239c19145261b37861aa8c6c
+X-HalOne-ID: dcee62ed-6a4c-11e9-b614-d0431ea8a283
+Received: from localhost (unknown [193.163.1.7])
+        by mailrelay1.pub.mailoutpod1-cph3.one.com (Halon) with ESMTPSA
+        id dcee62ed-6a4c-11e9-b614-d0431ea8a283;
+        Mon, 29 Apr 2019 07:03:16 +0000 (UTC)
+From:   Esben Haabendal <esben@haabendal.dk>
+To:     "Enrico Weigelt\, metux IT consult" <info@metux.net>
 Cc:     linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
-        andrew@aj.id.au, macro@linux-mips.org, vz@mleia.com,
-        slemieux.tyco@gmail.com, khilman@baylibre.com, liviu.dudau@arm.com,
-        sudeep.holla@arm.com, lorenzo.pieralisi@arm.com,
-        davem@davemloft.net, jacmet@sunsite.dk, linux@prisktech.co.nz,
-        matthias.bgg@gmail.com, linux-mips@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-amlogic@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org
+        andrew@aj.id.au, andriy.shevchenko@linux.intel.com,
+        macro@linux-mips.org, vz@mleia.com, slemieux.tyco@gmail.com,
+        khilman@baylibre.com, liviu.dudau@arm.com, sudeep.holla@arm.com,
+        lorenzo.pieralisi@arm.com, davem@davemloft.net, jacmet@sunsite.dk,
+        linux@prisktech.co.nz, matthias.bgg@gmail.com,
+        linux-mips@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH 40/41] drivers: tty: serial: helper for setting mmio range
 References: <1556369542-13247-1-git-send-email-info@metux.net>
- <1556369542-13247-38-git-send-email-info@metux.net>
- <20190428152103.GP9224@smile.fi.intel.com>
-From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Organization: metux IT consult
-Message-ID: <431b36fe-3071-fcfd-b04e-b4b293e79a80@metux.net>
-Date:   Mon, 29 Apr 2019 08:48:53 +0200
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+        <1556369542-13247-41-git-send-email-info@metux.net>
+Date:   Mon, 29 Apr 2019 09:03:16 +0200
+In-Reply-To: <1556369542-13247-41-git-send-email-info@metux.net> (Enrico
+        Weigelt's message of "Sat, 27 Apr 2019 14:52:21 +0200")
+Message-ID: <87ef5lz423.fsf@haabendal.dk>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.2 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20190428152103.GP9224@smile.fi.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:M88UFXLBX4VkHOON6uaOcOnE636KnuLI4S/ApACS+qnAPKvNe1+
- 9MFUOX3DMU30BBIWozSwvAEA9pGnmBl6OGeXBQ8Y1viVSeN44w0UCqfu9VYX20rWKj/nkKL
- vlvP3uU93E8RgsPKi9ujRFjje3G/Y2BUL7L9RvbqLvk4fuIny6ic9WkRhGLxllJ4DYLhyIb
- wH0HgSJz+Bi+9teW53wMg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:UkSaLiNxTwM=:2TXPwgpE5+RBFRbyUqHOFQ
- xeHDo/3j0Na0BnkC+0JTCEUa34sTmyQbRB7w4ugZtpJdoNSu1xdU+BMA09hadC91DTT1c0yzO
- kuk7XpLkyI+N0+19kIGZ5gCjqYsD/gbKZ8Qyy9JocWvi4y1vEXHasSDdt8iTaU9VrQLQy8flK
- qSDevaqy2gkfA3bR4BtjfkFZnSKHQtpDiqq3mXC+4IcTnAFIySQzIAlEJJiI55bqb+tSkbzKq
- owQcCerB9D3TCNpnxqqLNVjWK+g79RDFMzNjrcbVvEkGniIRma6jIIKMCyNf42DVoMiMrhh0x
- aXAPFtRiFh/GxROS/IxKSP4wV6B5wR/h27VqFY21bHhQofeIIGTmI0KiIabQGBsdW35kxOhxg
- 1i/1jG+pgigRkOKnignHIi2N2wHB6JAqxpWKLNKvEGWP50G0wE8Z6ORBFJtpohgAXfmwiFBxW
- 3n1pn+bbr+SvajsKMQUl3+ZkelGKovLL03+RClDxUZP2SUJsaCOHtLAKZGFiCfwViK8E8xgfT
- G9pOuAh4EzKSrpcY52lyA+aZpShZ857A09XO01lj1MT/UIHMroXwGqPKTYB4pmEmeIzsrBOO+
- 5T+0kwhObrwWG+hIxyGgBRbGwhYmyae04xr2e8gQMLYXfoA6nSOT3OsoSAIHPclTioTlxFhoE
- Oa4DTHlLTaZWs27uSZAC9epbFBl9Fx2JmP26IreUA0ypMl3yx9fpLArWCrivScL7WAoEN62AS
- VaOqKOyMslPbPSY1JUwq9qDAdgT3eIjQcZTeU8BmLykfVe2cq22dosTi4sw=
+Content-Type: text/plain
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On 28.04.19 17:21, Andy Shevchenko wrote:
+"Enrico Weigelt, metux IT consult" <info@metux.net> writes:
 
-> 
->> +#define SERIAL_RT2880_IOSIZE	0x100
-> 
-> And why this is in the header file and not in corresponding C one?
+> Introduce a little helpers for settings the mmio range from an
+> struct resource or start/len parameters with less code.
+> (also setting iotype to UPIO_MEM)
+>
+> Also converting drivers to use these new helpers as well as
+> fetching mapsize field instead of using hardcoded values.
+> (the runtime overhead of that should be negligible)
+>
+> The idea is moving to a consistent scheme, so later common
+> calls like request+ioremap combination can be done by generic
+> helpers.
 
-hmm, no particular reason, maybe just an old habit to put definitions
-into .h files ;-)
+Why not simply replace iobase, mapbase and mapsize with a struct
+resource value instead?
 
-I can move it to 8250_of.c if you like me to.
+Incidentally, that would allow to specify a memory resource with a
+parent memory resource :)
 
-
-
---mtx
-
--- 
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+/Esben

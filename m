@@ -2,61 +2,60 @@ Return-Path: <SRS0=kqBl=TB=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 204A5C43219
-	for <linux-mips@archiver.kernel.org>; Wed,  1 May 2019 17:41:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BF02EC43219
+	for <linux-mips@archiver.kernel.org>; Wed,  1 May 2019 17:49:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E3EC9217D8
-	for <linux-mips@archiver.kernel.org>; Wed,  1 May 2019 17:41:03 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Siqt2t2t"
+	by mail.kernel.org (Postfix) with ESMTP id 998B02063F
+	for <linux-mips@archiver.kernel.org>; Wed,  1 May 2019 17:49:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726077AbfEARkX (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 1 May 2019 13:40:23 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:34818 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726019AbfEARkX (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 1 May 2019 13:40:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=QqltW55b8MUQJ4hT00KXOPTP8JAvi8T4BIhthG30Yx4=; b=Siqt2t2t4zEqN0iLnZ24k3d+G
-        m82DDcwqoZT5k50q5BTCcMKa9H/ZjhdrxxVMbvw0X84aALXe96hXoi+M8jXdAaMkLtfD35nXhwQ/j
-        j6v9Eqb9c5oEJHEWYzvOkaM3yRkKH/AOTh4DbKtkliloZyGQIToOHq3cjzZMuJTIG1lexvBOCqwV2
-        3JZvLH8Bcv0R/w5z0VAfKIQezaMIteokjtW3COC7nesut2A/fcsLFphoXc9+z38BaT7MkEB9u9i4y
-        g+IucfVsN5mxw4RRjt9zVQdSFpTp4DwV9+waGcdbovSiuEsdfpHbvAzIiThaSOoECuJM3rY2rDeAz
-        SZCd2toTA==;
-Received: from adsl-173-228-226-134.prtc.net ([173.228.226.134] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hLtDQ-0005te-Ro; Wed, 01 May 2019 17:40:21 +0000
+        id S1726106AbfEARtZ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 1 May 2019 13:49:25 -0400
+Received: from verein.lst.de ([213.95.11.211]:54199 "EHLO newverein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726069AbfEARtZ (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 1 May 2019 13:49:25 -0400
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id BB11B68AFE; Wed,  1 May 2019 19:49:05 +0200 (CEST)
+Date:   Wed, 1 May 2019 19:49:05 +0200
 From:   Christoph Hellwig <hch@lst.de>
-To:     Oleg Nesterov <oleg@redhat.com>, Arnd Bergmann <arnd@arndb.de>
-Cc:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: remove asm-generic/ptrace.h
-Date:   Wed,  1 May 2019 13:39:38 -0400
-Message-Id: <20190501173943.5688-1-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Christoph Hellwig <hch@lst.de>, Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Ley Foon Tan <lftan@altera.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
+Subject: Re: [PATCH 4/7] dma-direct: provide generic support for uncached
+ kernel segments
+Message-ID: <20190501174905.GA20458@lst.de>
+References: <20190430110032.25301-1-hch@lst.de> <20190430110032.25301-5-hch@lst.de> <20190501171857.chfxqntvm6r4xrr4@pburton-laptop> <20190501172912.GA19375@lst.de> <20190501174033.6rj5aiopdeo4uqpw@pburton-laptop>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190501174033.6rj5aiopdeo4uqpw@pburton-laptop>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi all,
+On Wed, May 01, 2019 at 05:40:34PM +0000, Paul Burton wrote:
+> > > If it is necessary then as-is this code will clear the allocated memory
+> > > using uncached writes which will be pretty slow. It would be much more
+> > > efficient to perform the memset before arch_dma_prep_coherent() & before
+> > > converting ret to an uncached address.
+> > 
+> > Yes, we could do that.
+> 
+> Great; using cached writes would match the existing MIPS behavior.
 
-asm-generic/ptrace.h is a little weird in that it doesn't actually
-implement any functionality, but it provided multiple layers of macros
-that just implement trivial inline functions.  We implement those
-directly in the few architectures and be off with a much simpler
-design.
+Can you test the stack with the two updated patches and ack them if
+they are fine?  That would allow getting at least the infrastructure
+and mips in for this merge window.

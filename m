@@ -6,47 +6,47 @@ X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78DEEC43219
-	for <linux-mips@archiver.kernel.org>; Thu,  2 May 2019 15:37:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21D16C43219
+	for <linux-mips@archiver.kernel.org>; Thu,  2 May 2019 15:37:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 52D9521479
-	for <linux-mips@archiver.kernel.org>; Thu,  2 May 2019 15:37:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EE87C20578
+	for <linux-mips@archiver.kernel.org>; Thu,  2 May 2019 15:37:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727216AbfEBPhC (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 2 May 2019 11:37:02 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:37292 "EHLO
+        id S1728716AbfEBPhi (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 2 May 2019 11:37:38 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:47364 "EHLO
         mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728282AbfEBPah (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 2 May 2019 11:30:37 -0400
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x42FSN6N046377
-        for <linux-mips@vger.kernel.org>; Thu, 2 May 2019 11:30:36 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2s81yqbm7r-1
+        by vger.kernel.org with ESMTP id S1728159AbfEBPaQ (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 2 May 2019 11:30:16 -0400
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x42FS6pQ127011
+        for <linux-mips@vger.kernel.org>; Thu, 2 May 2019 11:30:15 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2s81ej5du2-1
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-mips@vger.kernel.org>; Thu, 02 May 2019 11:30:27 -0400
+        for <linux-mips@vger.kernel.org>; Thu, 02 May 2019 11:30:15 -0400
 Received: from localhost
-        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
         for <linux-mips@vger.kernel.org> from <rppt@linux.ibm.com>;
-        Thu, 2 May 2019 16:30:24 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
-        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Thu, 2 May 2019 16:30:12 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
         (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 2 May 2019 16:30:15 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x42FUEvu28835860
+        Thu, 2 May 2019 16:30:04 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x42FU3Rx47448134
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 2 May 2019 15:30:14 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 56FB84C058;
-        Thu,  2 May 2019 15:30:14 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id E40C54C052;
-        Thu,  2 May 2019 15:30:09 +0000 (GMT)
+        Thu, 2 May 2019 15:30:03 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 3ED79A4051;
+        Thu,  2 May 2019 15:30:03 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B33DCA4057;
+        Thu,  2 May 2019 15:29:58 +0000 (GMT)
 Received: from rapoport-lnx (unknown [9.148.205.209])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Thu,  2 May 2019 15:30:09 +0000 (GMT)
-Received: by rapoport-lnx (sSMTP sendmail emulation); Thu, 02 May 2019 18:30:08 +0300
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Thu,  2 May 2019 15:29:58 +0000 (GMT)
+Received: by rapoport-lnx (sSMTP sendmail emulation); Thu, 02 May 2019 18:29:57 +0300
 From:   Mike Rapoport <rppt@linux.ibm.com>
 To:     Andrew Morton <akpm@linux-foundation.org>
 Cc:     Arnd Bergmann <arnd@arndb.de>,
@@ -73,107 +73,79 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         linux-riscv@lists.infradead.org, linux-um@lists.infradead.org,
         nios2-dev@lists.rocketboards.org,
         Mike Rapoport <rppt@linux.ibm.com>
-Subject: [PATCH 15/15] unicore32: switch to generic version of pte allocation
-Date:   Thu,  2 May 2019 18:28:42 +0300
+Subject: [PATCH 13/15] riscv: switch to generic version of pte allocation
+Date:   Thu,  2 May 2019 18:28:40 +0300
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1556810922-20248-1-git-send-email-rppt@linux.ibm.com>
 References: <1556810922-20248-1-git-send-email-rppt@linux.ibm.com>
 X-TM-AS-GCONF: 00
-x-cbid: 19050215-0020-0000-0000-00000338993E
+x-cbid: 19050215-0016-0000-0000-00000277A12E
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19050215-0021-0000-0000-0000218B21F5
-Message-Id: <1556810922-20248-16-git-send-email-rppt@linux.ibm.com>
+x-cbparentid: 19050215-0017-0000-0000-000032D4363D
+Message-Id: <1556810922-20248-14-git-send-email-rppt@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-02_08:,,
  signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
  malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=755 adultscore=0 classifier=spam adjust=0 reason=mlx
+ mlxlogscore=957 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1810050000 definitions=main-1905020103
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Replace __get_free_page() and alloc_pages() calls with the generic
-__pte_alloc_one_kernel() and __pte_alloc_one().
+The only difference between the generic and RISC-V implementation of PTE
+allocation is the usage of __GFP_RETRY_MAYFAIL for both kernel and user
+PTEs and the absence of __GFP_ACCOUNT for the user PTEs.
 
-There is no functional change for the kernel PTE allocation.
-
-The difference for the user PTEs, is that the clear_pte_table() is now
-called after pgtable_page_ctor() and the addition of __GFP_ACCOUNT to the
-GFP flags.
+The conversion to the generic version removes the __GFP_RETRY_MAYFAIL and
+ensures that GFP_ACCOUNT is used for the user PTE allocations.
 
 The pte_free() and pte_free_kernel() versions are identical to the generic
 ones and can be simply dropped.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- arch/unicore32/include/asm/pgalloc.h | 36 ++++++++----------------------------
- 1 file changed, 8 insertions(+), 28 deletions(-)
+ arch/riscv/include/asm/pgalloc.h | 29 ++---------------------------
+ 1 file changed, 2 insertions(+), 27 deletions(-)
 
-diff --git a/arch/unicore32/include/asm/pgalloc.h b/arch/unicore32/include/asm/pgalloc.h
-index 7cceabe..dd09af6 100644
---- a/arch/unicore32/include/asm/pgalloc.h
-+++ b/arch/unicore32/include/asm/pgalloc.h
-@@ -17,6 +17,10 @@
- #include <asm/cacheflush.h>
- #include <asm/tlbflush.h>
+diff --git a/arch/riscv/include/asm/pgalloc.h b/arch/riscv/include/asm/pgalloc.h
+index 94043cf..48f28bb 100644
+--- a/arch/riscv/include/asm/pgalloc.h
++++ b/arch/riscv/include/asm/pgalloc.h
+@@ -18,6 +18,8 @@
+ #include <linux/mm.h>
+ #include <asm/tlb.h>
  
-+#define __HAVE_ARCH_PTE_ALLOC_ONE_KERNEL
-+#define __HAVE_ARCH_PTE_ALLOC_ONE
-+#include <asm-generic/pgalloc.h>
++#include <asm-generic/pgalloc.h>	/* for pte_{alloc,free}_one */
 +
- #define check_pgt_cache()		do { } while (0)
- 
- #define _PAGE_USER_TABLE	(PMD_TYPE_TABLE | PMD_PRESENT)
-@@ -28,17 +32,14 @@ extern void free_pgd_slow(struct mm_struct *mm, pgd_t *pgd);
- #define pgd_alloc(mm)			get_pgd_slow(mm)
- #define pgd_free(mm, pgd)		free_pgd_slow(mm, pgd)
- 
--#define PGALLOC_GFP	(GFP_KERNEL | __GFP_ZERO)
--
- /*
-  * Allocate one PTE table.
-  */
- static inline pte_t *
- pte_alloc_one_kernel(struct mm_struct *mm)
+ static inline void pmd_populate_kernel(struct mm_struct *mm,
+ 	pmd_t *pmd, pte_t *pte)
  {
--	pte_t *pte;
-+	pte_t *pte = __pte_alloc_one_kernel(mm);
+@@ -82,33 +84,6 @@ static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
  
--	pte = (pte_t *)__get_free_page(PGALLOC_GFP);
- 	if (pte)
- 		clean_dcache_area(pte, PTRS_PER_PTE * sizeof(pte_t));
+ #endif /* __PAGETABLE_PMD_FOLDED */
  
-@@ -50,35 +51,14 @@ pte_alloc_one(struct mm_struct *mm)
- {
- 	struct page *pte;
- 
--	pte = alloc_pages(PGALLOC_GFP, 0);
-+	pte = __pte_alloc_one(mm, GFP_PGTABLE_USER);
- 	if (!pte)
- 		return NULL;
--	if (!PageHighMem(pte)) {
--		void *page = page_address(pte);
--		clean_dcache_area(page, PTRS_PER_PTE * sizeof(pte_t));
--	}
--	if (!pgtable_page_ctor(pte)) {
--		__free_page(pte);
--	}
+-static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
+-{
+-	return (pte_t *)__get_free_page(
+-		GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_ZERO);
+-}
 -
-+	if (!PageHighMem(pte))
-+		clean_pte_table(page_address(pte));
- 	return pte;
- }
- 
--/*
-- * Free one PTE table.
-- */
+-static inline struct page *pte_alloc_one(struct mm_struct *mm)
+-{
+-	struct page *pte;
+-
+-	pte = alloc_page(GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_ZERO);
+-	if (likely(pte != NULL))
+-		pgtable_page_ctor(pte);
+-	return pte;
+-}
+-
 -static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
 -{
--	if (pte)
--		free_page((unsigned long)pte);
+-	free_page((unsigned long)pte);
 -}
 -
 -static inline void pte_free(struct mm_struct *mm, pgtable_t pte)
@@ -182,9 +154,9 @@ index 7cceabe..dd09af6 100644
 -	__free_page(pte);
 -}
 -
- static inline void __pmd_populate(pmd_t *pmdp, unsigned long pmdval)
- {
- 	set_pmd(pmdp, __pmd(pmdval));
+ #define __pte_free_tlb(tlb, pte, buf)   \
+ do {                                    \
+ 	pgtable_page_dtor(pte);         \
 -- 
 2.7.4
 

@@ -2,184 +2,371 @@ Return-Path: <SRS0=hTb5=TC=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_PASS,
-	USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C4A40C04AAA
-	for <linux-mips@archiver.kernel.org>; Thu,  2 May 2019 14:24:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 169CFC43219
+	for <linux-mips@archiver.kernel.org>; Thu,  2 May 2019 15:29:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8944A205C9
-	for <linux-mips@archiver.kernel.org>; Thu,  2 May 2019 14:24:44 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hCeMdYfq"
+	by mail.kernel.org (Postfix) with ESMTP id D1E7F216FD
+	for <linux-mips@archiver.kernel.org>; Thu,  2 May 2019 15:29:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726267AbfEBOYo (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 2 May 2019 10:24:44 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:39927 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726197AbfEBOYn (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 2 May 2019 10:24:43 -0400
-Received: by mail-lj1-f193.google.com with SMTP id q10so2363321ljc.6;
-        Thu, 02 May 2019 07:24:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=RxZ5w9mWQKJNicrHyEV1DSUmteddrLY464RPQLI5MEw=;
-        b=hCeMdYfq8rOLM1fPJDEANp7JijVwFFF7eK76vdoE0+hzxMbf6UE8fU2RRfmfy6FzZD
-         TdfGBos5hC1U2RoJgGavfJ3Hqzit/Zt186ZDcbqowdE/2EqgSV6Hcy3QxxDUAXPajR26
-         zR1wb6ldMFeSb3fx4LufOumYRlh1C/aB/Oo7tauTLshk75feE1Ejc7auv77R6reoPQTZ
-         jPBDjYlE5/kGYQyWuuoE0+RMBiP5UA4UVdXrAL1t7vTAHbhandPY9h/zraOueXpR+efX
-         2HYtG4Blvlg+ercZCnOhZw4zA06iMw2OF+1lTZ6O1SnZJYQzkCzH9P7cnL2ZWUQY1+vH
-         wVVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=RxZ5w9mWQKJNicrHyEV1DSUmteddrLY464RPQLI5MEw=;
-        b=YLo/8PJXjDd72splfPZZaKHNNWNm5sf9FEqbqRoAn+8MEao1XeN9oWk2RrkFTMENt5
-         O6Rs+/IRO2TwMR7ghftNWeMF19LegG794uaCxiypJxqsZIXWfMRY9b3mTIRZDlKaIcOO
-         yFqJJSyN48nut6EVWOcEOqYbMT35tz3zt4RoAXKxx7/LBT4DKTtNsqtNrvh8ErODaVbn
-         2/Hh+nzGAZqdcU4v6PUZ03SkWFbNI/Tbq9TKQMDNKNE/iqEDbqV3OSnceNIgLE0FSJu6
-         TBilOvMJnQ/BdAr+CgrOizw+iZmJ9qcJ8Q5CgBVvdnPitUwCf6IQkhAgKwS5SxaoY17Z
-         miCA==
-X-Gm-Message-State: APjAAAVyDNi3igMEEd8g3G/7G9vyjLVZflzDKwbGXXfnS05rd6rdM/KA
-        9zsCt/lFLGvRj0Kck80ol7g=
-X-Google-Smtp-Source: APXvYqwqxkWHiw/74PjhWAN0MCl9FCHovc+9nVoWV2viac5S/CXNYVd9ONZL+YfQO2W8eXXVal11WA==
-X-Received: by 2002:a2e:4ca:: with SMTP id a71mr1886791ljf.39.1556807080821;
-        Thu, 02 May 2019 07:24:40 -0700 (PDT)
-Received: from mobilestation ([5.164.217.122])
-        by smtp.gmail.com with ESMTPSA id o17sm1985785ljj.39.2019.05.02.07.24.39
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 02 May 2019 07:24:40 -0700 (PDT)
-Date:   Thu, 2 May 2019 17:24:37 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        id S1727869AbfEBP3J (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 2 May 2019 11:29:09 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:55526 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728344AbfEBP3J (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 2 May 2019 11:29:09 -0400
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x42FSIel138821
+        for <linux-mips@vger.kernel.org>; Thu, 2 May 2019 11:29:07 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2s81d7djg9-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-mips@vger.kernel.org>; Thu, 02 May 2019 11:29:07 -0400
+Received: from localhost
+        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@vger.kernel.org> from <rppt@linux.ibm.com>;
+        Thu, 2 May 2019 16:29:05 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Thu, 2 May 2019 16:28:56 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x42FSt5x49152192
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 2 May 2019 15:28:55 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 2463CA4062;
+        Thu,  2 May 2019 15:28:55 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9F1F3A4054;
+        Thu,  2 May 2019 15:28:50 +0000 (GMT)
+Received: from rapoport-lnx (unknown [9.148.205.209])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Thu,  2 May 2019 15:28:50 +0000 (GMT)
+Received: by rapoport-lnx (sSMTP sendmail emulation); Thu, 02 May 2019 18:28:49 +0300
+From:   Mike Rapoport <rppt@linux.ibm.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greentime Hu <green.hu@gmail.com>,
+        Guan Xuetao <gxt@pku.edu.cn>, Guo Ren <guoren@kernel.org>,
+        Helge Deller <deller@gmx.de>, Ley Foon Tan <lftan@altera.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Matt Turner <mattst88@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Michal Hocko <mhocko@suse.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-        Huacai Chen <chenhc@lemote.com>,
-        Stefan Agner <stefan@agner.ch>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Juergen Gross <jgross@suse.com>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 04/12] mips: Reserve memory for the kernel image resources
-Message-ID: <20190502142434.mpoyu4hhbunur5xe@mobilestation>
-References: <20190423224748.3765-1-fancer.lancer@gmail.com>
- <20190423224748.3765-5-fancer.lancer@gmail.com>
- <20190424224343.4skr727fszycwksq@pburton-laptop>
- <20190426000035.yfonfvrapmm4j3fg@mobilestation>
- <20190430225832.cjk7mj6dotw3cib6@pburton-laptop>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190430225832.cjk7mj6dotw3cib6@pburton-laptop>
-User-Agent: NeoMutt/20180716
+        Palmer Dabbelt <palmer@sifive.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Richard Weinberger <richard@nod.at>,
+        Russell King <linux@armlinux.org.uk>,
+        Sam Creasey <sammy@sammy.net>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-um@lists.infradead.org,
+        nios2-dev@lists.rocketboards.org,
+        Mike Rapoport <rppt@linux.ibm.com>
+Subject: [PATCH 01/15] asm-generic, x86: introduce generic pte_{alloc,free}_one[_kernel]
+Date:   Thu,  2 May 2019 18:28:28 +0300
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1556810922-20248-1-git-send-email-rppt@linux.ibm.com>
+References: <1556810922-20248-1-git-send-email-rppt@linux.ibm.com>
+X-TM-AS-GCONF: 00
+x-cbid: 19050215-0008-0000-0000-000002E29917
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19050215-0009-0000-0000-0000224F082E
+Message-Id: <1556810922-20248-2-git-send-email-rppt@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-02_08:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905020103
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Tue, Apr 30, 2019 at 10:58:33PM +0000, Paul Burton wrote:
+Most architectures have identical or very similar implementation of
+pte_alloc_one_kernel(), pte_alloc_one(), pte_free_kernel() and pte_free().
 
-Hello Paul
+Add a generic implementation that can be reused across architectures and
+enable its use on x86.
 
-> Hi Serge,
-> 
-> On Fri, Apr 26, 2019 at 03:00:36AM +0300, Serge Semin wrote:
-> > >  1) Older systems generally had something like an ISA bus which used
-> > >     addresses below the kernel, and bootloaders like YAMON left behind
-> > >     functions that could be called right at the start of RAM. This sort
-> > >     of thing should be accounted for by /memreserve/ in DT or similar
-> > >     platform-specific reservations though rather than generically, and
-> > >     at least Malta & SEAD-3 DTs already have /memreserve/ entries for
-> > >     it. So this part I think is OK. Some other older platforms might
-> > >     need updating, but that's fine.
-> > > 
-> > 
-> > Regarding ISA. As far as I remember devices on that bus can DMA only to the
-> > lowest 16MB. So in case if kernel is too big or placed pretty much high,
-> > they may be left even without reachable memory at all in current
-> > implementation.
-> 
-> Sure - I'm not too worried about these old buses, platforms can continue
-> to reserve the memory through DT or otherwise if they need to.
-> 
-> > >  2) trap_init() only allocates memory for the exception vector if using
-> > >     a vectored interrupt mode. In other cases it just uses CAC_BASE
-> > >     which currently gets reserved as part of this region between
-> > >     PHYS_OFFSET & _text.
-> > > 
-> > >     I think this behavior is bogus, and we should instead:
-> > > 
-> > >     - Allocate the exception vector memory using memblock_alloc() for
-> > >       CPUs implementing MIPSr2 or higher (ie. CPUs with a programmable
-> > >       EBase register). If we're not using vectored interrupts then
-> > >       allocating one page will do, and we already have the size
-> > >       calculation for if we are.
-> > > 
-> > >     - Otherwise use CAC_BASE but call memblock_reserve() on the first
-> > >       page.
-> > > 
-> > >     I think we should make that change before this one goes in. I can
-> > >     try to get to it tomorrow, but feel free to beat me to it.
-> > > 
-> > 
-> > As far as I understood you and the code this should be enough to fix
-> > the problem:
-> > diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-> > index 98ca55d62201..f680253e2617 100644
-> > --- a/arch/mips/kernel/traps.c
-> > +++ b/arch/mips/kernel/traps.c
-> > @@ -2326,6 +2326,8 @@ void __init trap_init(void)
-> >  				ebase += (read_c0_ebase() & 0x3ffff000);
-> >  			}
-> >  		}
-> > +
-> > +		memblock_reserve(ebase, PAGE_SIZE);
-> >  	}
-> >  
-> >  	if (cpu_has_mmips) {
-> > ---
-> > 
-> > Allocation has already been implemented in the if-branch under the
-> > (cpu_has_veic || cpu_has_vint) condition. So we don't need to change
-> > there anything.
-> > In case if vectored interrupts aren't supported the else-clause is
-> > taken and we need to reserve whatever is set in the exception base
-> > address variable.
-> > 
-> > I'll add this patch between 3d and 4th ones if you are ok with it.
-> 
-> I think that would work, but I have other motivations to allocate the
-> memory in non-vectored cases anyway. I just sent a series that does that
-> & cleans up a little [1]. If you could take a look that would be great.
-> With that change made I think this patch will be good to apply.
-> 
+The generic implementation uses
 
-Just reviewed and tested your series on my machine. I tagged the whole series
-in a response to the cover-letter of [1].
+	GFP_KERNEL | __GFP_ZERO
 
-Could you please proceed with this patchset review procedure? There are
-also eight more patches left without your tag or comment.  This patch
-is also left with no explicit tag.
+for the kernel page tables and
 
-BTW I see you already applied patches 1-3 to the mips-next, so what shall I
-do when sending a v2 patchset with fixes asked to be provided for patch 12
-and possibly for others in future? Shall I just resend the series without that
-applied patches or send them over with your acked-by tagges?
+	GFP_KERNEL | __GFP_ZERO | __GFP_ACCOUNT
 
--Sergey
+for the user page tables.
 
-> Thanks,
->     Paul
-> 
-> [1] https://lore.kernel.org/linux-mips/20190430225216.7164-1-paul.burton@mips.com/T/#t
+The "base" functions for PTE allocation, namely __pte_alloc_one_kernel()
+and __pte_alloc_one() are intended for the architectures that require
+additional actions after actual memory allocation or must use non-default
+GFP flags.
+
+x86 is switched to use generic pte_alloc_one_kernel(), pte_free_kernel() and
+pte_free().
+
+x86 still implements pte_alloc_one() to allow run-time control of GFP flags
+required for "userpte" command line option.
+
+Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+---
+ arch/x86/include/asm/pgalloc.h |  19 ++------
+ arch/x86/mm/pgtable.c          |  33 ++++---------
+ include/asm-generic/pgalloc.h  | 107 +++++++++++++++++++++++++++++++++++++++--
+ 3 files changed, 115 insertions(+), 44 deletions(-)
+
+diff --git a/arch/x86/include/asm/pgalloc.h b/arch/x86/include/asm/pgalloc.h
+index a281e61..29aa785 100644
+--- a/arch/x86/include/asm/pgalloc.h
++++ b/arch/x86/include/asm/pgalloc.h
+@@ -6,6 +6,9 @@
+ #include <linux/mm.h>		/* for struct page */
+ #include <linux/pagemap.h>
+ 
++#define __HAVE_ARCH_PTE_ALLOC_ONE
++#include <asm-generic/pgalloc.h>	/* for pte_{alloc,free}_one */
++
+ static inline int  __paravirt_pgd_alloc(struct mm_struct *mm) { return 0; }
+ 
+ #ifdef CONFIG_PARAVIRT_XXL
+@@ -47,24 +50,8 @@ extern gfp_t __userpte_alloc_gfp;
+ extern pgd_t *pgd_alloc(struct mm_struct *);
+ extern void pgd_free(struct mm_struct *mm, pgd_t *pgd);
+ 
+-extern pte_t *pte_alloc_one_kernel(struct mm_struct *);
+ extern pgtable_t pte_alloc_one(struct mm_struct *);
+ 
+-/* Should really implement gc for free page table pages. This could be
+-   done with a reference count in struct page. */
+-
+-static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
+-{
+-	BUG_ON((unsigned long)pte & (PAGE_SIZE-1));
+-	free_page((unsigned long)pte);
+-}
+-
+-static inline void pte_free(struct mm_struct *mm, struct page *pte)
+-{
+-	pgtable_page_dtor(pte);
+-	__free_page(pte);
+-}
+-
+ extern void ___pte_free_tlb(struct mmu_gather *tlb, struct page *pte);
+ 
+ static inline void __pte_free_tlb(struct mmu_gather *tlb, struct page *pte,
+diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+index 7bd0170..aaca89b 100644
+--- a/arch/x86/mm/pgtable.c
++++ b/arch/x86/mm/pgtable.c
+@@ -13,33 +13,17 @@ phys_addr_t physical_mask __ro_after_init = (1ULL << __PHYSICAL_MASK_SHIFT) - 1;
+ EXPORT_SYMBOL(physical_mask);
+ #endif
+ 
+-#define PGALLOC_GFP (GFP_KERNEL_ACCOUNT | __GFP_ZERO)
+-
+ #ifdef CONFIG_HIGHPTE
+-#define PGALLOC_USER_GFP __GFP_HIGHMEM
++#define PGTABLE_HIGHMEM __GFP_HIGHMEM
+ #else
+-#define PGALLOC_USER_GFP 0
++#define PGTABLE_HIGHMEM 0
+ #endif
+ 
+-gfp_t __userpte_alloc_gfp = PGALLOC_GFP | PGALLOC_USER_GFP;
+-
+-pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
+-{
+-	return (pte_t *)__get_free_page(PGALLOC_GFP & ~__GFP_ACCOUNT);
+-}
++gfp_t __userpte_alloc_gfp = GFP_PGTABLE_USER | PGTABLE_HIGHMEM;
+ 
+ pgtable_t pte_alloc_one(struct mm_struct *mm)
+ {
+-	struct page *pte;
+-
+-	pte = alloc_pages(__userpte_alloc_gfp, 0);
+-	if (!pte)
+-		return NULL;
+-	if (!pgtable_page_ctor(pte)) {
+-		__free_page(pte);
+-		return NULL;
+-	}
+-	return pte;
++	return __pte_alloc_one(mm, __userpte_alloc_gfp);
+ }
+ 
+ static int __init setup_userpte(char *arg)
+@@ -235,7 +219,7 @@ static int preallocate_pmds(struct mm_struct *mm, pmd_t *pmds[], int count)
+ {
+ 	int i;
+ 	bool failed = false;
+-	gfp_t gfp = PGALLOC_GFP;
++	gfp_t gfp = GFP_PGTABLE_USER;
+ 
+ 	if (mm == &init_mm)
+ 		gfp &= ~__GFP_ACCOUNT;
+@@ -401,14 +385,14 @@ static inline pgd_t *_pgd_alloc(void)
+ 	 * We allocate one page for pgd.
+ 	 */
+ 	if (!SHARED_KERNEL_PMD)
+-		return (pgd_t *)__get_free_pages(PGALLOC_GFP,
++		return (pgd_t *)__get_free_pages(GFP_PGTABLE_USER,
+ 						 PGD_ALLOCATION_ORDER);
+ 
+ 	/*
+ 	 * Now PAE kernel is not running as a Xen domain. We can allocate
+ 	 * a 32-byte slab for pgd to save memory space.
+ 	 */
+-	return kmem_cache_alloc(pgd_cache, PGALLOC_GFP);
++	return kmem_cache_alloc(pgd_cache, GFP_PGTABLE_USER);
+ }
+ 
+ static inline void _pgd_free(pgd_t *pgd)
+@@ -422,7 +406,8 @@ static inline void _pgd_free(pgd_t *pgd)
+ 
+ static inline pgd_t *_pgd_alloc(void)
+ {
+-	return (pgd_t *)__get_free_pages(PGALLOC_GFP, PGD_ALLOCATION_ORDER);
++	return (pgd_t *)__get_free_pages(GFP_PGTABLE_USER,
++					 PGD_ALLOCATION_ORDER);
+ }
+ 
+ static inline void _pgd_free(pgd_t *pgd)
+diff --git a/include/asm-generic/pgalloc.h b/include/asm-generic/pgalloc.h
+index 948714c..efecfb3 100644
+--- a/include/asm-generic/pgalloc.h
++++ b/include/asm-generic/pgalloc.h
+@@ -1,13 +1,112 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ #ifndef __ASM_GENERIC_PGALLOC_H
+ #define __ASM_GENERIC_PGALLOC_H
+-/*
+- * an empty file is enough for a nommu architecture
+- */
++
+ #ifdef CONFIG_MMU
+-#error need to implement an architecture specific asm/pgalloc.h
++
++#define GFP_PGTABLE_KERNEL	(GFP_KERNEL | __GFP_ZERO)
++#define GFP_PGTABLE_USER	(GFP_PGTABLE_KERNEL | __GFP_ACCOUNT)
++
++/**
++ * __pte_alloc_one_kernel - allocate a page for PTE-level kernel page table
++ * @mm: the mm_struct of the current context
++ *
++ * This function is intended for architectures that need
++ * anything beyond simple page allocation.
++ *
++ * Return: pointer to the allocated memory or %NULL on error
++ */
++static inline pte_t *__pte_alloc_one_kernel(struct mm_struct *mm)
++{
++	return (pte_t *)__get_free_page(GFP_PGTABLE_KERNEL);
++}
++
++#ifndef __HAVE_ARCH_PTE_ALLOC_ONE_KERNEL
++/**
++ * pte_alloc_one_kernel - allocate a page for PTE-level kernel page table
++ * @mm: the mm_struct of the current context
++ *
++ * Return: pointer to the allocated memory or %NULL on error
++ */
++static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
++{
++	return __pte_alloc_one_kernel(mm);
++}
++#endif
++
++/**
++ * pte_free_kernel - free PTE-level kernel page table page
++ * @mm: the mm_struct of the current context
++ * @pte: pointer to the memory containing the page table
++ */
++static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
++{
++	free_page((unsigned long)pte);
++}
++
++/**
++ * __pte_alloc_one - allocate a page for PTE-level user page table
++ * @mm: the mm_struct of the current context
++ * @gfp: GFP flags to use for the allocation
++ *
++ * Allocates a page and runs the pgtable_page_ctor().
++ *
++ * This function is intended for architectures that need
++ * anything beyond simple page allocation or must have custom GFP flags.
++ *
++ * Return: `struct page` initialized as page table or %NULL on error
++ */
++static inline pgtable_t __pte_alloc_one(struct mm_struct *mm, gfp_t gfp)
++{
++	struct page *pte;
++
++	pte = alloc_page(gfp);
++	if (!pte)
++		return NULL;
++	if (!pgtable_page_ctor(pte)) {
++		__free_page(pte);
++		return NULL;
++	}
++
++	return pte;
++}
++
++#ifndef __HAVE_ARCH_PTE_ALLOC_ONE
++/**
++ * pte_alloc_one - allocate a page for PTE-level user page table
++ * @mm: the mm_struct of the current context
++ *
++ * Allocates a page and runs the pgtable_page_ctor().
++ *
++ * Return: `struct page` initialized as page table or %NULL on error
++ */
++static inline pgtable_t pte_alloc_one(struct mm_struct *mm)
++{
++	return __pte_alloc_one(mm, GFP_PGTABLE_USER);
++}
+ #endif
+ 
++/*
++ * Should really implement gc for free page table pages. This could be
++ * done with a reference count in struct page.
++ */
++
++/**
++ * pte_free_kernel - free PTE-level user page table page
++ * @mm: the mm_struct of the current context
++ * @pte_page: the `struct page` representing the page table
++ */
++static inline void pte_free(struct mm_struct *mm, struct page *pte_page)
++{
++	pgtable_page_dtor(pte_page);
++	__free_page(pte_page);
++}
++
++#else /* CONFIG_MMU */
++
++/* This is enough for a nommu architecture */
+ #define check_pgt_cache()          do { } while (0)
+ 
++#endif /* CONFIG_MMU */
++
+ #endif /* __ASM_GENERIC_PGALLOC_H */
+-- 
+2.7.4
+

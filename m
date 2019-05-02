@@ -2,23 +2,22 @@ Return-Path: <SRS0=hTb5=TC=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
-	UNWANTED_LANGUAGE_BODY,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FB09C43219
-	for <linux-mips@archiver.kernel.org>; Thu,  2 May 2019 09:41:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D3A0C04AA9
+	for <linux-mips@archiver.kernel.org>; Thu,  2 May 2019 09:41:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 19756206DF
-	for <linux-mips@archiver.kernel.org>; Thu,  2 May 2019 09:41:41 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 76A6A20873
+	for <linux-mips@archiver.kernel.org>; Thu,  2 May 2019 09:41:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726372AbfEBJl3 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 2 May 2019 05:41:29 -0400
+        id S1726127AbfEBJll (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 2 May 2019 05:41:41 -0400
 Received: from esa6.microchip.iphmx.com ([216.71.154.253]:64068 "EHLO
         esa6.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726127AbfEBJl2 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 2 May 2019 05:41:28 -0400
+        with ESMTP id S1726371AbfEBJl3 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 2 May 2019 05:41:29 -0400
 Received-SPF: Pass (esa6.microchip.iphmx.com: domain of
   Joergen.Andreasen@microchip.com designates 198.175.253.82 as
   permitted sender) identity=mailfrom;
@@ -39,12 +38,12 @@ Received-SPF: None (esa6.microchip.iphmx.com: no sender
   x-conformance=spf_only
 Authentication-Results: esa6.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Joergen.Andreasen@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
 X-IronPort-AV: E=Sophos;i="5.60,421,1549954800"; 
-   d="scan'208";a="28787435"
+   d="scan'208";a="28787455"
 Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 02 May 2019 02:41:02 -0700
+  by esa6.microchip.iphmx.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 02 May 2019 02:41:14 -0700
 Received: from localhost (10.10.76.4) by chn-sv-exch04.mchp-main.com
  (10.10.76.105) with Microsoft SMTP Server id 14.3.352.0; Thu, 2 May 2019
- 02:41:02 -0700
+ 02:41:14 -0700
 From:   Joergen Andreasen <joergen.andreasen@microchip.com>
 To:     <netdev@vger.kernel.org>
 CC:     Joergen Andreasen <joergen.andreasen@microchip.com>,
@@ -58,9 +57,9 @@ CC:     Joergen Andreasen <joergen.andreasen@microchip.com>,
         "Paul Burton" <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>, <linux-mips@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next 1/3] net/sched: act_police: move police parameters into separate header file
-Date:   Thu, 2 May 2019 11:40:27 +0200
-Message-ID: <20190502094029.22526-2-joergen.andreasen@microchip.com>
+Subject: [PATCH net-next 3/3] MIPS: generic: Add police related options to ocelot_defconfig
+Date:   Thu, 2 May 2019 11:40:29 +0200
+Message-ID: <20190502094029.22526-4-joergen.andreasen@microchip.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190502094029.22526-1-joergen.andreasen@microchip.com>
 References: <20190502094029.22526-1-joergen.andreasen@microchip.com>
@@ -71,104 +70,32 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hardware offloading a policer requires access to it's parameters.
-This is now possible by including net/tc_act/tc_police.h.
+Add default support for ingress qdisc, matchall classification
+and police action on MSCC Ocelot.
 
 Signed-off-by: Joergen Andreasen <joergen.andreasen@microchip.com>
 ---
- include/net/tc_act/tc_police.h | 41 ++++++++++++++++++++++++++++++++++
- net/sched/act_police.c         | 27 +---------------------
- 2 files changed, 42 insertions(+), 26 deletions(-)
- create mode 100644 include/net/tc_act/tc_police.h
+ arch/mips/configs/generic/board-ocelot.config | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/include/net/tc_act/tc_police.h b/include/net/tc_act/tc_police.h
-new file mode 100644
-index 000000000000..052dc5f37aa9
---- /dev/null
-+++ b/include/net/tc_act/tc_police.h
-@@ -0,0 +1,41 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __NET_TC_POLICE_H
-+#define __NET_TC_POLICE_H
+diff --git a/arch/mips/configs/generic/board-ocelot.config b/arch/mips/configs/generic/board-ocelot.config
+index 5e53b4bc47f1..5c7360dd819c 100644
+--- a/arch/mips/configs/generic/board-ocelot.config
++++ b/arch/mips/configs/generic/board-ocelot.config
+@@ -25,6 +25,13 @@ CONFIG_SERIAL_OF_PLATFORM=y
+ CONFIG_NETDEVICES=y
+ CONFIG_NET_SWITCHDEV=y
+ CONFIG_NET_DSA=y
++CONFIG_NET_SCHED=y
++CONFIG_NET_SCH_INGRESS=y
++CONFIG_NET_CLS_MATCHALL=y
++CONFIG_NET_CLS_ACT=y
++CONFIG_NET_ACT_POLICE=y
++CONFIG_NET_ACT_GACT=y
 +
-+#include <net/act_api.h>
-+
-+struct tcf_police_params {
-+	int			tcfp_result;
-+	u32			tcfp_ewma_rate;
-+	s64			tcfp_burst;
-+	u32			tcfp_mtu;
-+	s64			tcfp_mtu_ptoks;
-+	struct psched_ratecfg	rate;
-+	bool			rate_present;
-+	struct psched_ratecfg	peak;
-+	bool			peak_present;
-+	struct rcu_head rcu;
-+};
-+
-+struct tcf_police {
-+	struct tc_action	common;
-+	struct tcf_police_params __rcu *params;
-+
-+	spinlock_t		tcfp_lock ____cacheline_aligned_in_smp;
-+	s64			tcfp_toks;
-+	s64			tcfp_ptoks;
-+	s64			tcfp_t_c;
-+};
-+
-+#define to_police(pc) ((struct tcf_police *)pc)
-+
-+static inline bool is_tcf_police(const struct tc_action *a)
-+{
-+#ifdef CONFIG_NET_CLS_ACT
-+	if (a->ops && a->ops->id == TCA_ID_POLICE)
-+		return true;
-+#endif
-+	return false;
-+}
-+
-+#endif /* __NET_TC_POLICE_H */
-diff --git a/net/sched/act_police.c b/net/sched/act_police.c
-index 2b8581f6ab51..5cb053f2c7b1 100644
---- a/net/sched/act_police.c
-+++ b/net/sched/act_police.c
-@@ -19,35 +19,10 @@
- #include <linux/rtnetlink.h>
- #include <linux/init.h>
- #include <linux/slab.h>
--#include <net/act_api.h>
-+#include <net/tc_act/tc_police.h>
- #include <net/netlink.h>
- #include <net/pkt_cls.h>
- 
--struct tcf_police_params {
--	int			tcfp_result;
--	u32			tcfp_ewma_rate;
--	s64			tcfp_burst;
--	u32			tcfp_mtu;
--	s64			tcfp_mtu_ptoks;
--	struct psched_ratecfg	rate;
--	bool			rate_present;
--	struct psched_ratecfg	peak;
--	bool			peak_present;
--	struct rcu_head rcu;
--};
--
--struct tcf_police {
--	struct tc_action	common;
--	struct tcf_police_params __rcu *params;
--
--	spinlock_t		tcfp_lock ____cacheline_aligned_in_smp;
--	s64			tcfp_toks;
--	s64			tcfp_ptoks;
--	s64			tcfp_t_c;
--};
--
--#define to_police(pc) ((struct tcf_police *)pc)
--
- /* old policer structure from before tc actions */
- struct tc_police_compat {
- 	u32			index;
+ CONFIG_MSCC_OCELOT_SWITCH=y
+ CONFIG_MSCC_OCELOT_SWITCH_OCELOT=y
+ CONFIG_MDIO_MSCC_MIIM=y
 -- 
 2.17.1
 

@@ -2,165 +2,94 @@ Return-Path: <SRS0=9wPQ=TD=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37733C43219
-	for <linux-mips@archiver.kernel.org>; Fri,  3 May 2019 14:01:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3B41C04AAA
+	for <linux-mips@archiver.kernel.org>; Fri,  3 May 2019 14:13:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 13D132070B
-	for <linux-mips@archiver.kernel.org>; Fri,  3 May 2019 14:01:27 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A5A0E2089E
+	for <linux-mips@archiver.kernel.org>; Fri,  3 May 2019 14:13:11 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f4+A6pUU"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727089AbfECOB0 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 3 May 2019 10:01:26 -0400
-Received: from ivanoab6.miniserver.com ([5.153.251.140]:48110 "EHLO
-        www.kot-begemot.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726719AbfECOB0 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 3 May 2019 10:01:26 -0400
-X-Greylist: delayed 1909 seconds by postgrey-1.27 at vger.kernel.org; Fri, 03 May 2019 10:01:24 EDT
-Received: from [192.168.17.6] (helo=jain.kot-begemot.co.uk)
-        by www.kot-begemot.co.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <anton.ivanov@cambridgegreys.com>)
-        id 1hMYFM-00074d-Bk; Fri, 03 May 2019 13:29:04 +0000
-Received: from jain.kot-begemot.co.uk ([192.168.3.3])
-        by jain.kot-begemot.co.uk with esmtp (Exim 4.89)
-        (envelope-from <anton.ivanov@cambridgegreys.com>)
-        id 1hMYFF-0001a5-CV; Fri, 03 May 2019 14:29:03 +0100
-Subject: Re: [PATCH 14/15] um: switch to generic version of pte allocation
-To:     Mike Rapoport <rppt@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Michal Hocko <mhocko@suse.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Palmer Dabbelt <palmer@sifive.com>, linux-mips@vger.kernel.org,
-        Guo Ren <guoren@kernel.org>, linux-hexagon@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Helge Deller <deller@gmx.de>, x86@kernel.org,
-        Russell King <linux@armlinux.org.uk>,
-        Matthew Wilcox <willy@infradead.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Matt Turner <mattst88@gmail.com>,
-        Sam Creasey <sammy@sammy.net>, Arnd Bergmann <arnd@arndb.de>,
-        linux-um@lists.infradead.org, Richard Weinberger <richard@nod.at>,
-        linux-m68k@lists.linux-m68k.org, Greentime Hu <green.hu@gmail.com>,
-        nios2-dev@lists.rocketboards.org, Guan Xuetao <gxt@pku.edu.cn>,
-        linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Richard Kuo <rkuo@codeaurora.org>,
+        id S1727559AbfECONK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 3 May 2019 10:13:10 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:44779 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727397AbfECONK (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 3 May 2019 10:13:10 -0400
+Received: by mail-wr1-f65.google.com with SMTP id c5so8056732wrs.11;
+        Fri, 03 May 2019 07:13:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:openpgp:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=/WgYbCKE2WHmEu4CJzMjz8r9bF+PC2uNvvqT2nxvljU=;
+        b=f4+A6pUUh4b1EpMQn5QcG8YGsXNl/i6t1dRn6GvCmXwLUYfD6vW82SSD1oLfN53QC2
+         LDYQYQKcFcbA2ZPw5ffllqtyr73j4WSE4BETRHzArcTO7tV800sxeOKGV9WVkd4kUtdy
+         Z5hU/Jn/O91OdS7wPTokX2xdTZ+OFwm9e27BoX9ABz/DjF/iguaJbqc/AWoBhwBj289m
+         xTSlxfhv3yo3dIyMW9z+IIrUDPVQ2sqLEt1nWNtS9/QlXOqBV1VnyUIcMf4+MnX4EX1m
+         MR592zcDrRBtBiI3RKlkv/9CTfjYEyI4PBtMu39d6qnBrLtmVsOeiS8ja7CqxeukrHdZ
+         v28w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:openpgp
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=/WgYbCKE2WHmEu4CJzMjz8r9bF+PC2uNvvqT2nxvljU=;
+        b=axpuBx+KP9nCSVI6MhVz9rbVDJNli+bkKYhYrbHNG4dJUHVt1JCviRCznixsHy47Ty
+         D+mWywKEMv9mwy56k7fADXkGIoDxk13o+TPyxmuQ5+aySB0REyNzV5UZ68/0kymHFkoN
+         t+e4JEfRQN+JnN5rEtEOZ/3ekiV+4t2DUYwX2+vYk41k1UiXnNH1tok/D2TBsnAPJp6V
+         usgtEfnQkrgQ4mgunm2edQ/RWsMD/NEsBvsb3NhpkGya5p4uBF0xCWLvt5R3k2QQBi+Q
+         24mLQILd5pteMwEe5vFh8ctfT1CWGiaPLPx5io9tcajXKVtchL4GpRUAXtJqKD36vzLA
+         WvHg==
+X-Gm-Message-State: APjAAAWw7wWU14XG8NqxzJHINqVRyhycxW/5SwRWI91DD87S8qRUg07Q
+        BHOqnCY1kyRZdv3/z5uqU+8=
+X-Google-Smtp-Source: APXvYqwXeAYzjzfsJE1irjCmCsPKO6J3HFWMsQCcRoJPGEUoT6BCZR4LXtx6GXMWwgW/s4EmH+aRkg==
+X-Received: by 2002:adf:e8c4:: with SMTP id k4mr7553656wrn.9.1556892788449;
+        Fri, 03 May 2019 07:13:08 -0700 (PDT)
+Received: from [192.168.1.33] (193.red-88-21-103.staticip.rima-tde.net. [88.21.103.193])
+        by smtp.gmail.com with ESMTPSA id z6sm2432874wrw.87.2019.05.03.07.13.06
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Fri, 03 May 2019 07:13:07 -0700 (PDT)
+Subject: Re: [PATCH 2/3] clk: add BCM63XX gated clock controller driver
+To:     Jonas Gorski <jonas.gorski@gmail.com>, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-mips@vger.kernel.org
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
-        linux-alpha@vger.kernel.org, Ley Foon Tan <lftan@altera.com>,
-        linuxppc-dev@lists.ozlabs.org
-References: <1556810922-20248-1-git-send-email-rppt@linux.ibm.com>
- <1556810922-20248-15-git-send-email-rppt@linux.ibm.com>
-From:   Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Message-ID: <3fddc076-1843-ee84-febb-44c8d317489f@cambridgegreys.com>
-Date:   Fri, 3 May 2019 14:28:56 +0100
+        James Hogan <jhogan@kernel.org>
+References: <20190502122657.15577-1-jonas.gorski@gmail.com>
+ <20190502122657.15577-3-jonas.gorski@gmail.com>
+From:   =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>
+Openpgp: url=http://pgp.mit.edu/pks/lookup?op=get&search=0xE3E32C2CDEADC0DE
+Message-ID: <a8e757f2-c8e8-8aff-0d88-ef86b8241be7@amsat.org>
+Date:   Fri, 3 May 2019 16:13:05 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <1556810922-20248-15-git-send-email-rppt@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <20190502122657.15577-3-jonas.gorski@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Clacks-Overhead: GNU Terry Pratchett
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-
-
-On 02/05/2019 16:28, Mike Rapoport wrote:
-> um allocates PTE pages with __get_free_page() and uses
-> GFP_KERNEL | __GFP_ZERO for the allocations.
+On 5/2/19 2:26 PM, Jonas Gorski wrote:
+> Add a driver for the gated clock controller found on MIPS based BCM63XX
+> SoCs.
 > 
-> Switch it to the generic version that does exactly the same thing for the
-> kernel page tables and adds __GFP_ACCOUNT for the user PTEs.
-> 
-> The pte_free() and pte_free_kernel() versions are identical to the generic
-> ones and can be simply dropped.
-> 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->   arch/um/include/asm/pgalloc.h | 16 ++--------------
->   arch/um/kernel/mem.c          | 22 ----------------------
->   2 files changed, 2 insertions(+), 36 deletions(-)
-> 
-> diff --git a/arch/um/include/asm/pgalloc.h b/arch/um/include/asm/pgalloc.h
-> index 99eb568..d7b282e 100644
-> --- a/arch/um/include/asm/pgalloc.h
-> +++ b/arch/um/include/asm/pgalloc.h
-> @@ -10,6 +10,8 @@
->   
->   #include <linux/mm.h>
->   
-> +#include <asm-generic/pgalloc.h>	/* for pte_{alloc,free}_one */
-> +
->   #define pmd_populate_kernel(mm, pmd, pte) \
->   	set_pmd(pmd, __pmd(_PAGE_TABLE + (unsigned long) __pa(pte)))
->   
-> @@ -25,20 +27,6 @@
->   extern pgd_t *pgd_alloc(struct mm_struct *);
->   extern void pgd_free(struct mm_struct *mm, pgd_t *pgd);
->   
-> -extern pte_t *pte_alloc_one_kernel(struct mm_struct *);
-> -extern pgtable_t pte_alloc_one(struct mm_struct *);
-> -
-> -static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
-> -{
-> -	free_page((unsigned long) pte);
-> -}
-> -
-> -static inline void pte_free(struct mm_struct *mm, pgtable_t pte)
-> -{
-> -	pgtable_page_dtor(pte);
-> -	__free_page(pte);
-> -}
-> -
->   #define __pte_free_tlb(tlb,pte, address)		\
->   do {							\
->   	pgtable_page_dtor(pte);				\
-> diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
-> index 99aa11b..2280374 100644
-> --- a/arch/um/kernel/mem.c
-> +++ b/arch/um/kernel/mem.c
-> @@ -215,28 +215,6 @@ void pgd_free(struct mm_struct *mm, pgd_t *pgd)
->   	free_page((unsigned long) pgd);
->   }
->   
-> -pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
-> -{
-> -	pte_t *pte;
-> -
-> -	pte = (pte_t *)__get_free_page(GFP_KERNEL|__GFP_ZERO);
-> -	return pte;
-> -}
-> -
-> -pgtable_t pte_alloc_one(struct mm_struct *mm)
-> -{
-> -	struct page *pte;
-> -
-> -	pte = alloc_page(GFP_KERNEL|__GFP_ZERO);
-> -	if (!pte)
-> -		return NULL;
-> -	if (!pgtable_page_ctor(pte)) {
-> -		__free_page(pte);
-> -		return NULL;
-> -	}
-> -	return pte;
-> -}
-> -
->   #ifdef CONFIG_3_LEVEL_PGTABLES
->   pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
->   {
-> 
+> Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 
-
-Reviewed-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Acked-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-
--- 
-Anton R. Ivanov
-Cambridgegreys Limited. Registered in England. Company Number 10273661
-https://www.cambridgegreys.com/
+Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>

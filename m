@@ -1,130 +1,92 @@
-Return-Path: <SRS0=9wPQ=TD=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=hYxu=TE=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_MUTT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 265D0C43219
-	for <linux-mips@archiver.kernel.org>; Fri,  3 May 2019 17:52:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E887C43219
+	for <linux-mips@archiver.kernel.org>; Sat,  4 May 2019 13:07:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E9D7520B7C
-	for <linux-mips@archiver.kernel.org>; Fri,  3 May 2019 17:52:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7244520644
+	for <linux-mips@archiver.kernel.org>; Sat,  4 May 2019 13:07:36 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cae9601w"
+	dkim=pass (2048-bit key) header.d=resnulli-us.20150623.gappssmtp.com header.i=@resnulli-us.20150623.gappssmtp.com header.b="aP+Gx+n9"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728561AbfECRv4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 3 May 2019 13:51:56 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:40797 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728820AbfECRvn (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 3 May 2019 13:51:43 -0400
-Received: by mail-lf1-f65.google.com with SMTP id o16so4986114lfl.7;
-        Fri, 03 May 2019 10:51:41 -0700 (PDT)
+        id S1726905AbfEDNH3 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 4 May 2019 09:07:29 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:35022 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726776AbfEDNH2 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 4 May 2019 09:07:28 -0400
+Received: by mail-wr1-f65.google.com with SMTP id h15so5535601wrb.2
+        for <linux-mips@vger.kernel.org>; Sat, 04 May 2019 06:07:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=v/LR8SgjCFeSasZGBO3FAtfYGfrjDhMD48wHn2t6CEQ=;
-        b=cae9601wLSgRgqYUW45HHj8WE00Rab3oTgbbv7YEKZ7iWuBEXqVcvBvBFDC+Lj2rdF
-         kxx5F4fsKKh+497U9XtItDjTmZ62zzgTWNSYrCQcMslr1pmTmJr8enHEs86QHdIV57uU
-         hLlKQP6tr3OOlH9naxjGISBIjanifWnb7VUAVTXD0u5EVuSlo9FpA81YGfhpCnN+qY5w
-         QofuZIULE2XmBTGzzy2a4of6xPWOzqC1p9gRvMT16chmiUccDlYQ6mtRwvw+544Fa3qv
-         Z4LpBQwqFfR8w7EGMu50RdlZxXPR0yn9ZEkSeeuvdtft5vgKAU7FrZUB0SdPUl4efqW4
-         oVXQ==
+        d=resnulli-us.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=bIX74g/Ebw6UXLbNNWzw4fo2NH6a/QGR4Dtf+2q0aD0=;
+        b=aP+Gx+n9L5sgKnRZXtE6elh0uIqEirFfd9dC/RjHG7mBwU5GkfZt+biVib7L8y7QY6
+         dB91OsrwoO4Kbs/sHONdfQpNVZs2KlTov88VbHc3+F8qWLt3qhWdNyr8bQ3ZzrHFMaWl
+         dZTXrCnFSf9Yz9aIDpUWxKvng6Hdbde+70aL9ypnubKpCcF3cVVg6wnPnvamrVtLPv6C
+         I2YqBku+LkKGGkrRN8aeOfMQzueLc0oLxr1t/zh8aj/jK0T19rec0Q/SAs9DQJ2IuOMA
+         3q/iObDu7GOwHbVEvJZhlr1f/MTuwQyyGRykr1u8p6J1LB0lumbNSrTL5tfDSohbv3bd
+         b4TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=v/LR8SgjCFeSasZGBO3FAtfYGfrjDhMD48wHn2t6CEQ=;
-        b=g/2BGS8qWtdsCB0vlJfMAt0KS2y9VbVVB5RONiZfcXrD2b7Imqew+bIRSMkEG6Ivi7
-         SvLidOU0UMqWXh49sRZMdHKey3ichsx6BQjrViEOXYSxHMhZzwadF1ZkTK7FNgmoW+BK
-         UHGprCoFDhSQDBqRfDkNxR9UaovcB4KXpjZBLdj1yvoR4r/bst75T6H9nzxpebyi/46B
-         GBEKjAvl7g/I4IImYUbOl53wQRdWHz7afcYUHMgBBqy3X7fb9msgC7CC+mb7QJf4Csbf
-         zpWDqr0SjA+WN9GGj85rGlakynIvCm0CCbI4CDMP2siIqPza50KZjSYXr2IdRkJsu80w
-         XM1w==
-X-Gm-Message-State: APjAAAUe4Zu/WYejTGL7URR+a79Cd8xQMEsPbkU7Rimc0hfT5LFCcGN2
-        MfE+I/OvQCHriRivEWnLfmM=
-X-Google-Smtp-Source: APXvYqzaIswhZ16M/uyPSnSlhWFL6tGG02DM5yowGMDH/6Efa/U4+5qG1flLBtIwbdscxjig2TYs8w==
-X-Received: by 2002:ac2:44b2:: with SMTP id c18mr5577711lfm.86.1556905901150;
-        Fri, 03 May 2019 10:51:41 -0700 (PDT)
-Received: from localhost.localdomain ([5.164.217.122])
-        by smtp.gmail.com with ESMTPSA id z30sm533435lfb.87.2019.05.03.10.51.39
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 03 May 2019 10:51:40 -0700 (PDT)
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-        Huacai Chen <chenhc@lemote.com>,
-        Stefan Agner <stefan@agner.ch>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=bIX74g/Ebw6UXLbNNWzw4fo2NH6a/QGR4Dtf+2q0aD0=;
+        b=oRCtGwOL0O6Ja2P6bo8ABmiB8c52Ofa90dWpMdcdAfYIlz9QjTJx4frmcki0jZcB0+
+         cGY314mn5hB2ko8HulZf7p429moiWI54RdgFZbP5NtqlK7eG9EjluM6NhiXNbozmYX5X
+         vskksDr72RJq4lg6zWsMvRuRTZKUl/gtn5twV1Z1wOjuX05RNOwKip0RB97jcr7JEPri
+         3cEDeKc72Om/gCi8O7Z3ZG63bHqIg6EJtajk6n6p+Hf5OkoBOfE7H0SKeer1p5eDGSey
+         n4ssonHdyedklEacsjUstAxIME4/bwSAHvO8A8xmmBHSliIqF1knMeM2p7t1QCZtsrQU
+         TPvg==
+X-Gm-Message-State: APjAAAWJ2o7XtddejfsgR327g+Z7CMGS/dMmWbeSsyfGJ2TZxk9iohBX
+        F6erLfcwa8e0EIU8kFUil9saxg==
+X-Google-Smtp-Source: APXvYqx/ozBnqo9/lHr34HT+3oRk0fay36BQn/4qD9XF+nwCp+gkn1jy7+yKzyg3DAdfpezw1JxywA==
+X-Received: by 2002:a05:6000:3:: with SMTP id h3mr10677218wrx.314.1556975247343;
+        Sat, 04 May 2019 06:07:27 -0700 (PDT)
+Received: from localhost (jirka.pirko.cz. [84.16.102.26])
+        by smtp.gmail.com with ESMTPSA id d6sm3457846wrp.9.2019.05.04.06.07.26
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 04 May 2019 06:07:26 -0700 (PDT)
+Date:   Sat, 4 May 2019 15:07:26 +0200
+From:   Jiri Pirko <jiri@resnulli.us>
+To:     Joergen Andreasen <joergen.andreasen@microchip.com>
+Cc:     netdev@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>,
+        Cong Wang <xiyou.wangcong@gmail.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Juergen Gross <jgross@suse.com>
-Cc:     Serge Semin <Sergey.Semin@t-platforms.ru>,
-        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 4/5] mips: Make sure dt memory regions are valid
-Date:   Fri,  3 May 2019 20:50:40 +0300
-Message-Id: <20190503175041.7949-5-fancer.lancer@gmail.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190503175041.7949-1-fancer.lancer@gmail.com>
-References: <20190503175041.7949-1-fancer.lancer@gmail.com>
+        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jakub Kicinski <jakub.kicinski@netronome.com>,
+        pieter.jansenvanvuuren@netronome.com
+Subject: Re: [PATCH net-next 2/3] net: mscc: ocelot: Implement port policers
+ via tc command
+Message-ID: <20190504130726.GA14684@nanopsycho.orion>
+References: <20190502094029.22526-1-joergen.andreasen@microchip.com>
+ <20190502094029.22526-3-joergen.andreasen@microchip.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190502094029.22526-3-joergen.andreasen@microchip.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-There are situations when memory regions coming from dts may be
-too big for the platform physical address space. This especially
-concerns XPA-capable systems. Bootloader may determine more than 4GB
-memory available and pass it to the kernel over dts memory node, while
-kernel is built without XPA/64BIT support. In this case the region
-may either simply be truncated by add_memory_region() method
-or by u64->phys_addr_t type casting. But in worst case the method
-can even drop the memory region if it exceeds PHYS_ADDR_MAX size.
-So lets make sure the retrieved from dts memory regions are valid,
-and if some of them aren't, just manually truncate them with a warning
-printed out.
+Thu, May 02, 2019 at 11:40:28AM CEST, joergen.andreasen@microchip.com wrote:
+>Hardware offload of port policers are now supported via the tc command.
+>Supported police parameters are: rate, burst and overhead.
 
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
----
- arch/mips/kernel/prom.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c
-index 437a174e3ef9..28bf01961bb2 100644
---- a/arch/mips/kernel/prom.c
-+++ b/arch/mips/kernel/prom.c
-@@ -41,7 +41,19 @@ char *mips_get_machine_name(void)
- #ifdef CONFIG_USE_OF
- void __init early_init_dt_add_memory_arch(u64 base, u64 size)
- {
--	return add_memory_region(base, size, BOOT_MEM_RAM);
-+	if (base >= PHYS_ADDR_MAX) {
-+		pr_warn("Trying to add an invalid memory region, skipped\n");
-+		return;
-+	}
-+
-+	/* Truncate the passed memory region instead of type casting */
-+	if (base + size - 1 >= PHYS_ADDR_MAX || base + size < base) {
-+		pr_warn("Truncate memory region %llx @ %llx to size %llx\n",
-+			size, base, PHYS_ADDR_MAX - base);
-+		size = PHYS_ADDR_MAX - base;
-+	}
-+
-+	add_memory_region(base, size, BOOT_MEM_RAM);
- }
- 
- int __init early_init_dt_reserve_memory_arch(phys_addr_t base,
--- 
-2.21.0
-
+Joergen, please see:
+[PATCH net-next 00/13] net: act_police offload support
+That patchset is also pushing flow intermediate representation for this,
+so I believe that you should base this patch on top of that.

@@ -4,36 +4,36 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-3.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.0
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 47F45C04A6B
-	for <linux-mips@archiver.kernel.org>; Mon,  6 May 2019 19:12:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3A54C04A6B
+	for <linux-mips@archiver.kernel.org>; Mon,  6 May 2019 19:12:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 1A34B20830
-	for <linux-mips@archiver.kernel.org>; Mon,  6 May 2019 19:12:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6E619206BF
+	for <linux-mips@archiver.kernel.org>; Mon,  6 May 2019 19:12:12 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="DaML3+9t"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="klipIAfe"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726277AbfEFTMA (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 6 May 2019 15:12:00 -0400
-Received: from mail-eopbgr800097.outbound.protection.outlook.com ([40.107.80.97]:54144
-        "EHLO NAM03-DM3-obe.outbound.protection.outlook.com"
+        id S1726802AbfEFTMH (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 6 May 2019 15:12:07 -0400
+Received: from mail-eopbgr820123.outbound.protection.outlook.com ([40.107.82.123]:6422
+        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726145AbfEFTMA (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 6 May 2019 15:12:00 -0400
+        id S1726771AbfEFTMF (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 6 May 2019 15:12:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ywzyqmXunx8o56skT6VEskNZ01rlO6lRLcV+6onBoQE=;
- b=DaML3+9tLrTnqo5M0iPcBuJWfsPPIz2Qft2Ztj30zZaj1h+73AhkSnDAFixX27+vbRlE+xaZwHaUKdp7i1bDSSuCGMyiMYKwJNKMlOTLqr0OIaC9w49e5WJmBSqYYEr0IvTFd/Y1aqwpyxQE0YpJvI8vjJqKfMO3rISmKx5/IDE=
+ bh=7nBO7rTtbaQuglxR+X9jbbvya5IFhavDrUWJkRRl688=;
+ b=klipIAfe/OBfP4VKMNL/PPuINcqqr8v6HJLZJkAZAHTTSok8HyxVxDlLBgG4HxM6Jf6Vp+yNMkQe8//sl+CQLzcyI6ibtTB+0SWrHDaQMsgoIEazIFuhj1dfXwqiS2FCKk1hwd4Lb4ZEO0POilcJujK9AvPL8GI0+USgeUQ5NJk=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
- MWHPR2201MB1710.namprd22.prod.outlook.com (10.164.206.152) with Microsoft
+ MWHPR2201MB1215.namprd22.prod.outlook.com (10.174.161.148) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1856.10; Mon, 6 May 2019 19:11:56 +0000
+ 15.20.1856.12; Mon, 6 May 2019 19:12:01 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::90ff:8d19:8459:834b]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::90ff:8d19:8459:834b%7]) with mapi id 15.20.1856.012; Mon, 6 May 2019
- 19:11:56 +0000
+ 19:12:01 +0000
 From:   Paul Burton <paul.burton@mips.com>
 To:     Serge Semin <fancer.lancer@gmail.com>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
@@ -53,62 +53,67 @@ CC:     Ralf Baechle <ralf@linux-mips.org>,
         "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH v2 1/5] mips: Dump memblock regions for debugging
-Thread-Topic: [PATCH v2 1/5] mips: Dump memblock regions for debugging
-Thread-Index: AQHVAdjcB/jpjwvrqkS8AfzMfrbjNaZee3AA
-Date:   Mon, 6 May 2019 19:11:56 +0000
-Message-ID: <MWHPR2201MB12772F4F9442C678538DCDE8C1300@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20190503175041.7949-2-fancer.lancer@gmail.com>
-In-Reply-To: <20190503175041.7949-2-fancer.lancer@gmail.com>
+Subject: Re: [PATCH v2 4/5] mips: Make sure dt memory regions are valid
+Thread-Topic: [PATCH v2 4/5] mips: Make sure dt memory regions are valid
+Thread-Index: AQHVAdjfuMzs6t2E4UWTcJCe4/VKhaZee3aA
+Date:   Mon, 6 May 2019 19:12:01 +0000
+Message-ID: <MWHPR2201MB1277083FDFA3D964B24F33B7C1300@MWHPR2201MB1277.namprd22.prod.outlook.com>
+References: <20190503175041.7949-5-fancer.lancer@gmail.com>
+In-Reply-To: <20190503175041.7949-5-fancer.lancer@gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR02CA0043.namprd02.prod.outlook.com
- (2603:10b6:a03:54::20) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: BYAPR07CA0050.namprd07.prod.outlook.com
+ (2603:10b6:a03:60::27) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:24::17)
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [12.94.197.246]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: ae46db6c-ae3f-41c5-5948-08d6d256b47a
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);SRVR:MWHPR2201MB1710;
-x-ms-traffictypediagnostic: MWHPR2201MB1710:
-x-microsoft-antispam-prvs: <MWHPR2201MB171059777B73FD9494FAC1C9C1300@MWHPR2201MB1710.namprd22.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7219;
+x-ms-office365-filtering-correlation-id: 54e1973a-8775-4f22-07c4-08d6d256b752
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);SRVR:MWHPR2201MB1215;
+x-ms-traffictypediagnostic: MWHPR2201MB1215:
+x-microsoft-antispam-prvs: <MWHPR2201MB1215102D795A2A663A423540C1300@MWHPR2201MB1215.namprd22.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
 x-forefront-prvs: 0029F17A3F
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(136003)(376002)(39840400004)(366004)(346002)(396003)(189003)(199004)(4744005)(8936002)(6506007)(386003)(66476007)(66556008)(64756008)(66446008)(76176011)(476003)(9686003)(6246003)(229853002)(42882007)(186003)(4326008)(6116002)(81156014)(3846002)(81166006)(53936002)(71190400001)(2906002)(8676002)(73956011)(66946007)(26005)(55016002)(102836004)(71200400001)(44832011)(99286004)(446003)(7736002)(7416002)(14454004)(68736007)(74316002)(52536014)(5660300002)(256004)(305945005)(478600001)(66066001)(52116002)(7696005)(11346002)(25786009)(33656002)(54906003)(6916009)(486006)(6436002)(316002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1710;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(979002)(39840400004)(136003)(366004)(376002)(346002)(396003)(189003)(199004)(2906002)(53936002)(74316002)(7736002)(305945005)(8936002)(4326008)(81166006)(7416002)(25786009)(8676002)(6246003)(81156014)(71200400001)(229853002)(4744005)(71190400001)(5660300002)(6436002)(9686003)(33656002)(55016002)(11346002)(386003)(6506007)(186003)(14444005)(52536014)(256004)(102836004)(66066001)(68736007)(42882007)(52116002)(54906003)(7696005)(99286004)(26005)(316002)(66946007)(73956011)(66476007)(64756008)(66446008)(66556008)(44832011)(478600001)(6116002)(3846002)(76176011)(476003)(14454004)(6916009)(486006)(446003)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1215;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: oUltihqPwOyOZSMR61nzOEDaWs+iV3X+P7VTZ71Wqq+B8zfe/EEyVvwlDPHRDQK67OL7ApMNFjrBqvA/HCKZ1YJ6rS66yhCrSR6wdiyIKCugk8EKbmyghat/SaQeWEyDw9dWG+z8ZP9987xeANcLLhCCy68/xhNW/Rtmye8h1jHudAITi/4E+GbFmWSa6d9yX/gQPvKmS5QDUJji0Wvr7siwtwQAG4FAbrZT5Gu3bz1CjVt7Z9hVsFiiGC8LMm10ILayY2vIPR3ax7GN301aVLZZE3Jzk+6hZWNBqsMMmk+nCSAk4Y5X2o8V/giPVGom4mt5K2BG/xPKiOgU7Kga801YQraBYV9ehXP4GvbYmx07zbEzYgZkbw9PxO2Yoc9fE0fHDgqaUCCQgBvaS93VXJIMBf5eOdG3ecVkwkIuoMQ=
+x-microsoft-antispam-message-info: jscjNTx5wuXIS7SRE+lJrZKmMbysCWHw475i7r/TcXPPzE3OzUb+gh7Mc1w97+eK1c4h4739rTe2O2HzNhNS2mNEb7lmKOMhUYk4SQGtmNFnMXdHkgwZHW6oujuSqII8B+rc4O0qY2wSdAbksG0tIxmkYCr2onxW1TLAVOBbyE9WodwiPNpf/63VyvuQDmnqEzWQYDTtOmlQ9XwwwwHPVt4l5QOZS+b02PLuzzUYRmezwn6ulLM/mpuPyfIOvuQ7S8tcWOKPGckpVBOLWqmZjnRnKwbC1hp7JiVH4zdKtfauwJi1GMz1K5ZEV0hMz5yEnZvgNzCAZobFC96sKJ8wJuRhyIqKm7/M1Xy6S7sHGgg8G+q3y9IUnDjESJJrd3sU3/sNvqZ9E6LEUteXj9T30KoOFHfcIEsFGHWwQhuO5rg=
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ae46db6c-ae3f-41c5-5948-08d6d256b47a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 May 2019 19:11:56.0674
+X-MS-Exchange-CrossTenant-Network-Message-Id: 54e1973a-8775-4f22-07c4-08d6d256b752
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 May 2019 19:12:01.6721
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1710
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1215
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-SGVsbG8sDQoNClNlcmdlIFNlbWluIHdyb3RlOg0KPiBJdCBpcyB1c2VmdWwgdG8gaGF2ZSB0aGUg
-d2hvbGUgbWVtYmxvY2sgbWVtb3J5IHNwYWNlIHByaW50ZWQgdG8gY29uc29sZQ0KPiB3aGVuIGJh
-c2ljIG1lbWxvY2sgaW5pdGlhbGl6YXRpb25zIGFyZSBkb25lLiBJdCBjYW4gYmUgcGVyZm9ybWVk
-IGJ5DQo+IHJlYWR5LXRvLXVzZSBtZXRob2QgbWVtYmxvY2tfZHVtcF9hbGwoKSwgd2hpY2ggcHJp
-bnRzIHRoZSBhdmFpbGFibGUNCj4gYW5kIHJlc2VydmVkIG1lbW9yeSBzcGFjZXMgaWYgbWVtYmxv
-Y2s9ZGVidWcga2VybmVsIHBhcmFtZXRlciBpcw0KPiBzcGVjaWZpZWQuIExldHMgY2FsbCBpdCBh
-dCB0aGUgdmVyeSBlbmQgb2YgYXJjaF9tZW1faW5pdCgpIGZ1bmN0aW9uLA0KPiB3aGVuIGFsbCBt
-ZW1ibG9jayBtZW1vcnkgYW5kIHJlc2VydmVkIHJlZ2lvbnMgYXJlIGRlZmluZWQsIGJ1dCBiZWZv
-cmUNCj4gYW55IHNlcmlvdXMgYWxsb2NhdGlvbiBpcyBwZXJmb3JtZWQuDQo+IA0KPiBTaWduZWQt
-b2ZmLWJ5OiBTZXJnZSBTZW1pbiA8ZmFuY2VyLmxhbmNlckBnbWFpbC5jb20+DQoNCkFwcGxpZWQg
-dG8gbWlwcy1uZXh0Lg0KDQpUaGFua3MsDQogICAgUGF1bA0KDQpbIFRoaXMgbWVzc2FnZSB3YXMg
-YXV0by1nZW5lcmF0ZWQ7IGlmIHlvdSBiZWxpZXZlIGFueXRoaW5nIGlzIGluY29ycmVjdA0KICB0
-aGVuIHBsZWFzZSBlbWFpbCBwYXVsLmJ1cnRvbkBtaXBzLmNvbSB0byByZXBvcnQgaXQuIF0NCg==
+SGVsbG8sDQoNClNlcmdlIFNlbWluIHdyb3RlOg0KPiBUaGVyZSBhcmUgc2l0dWF0aW9ucyB3aGVu
+IG1lbW9yeSByZWdpb25zIGNvbWluZyBmcm9tIGR0cyBtYXkgYmUNCj4gdG9vIGJpZyBmb3IgdGhl
+IHBsYXRmb3JtIHBoeXNpY2FsIGFkZHJlc3Mgc3BhY2UuIFRoaXMgZXNwZWNpYWxseQ0KPiBjb25j
+ZXJucyBYUEEtY2FwYWJsZSBzeXN0ZW1zLiBCb290bG9hZGVyIG1heSBkZXRlcm1pbmUgbW9yZSB0
+aGFuIDRHQg0KPiBtZW1vcnkgYXZhaWxhYmxlIGFuZCBwYXNzIGl0IHRvIHRoZSBrZXJuZWwgb3Zl
+ciBkdHMgbWVtb3J5IG5vZGUsIHdoaWxlDQo+IGtlcm5lbCBpcyBidWlsdCB3aXRob3V0IFhQQS82
+NEJJVCBzdXBwb3J0LiBJbiB0aGlzIGNhc2UgdGhlIHJlZ2lvbg0KPiBtYXkgZWl0aGVyIHNpbXBs
+eSBiZSB0cnVuY2F0ZWQgYnkgYWRkX21lbW9yeV9yZWdpb24oKSBtZXRob2QNCj4gb3IgYnkgdTY0
+LT5waHlzX2FkZHJfdCB0eXBlIGNhc3RpbmcuIEJ1dCBpbiB3b3JzdCBjYXNlIHRoZSBtZXRob2QN
+Cj4gY2FuIGV2ZW4gZHJvcCB0aGUgbWVtb3J5IHJlZ2lvbiBpZiBpdCBleGNlZWRzIFBIWVNfQURE
+Ul9NQVggc2l6ZS4NCj4gU28gbGV0cyBtYWtlIHN1cmUgdGhlIHJldHJpZXZlZCBmcm9tIGR0cyBt
+ZW1vcnkgcmVnaW9ucyBhcmUgdmFsaWQsDQo+IGFuZCBpZiBzb21lIG9mIHRoZW0gYXJlbid0LCBq
+dXN0IG1hbnVhbGx5IHRydW5jYXRlIHRoZW0gd2l0aCBhIHdhcm5pbmcNCj4gcHJpbnRlZCBvdXQu
+DQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBTZXJnZSBTZW1pbiA8ZmFuY2VyLmxhbmNlckBnbWFpbC5j
+b20+DQoNCkFwcGxpZWQgdG8gbWlwcy1uZXh0Lg0KDQpUaGFua3MsDQogICAgUGF1bA0KDQpbIFRo
+aXMgbWVzc2FnZSB3YXMgYXV0by1nZW5lcmF0ZWQ7IGlmIHlvdSBiZWxpZXZlIGFueXRoaW5nIGlz
+IGluY29ycmVjdA0KICB0aGVuIHBsZWFzZSBlbWFpbCBwYXVsLmJ1cnRvbkBtaXBzLmNvbSB0byBy
+ZXBvcnQgaXQuIF0NCg==

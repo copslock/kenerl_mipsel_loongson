@@ -7,37 +7,37 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	T_DKIMWL_WL_HIGH,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 551E5C04AAD
-	for <linux-mips@archiver.kernel.org>; Tue,  7 May 2019 05:57:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9CE6C004C9
+	for <linux-mips@archiver.kernel.org>; Tue,  7 May 2019 06:04:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 2480E205C9
-	for <linux-mips@archiver.kernel.org>; Tue,  7 May 2019 05:57:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AD79A205C9
+	for <linux-mips@archiver.kernel.org>; Tue,  7 May 2019 06:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1557208672;
-	bh=Ol+ysyqZmOiMtHt15b1tgbbf+koNuoqAis7sjPkEzyE=;
+	s=default; t=1557209059;
+	bh=ZEgr+sO4pZ5gKqJA/qqY4qBYHUQCPBImcbjTEFSmK+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=G6U/KWPfHjU4hveMA0GHplYKiKNyt8u8hanTZZa6lcUAgdy8xSWCzdRNvgnDjvAuV
-	 kCXIRe9G3tcCZFku4Q6W/FXxnvKXRw0GMub79fmWrefQqPtZ33miri4fHejjGPfwDt
-	 P0Ql6EST44inMmaSkg/UF2BfvrH+S8JS1P/hpg9k=
+	b=uPheSp4O3bEyUu6y9OiKPUobEmS1flLmJkPcOMz0PWHRBI9h7rnE1kugrQje6lssQ
+	 44NbL1eeC2iDXM+r0K3nblG3bLM9bEWvkJw6kdJV2nu+z7PoMW2MdEob+Qa0U10o9E
+	 i3rCE0hatvjIQEKpM+kCsAIXT73twyDCM4Vl74/I=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728388AbfEGFhd (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 7 May 2019 01:37:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57250 "EHLO mail.kernel.org"
+        id S1727622AbfEGFex (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 7 May 2019 01:34:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54864 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728335AbfEGFhb (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 7 May 2019 01:37:31 -0400
+        id S1726766AbfEGFew (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 7 May 2019 01:34:52 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1700720578;
-        Tue,  7 May 2019 05:37:28 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BC811206A3;
+        Tue,  7 May 2019 05:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557207450;
-        bh=Ol+ysyqZmOiMtHt15b1tgbbf+koNuoqAis7sjPkEzyE=;
+        s=default; t=1557207291;
+        bh=ZEgr+sO4pZ5gKqJA/qqY4qBYHUQCPBImcbjTEFSmK+c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rnfEF91ozDD1PTFoWC5YmVy2TglfPDw89+l0NdMP7D4eEb14dREq2ldHvgsd4l3ii
-         Xh9wUXsxZFT90wdlKnkG6F5H+5Odf8TutDGIoA0h5kI3dbR+pD+IgsX6tlWyg+/foA
-         j3DY+1A5pKdGZgN2Vopgo84BQub5Kf8B7g75Rfd0=
+        b=GjWcgAgUIKFuDyjmtG766z56ccxdVRD8wBOSzOa+I4G5x6AfafU4lQ0BSdZ8c3I6W
+         IY0MMpS17sfD3fWAq1y+oMc0KghiajwAcAzBxD686H0nnspodnsqDw2+lzSO3dWqtB
+         Jo8pnaollClU2SDR8Jkz2mcUEN3bLYVQYXsn5nZk=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>,
@@ -50,12 +50,12 @@ Cc:     =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>,
         Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 47/81] MIPS: perf: ath79: Fix perfcount IRQ assignment
-Date:   Tue,  7 May 2019 01:35:18 -0400
-Message-Id: <20190507053554.30848-47-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.0 66/99] MIPS: perf: ath79: Fix perfcount IRQ assignment
+Date:   Tue,  7 May 2019 01:32:00 -0400
+Message-Id: <20190507053235.29900-66-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190507053554.30848-1-sashal@kernel.org>
-References: <20190507053554.30848-1-sashal@kernel.org>
+In-Reply-To: <20190507053235.29900-1-sashal@kernel.org>
+References: <20190507053235.29900-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
@@ -130,7 +130,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 11 insertions(+), 6 deletions(-)
 
 diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
-index 4c7a93f4039a..7c0b2e6cdfbd 100644
+index 9728abcb18fa..c04ae685003f 100644
 --- a/arch/mips/ath79/setup.c
 +++ b/arch/mips/ath79/setup.c
 @@ -211,12 +211,6 @@ const char *get_system_type(void)

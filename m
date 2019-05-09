@@ -2,141 +2,158 @@ Return-Path: <SRS0=ZxMT=TJ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.7 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D3FE8C04AB2
-	for <linux-mips@archiver.kernel.org>; Thu,  9 May 2019 17:39:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63D5CC04AB1
+	for <linux-mips@archiver.kernel.org>; Thu,  9 May 2019 18:31:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id ABE0B20675
-	for <linux-mips@archiver.kernel.org>; Thu,  9 May 2019 17:39:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3A7E2217D9
+	for <linux-mips@archiver.kernel.org>; Thu,  9 May 2019 18:31:14 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="WeT/W1ul"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rp8AADpk"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726787AbfEIRjg (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 9 May 2019 13:39:36 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:59074 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726631AbfEIRjf (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 9 May 2019 13:39:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
-        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Zh+SE7SPz23Ox2vKTKGMxIaCp2/ny0ISAkGrrJwXZK4=; b=WeT/W1ulWZ47DBVh93Jw6mADBB
-        ReR4tx89c06k+f+fgfwNLSafBfWwz7gB6PCu78hmGrawmkfcxSNAzx/W7nv5ufZGAAPbhTJglvVrQ
-        rACri3Pejn2PQnUB2lQcZ798IPa7LhjVlC54l0qqx3zabLLYnttY850qFRZpLRt+UVndSfmf805PO
-        SKEkWqnOp/PsrqaUhba/EkaEOK1pUSycmQ+DA3xJSOO1ZturZWKBZsJDkxoSIZ2zdiA+9wBQfvp54
-        L43RRnodwUlolioQJFOo9btaVPKmqXUJimLcJFNXF3GgVDVGljESr5aWvSpsPeY3yI60VuATKQcIN
-        gUOcWPug==;
-Received: from 089144210233.atnat0019.highway.a1.net ([89.144.210.233] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hOn14-0005KS-0K; Thu, 09 May 2019 17:39:34 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>
-Cc:     linux-mips@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 1/3] au1100fb: fix DMA API abuse
-Date:   Thu,  9 May 2019 19:38:47 +0200
-Message-Id: <20190509173849.11825-2-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190509173849.11825-1-hch@lst.de>
-References: <20190509173849.11825-1-hch@lst.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+        id S1726690AbfEISbO (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 9 May 2019 14:31:14 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:37713 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726632AbfEISbN (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 9 May 2019 14:31:13 -0400
+Received: by mail-pl1-f193.google.com with SMTP id p15so1551182pll.4;
+        Thu, 09 May 2019 11:31:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=HY7QqQ+KmdhIvYZmzOKSEVw2UJ4Gq2EwakuHOnYtbiI=;
+        b=rp8AADpk9oUNmzlxS94cQgGnte7s1XsOiRwhDqHH32hGZmFGi2OLkjbePvK8GPiHq+
+         BfwhNCq12fW/kq0FDboIEAqr/maLhZpggH0//y/Tf13p1upuBt/IE0118CkVbx+faNni
+         vZE1dQhBowAtSzC5TR23SrlN6w5/LFS/3jhvsVIgBk6hF/67xoF/yoRo7ujED+aatkjU
+         P48b+WAnLwDysNXjnE6eablfJfr7HgKZoOLq/hugWiJg08FPJik++V5O6jdsGQOHQg7A
+         6fnkFVeOx3VeZLVK8yW2d24ogh2GUK1yDwxo1j+xjPGmX5bwFiaYKk+Lr/xQI8/X81b/
+         bszw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=HY7QqQ+KmdhIvYZmzOKSEVw2UJ4Gq2EwakuHOnYtbiI=;
+        b=iARETYFVC4Xg9SRqS2InWdszZhGG/g/f6/ZdzEY3lpgply2ct1F5HdYNvH2XSbEzZW
+         Lc/FF42zUauTkU2AdryZ7elcGetgbm/RQlqZch7WVbamGlCbHWKNJgs6vm8ZfJqfQJoi
+         idRtPfzpP39/gjFaSckMgIwqpUMWHLalPkldUErqsGYKAA58o2bfmrjvseqNIKyaLY/u
+         WE0BWWSoN14IiYDJ86JgVSJFC3uoYnMnY2EmvHDoQocdjHtOq1XeTjfOxz0jum0S0tM/
+         uOVsQvwtiozIbGzVnQLcn1+b2mlut64vA6MQgQ5V/IjcRq/RoU82arsJmRrjhS8VieS1
+         bZ6g==
+X-Gm-Message-State: APjAAAXgw0WRi/Kknacp23zzoBZAi8yn9WOmVLN+VP77ERpBYnZpwsOP
+        oUMFml0UyO85A3arvWk/+/c=
+X-Google-Smtp-Source: APXvYqzY1MtJHt2pGMbNqOiIin0+nvanfBc2iIiVPVtsZnIR1xr6UKQ03jMZVcyD22S9ZOpXEDOmnQ==
+X-Received: by 2002:a17:902:9343:: with SMTP id g3mr7176534plp.260.1557426672527;
+        Thu, 09 May 2019 11:31:12 -0700 (PDT)
+Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.250])
+        by smtp.gmail.com with ESMTPSA id v6sm3635090pgk.77.2019.05.09.11.31.10
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 09 May 2019 11:31:11 -0700 (PDT)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        linux-kernel@vger.kernel.org (open list:PERFORMANCE EVENTS SUBSYSTEM),
+        linux-mips@vger.kernel.org (open list:MIPS)
+Subject: [PATCH fixes v2] MIPS: perf: Fix build with CONFIG_CPU_BMIPS5000 enabled
+Date:   Thu,  9 May 2019 11:30:47 -0700
+Message-Id: <20190509183047.18408-1-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Virtual addresses return from dma(m)_alloc_coherent are opaque in what
-backs then, and drivers must not poke into them.  Switch the driver
-to use the generic DMA API mmap helper to avoid these problems.
+arch/mips/kernel/perf_event_mipsxx.c: In function 'mipsxx_pmu_enable_event':
+arch/mips/kernel/perf_event_mipsxx.c:326:21: error: unused variable 'event' [-Werror=unused-variable]
+  struct perf_event *event = container_of(evt, struct perf_event, hw);
+                     ^~~~~
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Fix this by making use of IS_ENABLED() to simplify the code and avoid
+unnecessary ifdefery.
+
+Fixes: 84002c88599d ("MIPS: perf: Fix perf with MT counting other threads")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- drivers/video/fbdev/au1100fb.c | 24 ++++--------------------
- drivers/video/fbdev/au1100fb.h |  1 +
- 2 files changed, 5 insertions(+), 20 deletions(-)
+ arch/mips/kernel/perf_event_mipsxx.c | 21 +++------------------
+ 1 file changed, 3 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/video/fbdev/au1100fb.c b/drivers/video/fbdev/au1100fb.c
-index 0adf0683cf08..99941ae1f3a1 100644
---- a/drivers/video/fbdev/au1100fb.c
-+++ b/drivers/video/fbdev/au1100fb.c
-@@ -340,14 +340,12 @@ int au1100fb_fb_pan_display(struct fb_var_screeninfo *var, struct fb_info *fbi)
-  */
- int au1100fb_fb_mmap(struct fb_info *fbi, struct vm_area_struct *vma)
- {
--	struct au1100fb_device *fbdev;
--
--	fbdev = to_au1100fb_device(fbi);
-+	struct au1100fb_device *fbdev = to_au1100fb_device(fbi);
- 
--	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
- 	pgprot_val(vma->vm_page_prot) |= (6 << 9); //CCA=6
- 
--	return vm_iomap_memory(vma, fbdev->fb_phys, fbdev->fb_len);
-+	return dma_mmap_coherent(fbdev->dev, vma, fbdev->fb_mem, fbdev->fb_phys,
-+			fbdev->fb_len);
- }
- 
- static struct fb_ops au1100fb_ops =
-@@ -412,7 +410,6 @@ static int au1100fb_drv_probe(struct platform_device *dev)
- {
- 	struct au1100fb_device *fbdev;
- 	struct resource *regs_res;
--	unsigned long page;
- 	struct clk *c;
- 
- 	/* Allocate new device private */
-@@ -424,6 +421,7 @@ static int au1100fb_drv_probe(struct platform_device *dev)
- 		goto failed;
- 
- 	platform_set_drvdata(dev, (void *)fbdev);
-+	fbdev->dev = &dev->dev;
- 
- 	/* Allocate region for our registers and map them */
- 	regs_res = platform_get_resource(dev, IORESOURCE_MEM, 0);
-@@ -472,20 +470,6 @@ static int au1100fb_drv_probe(struct platform_device *dev)
- 	au1100fb_fix.smem_start = fbdev->fb_phys;
- 	au1100fb_fix.smem_len = fbdev->fb_len;
- 
--	/*
--	 * Set page reserved so that mmap will work. This is necessary
--	 * since we'll be remapping normal memory.
--	 */
--	for (page = (unsigned long)fbdev->fb_mem;
--	     page < PAGE_ALIGN((unsigned long)fbdev->fb_mem + fbdev->fb_len);
--	     page += PAGE_SIZE) {
--#ifdef CONFIG_DMA_NONCOHERENT
--		SetPageReserved(virt_to_page(CAC_ADDR((void *)page)));
+diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
+index 413863508f6f..d67fb64e908c 100644
+--- a/arch/mips/kernel/perf_event_mipsxx.c
++++ b/arch/mips/kernel/perf_event_mipsxx.c
+@@ -64,17 +64,11 @@ struct mips_perf_event {
+ 	#define CNTR_EVEN	0x55555555
+ 	#define CNTR_ODD	0xaaaaaaaa
+ 	#define CNTR_ALL	0xffffffff
+-#ifdef CONFIG_MIPS_MT_SMP
+ 	enum {
+ 		T  = 0,
+ 		V  = 1,
+ 		P  = 2,
+ 	} range;
 -#else
--		SetPageReserved(virt_to_page(page));
+-	#define T
+-	#define V
+-	#define P
 -#endif
--	}
--
- 	print_dbg("Framebuffer memory map at %p", fbdev->fb_mem);
- 	print_dbg("phys=0x%08x, size=%dK", fbdev->fb_phys, fbdev->fb_len / 1024);
- 
-diff --git a/drivers/video/fbdev/au1100fb.h b/drivers/video/fbdev/au1100fb.h
-index 9af19939a9c6..e7239bceefd3 100644
---- a/drivers/video/fbdev/au1100fb.h
-+++ b/drivers/video/fbdev/au1100fb.h
-@@ -110,6 +110,7 @@ struct au1100fb_device {
- 	dma_addr_t    		fb_phys;
- 	int			panel_idx;
- 	struct clk		*lcdclk;
-+	struct device		*dev;
  };
  
- /********************************************************************/
+ static struct mips_perf_event raw_event;
+@@ -325,9 +319,7 @@ static void mipsxx_pmu_enable_event(struct hw_perf_event *evt, int idx)
+ {
+ 	struct perf_event *event = container_of(evt, struct perf_event, hw);
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+-#ifdef CONFIG_MIPS_MT_SMP
+ 	unsigned int range = evt->event_base >> 24;
+-#endif /* CONFIG_MIPS_MT_SMP */
+ 
+ 	WARN_ON(idx < 0 || idx >= mipspmu.num_counters);
+ 
+@@ -336,21 +328,15 @@ static void mipsxx_pmu_enable_event(struct hw_perf_event *evt, int idx)
+ 		/* Make sure interrupt enabled. */
+ 		MIPS_PERFCTRL_IE;
+ 
+-#ifdef CONFIG_CPU_BMIPS5000
+-	{
++	if (IS_ENABLED(CONFIG_CPU_BMIPS5000)) {
+ 		/* enable the counter for the calling thread */
+ 		cpuc->saved_ctrl[idx] |=
+ 			(1 << (12 + vpe_id())) | BRCM_PERFCTRL_TC;
+-	}
+-#else
+-#ifdef CONFIG_MIPS_MT_SMP
+-	if (range > V) {
++	} else if (IS_ENABLED(CONFIG_MIPS_MT_SMP) && range > V) {
+ 		/* The counter is processor wide. Set it up to count all TCs. */
+ 		pr_debug("Enabling perf counter for all TCs\n");
+ 		cpuc->saved_ctrl[idx] |= M_TC_EN_ALL;
+-	} else
+-#endif /* CONFIG_MIPS_MT_SMP */
+-	{
++	} else {
+ 		unsigned int cpu, ctrl;
+ 
+ 		/*
+@@ -365,7 +351,6 @@ static void mipsxx_pmu_enable_event(struct hw_perf_event *evt, int idx)
+ 		cpuc->saved_ctrl[idx] |= ctrl;
+ 		pr_debug("Enabling perf counter for CPU%d\n", cpu);
+ 	}
+-#endif /* CONFIG_CPU_BMIPS5000 */
+ 	/*
+ 	 * We do not actually let the counter run. Leave it until start().
+ 	 */
 -- 
-2.20.1
+2.17.1
 

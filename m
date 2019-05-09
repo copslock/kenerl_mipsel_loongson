@@ -2,48 +2,50 @@ Return-Path: <SRS0=ZxMT=TJ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.7 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 16509C04AB1
-	for <linux-mips@archiver.kernel.org>; Thu,  9 May 2019 17:39:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86754C04AB4
+	for <linux-mips@archiver.kernel.org>; Thu,  9 May 2019 17:39:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id CE3AC20675
-	for <linux-mips@archiver.kernel.org>; Thu,  9 May 2019 17:39:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 51A1820675
+	for <linux-mips@archiver.kernel.org>; Thu,  9 May 2019 17:39:42 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="BHm4+bSX"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="WKveJiy4"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726683AbfEIRje (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 9 May 2019 13:39:34 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:59068 "EHLO
+        id S1726913AbfEIRjl (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 9 May 2019 13:39:41 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:59102 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726631AbfEIRje (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 9 May 2019 13:39:34 -0400
+        with ESMTP id S1726899AbfEIRjl (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 9 May 2019 13:39:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=GUcwVt88gpVqJwFXSEww+OxTilIQfKDCwAE+rwYnUs0=; b=BHm4+bSXUCpzMOJEIpmMx6QXb
-        vNaj13uXhlnT39b/MrRrOYAFLh1H/A0GJE5HfjcrZ+k17Npys4ktzcM35ES2OXje2KBv+ZhczI2K3
-        t26Dupejm41mlXPZB9X1A67EM2DOgzCI5jA2JGzIhODbQhXuNwBmOMGfV84X5pAG90h1XJaW3gHFL
-        hdhe6eif/XGSiiYi15uCUtSbcPJX6YfFiRxX5/3YMWMpmV9mwEfYEmVklvPTfgCQjZdjFpDzBgM+3
-        wVjq/xOdMzHcqy9i3E6eSW+EekPxo98P/7Ua6mguBtizkUqmc0aYDhnZTS8a97wy3t6D/sPgLzI6h
-        sLhn2WFRA==;
+        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
+        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=ze3bI7R/AWInMMM2JlDlT8P7z6aa7ltggLIal7qS1fs=; b=WKveJiy42tZa3XL3xEuRZRY2+Y
+        /wFrD9wGXNbRmW3FI4knn62zQ0lsa6/yA554tTuDxACiFGD8H04SFguP6SpPJJUTsC9tPHHKZLDUZ
+        dcrqukr1oW1BbrODPMEMDZ0F99786dV4u+ip4Mdgdg84PgQVUN5dJ4JJFag0QCQkBNkHjjgRFZnNI
+        YzHQgyhXf0ADhDO3gkNf3dFevriC+kuga/MwMBKDLxfOO4Iewqh3AVidMqdnS4JTJUoM4rtwpzh8M
+        rqzmN7vQta8y7T0YPLC/1YsWg8+sUCJgTNSr5V6Rn8UQBbQt/z2KZpcPGJehPUrW5SZtJ4cAKqFm7
+        TwsCOg/A==;
 Received: from 089144210233.atnat0019.highway.a1.net ([89.144.210.233] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hOn10-0005KD-U5; Thu, 09 May 2019 17:39:31 +0000
+        id 1hOn19-0005Lf-Nm; Thu, 09 May 2019 17:39:40 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Manuel Lauss <manuel.lauss@gmail.com>
 Cc:     linux-mips@vger.kernel.org, linux-fbdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: fix DMA API abuse in various mips fbdev drivers
-Date:   Thu,  9 May 2019 19:38:46 +0200
-Message-Id: <20190509173849.11825-1-hch@lst.de>
+Subject: [PATCH 3/3] jz4740_fb: fix DMA API abuse
+Date:   Thu,  9 May 2019 19:38:49 +0200
+Message-Id: <20190509173849.11825-4-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190509173849.11825-1-hch@lst.de>
+References: <20190509173849.11825-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
@@ -52,14 +54,40 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi all,
+Virtual addresses return from dma(m)_alloc_coherent are opaque in what
+backs then, and drivers must not poke into them.  Switch the driver
+to use the generic DMA API mmap helper to avoid these problems.
 
-this series fixes up three mips-specific fbdev drivers to not poke
-into the return values from the DMA memory allocators, as those
-aren't guranteed to be pages backed (although on mips in practice
-they are).  Two of them are also fixed up to use the proper DMA API
-mmap helper.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ drivers/video/fbdev/jz4740_fb.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-Note that the first patch is required for pending mips DMA changes,
-so if they are queued up for 5.3 we'll need a stable branch that
-can be pulled into the dma-mapping or mips tree.
+diff --git a/drivers/video/fbdev/jz4740_fb.c b/drivers/video/fbdev/jz4740_fb.c
+index b57df83fdbd3..b95cdfa9e0a1 100644
+--- a/drivers/video/fbdev/jz4740_fb.c
++++ b/drivers/video/fbdev/jz4740_fb.c
+@@ -466,7 +466,6 @@ static int jzfb_alloc_devmem(struct jzfb *jzfb)
+ {
+ 	int max_videosize = 0;
+ 	struct fb_videomode *mode = jzfb->pdata->modes;
+-	void *page;
+ 	int i;
+ 
+ 	for (i = 0; i < jzfb->pdata->num_modes; ++mode, ++i) {
+@@ -491,12 +490,6 @@ static int jzfb_alloc_devmem(struct jzfb *jzfb)
+ 	if (!jzfb->vidmem)
+ 		goto err_free_framedesc;
+ 
+-	for (page = jzfb->vidmem;
+-		 page < jzfb->vidmem + PAGE_ALIGN(jzfb->vidmem_size);
+-		 page += PAGE_SIZE) {
+-		SetPageReserved(virt_to_page(page));
+-	}
+-
+ 	jzfb->framedesc->next = jzfb->framedesc_phys;
+ 	jzfb->framedesc->addr = jzfb->vidmem_phys;
+ 	jzfb->framedesc->id = 0xdeafbead;
+-- 
+2.20.1
+

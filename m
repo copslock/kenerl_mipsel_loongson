@@ -2,85 +2,109 @@ Return-Path: <SRS0=sPT9=TP=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B0B6AC04E87
-	for <linux-mips@archiver.kernel.org>; Wed, 15 May 2019 12:05:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9212C46470
+	for <linux-mips@archiver.kernel.org>; Wed, 15 May 2019 12:16:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 74C5B20843
-	for <linux-mips@archiver.kernel.org>; Wed, 15 May 2019 12:05:21 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K8t4CDah"
+	by mail.kernel.org (Postfix) with ESMTP id A5FF320675
+	for <linux-mips@archiver.kernel.org>; Wed, 15 May 2019 12:16:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1557922585;
+	bh=/GiRHCDd7UvnSNp2ErYbr0bu740Lmd9tFFpzKHOnqnQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=QOYy3YQBZoNfsrlY9QvOmSgMYTOLtdnNKtC4mxbBSCDSYoJScM4UFRpmmeSHchpv8
+	 uLeQecoRV1MNOotzXRNXa0XKeusctSFrETOZerl/n0ZHxDWmJng3bsU2mkueOqiXdW
+	 uYhYkkqXkuA2nQ74vGy1zUwALF8y3ro6PViNfJtc=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729101AbfEOLLL (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 15 May 2019 07:11:11 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:42930 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729102AbfEOLLL (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 15 May 2019 07:11:11 -0400
-Received: by mail-wr1-f66.google.com with SMTP id l2so2184300wrb.9;
-        Wed, 15 May 2019 04:11:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RfpyiRccRRz5dbumgmGOhQSt6RCKbWXqfWgcImNA2S8=;
-        b=K8t4CDah4BvgpilXqXw5zfSnz0BO2nlRqhLz2gBt2pODiwL4kv8u3l6llr5cwm1NMz
-         cgjs8gfhoBuBlaXma2hIzzXKOHnJIY55Z/RQyQEz9GQRx0FTCMyRfQQ0kZoQLqZ8toG2
-         URD0M9gTxxP3ivyMbkmXAVXh0xlkLqK7wON2A/Md2d7bN+7V1FSBsJFbiLEfdAPl11HY
-         q2QgOryr7QcwIHGew7YmpsJY2YsmBnZh4byZbIyNgyt2awx0qzkJlOcGGENIf8hH0k41
-         E2/+zrNVGv5uXVDKvKDWd8knOGnk3aafQyO7ChMWO5weTw5myZirdUM1jeu643nFh8mW
-         qWlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RfpyiRccRRz5dbumgmGOhQSt6RCKbWXqfWgcImNA2S8=;
-        b=F8PeZ7ZZN9eBEaEvWcJIFwXcUz79YIhgpoZ7jNxQXYzFWHuilcIRl86zFam2ihalUW
-         gmYw81Zo1U45ogI4h5F3ppaBAtUyYZn7quUND+5X4Du+k9GN7xU6PdQH8G+u7Yiij7G9
-         j5aNvdFEPkheTOmoe2AvyrcDlgLMzMxGYLPGeI+P9vwY2vMmUouHdXc+CZGQ6DJ0vjEO
-         3HxOKZAxXYZNXUQbwf1KBVvOmasuoQ5TZ9t4up5/GQ6GQDhtlyNIXREgLATRMid33Fi6
-         54bLAjYYx9fvBkGvqmsmR5+tA886O0vj4x8/2IxHT4JUEDgtYI1MBJEPo2B+fRmaI3RK
-         eedA==
-X-Gm-Message-State: APjAAAWWAGWS8TF8NWT/yNzrZBQ91zB3pOPb1YGDGSzOUf5k1RgLk+2b
-        27tYawGyK1pqYJrG7nW8Ty1M3ZcsoCEV/GxODMs=
-X-Google-Smtp-Source: APXvYqwy9wBDuoVo1pQ2ozYfDPbfcbqcr1FX+HUxx/FMBvDgFydGuewMLp2+gLO8zuWIDfWHm/LYc3Kw0RoFoklukJQ=
-X-Received: by 2002:a5d:440a:: with SMTP id z10mr10309482wrq.157.1557918668653;
- Wed, 15 May 2019 04:11:08 -0700 (PDT)
+        id S1727382AbfEOLCd (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 15 May 2019 07:02:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59786 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727945AbfEOLCb (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 15 May 2019 07:02:31 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BEEFB2173C;
+        Wed, 15 May 2019 11:02:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1557918150;
+        bh=/GiRHCDd7UvnSNp2ErYbr0bu740Lmd9tFFpzKHOnqnQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=aK/IRKLO8bGaZC0Onju0ZjluUTn0O13fYBIHuZ8hahNK4nPL7HXo3tLT9bX8sKt2d
+         GN4vtb66LZ8v3odnCWZtHkwCbp9QEI62GFBRyHdia2Sa0w1MYQfKBcxsBMHZLPZRjJ
+         blCnEcj/oXsO2s4z2ElJo1xaV8zgMM2X41euNUas=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Aurelien Jarno <aurelien@aurel32.net>,
+        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org
+Subject: [PATCH 4.4 004/266] MIPS: scall64-o32: Fix indirect syscall number load
+Date:   Wed, 15 May 2019 12:51:51 +0200
+Message-Id: <20190515090722.830915313@linuxfoundation.org>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190515090722.696531131@linuxfoundation.org>
+References: <20190515090722.696531131@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-References: <20190509173849.11825-1-hch@lst.de> <20190509173849.11825-3-hch@lst.de>
-In-Reply-To: <20190509173849.11825-3-hch@lst.de>
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-Date:   Wed, 15 May 2019 13:10:32 +0200
-Message-ID: <CAOLZvyG14NvbgX4PA5aafk=reLcHbqDswqS-8j4+7QJMx02d7A@mail.gmail.com>
-Subject: Re: [PATCH 2/3] au1200fb: fix DMA API abuse
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linux-MIPS <linux-mips@vger.kernel.org>,
-        linux-fbdev <linux-fbdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Servus Christoph,
+From: Aurelien Jarno <aurelien@aurel32.net>
 
-On Thu, May 9, 2019 at 7:39 PM Christoph Hellwig <hch@lst.de> wrote:
-> Virtual addresses return from dma(m)_alloc_attrs are opaque in what
-> backs then, and drivers must not poke into them.  Similarly caching
-> modes are not supposed to be directly set by the driver.  Switch the
-> driver to use the generic DMA API mmap helper to avoid these problems.
->
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  drivers/video/fbdev/au1200fb.c | 19 ++++---------------
->  1 file changed, 4 insertions(+), 15 deletions(-)
+commit 79b4a9cf0e2ea8203ce777c8d5cfa86c71eae86e upstream.
 
-Runs fine on my test system.
+Commit 4c21b8fd8f14 (MIPS: seccomp: Handle indirect system calls (o32))
+added indirect syscall detection for O32 processes running on MIPS64,
+but it did not work correctly for big endian kernel/processes. The
+reason is that the syscall number is loaded from ARG1 using the lw
+instruction while this is a 64-bit value, so zero is loaded instead of
+the syscall number.
 
-Tested-by: Manuel Lauss <manuel.lauss@gmail.com>
+Fix the code by using the ld instruction instead. When running a 32-bit
+processes on a 64 bit CPU, the values are properly sign-extended, so it
+ensures the value passed to syscall_trace_enter is correct.
+
+Recent systemd versions with seccomp enabled whitelist the getpid
+syscall for their internal  processes (e.g. systemd-journald), but call
+it through syscall(SYS_getpid). This fix therefore allows O32 big endian
+systems with a 64-bit kernel to run recent systemd versions.
+
+Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+Cc: <stable@vger.kernel.org> # v3.15+
+Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/kernel/scall64-o32.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/arch/mips/kernel/scall64-o32.S
++++ b/arch/mips/kernel/scall64-o32.S
+@@ -126,7 +126,7 @@ trace_a_syscall:
+ 	subu	t1, v0,  __NR_O32_Linux
+ 	move	a1, v0
+ 	bnez	t1, 1f /* __NR_syscall at offset 0 */
+-	lw	a1, PT_R4(sp) /* Arg1 for __NR_syscall case */
++	ld	a1, PT_R4(sp) /* Arg1 for __NR_syscall case */
+ 	.set	pop
+ 
+ 1:	jal	syscall_trace_enter
+
+

@@ -6,120 +6,123 @@ X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B886C46460
-	for <linux-mips@archiver.kernel.org>; Thu, 16 May 2019 14:54:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6F30C04AB4
+	for <linux-mips@archiver.kernel.org>; Thu, 16 May 2019 14:56:32 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6D06B2087B
-	for <linux-mips@archiver.kernel.org>; Thu, 16 May 2019 14:54:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 935D62082E
+	for <linux-mips@archiver.kernel.org>; Thu, 16 May 2019 14:56:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726864AbfEPOyL (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 16 May 2019 10:54:11 -0400
-Received: from mx1.mailbox.org ([80.241.60.212]:33296 "EHLO mx1.mailbox.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726692AbfEPOyK (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 16 May 2019 10:54:10 -0400
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:105:465:1:1:0])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id D2A514E9C7;
-        Thu, 16 May 2019 16:54:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
-        by spamfilter02.heinlein-hosting.de (spamfilter02.heinlein-hosting.de [80.241.56.116]) (amavisd-new, port 10030)
-        with ESMTP id sn3AhIsEBiJY; Thu, 16 May 2019 16:54:00 +0200 (CEST)
-Date:   Fri, 17 May 2019 00:53:41 +1000
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Christian Brauner <christian@brauner.io>
-Cc:     Daniel Colascione <dancol@google.com>,
-        Jann Horn <jannh@google.com>, Oleg Nesterov <oleg@redhat.com>,
+        id S1727586AbfEPO4X (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 16 May 2019 10:56:23 -0400
+Received: from mail-vk1-f193.google.com ([209.85.221.193]:43977 "EHLO
+        mail-vk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727573AbfEPO4W (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 16 May 2019 10:56:22 -0400
+Received: by mail-vk1-f193.google.com with SMTP id h72so1096777vkh.10;
+        Thu, 16 May 2019 07:56:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=05GCtpont9YEywFzf84z1q9MwrqOSiu52jwQOd14/zs=;
+        b=NqRraoEHORwbbMw0jdlkm1gqvvZ7Ona5zso2iADzUe435KgwdUeQrFVeZK1kG8w3y2
+         tDOGY1PhQsbuWp4zX4vuepzAtxDAz0xqKqexS2aNqtCf2ZemV+LdDZ1L3vOsk2oVrOv3
+         MxO25Edon6SuprOVYFKacjdA1qnVMLJNHlkwQ7goZwTRdBbKKWaNEOG0mJWa0jqyWyXt
+         NqUhxBQRV/tfAsvKIHdEoSp4QhfDxMdJDI42EpnMOYsym5B+UsK4gjR4v4C7ch7wGZ0w
+         XN9nhIpclGns00wQgPac8PDAASbkljVJvIS2qc3V5naQoIy4Wf4kyR6xuMSJfwWtcuhX
+         UjmQ==
+X-Gm-Message-State: APjAAAXyUvKL8IARnIGhuVSdX5oNXGKE4NR6SxAcypv2R5+XyV/CC6jD
+        mIcZY/4zymv28Z180BYrS/sXP9gzz36sJG+9a2I=
+X-Google-Smtp-Source: APXvYqwJkEyDq3zOtk8OfRAodMj5uaJzILWIRnCKOk3dtxYk7GsdMRXLOna8zNuSkRyU4hilGsRAQgTc6aWaoZtw994=
+X-Received: by 2002:a1f:c2c1:: with SMTP id s184mr23362067vkf.65.1558018580810;
+ Thu, 16 May 2019 07:56:20 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190516135944.7205-1-christian@brauner.io>
+In-Reply-To: <20190516135944.7205-1-christian@brauner.io>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 16 May 2019 16:56:08 +0200
+Message-ID: <CAMuHMdVbUJ0+28Lc2wHPah8UUk8Ou9m81KzLvhrcMsJzz2bX2A@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] pid: add pidfd_open()
+To:     Christian Brauner <christian@brauner.io>,
+        David Howells <dhowells@redhat.com>
+Cc:     Jann Horn <jannh@google.com>, Oleg Nesterov <oleg@redhat.com>,
         Al Viro <viro@zeniv.linux.org.uk>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
+        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        elena.reshetova@intel.com, Kees Cook <keescook@chromium.org>,
-        Andy Lutomirski <luto@amacapital.net>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        linux-mips@vger.kernel.org,
+        Joel Fernandes <joel@joelfernandes.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        elena.reshetova@intel.com, Linux-Arch <linux-arch@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Daniel Colascione <dancol@google.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
         Andy Lutomirski <luto@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-arch@vger.kernel.org,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH 1/2] pid: add pidfd_open()
-Message-ID: <20190516145341.xx7bpyakezvpqujj@yavin>
-References: <20190515100400.3450-1-christian@brauner.io>
- <CAKOZuesPF+ftwqsNDMBy1LpwJgWTNuQm9-E=C90sSTBYEEsDww@mail.gmail.com>
- <20190516130813.i66ujfzftbgpqhnh@brauner.io>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="rl3rpkoiju4ooj2k"
-Content-Disposition: inline
-In-Reply-To: <20190516130813.i66ujfzftbgpqhnh@brauner.io>
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>, cyphar@cyphar.com,
+        Andy Lutomirski <luto@amacapital.net>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
+Hi Christian, David,
 
---rl3rpkoiju4ooj2k
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Thu, May 16, 2019 at 4:00 PM Christian Brauner <christian@brauner.io> wrote:
+> This adds the pidfd_open() syscall. It allows a caller to retrieve pollable
+> pidfds for a process which did not get created via CLONE_PIDFD, i.e. for a
+> process that is created via traditional fork()/clone() calls that is only
+> referenced by a PID:
+>
+> int pidfd = pidfd_open(1234, 0);
+> ret = pidfd_send_signal(pidfd, SIGSTOP, NULL, 0);
+>
+> With the introduction of pidfds through CLONE_PIDFD it is possible to
+> created pidfds at process creation time.
+> However, a lot of processes get created with traditional PID-based calls
+> such as fork() or clone() (without CLONE_PIDFD). For these processes a
+> caller can currently not create a pollable pidfd. This is a huge problem
+> for Android's low memory killer (LMK) and service managers such as systemd.
+> Both are examples of tools that want to make use of pidfds to get reliable
+> notification of process exit for non-parents (pidfd polling) and race-free
+> signal sending (pidfd_send_signal()). They intend to switch to this API for
+> process supervision/management as soon as possible. Having no way to get
+> pollable pidfds from PID-only processes is one of the biggest blockers for
+> them in adopting this api. With pidfd_open() making it possible to retrieve
+> pidfd for PID-based processes we enable them to adopt this api.
+>
+> In line with Arnd's recent changes to consolidate syscall numbers across
+> architectures, I have added the pidfd_open() syscall to all architectures
+> at the same time.
 
-On 2019-05-16, Christian Brauner <christian@brauner.io> wrote:
-> On Wed, May 15, 2019 at 10:45:06AM -0700, Daniel Colascione wrote:
-> > On Wed, May 15, 2019 at 3:04 AM Christian Brauner <christian@brauner.io=
-> wrote:
-> > > +       if (pid <=3D 0)
-> > > +               return -EINVAL;
-> >=20
-> > WDYT of defining pid =3D=3D 0 to mean "open myself"?
->=20
-> I'm torn. It be a nice shortcut of course but pid being 0 is usually an
-> indicator for child processes. So unless the getpid() before
-> pidfd_open() is an issue I'd say let's leave it as is. If you really
-> want the shortcut might -1 be better?
+> +428    common  pidfd_open                      sys_pidfd_open
 
-I'd suggest not using negative numbers, and instead reserving them for
-PIDTYPE_TGID if we ever want to have that in the future. IMHO, doing
+This number conflicts with "[PATCH 4/4] uapi: Wire up the mount API
+syscalls on non-x86 arches", which is requested to be included before
+rc1.
 
-  pfd =3D pidfd_open(getpid(), 0);
+Note that none of this is part of linux-next.
 
-is not the end of the world.
+Gr{oetje,eeting}s,
 
+                        Geert
 
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
---rl3rpkoiju4ooj2k
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEb6Gz4/mhjNy+aiz1Snvnv3Dem58FAlzdeXUACgkQSnvnv3De
-m58cOhAArH3Suh66uovI36Cs+UiaKF7pQq8Uj5fLxF9TEp/xA0aglqcZbJKrUIKr
-DIaXBIm1GOitsaCBH/+k2puVlhgNpCPaskXKCWTACjS5l6z7NBQ3o4ZDgmy9sS6/
-MgIMUnFpdpX+4qRBZPsvsfknvtBO9eI8cVfZIzo4NZnUzs5zRU6qToEKWCjQNscK
-RzO+BsCNNkQXXlHBkNrdX4ue058LJyEAYop8gqPAMorepNpbcydpkRq1YWGbd4iS
-3F5ZTCHdstprw5ZmFcLUaedwf4O1X9B+eulR82Y2PHSVoOHgidE3KcdouxMEXQlh
-8KOVL1cpD2h+AdGu9znbvhKLP87kDoSbTSznKZ3dlFdk6YQQbOMvofXAay/zXRnJ
-6GXTZ6r8KDhtoJTNdYRoBQUf+pgzLKLwPdnkzLfu3CFPMy6YpaBMFFt7DwTNG6Du
-Q1nI8HIBPe0Sf7VNyv5qaixRR5rfKnqv80FPdQZD0MGsXTU7z7Iv9rZ7/g+/4ZdH
-yLhuLIARtcqLd2LSNmHQFuBbuDxODQbtqS/89FmshKn+WHowS3/406NNYsvvdwTY
-NGeva57n7Ke7NmdsO1uVsxPmTUHaxp55Vx0BTIQN4+in7mlYdf6I4qD0cVE1TGJQ
-3AF3dH8bQrznZvmJUjXZY8dWRD4StRbAp822rBOY4+QyhbySjoY=
-=SYyW
------END PGP SIGNATURE-----
-
---rl3rpkoiju4ooj2k--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -2,308 +2,448 @@ Return-Path: <SRS0=GIyq=TU=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DB44C04AAC
-	for <linux-mips@archiver.kernel.org>; Mon, 20 May 2019 13:43:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 97B80C04AAC
+	for <linux-mips@archiver.kernel.org>; Mon, 20 May 2019 13:46:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5A94920856
-	for <linux-mips@archiver.kernel.org>; Mon, 20 May 2019 13:43:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5AA54216B7
+	for <linux-mips@archiver.kernel.org>; Mon, 20 May 2019 13:46:39 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=brauner.io header.i=@brauner.io header.b="VeaBWLfd"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389581AbfETNnr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 20 May 2019 09:43:47 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:34900 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388208AbfETNnr (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 20 May 2019 09:43:47 -0400
-Received: by mail-wr1-f66.google.com with SMTP id m3so1711021wrv.2
-        for <linux-mips@vger.kernel.org>; Mon, 20 May 2019 06:43:46 -0700 (PDT)
+        id S1732626AbfETNqi (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 20 May 2019 09:46:38 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:43816 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732422AbfETNqd (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 20 May 2019 09:46:33 -0400
+Received: by mail-wr1-f67.google.com with SMTP id r4so14659765wro.10
+        for <linux-mips@vger.kernel.org>; Mon, 20 May 2019 06:46:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brauner.io; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=DwppfX2HVonqBbct6w8ESqqGFkjlHJaSVDGaAUutfIw=;
+        b=VeaBWLfdRE4tAIxQOoa10LigBDx9tX0zYcuKwEi7o2xHW2ycpfLJehgbTNpS8SHJi2
+         jcXsckEolK5SwcRZA8YxgW2Ai9XqpwR4GpTjiZDhgxPive/lvPiRyiOV+EpUsuIebSq2
+         QAgcXlS8VaU509k27g8lCydLUqIwZSr3krcWSAdGQJu3pkJXlOAFaQlzNVqo6TB9OllP
+         xkA9Q49FWV2v9hBFJknv0jOn++Vh/MwD13DyYWlAFwJbIZq94A0oBcXj1HFBNRSVy8F2
+         /EPyD1Mh21EqOlwyCcSL+nw1omOidf5lwE9JJ5P3rmlwi3V1x4s824hyv6ktcu5KOUUi
+         WvFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=QfhVu7i0f7PGhiAFSRgiVL/qFyH0Mxci0ZH8NmzFfa0=;
-        b=KWweO5ssQpn3leeeZLhCmcJfKhbxOh/xUbF/A4ytW1a5GZjDf4uWUSwAtTPg6rjDtj
-         7ZxxQfug608rrLJcJ0uXFroT2lRasKr765kX50mV/i028KP5wRNd3993wWEWV6+tLBW8
-         EMzwr5xhxO24CW71zxInF57w0bCcx4bfj0q/QzVXYfuKrj98katTI3D0jwZlIWHYlzsK
-         qkGcbzTmjlQ7CLBCn6BfDPPJjF5Mn5FCevb8jvCmi5cu8t/LMPolWhfZQr0vAvG2JALA
-         jE6La2xr+Li6aWjLWEdeBJ/Uh/ckKpSVSqyFe2E3Dhs+lo45H63ixB6K29VSWrP3p1FR
-         rfvQ==
-X-Gm-Message-State: APjAAAVfhpcTfnF6LPCp/4wH6ke1VSJmoHjT/XN/aasl88ihjhbxGBmX
-        ytQ35xAyYh4ppten6+W2KyVSOA==
-X-Google-Smtp-Source: APXvYqwhMW4qTcPvNNhvZyg7Nr2Dre/Plb85jfTr32mjs9jJbdCtxJLLOLvDyzXXb3guDMS7YvWryA==
-X-Received: by 2002:a5d:688f:: with SMTP id h15mr7859695wru.44.1558359825304;
-        Mon, 20 May 2019 06:43:45 -0700 (PDT)
-Received: from ?IPv6:2001:b07:6468:f312:ac04:eef9:b257:b844? ([2001:b07:6468:f312:ac04:eef9:b257:b844])
-        by smtp.gmail.com with ESMTPSA id x22sm16824884wmi.4.2019.05.20.06.43.44
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=DwppfX2HVonqBbct6w8ESqqGFkjlHJaSVDGaAUutfIw=;
+        b=k4ejUF5L8ZEr6eCgHXfRgMBfJaBLq9RJt2nNnmdCqT0P1Z/K/91rE93ZYUbJsLoIAD
+         UoeF4s1h9o4SLp3MbtXfaSz+MhVY5ZzQ9hWpl8oZg8i7NReJgNRyFVc9e+ETm2OnA4PG
+         W6QXrGHlQ7v9/1A5TDXcMFZlWlFIBbi7XuZI7RpDDpFw4HhPpBVMEUjLGQTELK2NPN/R
+         rSgd243c9pWGX/znKn8LBighZWZLWTRZ5Fp2nhCmJ2IF1u2sYMZC8Z02S4DKMrrRqb3O
+         5XEaLClSDVkfIFNnw4dppTBwSY4fiC2SFpG3Bej3BY7yuio9hwW32+QpH+VWqaHB2wD8
+         7S+Q==
+X-Gm-Message-State: APjAAAVD+gjSCoWvR+0sG/1MYeTJMREbQ90Sbfxi3tSeEdU1jxF7pn+0
+        KchV2n+oif2YUPFOE2CgmT+Hew==
+X-Google-Smtp-Source: APXvYqwcz/PhprR9leZBWHY7wgs5JlaBvvq4bd1Z9DYed6h7w33RIwhTnHfxoF2B7Sq7j400Oo8IUQ==
+X-Received: by 2002:a5d:4b81:: with SMTP id b1mr21218616wrt.217.1558359990608;
+        Mon, 20 May 2019 06:46:30 -0700 (PDT)
+Received: from localhost.localdomain ([212.91.227.56])
+        by smtp.gmail.com with ESMTPSA id k17sm14506592wrm.73.2019.05.20.06.46.28
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 20 May 2019 06:43:44 -0700 (PDT)
-Subject: Re: [PATCH] KVM: Directly return result from
- kvm_arch_check_processor_compat()
-To:     Sean Christopherson <sean.j.christopherson@intel.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Mackerras <paulus@ozlabs.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Christoffer Dall <christoffer.dall@arm.com>,
-        Marc Zyngier <marc.zyngier@arm.com>
-Cc:     David Hildenbrand <david@redhat.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        James Morse <james.morse@arm.com>,
-        Julien Thierry <julien.thierry@arm.com>,
-        Suzuki K Pouloze <suzuki.poulose@arm.com>,
-        linux-mips@vger.kernel.org, kvm-ppc@vger.kernel.org,
-        linux-s390@vger.kernel.org, kvm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu
-References: <20190420051817.5644-1-sean.j.christopherson@intel.com>
-From:   Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <050c13ef-6797-bff9-58a9-674f6fee9d72@redhat.com>
-Date:   Mon, 20 May 2019 15:43:43 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        Mon, 20 May 2019 06:46:29 -0700 (PDT)
+From:   Christian Brauner <christian@brauner.io>
+To:     jannh@google.com, oleg@redhat.com, viro@zeniv.linux.org.uk,
+        torvalds@linux-foundation.org, linux-kernel@vger.kernel.org,
+        arnd@arndb.de
+Cc:     akpm@linux-foundation.org, cyphar@cyphar.com, dhowells@redhat.com,
+        ebiederm@xmission.com, elena.reshetova@intel.com,
+        keescook@chromium.org, luto@amacapital.net, luto@kernel.org,
+        tglx@linutronix.de, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, joel@joelfernandes.org,
+        dancol@google.com, serge@hallyn.com, surenb@google.com,
+        kernel-team@android.com, Christian Brauner <christian@brauner.io>,
+        "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>
+Subject: [PATCH v2 2/2] tests: add pidfd_open() tests
+Date:   Mon, 20 May 2019 15:46:05 +0200
+Message-Id: <20190520134605.29116-2-christian@brauner.io>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190520134605.29116-1-christian@brauner.io>
+References: <20190520134605.29116-1-christian@brauner.io>
 MIME-Version: 1.0
-In-Reply-To: <20190420051817.5644-1-sean.j.christopherson@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On 20/04/19 07:18, Sean Christopherson wrote:
-> Add a wrapper to invoke kvm_arch_check_processor_compat() so that the
-> boilerplate ugliness of checking virtualization support on all CPUs is
-> hidden from the arch specific code.  x86's implementation in particular
-> is quite heinous, as it unnecessarily propagates the out-param pattern
-> into kvm_x86_ops.
-> 
-> While the x86 specific issue could be resolved solely by changing
-> kvm_x86_ops, make the change for all architectures as returning a value
-> directly is prettier and technically more robust, e.g. s390 doesn't set
-> the out param, which could lead to subtle breakage in the (highly
-> unlikely) scenario where the out-param was not pre-initialized by the
-> caller.
-> 
-> Opportunistically annotate svm_check_processor_compat() with __init.
-> 
-> Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
-> ---
-> 
-> Tested on VMX only.
-> 
->  arch/mips/kvm/mips.c             | 4 ++--
->  arch/powerpc/kvm/powerpc.c       | 4 ++--
->  arch/s390/include/asm/kvm_host.h | 1 -
->  arch/s390/kvm/kvm-s390.c         | 5 +++++
->  arch/x86/include/asm/kvm_host.h  | 2 +-
->  arch/x86/kvm/svm.c               | 4 ++--
->  arch/x86/kvm/vmx/vmx.c           | 8 ++++----
->  arch/x86/kvm/x86.c               | 4 ++--
->  include/linux/kvm_host.h         | 2 +-
->  virt/kvm/arm/arm.c               | 4 ++--
->  virt/kvm/kvm_main.c              | 9 ++++++---
->  11 files changed, 27 insertions(+), 20 deletions(-)
-> 
-> diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-> index 6d0517ac18e5..1c22b938c550 100644
-> --- a/arch/mips/kvm/mips.c
-> +++ b/arch/mips/kvm/mips.c
-> @@ -123,9 +123,9 @@ int kvm_arch_hardware_setup(void)
->  	return 0;
->  }
->  
-> -void kvm_arch_check_processor_compat(void *rtn)
-> +int kvm_arch_check_processor_compat(void)
->  {
-> -	*(int *)rtn = 0;
-> +	return 0;
->  }
->  
->  int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 92910b7c5bcc..7b7635201739 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -425,9 +425,9 @@ int kvm_arch_hardware_setup(void)
->  	return 0;
->  }
->  
-> -void kvm_arch_check_processor_compat(void *rtn)
-> +int kvm_arch_check_processor_compat(void)
->  {
-> -	*(int *)rtn = kvmppc_core_check_processor_compat();
-> +	return kvmppc_core_check_processor_compat();
->  }
->  
->  int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
-> diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
-> index c47e22bba87f..96a1603ecf10 100644
-> --- a/arch/s390/include/asm/kvm_host.h
-> +++ b/arch/s390/include/asm/kvm_host.h
-> @@ -903,7 +903,6 @@ extern int kvm_s390_gisc_register(struct kvm *kvm, u32 gisc);
->  extern int kvm_s390_gisc_unregister(struct kvm *kvm, u32 gisc);
->  
->  static inline void kvm_arch_hardware_disable(void) {}
-> -static inline void kvm_arch_check_processor_compat(void *rtn) {}
->  static inline void kvm_arch_sync_events(struct kvm *kvm) {}
->  static inline void kvm_arch_vcpu_uninit(struct kvm_vcpu *vcpu) {}
->  static inline void kvm_arch_sched_in(struct kvm_vcpu *vcpu, int cpu) {}
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 28f35d2b06cb..4c50bd533ebc 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -221,6 +221,11 @@ int kvm_arch_hardware_enable(void)
->  	return 0;
->  }
->  
-> +int kvm_arch_check_processor_compat(void)
-> +{
-> +	return 0;
-> +}
-> +
->  static void kvm_gmap_notifier(struct gmap *gmap, unsigned long start,
->  			      unsigned long end);
->  
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 8d68ba0cba0c..02ba99ef8c5f 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -995,7 +995,7 @@ struct kvm_x86_ops {
->  	int (*disabled_by_bios)(void);             /* __init */
->  	int (*hardware_enable)(void);
->  	void (*hardware_disable)(void);
-> -	void (*check_processor_compatibility)(void *rtn);
-> +	int (*check_processor_compatibility)(void);/* __init */
->  	int (*hardware_setup)(void);               /* __init */
->  	void (*hardware_unsetup)(void);            /* __exit */
->  	bool (*cpu_has_accelerated_tpr)(void);
-> diff --git a/arch/x86/kvm/svm.c b/arch/x86/kvm/svm.c
-> index 406b558abfef..236e2fc0edec 100644
-> --- a/arch/x86/kvm/svm.c
-> +++ b/arch/x86/kvm/svm.c
-> @@ -5859,9 +5859,9 @@ svm_patch_hypercall(struct kvm_vcpu *vcpu, unsigned char *hypercall)
->  	hypercall[2] = 0xd9;
->  }
->  
-> -static void svm_check_processor_compat(void *rtn)
-> +static int __init svm_check_processor_compat(void)
->  {
-> -	*(int *)rtn = 0;
-> +	return 0;
->  }
->  
->  static bool svm_cpu_has_accelerated_tpr(void)
-> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> index d8f101b58ab8..7d0733b8f383 100644
-> --- a/arch/x86/kvm/vmx/vmx.c
-> +++ b/arch/x86/kvm/vmx/vmx.c
-> @@ -6720,22 +6720,22 @@ static int vmx_vm_init(struct kvm *kvm)
->  	return 0;
->  }
->  
-> -static void __init vmx_check_processor_compat(void *rtn)
-> +static int __init vmx_check_processor_compat(void)
->  {
->  	struct vmcs_config vmcs_conf;
->  	struct vmx_capability vmx_cap;
->  
-> -	*(int *)rtn = 0;
->  	if (setup_vmcs_config(&vmcs_conf, &vmx_cap) < 0)
-> -		*(int *)rtn = -EIO;
-> +		return -EIO;
->  	if (nested)
->  		nested_vmx_setup_ctls_msrs(&vmcs_conf.nested, vmx_cap.ept,
->  					   enable_apicv);
->  	if (memcmp(&vmcs_config, &vmcs_conf, sizeof(struct vmcs_config)) != 0) {
->  		printk(KERN_ERR "kvm: CPU %d feature inconsistency!\n",
->  				smp_processor_id());
-> -		*(int *)rtn = -EIO;
-> +		return -EIO;
->  	}
-> +	return 0;
->  }
->  
->  static u64 vmx_get_mt_mask(struct kvm_vcpu *vcpu, gfn_t gfn, bool is_mmio)
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index c09507057743..6214c27b0c2a 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -9042,9 +9042,9 @@ void kvm_arch_hardware_unsetup(void)
->  	kvm_x86_ops->hardware_unsetup();
->  }
->  
-> -void kvm_arch_check_processor_compat(void *rtn)
-> +int kvm_arch_check_processor_compat(void)
->  {
-> -	kvm_x86_ops->check_processor_compatibility(rtn);
-> +	return kvm_x86_ops->check_processor_compatibility();
->  }
->  
->  bool kvm_vcpu_is_reset_bsp(struct kvm_vcpu *vcpu)
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 640a03642766..0ddef348b9b0 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -842,7 +842,7 @@ int kvm_arch_hardware_enable(void);
->  void kvm_arch_hardware_disable(void);
->  int kvm_arch_hardware_setup(void);
->  void kvm_arch_hardware_unsetup(void);
-> -void kvm_arch_check_processor_compat(void *rtn);
-> +int kvm_arch_check_processor_compat(void);
->  int kvm_arch_vcpu_runnable(struct kvm_vcpu *vcpu);
->  bool kvm_arch_vcpu_in_kernel(struct kvm_vcpu *vcpu);
->  int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu);
-> diff --git a/virt/kvm/arm/arm.c b/virt/kvm/arm/arm.c
-> index be4ec5f3ba5f..67ecadbd8961 100644
-> --- a/virt/kvm/arm/arm.c
-> +++ b/virt/kvm/arm/arm.c
-> @@ -105,9 +105,9 @@ int kvm_arch_hardware_setup(void)
->  	return 0;
->  }
->  
-> -void kvm_arch_check_processor_compat(void *rtn)
-> +int kvm_arch_check_processor_compat(void)
->  {
-> -	*(int *)rtn = 0;
-> +	return 0;
->  }
->  
->  
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 4bb20f2b2a69..41effae3f9ec 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -4135,6 +4135,11 @@ static void kvm_sched_out(struct preempt_notifier *pn,
->  	kvm_arch_vcpu_put(vcpu);
->  }
->  
-> +static void check_processor_compat(void *rtn)
-> +{
-> +	*(int *)rtn = kvm_arch_check_processor_compat();
-> +}
-> +
->  int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
->  		  struct module *module)
->  {
-> @@ -4166,9 +4171,7 @@ int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
->  		goto out_free_0a;
->  
->  	for_each_online_cpu(cpu) {
-> -		smp_call_function_single(cpu,
-> -				kvm_arch_check_processor_compat,
-> -				&r, 1);
-> +		smp_call_function_single(cpu, check_processor_compat, &r, 1);
->  		if (r < 0)
->  			goto out_free_1;
->  	}
-> 
+This adds testing for the new pidfd_open() syscalls. Specifically, we test:
+- that no invalid flags can be passed to pidfd_open()
+- that no invalid pid can be passed to pidfd_open()
+- that a pidfd can be retrieved with pidfd_open()
+- that the retrieved pidfd references the correct pid
 
-Queued for 5.3, thanks.
+Signed-off-by: Christian Brauner <christian@brauner.io>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Jann Horn <jannh@google.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>
+Cc: Andy Lutomirsky <luto@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Aleksa Sarai <cyphar@cyphar.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-api@vger.kernel.org
+---
+v1: unchanged
+v2:
+- Christian Brauner <christian@brauner.io>:
+  - set number of planned tests via ksft_set_plan()
+---
+ tools/testing/selftests/pidfd/Makefile        |   2 +-
+ tools/testing/selftests/pidfd/pidfd.h         |  57 ++++++
+ .../testing/selftests/pidfd/pidfd_open_test.c | 169 ++++++++++++++++++
+ tools/testing/selftests/pidfd/pidfd_test.c    |  41 +----
+ 4 files changed, 228 insertions(+), 41 deletions(-)
+ create mode 100644 tools/testing/selftests/pidfd/pidfd.h
+ create mode 100644 tools/testing/selftests/pidfd/pidfd_open_test.c
 
-Paolo
+diff --git a/tools/testing/selftests/pidfd/Makefile b/tools/testing/selftests/pidfd/Makefile
+index deaf8073bc06..b36c0be70848 100644
+--- a/tools/testing/selftests/pidfd/Makefile
++++ b/tools/testing/selftests/pidfd/Makefile
+@@ -1,6 +1,6 @@
+ CFLAGS += -g -I../../../../usr/include/
+ 
+-TEST_GEN_PROGS := pidfd_test
++TEST_GEN_PROGS := pidfd_test pidfd_open_test
+ 
+ include ../lib.mk
+ 
+diff --git a/tools/testing/selftests/pidfd/pidfd.h b/tools/testing/selftests/pidfd/pidfd.h
+new file mode 100644
+index 000000000000..8452e910463f
+--- /dev/null
++++ b/tools/testing/selftests/pidfd/pidfd.h
+@@ -0,0 +1,57 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#ifndef __PIDFD_H
++#define __PIDFD_H
++
++#define _GNU_SOURCE
++#include <errno.h>
++#include <fcntl.h>
++#include <sched.h>
++#include <signal.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <syscall.h>
++#include <sys/mount.h>
++
++#include "../kselftest.h"
++
++/*
++ * The kernel reserves 300 pids via RESERVED_PIDS in kernel/pid.c
++ * That means, when it wraps around any pid < 300 will be skipped.
++ * So we need to use a pid > 300 in order to test recycling.
++ */
++#define PID_RECYCLE 1000
++
++/*
++ * Define a few custom error codes for the child process to clearly indicate
++ * what is happening. This way we can tell the difference between a system
++ * error, a test error, etc.
++ */
++#define PIDFD_PASS 0
++#define PIDFD_FAIL 1
++#define PIDFD_ERROR 2
++#define PIDFD_SKIP 3
++#define PIDFD_XFAIL 4
++
++int wait_for_pid(pid_t pid)
++{
++	int status, ret;
++
++again:
++	ret = waitpid(pid, &status, 0);
++	if (ret == -1) {
++		if (errno == EINTR)
++			goto again;
++
++		return -1;
++	}
++
++	if (!WIFEXITED(status))
++		return -1;
++
++	return WEXITSTATUS(status);
++}
++
++
++#endif /* __PIDFD_H */
+diff --git a/tools/testing/selftests/pidfd/pidfd_open_test.c b/tools/testing/selftests/pidfd/pidfd_open_test.c
+new file mode 100644
+index 000000000000..0377133dd6dc
+--- /dev/null
++++ b/tools/testing/selftests/pidfd/pidfd_open_test.c
+@@ -0,0 +1,169 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#define _GNU_SOURCE
++#include <errno.h>
++#include <fcntl.h>
++#include <inttypes.h>
++#include <limits.h>
++#include <linux/types.h>
++#include <linux/wait.h>
++#include <sched.h>
++#include <signal.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <syscall.h>
++#include <sys/mount.h>
++#include <sys/prctl.h>
++#include <sys/wait.h>
++#include <unistd.h>
++
++#include "pidfd.h"
++#include "../kselftest.h"
++
++static inline int sys_pidfd_open(pid_t pid, unsigned int flags)
++{
++	return syscall(__NR_pidfd_open, pid, flags);
++}
++
++static int safe_int(const char *numstr, int *converted)
++{
++	char *err = NULL;
++	long sli;
++
++	errno = 0;
++	sli = strtol(numstr, &err, 0);
++	if (errno == ERANGE && (sli == LONG_MAX || sli == LONG_MIN))
++		return -ERANGE;
++
++	if (errno != 0 && sli == 0)
++		return -EINVAL;
++
++	if (err == numstr || *err != '\0')
++		return -EINVAL;
++
++	if (sli > INT_MAX || sli < INT_MIN)
++		return -ERANGE;
++
++	*converted = (int)sli;
++	return 0;
++}
++
++static int char_left_gc(const char *buffer, size_t len)
++{
++	size_t i;
++
++	for (i = 0; i < len; i++) {
++		if (buffer[i] == ' ' ||
++		    buffer[i] == '\t')
++			continue;
++
++		return i;
++	}
++
++	return 0;
++}
++
++static int char_right_gc(const char *buffer, size_t len)
++{
++	int i;
++
++	for (i = len - 1; i >= 0; i--) {
++		if (buffer[i] == ' '  ||
++		    buffer[i] == '\t' ||
++		    buffer[i] == '\n' ||
++		    buffer[i] == '\0')
++			continue;
++
++		return i + 1;
++	}
++
++	return 0;
++}
++
++static char *trim_whitespace_in_place(char *buffer)
++{
++	buffer += char_left_gc(buffer, strlen(buffer));
++	buffer[char_right_gc(buffer, strlen(buffer))] = '\0';
++	return buffer;
++}
++
++static pid_t get_pid_from_fdinfo_file(int pidfd, const char *key, size_t keylen)
++{
++	int ret;
++	char path[512];
++	FILE *f;
++	size_t n = 0;
++	pid_t result = -1;
++	char *line = NULL;
++
++	snprintf(path, sizeof(path), "/proc/self/fdinfo/%d", pidfd);
++
++	f = fopen(path, "re");
++	if (!f)
++		return -1;
++
++	while (getline(&line, &n, f) != -1) {
++		char *numstr;
++
++		if (strncmp(line, key, keylen))
++			continue;
++
++		numstr = trim_whitespace_in_place(line + 4);
++		ret = safe_int(numstr, &result);
++		if (ret < 0)
++			goto out;
++
++		break;
++	}
++
++out:
++	free(line);
++	fclose(f);
++	return result;
++}
++
++int main(int argc, char **argv)
++{
++	int pidfd = -1, ret = 1;
++	pid_t pid;
++
++	ksft_set_plan(3);
++
++	pidfd = sys_pidfd_open(-1, 0);
++	if (pidfd >= 0) {
++		ksft_print_msg(
++			"%s - succeeded to open pidfd for invalid pid -1\n",
++			strerror(errno));
++		goto on_error;
++	}
++	ksft_test_result_pass("do not allow invalid pid test: passed\n");
++
++	pidfd = sys_pidfd_open(getpid(), 1);
++	if (pidfd >= 0) {
++		ksft_print_msg(
++			"%s - succeeded to open pidfd with invalid flag value specified\n",
++			strerror(errno));
++		goto on_error;
++	}
++	ksft_test_result_pass("do not allow invalid flag test: passed\n");
++
++	pidfd = sys_pidfd_open(getpid(), 0);
++	if (pidfd < 0) {
++		ksft_print_msg("%s - failed to open pidfd\n", strerror(errno));
++		goto on_error;
++	}
++	ksft_test_result_pass("open a new pidfd test: passed\n");
++
++	pid = get_pid_from_fdinfo_file(pidfd, "Pid:", sizeof("Pid:") - 1);
++	ksft_print_msg("pidfd %d refers to process with pid %d\n", pidfd, pid);
++
++	ret = 0;
++
++on_error:
++	if (pidfd >= 0)
++		close(pidfd);
++
++	return !ret ? ksft_exit_pass() : ksft_exit_fail();
++}
+diff --git a/tools/testing/selftests/pidfd/pidfd_test.c b/tools/testing/selftests/pidfd/pidfd_test.c
+index 5bae1792e3d6..a03387052aa7 100644
+--- a/tools/testing/selftests/pidfd/pidfd_test.c
++++ b/tools/testing/selftests/pidfd/pidfd_test.c
+@@ -14,6 +14,7 @@
+ #include <sys/wait.h>
+ #include <unistd.h>
+ 
++#include "pidfd.h"
+ #include "../kselftest.h"
+ 
+ static inline int sys_pidfd_send_signal(int pidfd, int sig, siginfo_t *info,
+@@ -62,28 +63,6 @@ static int test_pidfd_send_signal_simple_success(void)
+ 	return 0;
+ }
+ 
+-static int wait_for_pid(pid_t pid)
+-{
+-	int status, ret;
+-
+-again:
+-	ret = waitpid(pid, &status, 0);
+-	if (ret == -1) {
+-		if (errno == EINTR)
+-			goto again;
+-
+-		return -1;
+-	}
+-
+-	if (ret != pid)
+-		goto again;
+-
+-	if (!WIFEXITED(status))
+-		return -1;
+-
+-	return WEXITSTATUS(status);
+-}
+-
+ static int test_pidfd_send_signal_exited_fail(void)
+ {
+ 	int pidfd, ret, saved_errno;
+@@ -128,13 +107,6 @@ static int test_pidfd_send_signal_exited_fail(void)
+ 	return 0;
+ }
+ 
+-/*
+- * The kernel reserves 300 pids via RESERVED_PIDS in kernel/pid.c
+- * That means, when it wraps around any pid < 300 will be skipped.
+- * So we need to use a pid > 300 in order to test recycling.
+- */
+-#define PID_RECYCLE 1000
+-
+ /*
+  * Maximum number of cycles we allow. This is equivalent to PID_MAX_DEFAULT.
+  * If users set a higher limit or we have cycled PIDFD_MAX_DEFAULT number of
+@@ -143,17 +115,6 @@ static int test_pidfd_send_signal_exited_fail(void)
+  */
+ #define PIDFD_MAX_DEFAULT 0x8000
+ 
+-/*
+- * Define a few custom error codes for the child process to clearly indicate
+- * what is happening. This way we can tell the difference between a system
+- * error, a test error, etc.
+- */
+-#define PIDFD_PASS 0
+-#define PIDFD_FAIL 1
+-#define PIDFD_ERROR 2
+-#define PIDFD_SKIP 3
+-#define PIDFD_XFAIL 4
+-
+ static int test_pidfd_send_signal_recycled_pid_fail(void)
+ {
+ 	int i, ret;
+-- 
+2.21.0
+

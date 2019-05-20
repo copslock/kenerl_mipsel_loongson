@@ -2,58 +2,57 @@ Return-Path: <SRS0=GIyq=TU=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69B84C04AAF
-	for <linux-mips@archiver.kernel.org>; Mon, 20 May 2019 07:05:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F3FA7C04AAF
+	for <linux-mips@archiver.kernel.org>; Mon, 20 May 2019 07:07:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 3C9E620815
-	for <linux-mips@archiver.kernel.org>; Mon, 20 May 2019 07:05:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D37862081C
+	for <linux-mips@archiver.kernel.org>; Mon, 20 May 2019 07:07:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730335AbfETHFv (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 20 May 2019 03:05:51 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:34749 "EHLO
+        id S1730594AbfETHHY (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 20 May 2019 03:07:24 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:60153 "EHLO
         metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725372AbfETHFv (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 20 May 2019 03:05:51 -0400
-Received: from soja.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:13da])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        with ESMTP id S1729166AbfETHHY (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 20 May 2019 03:07:24 -0400
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.89)
-        (envelope-from <o.rempel@pengutronix.de>)
-        id 1hScMT-0008TC-Lo; Mon, 20 May 2019 09:05:29 +0200
-Subject: Re: [PATCH v4 3/3] net: ethernet: add ag71xx driver
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     Paul Burton <paul.burton@mips.com>,
+        (envelope-from <ore@pengutronix.de>)
+        id 1hScOE-0000N4-JE; Mon, 20 May 2019 09:07:18 +0200
+Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1hScOD-0006As-Ja; Mon, 20 May 2019 09:07:17 +0200
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Paul Burton <paul.burton@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Jay Cliburn <jcliburn@gmail.com>,
         Chris Snook <chris.snook@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Mark Rutland <mark.rutland@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>
+Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
         linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, John Crispin <john@phrozen.org>,
         Felix Fietkau <nbd@nbd.name>, netdev@vger.kernel.org,
+        Andrew Lunn <andrew@lunn.ch>,
         Chuanhong Guo <gch981213@gmail.com>,
         info@freifunk-bad-gandersheim.net
-References: <20190519080304.5811-1-o.rempel@pengutronix.de>
- <20190519080304.5811-4-o.rempel@pengutronix.de>
- <20190520003302.GA1695@lunn.ch>
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <5e836144-44e5-d99c-716c-8af42486a6b0@pengutronix.de>
-Date:   Mon, 20 May 2019 09:05:26 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+Subject: [PATCH v5 2/3] MIPS: ath79: ar9331: add Ethernet nodes
+Date:   Mon, 20 May 2019 09:07:15 +0200
+Message-Id: <20190520070716.23668-3-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190520070716.23668-1-o.rempel@pengutronix.de>
+References: <20190520070716.23668-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20190520003302.GA1695@lunn.ch>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:13da
-X-SA-Exim-Mail-From: o.rempel@pengutronix.de
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: linux-mips@vger.kernel.org
 Sender: linux-mips-owner@vger.kernel.org
@@ -61,105 +60,67 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
+Add ethernet nodes supported by ag71xx driver.
 
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ arch/mips/boot/dts/qca/ar9331.dtsi           | 26 ++++++++++++++++++++
+ arch/mips/boot/dts/qca/ar9331_dpt_module.dts |  8 ++++++
+ 2 files changed, 34 insertions(+)
 
-On 20.05.19 02:33, Andrew Lunn wrote:
-> Hi Oleksij
-> 
->> +static int ag71xx_mdio_mii_read(struct mii_bus *bus, int addr, int reg)
->> +{
->> +	struct ag71xx *ag = bus->priv;
->> +	struct net_device *ndev = ag->ndev;
->> +	int err;
->> +	int ret;
->> +
->> +	err = ag71xx_mdio_wait_busy(ag);
->> +	if (err)
->> +		return err;
->> +
->> +	ag71xx_wr(ag, AG71XX_REG_MII_CMD, MII_CMD_WRITE);
-> 
-> It looks like you have not removed this.
-
-done.
-
-> 
->> +	ag71xx_wr(ag, AG71XX_REG_MII_ADDR,
->> +			((addr & 0xff) << MII_ADDR_SHIFT) | (reg & 0xff));
->> +	ag71xx_wr(ag, AG71XX_REG_MII_CMD, MII_CMD_READ);
->> +
->> +	err = ag71xx_mdio_wait_busy(ag);
->> +	if (err)
->> +		return err;
->> +
->> +	ret = ag71xx_rr(ag, AG71XX_REG_MII_STATUS);
->> +	/*
->> +	 * ar9331 doc: bits 31:16 are reserved and must be must be written
->> +	 * with zero.
->> +	 */
->> +	ret &= 0xffff;
->> +	ag71xx_wr(ag, AG71XX_REG_MII_CMD, MII_CMD_WRITE);
-> 
-> Or this.
-
-this one is needed. MII_CMD_WRITE is a wrong name, it is actually disabling MII_CMD_READ mode.
-
-> 
->> +
->> +	netif_dbg(ag, link, ndev, "mii_read: addr=%04x, reg=%04x, value=%04x\n",
->> +		  addr, reg, ret);
->> +
->> +	return ret;
->> +}
->> +
->> +static int ag71xx_mdio_mii_write(struct mii_bus *bus, int addr, int reg,
->> +				 u16 val)
->> +{
->> +	struct ag71xx *ag = bus->priv;
->> +	struct net_device *ndev = ag->ndev;
->> +
->> +	netif_dbg(ag, link, ndev, "mii_write: addr=%04x, reg=%04x, value=%04x\n",
->> +		  addr, reg, val);
->> +
->> +	ag71xx_wr(ag, AG71XX_REG_MII_ADDR,
->> +			((addr & 0xff) << MII_ADDR_SHIFT) | (reg & 0xff));
-> 
-> addr have the vale 0-31. So a mask of 0xff is a couple of bits too
-> big.
-
-done
-
-> 
->> +	ag71xx_wr(ag, AG71XX_REG_MII_CTRL, val);
->> +
->> +	return ag71xx_mdio_wait_busy(ag);
->> +}
-> 
->> +static void ag71xx_link_adjust(struct ag71xx *ag, bool update)
->> +{
->> +	struct net_device *ndev = ag->ndev;
->> +	struct phy_device *phydev = ndev->phydev;
->> +	u32 cfg2;
->> +	u32 ifctl;
->> +	u32 fifo5;
->> +
->> +	if (!phydev->link && update) {
->> +		ag71xx_hw_stop(ag);
->> +		netif_carrier_off(ag->ndev);
-> 
-> phylib will take care of the carrier for you.
-
-done
-
->         Andrew
-
-thx!
-
-Kind regards,
-Oleksij Rempel
-
+diff --git a/arch/mips/boot/dts/qca/ar9331.dtsi b/arch/mips/boot/dts/qca/ar9331.dtsi
+index 2bae201aa365..63a9f33aa43e 100644
+--- a/arch/mips/boot/dts/qca/ar9331.dtsi
++++ b/arch/mips/boot/dts/qca/ar9331.dtsi
+@@ -116,6 +116,32 @@
+ 			};
+ 		};
+ 
++		eth0: ethernet@19000000 {
++			compatible = "qca,ar9330-eth";
++			reg = <0x19000000 0x200>;
++			interrupts = <4>;
++
++			resets = <&rst 9>, <&rst 22>;
++			reset-names = "mac", "mdio";
++			clocks = <&pll ATH79_CLK_AHB>, <&pll ATH79_CLK_AHB>;
++			clock-names = "eth", "mdio";
++
++			status = "disabled";
++		};
++
++		eth1: ethernet@1a000000 {
++			compatible = "qca,ar9330-eth";
++			reg = <0x1a000000 0x200>;
++			interrupts = <5>;
++
++			resets = <&rst 13>, <&rst 23>;
++			reset-names = "mac", "mdio";
++			clocks = <&pll ATH79_CLK_AHB>, <&pll ATH79_CLK_AHB>;
++			clock-names = "eth", "mdio";
++
++			status = "disabled";
++		};
++
+ 		usb: usb@1b000100 {
+ 			compatible = "chipidea,usb2";
+ 			reg = <0x1b000000 0x200>;
+diff --git a/arch/mips/boot/dts/qca/ar9331_dpt_module.dts b/arch/mips/boot/dts/qca/ar9331_dpt_module.dts
+index e7af2cf5f4c1..77bab823eb3b 100644
+--- a/arch/mips/boot/dts/qca/ar9331_dpt_module.dts
++++ b/arch/mips/boot/dts/qca/ar9331_dpt_module.dts
+@@ -76,3 +76,11 @@
+ 		reg = <0>;
+ 	};
+ };
++
++&eth0 {
++	status = "okay";
++};
++
++&eth1 {
++	status = "okay";
++};
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.20.1
+

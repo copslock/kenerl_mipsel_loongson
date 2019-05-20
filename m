@@ -2,48 +2,61 @@ Return-Path: <SRS0=GIyq=TU=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_NEOMUTT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B60FC04AAC
-	for <linux-mips@archiver.kernel.org>; Mon, 20 May 2019 14:37:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B191C04E87
+	for <linux-mips@archiver.kernel.org>; Mon, 20 May 2019 14:48:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 23BA2216B7
-	for <linux-mips@archiver.kernel.org>; Mon, 20 May 2019 14:37:27 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E3B3B2054F
+	for <linux-mips@archiver.kernel.org>; Mon, 20 May 2019 14:48:29 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=brauner.io header.i=@brauner.io header.b="DauQZ4rg"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391659AbfETOhX (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 20 May 2019 10:37:23 -0400
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:36052 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731837AbfETOhX (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 20 May 2019 10:37:23 -0400
-Received: by mail-qk1-f193.google.com with SMTP id c14so8968045qke.3;
-        Mon, 20 May 2019 07:37:21 -0700 (PDT)
+        id S1731397AbfETOs3 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 20 May 2019 10:48:29 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:39841 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2392079AbfETOs1 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 20 May 2019 10:48:27 -0400
+Received: by mail-wm1-f67.google.com with SMTP id n25so12936652wmk.4
+        for <linux-mips@vger.kernel.org>; Mon, 20 May 2019 07:48:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brauner.io; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=N7wB0bhMnAowtyDk7cjOKmaZEhZ6/2E0ef5LypbT5pM=;
+        b=DauQZ4rgS8TTJobEVuVF04IQ8OrrQsWx/7I3dVssObK0ub6Wu5l3OX+dW7klHHK0qm
+         VTzmbSB41r23etZTCBjrd8m+r36Fu5u/KMx97MMxNxqrc49IzLJgxrXuPKJbtCw731N2
+         2I/Or4zAH6edPPIHVOmx0J8f7ho+EcxpE4+E0tEGBsS3gW21YphO/NArsQ/NQg3lEiKL
+         oDh24dU1R+R5HUs2yW4HElupA/gn8GbEgZeLHFFkjPe+prcmClURRdntkwM4xCV3R301
+         oyEP0r/asVzA0N6Yse3cdeLbDHxEh1gQMX/6fsFKeqmxjgm0wnRNCfyORqg0I7sZtKZ1
+         ZpMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Z/2L5o2AoOKLKFPcdkjNIAmz2G/5ZFe52UTQRqPzuYk=;
-        b=DV3jVCYnKcYK5l9o1u8iwTMUtREqHQ8NhUc5CrfrrjoCQyudywF7NVNcUATvxJPQc0
-         IfxQfRVKad2p/2KrIzd5K5z4vfqvgq+KNkSPZzF46vHUhjQjY+0WTN2uTZdTZ4xYBun7
-         uSXsEWZSgRAZ6bKcsh23qjLoqSH5pXuH2attLD/4dIE+LUuumtb4I5m9wlAC52y7akhH
-         HFwNd4K0EGWfMTO1nTL/6gQ3NciBUxM5BpzS7zDC7Oplp553GkihCRWSZSBLT0WHTf3h
-         rOBxfVAI8YIE72CYVHD52TC2gYcHcjouW+wjRIBaW1QUw5lkO6mvzOBR4UJqvOf+dIsV
-         sDDw==
-X-Gm-Message-State: APjAAAXMKWh+uCHSSDCF1f5hhuWeW4jIGQo8ihVjltulq3A2Eafk5rXu
-        zpN9EO1bcMJVO9LZEY87ekKh4QwFFBPDXb+I9s0=
-X-Google-Smtp-Source: APXvYqw/K0JoPhQjbioFloDoxv8hPwsc8PzdGxaBHlE2BolGJGFffF+O1yZKUKyE5ZdibkGoaW8RhPzIvapSmk2bhfM=
-X-Received: by 2002:a05:620a:5ed:: with SMTP id z13mr21969541qkg.84.1558363041328;
- Mon, 20 May 2019 07:37:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190520134605.29116-1-christian@brauner.io>
-In-Reply-To: <20190520134605.29116-1-christian@brauner.io>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 20 May 2019 16:37:03 +0200
-Message-ID: <CAK8P3a1cZZ6SQe5mGjhga=MgTvCGF6OKyjvosR8J6z6EpH+rVA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] pid: add pidfd_open()
-To:     Christian Brauner <christian@brauner.io>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=N7wB0bhMnAowtyDk7cjOKmaZEhZ6/2E0ef5LypbT5pM=;
+        b=k8cHqmora36J4kifz1LT/uqXwIPgArYhdwy9HYY8wTxiTnVyDlOqw/SdCy0jBhJMfR
+         tJXU/kRSiRCaIpYF4ZKWdAT8kGHbPuLe9D6krlDHYl0edHFJUdeFf8sW9v7v0U3nL3Wz
+         0Pm8VpSh5nh57VDmpnuX+0TO+baJyh8Hg5J5PIpUhbFpEm10UmN3sFQE30sNhsubw9dS
+         p9WuYm5pLGdaSIy7gsVI/SuggK3dOt/5B2B01NxcLcZQHYxKlTfDdvRnijv1rtdI0Dkd
+         Ww49Vj0s5q9dJ2kqIysilpr2vDZNAMHvUdXjhUvV0hCipqN8bb5ZXrrRa4TPZZ0GTgZH
+         N2vQ==
+X-Gm-Message-State: APjAAAVF4Ho0GTowB3whX/lMoYacYLiyQPxJmQCebJq4SHwNRdb2aHm1
+        zEFntfZajIzIIbyifh4CgAcp1A==
+X-Google-Smtp-Source: APXvYqzgUfAfX/fOEqJpAu0H05y9iE6v85VXR9NGZP9lcwztHn9oG8QSJSLuvfJRMuYHnyshwQXXCQ==
+X-Received: by 2002:a1c:6a0e:: with SMTP id f14mr17177633wmc.69.1558363705786;
+        Mon, 20 May 2019 07:48:25 -0700 (PDT)
+Received: from brauner.io ([212.91.227.56])
+        by smtp.gmail.com with ESMTPSA id z1sm3308970wrl.91.2019.05.20.07.48.24
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 20 May 2019 07:48:25 -0700 (PDT)
+Date:   Mon, 20 May 2019 16:48:23 +0200
+From:   Christian Brauner <christian@brauner.io>
+To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     Jann Horn <jannh@google.com>, Oleg Nesterov <oleg@redhat.com>,
         Al Viro <viro@zeniv.linux.org.uk>,
         Linus Torvalds <torvalds@linux-foundation.org>,
@@ -76,20 +89,34 @@ Cc:     Jann Horn <jannh@google.com>, Oleg Nesterov <oleg@redhat.com>,
         "Serge E. Hallyn" <serge@hallyn.com>,
         Suren Baghdasaryan <surenb@google.com>,
         Android Kernel Team <kernel-team@android.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v2 1/2] pid: add pidfd_open()
+Message-ID: <20190520144822.xfaifawi65jus6ng@brauner.io>
+References: <20190520134605.29116-1-christian@brauner.io>
+ <CAK8P3a1cZZ6SQe5mGjhga=MgTvCGF6OKyjvosR8J6z6EpH+rVA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a1cZZ6SQe5mGjhga=MgTvCGF6OKyjvosR8J6z6EpH+rVA@mail.gmail.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, May 20, 2019 at 3:46 PM Christian Brauner <christian@brauner.io> wrote:
->
-> In line with Arnd's recent changes to consolidate syscall numbers across
-> architectures, I have added the pidfd_open() syscall to all architectures
-> at the same time.
+On Mon, May 20, 2019 at 04:37:03PM +0200, Arnd Bergmann wrote:
+> On Mon, May 20, 2019 at 3:46 PM Christian Brauner <christian@brauner.io> wrote:
+> >
+> > In line with Arnd's recent changes to consolidate syscall numbers across
+> > architectures, I have added the pidfd_open() syscall to all architectures
+> > at the same time.
+> 
+> Thanks! I've checked that the ones you have added are all
+> done correctly. However, double-checking that you got all of them,
+> I noticed that you missed mips-o32 and mips-n64. With those added:
+> 
+> Acked-by: Arnd Bergmann <arnd@arndb.de>
 
-Thanks! I've checked that the ones you have added are all
-done correctly. However, double-checking that you got all of them,
-I noticed that you missed mips-o32 and mips-n64. With those added:
-
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+Perfect, will plumb mips-o32 and mips-n64 and resend once more with your
+ack added.
+Sidenote: You plan on merging the common syscall tables or will there be
+a script to do this work per-arch in the future?

@@ -2,115 +2,164 @@ Return-Path: <SRS0=GIyq=TU=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2457AC04AAF
-	for <linux-mips@archiver.kernel.org>; Mon, 20 May 2019 06:01:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 69B84C04AAF
+	for <linux-mips@archiver.kernel.org>; Mon, 20 May 2019 07:05:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id EF39720851
-	for <linux-mips@archiver.kernel.org>; Mon, 20 May 2019 06:01:50 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="T+f0EQyS"
+	by mail.kernel.org (Postfix) with ESMTP id 3C9E620815
+	for <linux-mips@archiver.kernel.org>; Mon, 20 May 2019 07:05:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730577AbfETGBV (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 20 May 2019 02:01:21 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:47132 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730573AbfETGBV (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 20 May 2019 02:01:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
-        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=qcNLeLvPH2g6VMTa9XX70nBLAss1SSxUJ+jGxGFYSuk=; b=T+f0EQySfnQT0LlYHxNbpq8uUj
-        VRAZqBViMEjBlsL40GwqaObh/vaEPFPfLWKwxAsaOAlTnbWiilvcgdqq3bJ3uE23MMCHgccCaeVyQ
-        D+YOMmD7ODS86K3TV2vF4umWMyTSclSOqGKaO4awpWiZpDgaMbyAmdGFM9KBuLT7KsvDyIeVSqFr6
-        frqUVY3C70O/+9fy3VxPFgoei4V9vGTL7oezRDUd4xd0nUhCBWkc/C3q6tW+IISRnFm/k+KNyhjRz
-        LrIy8NclaNhec2Rk8op2q9WhgVz5JIvYg5mKfdzQKQkoHkHwNVYBfaIkc/kIywJJUNko+ZxxG5elc
-        sDewchow==;
-Received: from 089144206147.atnat0015.highway.bob.at ([89.144.206.147] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hSbMJ-0001VM-SF; Mon, 20 May 2019 06:01:16 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Oleg Nesterov <oleg@redhat.com>, Arnd Bergmann <arnd@arndb.de>
-Cc:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 2/5] powerpc: don't use asm-generic/ptrace.h
-Date:   Mon, 20 May 2019 08:00:15 +0200
-Message-Id: <20190520060018.25569-3-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190520060018.25569-1-hch@lst.de>
-References: <20190520060018.25569-1-hch@lst.de>
+        id S1730335AbfETHFv (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 20 May 2019 03:05:51 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:34749 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725372AbfETHFv (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 20 May 2019 03:05:51 -0400
+Received: from soja.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:13da])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <o.rempel@pengutronix.de>)
+        id 1hScMT-0008TC-Lo; Mon, 20 May 2019 09:05:29 +0200
+Subject: Re: [PATCH v4 3/3] net: ethernet: add ag71xx driver
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jay Cliburn <jcliburn@gmail.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, John Crispin <john@phrozen.org>,
+        Felix Fietkau <nbd@nbd.name>, netdev@vger.kernel.org,
+        Chuanhong Guo <gch981213@gmail.com>,
+        info@freifunk-bad-gandersheim.net
+References: <20190519080304.5811-1-o.rempel@pengutronix.de>
+ <20190519080304.5811-4-o.rempel@pengutronix.de>
+ <20190520003302.GA1695@lunn.ch>
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+Message-ID: <5e836144-44e5-d99c-716c-8af42486a6b0@pengutronix.de>
+Date:   Mon, 20 May 2019 09:05:26 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20190520003302.GA1695@lunn.ch>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:13da
+X-SA-Exim-Mail-From: o.rempel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mips@vger.kernel.org
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Doing the indirection through macros for the regs accessors just
-makes them harder to read, so implement the helpers directly.
 
-Note that only the helpers actually used are implemented now.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/powerpc/include/asm/ptrace.h | 29 ++++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 7 deletions(-)
+On 20.05.19 02:33, Andrew Lunn wrote:
+> Hi Oleksij
+> 
+>> +static int ag71xx_mdio_mii_read(struct mii_bus *bus, int addr, int reg)
+>> +{
+>> +	struct ag71xx *ag = bus->priv;
+>> +	struct net_device *ndev = ag->ndev;
+>> +	int err;
+>> +	int ret;
+>> +
+>> +	err = ag71xx_mdio_wait_busy(ag);
+>> +	if (err)
+>> +		return err;
+>> +
+>> +	ag71xx_wr(ag, AG71XX_REG_MII_CMD, MII_CMD_WRITE);
+> 
+> It looks like you have not removed this.
 
-diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
-index 6f047730e642..fc007d186a82 100644
---- a/arch/powerpc/include/asm/ptrace.h
-+++ b/arch/powerpc/include/asm/ptrace.h
-@@ -115,18 +115,33 @@ struct pt_regs
- 
- #ifndef __ASSEMBLY__
- 
--#define GET_IP(regs)		((regs)->nip)
--#define GET_USP(regs)		((regs)->gpr[1])
--#define GET_FP(regs)		(0)
--#define SET_FP(regs, val)
-+static inline unsigned long instruction_pointer(struct pt_regs *regs)
-+{
-+	return regs->nip;
-+}
-+
-+static inline void instruction_pointer_set(struct pt_regs *regs,
-+		unsigned long val)
-+{
-+	regs->nip = val;
-+}
-+
-+static inline unsigned long user_stack_pointer(struct pt_regs *regs)
-+{
-+	return regs->gpr[1];
-+}
-+
-+static inline unsigned long frame_pointer(struct pt_regs *regs)
-+{
-+	return 0;
-+}
- 
- #ifdef CONFIG_SMP
- extern unsigned long profile_pc(struct pt_regs *regs);
--#define profile_pc profile_pc
-+#else
-+#define profile_pc(regs) instruction_pointer(regs)
- #endif
- 
--#include <asm-generic/ptrace.h>
--
- #define kernel_stack_pointer(regs) ((regs)->gpr[1])
- static inline int is_syscall_success(struct pt_regs *regs)
- {
+done.
+
+> 
+>> +	ag71xx_wr(ag, AG71XX_REG_MII_ADDR,
+>> +			((addr & 0xff) << MII_ADDR_SHIFT) | (reg & 0xff));
+>> +	ag71xx_wr(ag, AG71XX_REG_MII_CMD, MII_CMD_READ);
+>> +
+>> +	err = ag71xx_mdio_wait_busy(ag);
+>> +	if (err)
+>> +		return err;
+>> +
+>> +	ret = ag71xx_rr(ag, AG71XX_REG_MII_STATUS);
+>> +	/*
+>> +	 * ar9331 doc: bits 31:16 are reserved and must be must be written
+>> +	 * with zero.
+>> +	 */
+>> +	ret &= 0xffff;
+>> +	ag71xx_wr(ag, AG71XX_REG_MII_CMD, MII_CMD_WRITE);
+> 
+> Or this.
+
+this one is needed. MII_CMD_WRITE is a wrong name, it is actually disabling MII_CMD_READ mode.
+
+> 
+>> +
+>> +	netif_dbg(ag, link, ndev, "mii_read: addr=%04x, reg=%04x, value=%04x\n",
+>> +		  addr, reg, ret);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int ag71xx_mdio_mii_write(struct mii_bus *bus, int addr, int reg,
+>> +				 u16 val)
+>> +{
+>> +	struct ag71xx *ag = bus->priv;
+>> +	struct net_device *ndev = ag->ndev;
+>> +
+>> +	netif_dbg(ag, link, ndev, "mii_write: addr=%04x, reg=%04x, value=%04x\n",
+>> +		  addr, reg, val);
+>> +
+>> +	ag71xx_wr(ag, AG71XX_REG_MII_ADDR,
+>> +			((addr & 0xff) << MII_ADDR_SHIFT) | (reg & 0xff));
+> 
+> addr have the vale 0-31. So a mask of 0xff is a couple of bits too
+> big.
+
+done
+
+> 
+>> +	ag71xx_wr(ag, AG71XX_REG_MII_CTRL, val);
+>> +
+>> +	return ag71xx_mdio_wait_busy(ag);
+>> +}
+> 
+>> +static void ag71xx_link_adjust(struct ag71xx *ag, bool update)
+>> +{
+>> +	struct net_device *ndev = ag->ndev;
+>> +	struct phy_device *phydev = ndev->phydev;
+>> +	u32 cfg2;
+>> +	u32 ifctl;
+>> +	u32 fifo5;
+>> +
+>> +	if (!phydev->link && update) {
+>> +		ag71xx_hw_stop(ag);
+>> +		netif_carrier_off(ag->ndev);
+> 
+> phylib will take care of the carrier for you.
+
+done
+
+>         Andrew
+
+thx!
+
+Kind regards,
+Oleksij Rempel
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |

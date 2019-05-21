@@ -2,33 +2,34 @@ Return-Path: <SRS0=RX9m=TV=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+X-Spam-Status: No, score=-4.0 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5D00C04AAF
-	for <linux-mips@archiver.kernel.org>; Tue, 21 May 2019 14:52:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 23494C04AAF
+	for <linux-mips@archiver.kernel.org>; Tue, 21 May 2019 14:52:49 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9BD5D2173E
-	for <linux-mips@archiver.kernel.org>; Tue, 21 May 2019 14:52:45 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E3C502173E
+	for <linux-mips@archiver.kernel.org>; Tue, 21 May 2019 14:52:48 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="Ohzhwl80"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="MqM0Swsu"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728337AbfEUOwl (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 21 May 2019 10:52:41 -0400
-Received: from outils.crapouillou.net ([89.234.176.41]:41242 "EHLO
+        id S1728858AbfEUOwK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 21 May 2019 10:52:10 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:41058 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728600AbfEUOwQ (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 21 May 2019 10:52:16 -0400
+        with ESMTP id S1728841AbfEUOwJ (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 21 May 2019 10:52:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1558450334; h=from:from:sender:reply-to:subject:subject:date:date:
+        s=mail; t=1558450327; h=from:from:sender:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EvDE8lm5ctN0WqqwDN5kj56+vtpCas4LnBGUA09Xu2A=;
-        b=Ohzhwl80rjy+3atHf+CSdV0JlH/cQrl7IFx4tr8wEuXC9cMD2DSrZjpWQUZxwODf+ROVZI
-        gy1EA0H5LTBCtRee112gcdiW1m/9Yz3wDN9rOoIpwi7cx0x3CsdHMS0mSa9kXiyg37TAb7
-        VM073n6oIdKVa/RF3vj7fASvmiEYTDM=
+        bh=ZzrK/nAYlgwY+1rCHm1LQj2NygIFZByCc4b5SLgF4Cc=;
+        b=MqM0SwsuWdYBMfq2g6yFOXSBS3FOeItZfnSDJallnMCVl5uwFW5WJ2N3WHAlk85tSzTH5Y
+        3hA04aC9gR5SyMC2/fVLbdoCfv5H0O2jZe9XG7KMXd0V/d7PVYpzsiRU7Hp3Vn0eubxI/C
+        O9OsIr/KskgT7Kimuka4y4X0s3TvqQM=
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -46,10 +47,11 @@ To:     Rob Herring <robh+dt@kernel.org>,
 Cc:     Mathieu Malaterre <malat@debian.org>, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, linux-mips@vger.kernel.org,
         linux-doc@vger.kernel.org, linux-clk@vger.kernel.org, od@zcrc.me,
-        Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v12 11/13] MIPS: CI20: Reduce system timer and clocksource to 3 MHz
-Date:   Tue, 21 May 2019 16:51:39 +0200
-Message-Id: <20190521145141.9813-12-paul@crapouillou.net>
+        Paul Cercueil <paul@crapouillou.net>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH v12 08/13] clk: jz4740: Add TCU clock
+Date:   Tue, 21 May 2019 16:51:36 +0200
+Message-Id: <20190521145141.9813-9-paul@crapouillou.net>
 In-Reply-To: <20190521145141.9813-1-paul@crapouillou.net>
 References: <20190521145141.9813-1-paul@crapouillou.net>
 MIME-Version: 1.0
@@ -59,53 +61,51 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The default clock (48 MHz) is too fast for the system timer.
+Add the missing TCU clock to the list of clocks supplied by the CGU for
+the JZ4740 SoC.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Acked-by: Stephen Boyd <sboyd@kernel.org>
+Acked-by: Rob Herring <robh@kernel.org>
 ---
 
 Notes:
     v5: New patch
     
-    v6: Set also the rate for the clocksource channel's clock
-    
-    v7: No change
-    
-    v8: No change
-    
-    v9: Don't configure clock timer1, as the OS Timer is used as
-    	clocksource on this SoC
-    
-    v10: Revert back to v8 bahaviour. Let the user choose what
-    	 clocksource should be used.
-    
-    v11-v12: No change
+    v6-v12: No change
 
- arch/mips/boot/dts/ingenic/ci20.dts | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/clk/ingenic/jz4740-cgu.c       | 6 ++++++
+ include/dt-bindings/clock/jz4740-cgu.h | 1 +
+ 2 files changed, 7 insertions(+)
 
-diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
-index 4f7b1fa31cf5..2e9952311ecd 100644
---- a/arch/mips/boot/dts/ingenic/ci20.dts
-+++ b/arch/mips/boot/dts/ingenic/ci20.dts
-@@ -2,6 +2,7 @@
- /dts-v1/;
- 
- #include "jz4780.dtsi"
-+#include <dt-bindings/clock/ingenic,tcu.h>
- #include <dt-bindings/gpio/gpio.h>
- 
- / {
-@@ -238,3 +239,9 @@
- 		bias-disable;
- 	};
- };
+diff --git a/drivers/clk/ingenic/jz4740-cgu.c b/drivers/clk/ingenic/jz4740-cgu.c
+index 25f7df028e67..fbc7319c2861 100644
+--- a/drivers/clk/ingenic/jz4740-cgu.c
++++ b/drivers/clk/ingenic/jz4740-cgu.c
+@@ -212,6 +212,12 @@ static const struct ingenic_cgu_clk_info jz4740_cgu_clocks[] = {
+ 		.parents = { JZ4740_CLK_EXT, -1, -1, -1 },
+ 		.gate = { CGU_REG_CLKGR, 5 },
+ 	},
 +
-+&tcu {
-+	/* 3 MHz for the system timer and clocksource */
-+	assigned-clocks = <&tcu TCU_CLK_TIMER0>, <&tcu TCU_CLK_TIMER1>;
-+	assigned-clock-rates = <3000000>, <3000000>;
-+};
++	[JZ4740_CLK_TCU] = {
++		"tcu", CGU_CLK_GATE,
++		.parents = { JZ4740_CLK_EXT, -1, -1, -1 },
++		.gate = { CGU_REG_CLKGR, 1 },
++	},
+ };
+ 
+ static void __init jz4740_cgu_init(struct device_node *np)
+diff --git a/include/dt-bindings/clock/jz4740-cgu.h b/include/dt-bindings/clock/jz4740-cgu.h
+index 6ed83f926ae7..e82d77028581 100644
+--- a/include/dt-bindings/clock/jz4740-cgu.h
++++ b/include/dt-bindings/clock/jz4740-cgu.h
+@@ -34,5 +34,6 @@
+ #define JZ4740_CLK_ADC		19
+ #define JZ4740_CLK_I2C		20
+ #define JZ4740_CLK_AIC		21
++#define JZ4740_CLK_TCU		22
+ 
+ #endif /* __DT_BINDINGS_CLOCK_JZ4740_CGU_H__ */
 -- 
 2.21.0.593.g511ec345e18
 

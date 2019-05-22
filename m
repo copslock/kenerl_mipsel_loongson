@@ -2,117 +2,205 @@ Return-Path: <SRS0=95ey=TW=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5822DC18E7C
-	for <linux-mips@archiver.kernel.org>; Wed, 22 May 2019 08:15:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E6B0C282CE
+	for <linux-mips@archiver.kernel.org>; Wed, 22 May 2019 09:21:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 31E732184B
-	for <linux-mips@archiver.kernel.org>; Wed, 22 May 2019 08:15:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5E59B20675
+	for <linux-mips@archiver.kernel.org>; Wed, 22 May 2019 09:21:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728159AbfEVIPl (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 22 May 2019 04:15:41 -0400
-Received: from xavier.telenet-ops.be ([195.130.132.52]:39592 "EHLO
-        xavier.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726770AbfEVIPl (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 22 May 2019 04:15:41 -0400
-Received: from ramsan ([84.194.111.163])
-        by xavier.telenet-ops.be with bizsmtp
-        id FLFd2000k3XaVaC01LFdtJ; Wed, 22 May 2019 10:15:39 +0200
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan with esmtp (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1hTMPR-00075Y-Ny; Wed, 22 May 2019 10:15:37 +0200
-Received: from geert by rox.of.borg with local (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1hTMPR-0004KC-LR; Wed, 22 May 2019 10:15:37 +0200
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Serge Semin <fancer.lancer@gmail.com>,
+        id S1728608AbfEVJVN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 22 May 2019 05:21:13 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:35226 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728547AbfEVJVN (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 22 May 2019 05:21:13 -0400
+Received: by mail-ot1-f65.google.com with SMTP id n14so1448065otk.2;
+        Wed, 22 May 2019 02:21:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=p/fnSZedKvA8Iqi6ZZvsXLPVwAkY8qUX0ojVQgRr2ec=;
+        b=B4nCp9iwVFmDlnlJC3mpp9Nenucc4SJmlDyRV13lkG5kBZSrddXzsrURuvUQIeThZY
+         Ehr3MLMmqeImqAVXm4MVg0w+eWo9Vbs/sZQtaZxZqpoe1koxkysbIkrSQNECIM6dhiR1
+         fPDWm+O1vLzIkp7SM/gQTHak4gmNG++ugA69j6+h0mykjcXAdT+0wfLmGIQkbfJL1ZLY
+         lSrceY8mHFRckl2VDgcEnKlVGibVKvsbCKciGAT+h2MWb4aDM0maoW/w3UCOIpRNMAHP
+         6IlquCcvhUtV8EmXlQirw1K9rFuLYoItJjR3xubziMDu4IQKBebuob/lMpClAq6MK/3x
+         ruyw==
+X-Gm-Message-State: APjAAAVwfxxPYnQ0T+NNzYp61+mgMiw/KoaLOtEw7UuaE9M+ITn2zuta
+        Y4RyMgMaYU2kayeYYgAZZd0n/YjBPU4NAfCFuUk=
+X-Google-Smtp-Source: APXvYqyobpJ63a1iTpV/Vmzl3T4jPFpgqUHVdSsARI3lZgekWUpzNXifpDBaSAjDG4knVag0MFU8Mr62nKwVypF3Ci8=
+X-Received: by 2002:a9d:6195:: with SMTP id g21mr4768otk.179.1558516871479;
+ Wed, 22 May 2019 02:21:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190521145141.9813-1-paul@crapouillou.net> <20190521145141.9813-10-paul@crapouillou.net>
+In-Reply-To: <20190521145141.9813-10-paul@crapouillou.net>
+From:   Mathieu Malaterre <malat@debian.org>
+Date:   Wed, 22 May 2019 11:21:00 +0200
+Message-ID: <CA+7wUsxe4DLmAGNnnXZ3UokguMJ0cOGtu=opQpuAPvN_SH4KUw@mail.gmail.com>
+Subject: Re: [PATCH v12 09/13] MIPS: jz4740: Add DTS nodes for the TCU drivers
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:     Mike Rapoport <rppt@linux.ibm.com>,
-        "Maciej W . Rozycki" <macro@linux-mips.org>,
-        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH] MIPS: TXx9: Fix boot crash in free_initmem()
-Date:   Wed, 22 May 2019 10:15:35 +0200
-Message-Id: <20190522081535.16583-1-geert@linux-m68k.org>
-X-Mailer: git-send-email 2.17.1
+        Jonathan Corbet <corbet@lwn.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, linux-mips@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-clk@vger.kernel.org, od@zcrc.me
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On rbtx4927:
+On Tue, May 21, 2019 at 4:52 PM Paul Cercueil <paul@crapouillou.net> wrote:
+>
+> Add DTS nodes for the JZ4780, JZ4770 and JZ4740 devicetree files.
+>
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> ---
+>
+> Notes:
+>     v5: New patch
+>
+>     v6: Fix register lengths in watchdog/pwm nodes
+>
+>     v7: No change
+>
+>     v8: - Fix wrong start address for PWM node
+>         - Add system timer and clocksource sub-nodes
+>
+>     v9: Drop timer and clocksource sub-nodes
+>
+>     v10-v11: No change
+>
+>     v12: Drop PWM/watchdog/OST sub-nodes, for now.
+>
+>  arch/mips/boot/dts/ingenic/jz4740.dtsi | 22 ++++++++++++++++++++++
+>  arch/mips/boot/dts/ingenic/jz4770.dtsi | 21 +++++++++++++++++++++
+>  arch/mips/boot/dts/ingenic/jz4780.dtsi | 21 +++++++++++++++++++++
+>  3 files changed, 64 insertions(+)
+>
+> diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+> index 2beb78a62b7d..807d9702d4cf 100644
+> --- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
+> +++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+> @@ -53,6 +53,28 @@
+>                 clock-names = "rtc";
+>         };
+>
+> +       tcu: timer@10002000 {
+> +               compatible = "ingenic,jz4740-tcu";
+> +               reg = <0x10002000 0x1000>;
+> +               #address-cells = <1>;
+> +               #size-cells = <1>;
+> +               ranges = <0x0 0x10002000 0x1000>;
+> +
+> +               #clock-cells = <1>;
+> +
+> +               clocks = <&cgu JZ4740_CLK_RTC
+> +                         &cgu JZ4740_CLK_EXT
+> +                         &cgu JZ4740_CLK_PCLK
+> +                         &cgu JZ4740_CLK_TCU>;
+> +               clock-names = "rtc", "ext", "pclk", "tcu";
+> +
+> +               interrupt-controller;
+> +               #interrupt-cells = <1>;
+> +
+> +               interrupt-parent = <&intc>;
+> +               interrupts = <23 22 21>;
+> +       };
+> +
+>         rtc_dev: rtc@10003000 {
+>                 compatible = "ingenic,jz4740-rtc";
+>                 reg = <0x10003000 0x40>;
+> diff --git a/arch/mips/boot/dts/ingenic/jz4770.dtsi b/arch/mips/boot/dts/ingenic/jz4770.dtsi
+> index 49ede6c14ff3..70932fd90902 100644
+> --- a/arch/mips/boot/dts/ingenic/jz4770.dtsi
+> +++ b/arch/mips/boot/dts/ingenic/jz4770.dtsi
+> @@ -46,6 +46,27 @@
+>                 #clock-cells = <1>;
+>         };
+>
+> +       tcu: timer@10002000 {
+> +               compatible = "ingenic,jz4770-tcu";
+> +               reg = <0x10002000 0x1000>;
+> +               #address-cells = <1>;
+> +               #size-cells = <1>;
+> +               ranges = <0x0 0x10002000 0x1000>;
+> +
+> +               #clock-cells = <1>;
+> +
+> +               clocks = <&cgu JZ4770_CLK_RTC
+> +                         &cgu JZ4770_CLK_EXT
+> +                         &cgu JZ4770_CLK_PCLK>;
+> +               clock-names = "rtc", "ext", "pclk";
+> +
+> +               interrupt-controller;
+> +               #interrupt-cells = <1>;
+> +
+> +               interrupt-parent = <&intc>;
+> +               interrupts = <27 26 25>;
+> +       };
+> +
+>         pinctrl: pin-controller@10010000 {
+>                 compatible = "ingenic,jz4770-pinctrl";
+>                 reg = <0x10010000 0x600>;
+> diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+> index b03cdec56de9..495082ce7fc5 100644
+> --- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
+> +++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+> @@ -46,6 +46,27 @@
+>                 #clock-cells = <1>;
+>         };
+>
+> +       tcu: timer@10002000 {
 
-    BUG: Bad page state in process swapper  pfn:00001
-    page:804b7820 refcount:0 mapcount:-128 mapping:00000000 index:0x1
-    flags: 0x0()
-    raw: 00000000 00000100 00000200 00000000 00000001 00000000 ffffff7f 00000000
-    page dumped because: nonzero mapcount
-    Modules linked in:
-    CPU: 0 PID: 1 Comm: swapper Not tainted 5.2.0-rc1-rbtx4927-00468-g3c05ea3d4077b756 #141
-    Stack : 00000000 10008400 8040dc4c 87c1b974 8044af63 8040dc4c 00000001 804a3490
-            00000001 81000000 0030f231 80148558 00000003 10008400 87c1dd80 3d0f9a2c
-            00000000 00000000 804b0000 00000000 00000007 00000000 00000081 00000000
-            62722d31 00000080 804b0000 39347874 00000000 804b7820 8040ce18 81000010
-            00000001 00000007 00000001 81000000 00000018 8021de24 00000000 804a0000
-            ...
-    Call Trace:
-    [<8010adec>] show_stack+0x74/0x104
-    [<801a5e44>] bad_page+0x130/0x138
-    [<801a654c>] free_pcppages_bulk+0x17c/0x3b0
-    [<801a789c>] free_unref_page+0x40/0x68
-    [<801120f4>] free_init_pages+0xec/0x104
-    [<803bdde8>] free_initmem+0x10/0x58
-    [<803bdb8c>] kernel_init+0x20/0x100
-    [<801057c8>] ret_from_kernel_thread+0x14/0x1c
+With W=1, I see:
 
-As of commit b93ddc4f9156205e ("mips: Reserve memory for the kernel
-image resources"), bootmem_init() no longer reserves the memory below
-the kernel, while prom_free_prom_memory() still frees it.
+../arch/mips/boot/dts/ingenic/jz4780.dtsi:64.22-83.4: Warning
+(unique_unit_address): /timer@10002000: duplicate unit-address (also
+used in node /watchdog@1000
+2000)
 
-Fix this by reverting commit b6263ff2d6e58cc2 ("MIPS: TXx9: Implement
-prom_free_prom_memory").
 
-Suggested-by: Serge Semin <fancer.lancer@gmail.com>
-Fixes: b93ddc4f9156205e ("mips: Reserve memory for the kernel image resources")
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
----
-Looks like arch/mips/dec/prom/memory.c needs a similar but more
-complicated fix, due to declance handling?
----
- arch/mips/txx9/generic/setup.c | 6 ------
- 1 file changed, 6 deletions(-)
-
-diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
-index 46537c2ca86a2eae..6d0fd0e055b4ba4a 100644
---- a/arch/mips/txx9/generic/setup.c
-+++ b/arch/mips/txx9/generic/setup.c
-@@ -33,7 +33,6 @@
- #include <asm/time.h>
- #include <asm/reboot.h>
- #include <asm/r4kcache.h>
--#include <asm/sections.h>
- #include <asm/setup.h>
- #include <asm/txx9/generic.h>
- #include <asm/txx9/pci.h>
-@@ -343,11 +342,6 @@ void __init prom_init(void)
- 
- void __init prom_free_prom_memory(void)
- {
--	unsigned long saddr = PAGE_SIZE;
--	unsigned long eaddr = __pa_symbol(&_text);
--
--	if (saddr < eaddr)
--		free_init_pages("prom memory", saddr, eaddr);
- }
- 
- const char *get_system_type(void)
--- 
-2.17.1
-
+> +               compatible = "ingenic,jz4770-tcu";
+> +               reg = <0x10002000 0x1000>;
+> +               #address-cells = <1>;
+> +               #size-cells = <1>;
+> +               ranges = <0x0 0x10002000 0x1000>;
+> +
+> +               #clock-cells = <1>;
+> +
+> +               clocks = <&cgu JZ4780_CLK_RTCLK
+> +                         &cgu JZ4780_CLK_EXCLK
+> +                         &cgu JZ4780_CLK_PCLK>;
+> +               clock-names = "rtc", "ext", "pclk";
+> +
+> +               interrupt-controller;
+> +               #interrupt-cells = <1>;
+> +
+> +               interrupt-parent = <&intc>;
+> +               interrupts = <27 26 25>;
+> +       };
+> +
+>         rtc_dev: rtc@10003000 {
+>                 compatible = "ingenic,jz4780-rtc";
+>                 reg = <0x10003000 0x4c>;
+> --
+> 2.21.0.593.g511ec345e18
+>

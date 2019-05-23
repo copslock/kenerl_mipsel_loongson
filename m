@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
-	SPF_PASS,T_DKIMWL_WL_HIGH,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	SPF_PASS,T_DKIMWL_WL_HIGH,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D032C282E1
-	for <linux-mips@archiver.kernel.org>; Thu, 23 May 2019 19:38:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AB17AC282DD
+	for <linux-mips@archiver.kernel.org>; Thu, 23 May 2019 19:44:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 07F8420881
-	for <linux-mips@archiver.kernel.org>; Thu, 23 May 2019 19:38:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7EAF420851
+	for <linux-mips@archiver.kernel.org>; Thu, 23 May 2019 19:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1558640333;
+	s=default; t=1558640662;
 	bh=PBtTUBAOYf3seKE7fedPr1UQ96MftwcjzEdHhxafmvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=ZxHRIRj8mjFMI1pDsbaBKpSbs4Jo140HDuYwuSO7ctW3IyGbxSnddzQyeN7AUaxHY
-	 Kxu7T105yRq5Xn/rVF9Tj2sWWJMXHdR6H1vPOhnRWWScsvsVhkgD3KVUMTMfEpP8Ck
-	 sHb5f4AJVEawuq5KpCyvi/fV5fvwpfW/PNp9lQmI=
+	b=QQxewiWcug1V3eTKf78n5cvevm6VFRdKsVVeKwHRuBHodR73KZWqELTt+wQb85zl9
+	 0M2uZsdOphvFL0QJ96v9HaGX7uIRsZgH1NPshKZkntyn2dCvs4JgWE6EHNP4WWQ2ep
+	 rkRattcSDxBhIZG0pIaSuZ6EGlsXqr515tVUI8wA=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390584AbfEWTWz (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 23 May 2019 15:22:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32952 "EHLO mail.kernel.org"
+        id S2388738AbfEWToV (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 23 May 2019 15:44:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51396 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390578AbfEWTWy (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 23 May 2019 15:22:54 -0400
+        id S2389230AbfEWTQl (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 23 May 2019 15:16:41 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 59AC3206BA;
-        Thu, 23 May 2019 19:22:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BF23C217D7;
+        Thu, 23 May 2019 19:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558639373;
+        s=default; t=1558639000;
         bh=PBtTUBAOYf3seKE7fedPr1UQ96MftwcjzEdHhxafmvk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ad7z8kjl89sYSD86X8f1Gk6siyWOaGttZb2SvMjM5hZ2S4sh7Fq3xkgl/KIPRQTRV
-         Gjbie5lqddRVWhMenb0Vy3/Tcm3O4fC0ZgiC2t6KAeB2rz52urKnEMuvdCMVAXXywG
-         I+ZlA00XchyPkYye4e5qiJdbYJZEH4uyH7Yul+pI=
+        b=0O2AuLJqXEXReWe2wfsd0SBTEaLoN/vXe4O5RlsridP6U5/NU2H7QZisRmAngC/EE
+         T3E/N0JggthMUhfuiIccH/RK6pBP6PXNj2uGgq9sVs5yKoluAmJZ3KDPQLA0axQbw/
+         BxPJs6yDAa99dzlQQMAAQLmfIB+/AYxPv0DEqR0w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -51,12 +51,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Namhyung Kim <namhyung@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org
-Subject: [PATCH 5.0 073/139] MIPS: perf: Fix build with CONFIG_CPU_BMIPS5000 enabled
-Date:   Thu, 23 May 2019 21:06:01 +0200
-Message-Id: <20190523181730.299366832@linuxfoundation.org>
+Subject: [PATCH 4.19 059/114] MIPS: perf: Fix build with CONFIG_CPU_BMIPS5000 enabled
+Date:   Thu, 23 May 2019 21:05:58 +0200
+Message-Id: <20190523181736.942250445@linuxfoundation.org>
 X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190523181720.120897565@linuxfoundation.org>
-References: <20190523181720.120897565@linuxfoundation.org>
+In-Reply-To: <20190523181731.372074275@linuxfoundation.org>
+References: <20190523181731.372074275@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8

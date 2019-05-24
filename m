@@ -2,201 +2,93 @@ Return-Path: <SRS0=5dAF=TY=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
-	SPF_PASS,T_DKIMWL_WL_HIGH,URIBL_BLOCKED,USER_AGENT_MUTT autolearn=unavailable
+X-Spam-Status: No, score=-5.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	T_DKIMWL_WL_HIGH,URIBL_BLOCKED,USER_AGENT_MUTT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 055D2C072B5
-	for <linux-mips@archiver.kernel.org>; Fri, 24 May 2019 20:21:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FCFAC282E1
+	for <linux-mips@archiver.kernel.org>; Fri, 24 May 2019 21:54:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id CC8DE2133D
-	for <linux-mips@archiver.kernel.org>; Fri, 24 May 2019 20:21:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0CEF0217F9
+	for <linux-mips@archiver.kernel.org>; Fri, 24 May 2019 21:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1558729269;
-	bh=n2UsS32Sxfj3hv8WCSXkGRum2KUrExqdzbmH8L8X0FA=;
+	s=default; t=1558734895;
+	bh=AVLed+W5dA+ZNaHjmCLfSTws8Rc1078a/ogcogu/gKk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=MrbjBtMpIgK22Z+c8Qv6m2SAqx7PIg5hrRPi/+ykdSb2VbzKkvw1+TRNMbN7x21ww
-	 kahlwgS05s43wIBRhIBTlQFGTMbb6YLVkCVdciXJuP4TRV46zyiPmP8cEPkQajOVP0
-	 uRU+5QmMBZ8RH0JwxAJBWNNl53jXGnUNh4bbq7Ws=
+	b=nWNTQQ+kCBEE2jknxSAfMWtqhZpiLzV/Xak5A7D2e51wRYlgsqJ6RqzAMpDfrxIJy
+	 PIh0f0xia+nXiS9pQiFwBmMj/MULOoemVvpL8HwYqbgzxu4VLBDt8MY10Z4eDTCVFO
+	 7NBEg/lkYGtjbJGq/OqmF2CKIqHEYUcEpXrxZHjI=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404182AbfEXUVG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 24 May 2019 16:21:06 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:40465 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2403845AbfEXUVF (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 24 May 2019 16:21:05 -0400
-Received: by mail-oi1-f193.google.com with SMTP id r136so7954673oie.7;
-        Fri, 24 May 2019 13:21:05 -0700 (PDT)
+        id S2404445AbfEXVyu (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 24 May 2019 17:54:50 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:46096 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404265AbfEXVyu (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 24 May 2019 17:54:50 -0400
+Received: by mail-ot1-f65.google.com with SMTP id j49so9973461otc.13;
+        Fri, 24 May 2019 14:54:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=1Pcvpx47Lgpkklh1dUYuXUVnYLV0UOVqnAMU1ZWlfNU=;
-        b=cSZbacRLT3THI/o2Eb0csGK2Iq6Chyy1j2hI6Y5EvKZFlhH/yICikCMVcwx+3yAmci
-         kBI7cNLZp1+vDsWXz3KkwXkUy5XLO/NDZgNE4+E2AfdreShNqymnGRvMGP+TPlfE1kFU
-         Brlfy/Gr0eYAzPzH8MSN18pJBmEuH1ILaDg3BhWI9G9ywz5S+q93cVC7oCI00oRnorvf
-         0O9Zw1brafdYIipJtS6AGBPrbJRa5uzT35lHkS2zDi20k/izrCTZaM0quisrxrzDKbuI
-         eiUdJqL8EScDza1pfwcDsLIQa39eBxcDY+I4qxActCp/WmmGGDKBlNwcH+9kSkruWLlO
-         wq6g==
-X-Gm-Message-State: APjAAAWoDE/y7UwrXdMYbrf9RrHchZhqFaUnAgNC+91PNutzyQxWe2lm
-        vF+M4OSAcj9yL9P5ygStsA==
-X-Google-Smtp-Source: APXvYqwiWbsmY0AvPIsFqEy9d5xnA4ACojgqv5dnCssQgQucS6H+KMlf712EdwupMRYpX8zpqeZlIw==
-X-Received: by 2002:aca:fd45:: with SMTP id b66mr7646303oii.157.1558729264891;
-        Fri, 24 May 2019 13:21:04 -0700 (PDT)
+        bh=WwRWeH6o4e0zEUidM8+Mp3KiI/hAFcVnEjbVX8vBMvc=;
+        b=NR+6h/mZ388JZn47DxAtfXlAwspc4zwQhx8h0j2rrCLC+3cfTKdygvLx9wgSRALoc2
+         fm84ThsYvuBya9Nc9zJIJooMBFpuuFSbxY6zyRM4NJM7okbCAWks2kJOzhOMaw3rXesd
+         NzUpBir/uXMiilWCzGHG8BHRm6AQUK79j0WTMbIchSjnaE49FMu+qG/zrh9ivoSyP0L3
+         bMjNhQTV16qenavvZKBCQq+WgoAVCmCp/0hc+KEQwF49LRa8F2SNyL+VwLZDBsmgD87T
+         p+mx3jtElupMkK2bnf2HsGWGiB7jvy867YKDTiORXyR5FQ1FyjJ+h1rAuJ2f3DADFLiE
+         rAIQ==
+X-Gm-Message-State: APjAAAVPWps14D6EHhiNcTXY3JL/ZebRSk+FSbwlIV2Q5QEhFf21hRRe
+        OeDWMxLBZexx3nYVjcXJMQ==
+X-Google-Smtp-Source: APXvYqxfYQC+exjUSNJQHKb3wOaN746sP+WD7kMTf/uk/I7m4GfAAdcQaxmAayNlguFMhN8AXAnZMQ==
+X-Received: by 2002:a9d:7cd2:: with SMTP id r18mr223772otn.345.1558734889169;
+        Fri, 24 May 2019 14:54:49 -0700 (PDT)
 Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id 19sm1241172otf.72.2019.05.24.13.21.03
+        by smtp.gmail.com with ESMTPSA id 80sm1585634otj.2.2019.05.24.14.54.48
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 24 May 2019 13:21:04 -0700 (PDT)
-Date:   Fri, 24 May 2019 15:21:03 -0500
+        Fri, 24 May 2019 14:54:48 -0700 (PDT)
+Date:   Fri, 24 May 2019 16:54:47 -0500
 From:   Rob Herring <robh@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     Paul Burton <paul.burton@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Mathieu Malaterre <malat@debian.org>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-clk@vger.kernel.org, od@zcrc.me
-Subject: Re: [PATCH v12 03/13] dt-bindings: Add doc for the Ingenic TCU
- drivers
-Message-ID: <20190524202103.GA15650@bogus>
-References: <20190521145141.9813-1-paul@crapouillou.net>
- <20190521145141.9813-4-paul@crapouillou.net>
+        Jay Cliburn <jcliburn@gmail.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Oleksij Rempel <o.rempel@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, John Crispin <john@phrozen.org>,
+        Felix Fietkau <nbd@nbd.name>, netdev@vger.kernel.org,
+        Andrew Lunn <andrew@lunn.ch>,
+        Chuanhong Guo <gch981213@gmail.com>,
+        info@freifunk-bad-gandersheim.net
+Subject: Re: [PATCH v6 1/3] dt-bindings: net: add qca,ar71xx.txt documentation
+Message-ID: <20190524215447.GA12009@bogus>
+References: <20190524111224.24819-1-o.rempel@pengutronix.de>
+ <20190524111224.24819-2-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190521145141.9813-4-paul@crapouillou.net>
+In-Reply-To: <20190524111224.24819-2-o.rempel@pengutronix.de>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Tue, May 21, 2019 at 04:51:31PM +0200, Paul Cercueil wrote:
-> Add documentation about how to properly use the Ingenic TCU
-> (Timer/Counter Unit) drivers from devicetree.
+On Fri, 24 May 2019 13:12:22 +0200, Oleksij Rempel wrote:
+> Add binding documentation for Atheros/QCA networking IP core used
+> in many routers.
 > 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
+>  .../devicetree/bindings/net/qca,ar71xx.txt    | 45 +++++++++++++++++++
+>  1 file changed, 45 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/qca,ar71xx.txt
 > 
-> Notes:
->     v4: New patch in this series. Corresponds to V2 patches 3-4-5 with
->      added content.
->     
->     v5: - Edited PWM/watchdog DT bindings documentation to point to the new
->        document.
->      - Moved main document to
->        Documentation/devicetree/bindings/timer/ingenic,tcu.txt
->      - Updated documentation to reflect the new devicetree bindings.
->     
->     v6: - Removed PWM/watchdog documentation files as asked by upstream
->      - Removed doc about properties that should be implicit
->      - Removed doc about ingenic,timer-channel /
->        ingenic,clocksource-channel as they are gone
->      - Fix WDT clock name in the binding doc
->      - Fix lengths of register areas in watchdog/pwm nodes
->     
->     v7: No change
->     
->     v8: - Fix address of the PWM node
->      - Added doc about system timer and clocksource children nodes
->     
->     v9: - Remove doc about system timer and clocksource children
->        nodes...
->     - Add doc about ingenic,pwm-channels-mask property
->     
->     v10: No change
->     
->     v11: Fix info about default value of ingenic,pwm-channels-mask
->     
->     v12: Drop sub-nodes for now; they will be introduced in a follow-up
->     	 patchset.
 
-Why? I believe I acked them.
-
-> 
->  .../devicetree/bindings/timer/ingenic,tcu.txt | 59 +++++++++++++++++++
->  1 file changed, 59 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/timer/ingenic,tcu.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/timer/ingenic,tcu.txt b/Documentation/devicetree/bindings/timer/ingenic,tcu.txt
-> new file mode 100644
-> index 000000000000..d101cd72c9b0
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/timer/ingenic,tcu.txt
-> @@ -0,0 +1,59 @@
-> +Ingenic JZ47xx SoCs Timer/Counter Unit devicetree bindings
-> +==========================================================
-> +
-> +For a description of the TCU hardware and drivers, have a look at
-> +Documentation/mips/ingenic-tcu.txt.
-> +
-> +Required properties:
-> +
-> +- compatible: Must be one of:
-> +  * "ingenic,jz4740-tcu"
-> +  * "ingenic,jz4725b-tcu"
-> +  * "ingenic,jz4770-tcu"
-> +- reg: Should be the offset/length value corresponding to the TCU registers
-> +- clocks: List of phandle & clock specifiers for clocks external to the TCU.
-> +  The "pclk", "rtc" and "ext" clocks should be provided. The "tcu" clock
-> +  should be provided if the SoC has it.
-> +- clock-names: List of name strings for the external clocks.
-> +- #clock-cells: Should be <1>;
-> +  Clock consumers specify this argument to identify a clock. The valid values
-> +  may be found in <dt-bindings/clock/ingenic,tcu.h>.
-> +- interrupt-controller : Identifies the node as an interrupt controller
-> +- #interrupt-cells : Specifies the number of cells needed to encode an
-> +  interrupt source. The value should be 1.
-> +- interrupt-parent : phandle of the interrupt controller.
-
-Drop this 'interrupt-parent' is implied and could be in a parent node.
-
-> +- interrupts : Specifies the interrupt the controller is connected to.
-> +
-> +Optional properties:
-> +
-> +- ingenic,pwm-channels-mask: Bitmask of TCU channels reserved for PWM use.
-> +  Default value is 0xfc.
-> +
-> +
-> +Example
-> +==========================================================
-> +
-> +#include <dt-bindings/clock/jz4770-cgu.h>
-> +
-> +/ {
-> +	tcu: timer@10002000 {
-> +		compatible = "ingenic,jz4770-tcu";
-> +		reg = <0x10002000 0x1000>;
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +		ranges = <0x0 0x10002000 0x1000>;
-> +
-> +		#clock-cells = <1>;
-> +
-> +		clocks = <&cgu JZ4770_CLK_RTC
-> +			  &cgu JZ4770_CLK_EXT
-> +			  &cgu JZ4770_CLK_PCLK>;
-> +		clock-names = "rtc", "ext", "pclk";
-> +
-> +		interrupt-controller;
-> +		#interrupt-cells = <1>;
-> +
-> +		interrupt-parent = <&intc>;
-> +		interrupts = <27 26 25>;
-> +	};
-> +};
-> -- 
-> 2.21.0.593.g511ec345e18
-> 
+Reviewed-by: Rob Herring <robh@kernel.org>

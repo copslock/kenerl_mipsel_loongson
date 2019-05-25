@@ -4,38 +4,38 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC240C46460
-	for <linux-mips@archiver.kernel.org>; Sat, 25 May 2019 13:32:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C5067C282E5
+	for <linux-mips@archiver.kernel.org>; Sat, 25 May 2019 13:32:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 982CD217F9
-	for <linux-mips@archiver.kernel.org>; Sat, 25 May 2019 13:32:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9E32E2054F
+	for <linux-mips@archiver.kernel.org>; Sat, 25 May 2019 13:32:39 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="lJyfeDa/"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="k8gst9Wu"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727021AbfEYNcU (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 25 May 2019 09:32:20 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:50372 "EHLO
+        id S1727114AbfEYNcf (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 25 May 2019 09:32:35 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:50462 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726838AbfEYNcT (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 25 May 2019 09:32:19 -0400
+        with ESMTP id S1727092AbfEYNc2 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 25 May 2019 09:32:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
         MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
         :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
         :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=0pMukIaJ8IjZEEoYFUSUOe32+fVx4NLHIFSad+NCaKI=; b=lJyfeDa/YDCTdpFVkfHBGq8IPd
-        /nl3QEsbTzzUQGQAoHja/tQNWt/c587n2t3nMBjqiKS2T6e24vAAQ9+I2lko6f5sI1QWYbHfeDzdl
-        bpRdyp6ulACoaIIuUT7IPCUniqdZ9Gf2sY1Jk8e9pODZh5nJUMjAekc1GM8TxVR7zlqRROMipzip+
-        v3q5bqcN6EozJkKXJTV7MJORiGsUY9M1ZIqirrQ66xlF+aW2VCEBkbkQzU6TTbLQIl+KtExbl1wQm
-        WeOOfyBBx6X5lwzo6ELMqr4uAvq+0eV/niwxNrXILjr8+zVAE7RBVK9iAb88ay3eouL4p/6Sd9I08
-        gUvF8Jqw==;
+        bh=LECtn05W6P2NimP0OllUf9vpm+KEHNIpicbdgrA2kyI=; b=k8gst9WuPquL97md/tHmXZQkBD
+        hn0QTx8oa20csZMaFnMKCBgUoSKd6TRGT8nMw+l2blX+vM5IsiYEr+trtkLraBToZuKn3VDbG5xuA
+        cxls9b6CRrfMWHlXo3zhCi+l/ucpwTyxtSx2ySEtK0P679gUtIOAEUfXBigaj2lDLiWSZ/Ena4l+d
+        /Sw9q/76Y2EoiKyUoqSvVwaidlPXWIMpo2+ZZ4jIQRzvZcEl3DUguMES55HjopjazGs11iTCGD0J/
+        VFnyOS8e+p+fdrnb/SNdr/4wUWdWzJjdRagRamO42+zKlAZdPmIuNkVdJ+W3eXNbGqrnfUEXh5m5A
+        FjpChbeg==;
 Received: from 213-225-10-46.nat.highway.a1.net ([213.225.10.46] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hUWmS-0006Y2-U1; Sat, 25 May 2019 13:32:13 +0000
+        id 1hUWmf-0006Zp-3t; Sat, 25 May 2019 13:32:25 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Linus Torvalds <torvalds@linux-foundation.org>,
         Paul Burton <paul.burton@mips.com>,
@@ -46,9 +46,9 @@ To:     Linus Torvalds <torvalds@linux-foundation.org>,
 Cc:     Nicholas Piggin <npiggin@gmail.com>, linux-mips@vger.kernel.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/6] sh: add a missing pud_page definition
-Date:   Sat, 25 May 2019 15:31:59 +0200
-Message-Id: <20190525133203.25853-3-hch@lst.de>
+Subject: [PATCH 6/6] mm: don't allow non-generic get_user_pages_fast implementations
+Date:   Sat, 25 May 2019 15:32:03 +0200
+Message-Id: <20190525133203.25853-7-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190525133203.25853-1-hch@lst.de>
 References: <20190525133203.25853-1-hch@lst.de>
@@ -60,25 +60,54 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-sh oddly enough had pud_page_vaddr, but not pud_page.
+Add an explicit ifdef instead of the weak functions for the stubs
+so that we can't let new get_user_pages_fast implementation slip in.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/sh/include/asm/pgtable-3level.h | 1 +
- 1 file changed, 1 insertion(+)
+ mm/util.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/sh/include/asm/pgtable-3level.h b/arch/sh/include/asm/pgtable-3level.h
-index 7d8587eb65ff..8ff6fb6b4d19 100644
---- a/arch/sh/include/asm/pgtable-3level.h
-+++ b/arch/sh/include/asm/pgtable-3level.h
-@@ -37,6 +37,7 @@ static inline unsigned long pud_page_vaddr(pud_t pud)
- {
- 	return pud_val(pud);
+diff --git a/mm/util.c b/mm/util.c
+index 91682a2090ee..74ae737ffd95 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -300,6 +300,7 @@ void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
  }
-+#define pud_page(pud)		virt_to_page((void *)pud_page_vaddr(pud))
+ #endif
  
- #define pmd_index(address)	(((address) >> PMD_SHIFT) & (PTRS_PER_PMD-1))
- static inline pmd_t *pmd_offset(pud_t *pud, unsigned long address)
++#ifndef CONFIG_HAVE_GENERIC_GUP
+ /*
+  * Like get_user_pages_fast() except its IRQ-safe in that it won't fall
+  * back to the regular GUP.
+@@ -308,8 +309,8 @@ void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
+  * If the architecture does not support this function, simply return with no
+  * pages pinned.
+  */
+-int __weak __get_user_pages_fast(unsigned long start,
+-				 int nr_pages, int write, struct page **pages)
++int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
++		struct page **pages)
+ {
+ 	return 0;
+ }
+@@ -339,13 +340,13 @@ EXPORT_SYMBOL_GPL(__get_user_pages_fast);
+  * requested. If nr_pages is 0 or negative, returns 0. If no pages
+  * were pinned, returns -errno.
+  */
+-int __weak get_user_pages_fast(unsigned long start,
+-				int nr_pages, unsigned int gup_flags,
+-				struct page **pages)
++int get_user_pages_fast(unsigned long start, int nr_pages,
++		unsigned int gup_flags, struct page **pages)
+ {
+ 	return get_user_pages_unlocked(start, nr_pages, pages, gup_flags);
+ }
+ EXPORT_SYMBOL_GPL(get_user_pages_fast);
++#endif /* !CONFIG_HAVE_GENERIC_GUP */
+ 
+ unsigned long vm_mmap_pgoff(struct file *file, unsigned long addr,
+ 	unsigned long len, unsigned long prot,
 -- 
 2.20.1
 

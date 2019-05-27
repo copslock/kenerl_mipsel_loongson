@@ -6,35 +6,35 @@ X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FAE4C282CE
-	for <linux-mips@archiver.kernel.org>; Mon, 27 May 2019 09:13:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EAA72C07542
+	for <linux-mips@archiver.kernel.org>; Mon, 27 May 2019 09:13:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 0843821734
-	for <linux-mips@archiver.kernel.org>; Mon, 27 May 2019 09:13:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C36AB21734
+	for <linux-mips@archiver.kernel.org>; Mon, 27 May 2019 09:13:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725973AbfE0JNh (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 27 May 2019 05:13:37 -0400
-Received: from mx2.mailbox.org ([80.241.60.215]:43408 "EHLO mx2.mailbox.org"
+        id S1725991AbfE0JNk (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 27 May 2019 05:13:40 -0400
+Received: from mx2.mailbox.org ([80.241.60.215]:43732 "EHLO mx2.mailbox.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726072AbfE0JNh (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 27 May 2019 05:13:37 -0400
+        id S1726562AbfE0JNk (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 27 May 2019 05:13:40 -0400
 Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
         (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
         (No client certificate requested)
-        by mx2.mailbox.org (Postfix) with ESMTPS id C17B5A108C;
-        Mon, 27 May 2019 11:13:35 +0200 (CEST)
+        by mx2.mailbox.org (Postfix) with ESMTPS id 491A1A10DC;
+        Mon, 27 May 2019 11:13:39 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de [80.241.56.123]) (amavisd-new, port 10030)
-        with ESMTP id 0i02r393Qw7Q; Mon, 27 May 2019 11:13:26 +0200 (CEST)
+        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
+        with ESMTP id nsAtXc8JYnOi; Mon, 27 May 2019 11:13:25 +0200 (CEST)
 From:   Stefan Roese <sr@denx.de>
 To:     linux-mips@vger.kernel.org
 Cc:     Paul Burton <paul.burton@mips.com>,
         Harvey Hunt <harveyhuntnexus@gmail.com>,
         John Crispin <john@phrozen.org>
-Subject: [PATCH 6/8 v2] MIPS: ralink: mt7628a.dtsi: Add SPI controller DT node
-Date:   Mon, 27 May 2019 11:13:21 +0200
-Message-Id: <20190527091323.4582-6-sr@denx.de>
+Subject: [PATCH 4/8 v2] MIPS: ralink: mt7628a.dtsi: Add GPIO controller DT node
+Date:   Mon, 27 May 2019 11:13:19 +0200
+Message-Id: <20190527091323.4582-4-sr@denx.de>
 In-Reply-To: <20190527091323.4582-1-sr@denx.de>
 References: <20190527091323.4582-1-sr@denx.de>
 MIME-Version: 1.0
@@ -44,7 +44,7 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-This patch adds the SPI controller description to the MT7628A dtsi file.
+This patch adds the GPIO controller description to the MT7628A dtsi file.
 
 Signed-off-by: Stefan Roese <sr@denx.de>
 Cc: Paul Burton <paul.burton@mips.com>
@@ -55,31 +55,28 @@ v2:
 - Use Harvey's new email address (not at imgtec)
 - Use correct linux-mips list address
 
- arch/mips/boot/dts/ralink/mt7628a.dtsi | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/mips/boot/dts/ralink/mt7628a.dtsi | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/arch/mips/boot/dts/ralink/mt7628a.dtsi b/arch/mips/boot/dts/ralink/mt7628a.dtsi
-index 64a425c7d639..0895ae62782a 100644
+index a239a2405670..0c2983c9c47c 100644
 --- a/arch/mips/boot/dts/ralink/mt7628a.dtsi
 +++ b/arch/mips/boot/dts/ralink/mt7628a.dtsi
-@@ -186,6 +186,22 @@
- 			status = "disabled";
+@@ -157,6 +157,19 @@
+ 			reg = <0x300 0x100>;
  		};
  
-+		spi: spi@b00 {
-+			compatible = "ralink,mt7621-spi";
-+			reg = <0xb00 0x100>;
++		gpio: gpio@600 {
++			compatible = "mediatek,mt7621-gpio";
++			reg = <0x600 0x100>;
 +
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&pinmux_spi_spi>;
++			gpio-controller;
++			interrupt-controller;
++			#gpio-cells = <2>;
++			#interrupt-cells = <2>;
 +
-+			resets = <&resetc 18>;
-+			reset-names = "spi";
-+
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			status = "disabled";
++			interrupt-parent = <&intc>;
++			interrupts = <6>;
 +		};
 +
  		uart0: uartlite@c00 {

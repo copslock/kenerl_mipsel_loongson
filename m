@@ -1,100 +1,70 @@
-Return-Path: <SRS0=44+7=T2=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=pfVP=T3=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.5 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_MUTT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A0BDC282E3
-	for <linux-mips@archiver.kernel.org>; Sun, 26 May 2019 20:27:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 56325C07542
+	for <linux-mips@archiver.kernel.org>; Mon, 27 May 2019 07:29:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id EB3622075B
-	for <linux-mips@archiver.kernel.org>; Sun, 26 May 2019 20:27:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 327922173B
+	for <linux-mips@archiver.kernel.org>; Mon, 27 May 2019 07:29:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726071AbfEZU1r (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 26 May 2019 16:27:47 -0400
-Received: from port70.net ([81.7.13.123]:59088 "EHLO port70.net"
+        id S1725996AbfE0H3m (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 27 May 2019 03:29:42 -0400
+Received: from mx2.mailbox.org ([80.241.60.215]:47006 "EHLO mx2.mailbox.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725616AbfEZU1q (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sun, 26 May 2019 16:27:46 -0400
-X-Greylist: delayed 420 seconds by postgrey-1.27 at vger.kernel.org; Sun, 26 May 2019 16:27:44 EDT
-Received: by port70.net (Postfix, from userid 1002)
-        id 64F7EABEC0BA; Sun, 26 May 2019 22:20:42 +0200 (CEST)
-Date:   Sun, 26 May 2019 22:20:42 +0200
-From:   Szabolcs Nagy <nsz@port70.net>
-To:     Christian Brauner <christian@brauner.io>
-Cc:     viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        torvalds@linux-foundation.org, fweimer@redhat.com,
-        jannh@google.com, oleg@redhat.com, tglx@linutronix.de,
-        arnd@arndb.de, shuah@kernel.org, dhowells@redhat.com,
-        tkjos@android.com, ldv@altlinux.org, miklos@szeredi.hu,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-arch@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v2 1/2] open: add close_range()
-Message-ID: <20190526202041.GO16415@port70.net>
-References: <20190523154747.15162-1-christian@brauner.io>
- <20190523154747.15162-2-christian@brauner.io>
+        id S1725869AbfE0H3m (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 27 May 2019 03:29:42 -0400
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:105:465:1:1:0])
+        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        (No client certificate requested)
+        by mx2.mailbox.org (Postfix) with ESMTPS id 6E06AA0AE8;
+        Mon, 27 May 2019 09:29:40 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+        by hefe.heinlein-support.de (hefe.heinlein-support.de [91.198.250.172]) (amavisd-new, port 10030)
+        with ESMTP id O8TUNVHo2oZw; Mon, 27 May 2019 09:29:31 +0200 (CEST)
+From:   Stefan Roese <sr@denx.de>
+To:     linux-mips@vger.kernel.org
+Cc:     Paul Burton <paul.burton@mips.com>,
+        Harvey Hunt <harvey.hunt@imgtec.com>,
+        John Crispin <john@phrozen.org>
+Subject: [PATCH 1/9] MIPS: ralink: mt7628a.dtsi: Add SPDX GPL-2.0 license identifier
+Date:   Mon, 27 May 2019 09:29:22 +0200
+Message-Id: <20190527072930.9844-1-sr@denx.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190523154747.15162-2-christian@brauner.io>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-* Christian Brauner <christian@brauner.io> [2019-05-23 17:47:46 +0200]:
-> This adds the close_range() syscall. It allows to efficiently close a range
-> of file descriptors up to all file descriptors of a calling task.
-> 
-> The syscall came up in a recent discussion around the new mount API and
-> making new file descriptor types cloexec by default. During this
-> discussion, Al suggested the close_range() syscall (cf. [1]). Note, a
-> syscall in this manner has been requested by various people over time.
-> 
-> First, it helps to close all file descriptors of an exec()ing task. This
-> can be done safely via (quoting Al's example from [1] verbatim):
-> 
->         /* that exec is sensitive */
->         unshare(CLONE_FILES);
->         /* we don't want anything past stderr here */
->         close_range(3, ~0U);
->         execve(....);
+As done in commit b24413180f56 ("License cleanup: add SPDX GPL-2.0
+license identifier to files with no license"), this patch adds the SPDX
+license identifier to mt7628a.dtsi, which is currently still missing
+this identifier.
 
-this does not work in a hosted c implementation unless the libc
-guarantees not to use libc internal fds (e.g. in execve).
-(the libc cannot easily abstract fds, so the syscall abi layer
-fd semantics is necessarily visible to user code.)
+Signed-off-by: Stefan Roese <sr@denx.de>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: Harvey Hunt <harvey.hunt@imgtec.com>
+Cc: John Crispin <john@phrozen.org>
+---
+ arch/mips/boot/dts/ralink/mt7628a.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-i think this is a new constraint for userspace runtimes.
-(not entirely unreasonable though)
+diff --git a/arch/mips/boot/dts/ralink/mt7628a.dtsi b/arch/mips/boot/dts/ralink/mt7628a.dtsi
+index 9ff7e8faaecc..3e88c8d496e4 100644
+--- a/arch/mips/boot/dts/ralink/mt7628a.dtsi
++++ b/arch/mips/boot/dts/ralink/mt7628a.dtsi
+@@ -1,3 +1,5 @@
++// SPDX-License-Identifier: GPL-2.0
++
+ / {
+ 	#address-cells = <1>;
+ 	#size-cells = <1>;
+-- 
+2.21.0
 
-> The code snippet above is one way of working around the problem that file
-> descriptors are not cloexec by default. This is aggravated by the fact that
-> we can't just switch them over without massively regressing userspace. For
-> a whole class of programs having an in-kernel method of closing all file
-> descriptors is very helpful (e.g. demons, service managers, programming
-> language standard libraries, container managers etc.).
-
-was cloexec_range(a,b) considered?
-
-> (Please note, unshare(CLONE_FILES) should only be needed if the calling
->  task is multi-threaded and shares the file descriptor table with another
->  thread in which case two threads could race with one thread allocating
->  file descriptors and the other one closing them via close_range(). For the
->  general case close_range() before the execve() is sufficient.)
-
-assuming there is no unblocked signal handler that may open fds.
-
-a syscall that tramples on fds not owned by the caller is ugly
-(not generally safe to use and may break things if it gets used),
-i don't have a better solution for fd leaks or missing cloexec,
-but i think it needs more analysis how it can be used.

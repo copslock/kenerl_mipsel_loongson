@@ -7,37 +7,37 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_PASS,T_DKIMWL_WL_HIGH,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F683C28CC1
-	for <linux-mips@archiver.kernel.org>; Sat,  1 Jun 2019 13:26:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 901D4C28CC3
+	for <linux-mips@archiver.kernel.org>; Sat,  1 Jun 2019 13:31:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 33DAD273D6
-	for <linux-mips@archiver.kernel.org>; Sat,  1 Jun 2019 13:26:45 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6A9F827492
+	for <linux-mips@archiver.kernel.org>; Sat,  1 Jun 2019 13:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1559395605;
+	s=default; t=1559395865;
 	bh=zRNk1F+5d/zcwRLeFG+1vtDSoBYuQqDUjsCXFf/8Dek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=QIqwa59DHgACnDmNOwvj05vClwSlFpDl/3Kk0CGC7xeSgEsObSzAwzxxU+Lmax/Hr
-	 3JgfnjHKx2HQ+1xyWu+e4ddBjFocqHhTKPDbWc25R3tQHgxPZjMo+5p90qIFGVoI1h
-	 CqHp/u8WPVFrsPsLooJxQfRagAs1PFupPvooZgqQ=
+	b=KOqJIDyOvC9qzesQUisiVZT2QDDa494FMnBKJoJ5EyS2nA11vT4LCxD/QmWQrPOqk
+	 BUi8X7yT2NcocSXFnKNZkrP/srOEcfCgNwjpfCc/BAd+5/GEjCqCtXfthu8Q9vpUr2
+	 ivpsuk7eYeo/2I7XxQkVuGQfT2HcNGfOb7hUFGRM=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729749AbfFAN0i (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 1 Jun 2019 09:26:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57084 "EHLO mail.kernel.org"
+        id S1729603AbfFANZ6 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 1 Jun 2019 09:25:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56320 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729751AbfFAN0i (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sat, 1 Jun 2019 09:26:38 -0400
+        id S1729256AbfFANZ5 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 1 Jun 2019 09:25:57 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 76789273C0;
-        Sat,  1 Jun 2019 13:26:35 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 382A527375;
+        Sat,  1 Jun 2019 13:25:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559395597;
+        s=default; t=1559395557;
         bh=zRNk1F+5d/zcwRLeFG+1vtDSoBYuQqDUjsCXFf/8Dek=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xaqidLnp0KqmQ+VFhHjLAsp/97/cfLoTRexPuHQhHKWtEh4aFJiuC3boqy2GDnHb5
-         QbzU+mQb2bl+u0XYpLcEUjwRcHAekkfmcdVFhqk8x2KWYloJP9+FrUaXGWDxwXxFwM
-         VDXOrpCVDCa6um6VVpnHicTlcTysPVUqKs2HSEyw=
+        b=muYYpu4RiPKtkurE6yHl+surB12mpJ2xlxN6DJRnCBGVGR3l4gYya07xB7QnV5bgj
+         eiX1QaFDwJKWuTXr57LHYSMG6D/pvO7nJUMyllS6JbZm/KIdX4xXn5anIs4wAvf2d8
+         6XheE3kaaoNuakUmyB5f/AIgXBo1Hgzo/kFOhTmQ=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Serge Semin <fancer.lancer@gmail.com>,
@@ -56,12 +56,12 @@ Cc:     Serge Semin <fancer.lancer@gmail.com>,
         Juergen Gross <jgross@suse.com>,
         Serge Semin <Sergey.Semin@t-platforms.ru>,
         linux-mips@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.4 18/56] mips: Make sure dt memory regions are valid
-Date:   Sat,  1 Jun 2019 09:25:22 -0400
-Message-Id: <20190601132600.27427-18-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 28/74] mips: Make sure dt memory regions are valid
+Date:   Sat,  1 Jun 2019 09:24:15 -0400
+Message-Id: <20190601132501.27021-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190601132600.27427-1-sashal@kernel.org>
-References: <20190601132600.27427-1-sashal@kernel.org>
+In-Reply-To: <20190601132501.27021-1-sashal@kernel.org>
+References: <20190601132501.27021-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore

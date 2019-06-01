@@ -7,37 +7,37 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_PASS,T_DKIMWL_WL_HIGH,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 16419C28CC1
-	for <linux-mips@archiver.kernel.org>; Sat,  1 Jun 2019 13:32:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 79EEFC28CC1
+	for <linux-mips@archiver.kernel.org>; Sat,  1 Jun 2019 13:34:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E0764274C5
-	for <linux-mips@archiver.kernel.org>; Sat,  1 Jun 2019 13:32:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 53DF427521
+	for <linux-mips@archiver.kernel.org>; Sat,  1 Jun 2019 13:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1559395941;
-	bh=drDCU/BOPbML0WGQXtVMmEJcKFn+wTgCrqFFmuUO4l4=;
+	s=default; t=1559396071;
+	bh=zGPXe6yKB8iHpDJBGyZgJ2inSNUo5k/VZIINshdLB9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=c32BcpD2yd0q3mP1kNHcEw0wnhsmMjX/YW90GgY9LCOuIjDgvsy3vIIFv32eSvG8a
-	 2XIquM9yZP6V+ykkuBS0FX0hi7JEfQhCBG6psF+i+0fqiZFDv+Fl2W6uaPWu7jxz2X
-	 19LSoYsw2j0sc4d4nwX7MIWldcLVZRZs5+2v3l8o=
+	b=HywDxhsRtJNrb0x+q1eVk7//f55yfNjRW4r2YWc+pCh4JajMhHHzdXZbufZXO2T+s
+	 0AjSpB6f7FcmkLQ9qYsadjq3eygXlUUoCts1jQK8wDCYdn6Q4yS3SJH0c5pc8TZA3x
+	 MPrfFcyStDenPWOJdOh/D7zSGeVsVh8feWhUDaGI=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729088AbfFANY7 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 1 Jun 2019 09:24:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55142 "EHLO mail.kernel.org"
+        id S1728401AbfFANXn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 1 Jun 2019 09:23:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53628 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728445AbfFANY6 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sat, 1 Jun 2019 09:24:58 -0400
+        id S1727672AbfFANXm (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 1 Jun 2019 09:23:42 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 27F49264C3;
-        Sat,  1 Jun 2019 13:24:56 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4E55927336;
+        Sat,  1 Jun 2019 13:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559395497;
-        bh=drDCU/BOPbML0WGQXtVMmEJcKFn+wTgCrqFFmuUO4l4=;
+        s=default; t=1559395421;
+        bh=zGPXe6yKB8iHpDJBGyZgJ2inSNUo5k/VZIINshdLB9I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kVJAPzvHcDGembM8gj8A8R4liyXTBX0X3GnoLkDv0vZsWwzon7aGbLr6NcAlq5g92
-         qJgxxByLCJkCtUui1KnDOQCryFOr/PRdO33Y0fIdv34fhZuNZWZ6GaSv474pv2aBhv
-         bulBnzJNqQD20jCmUxQ3AoE9YRLe+JcLmvxF1WmE=
+        b=YpXvjZf0fTIp9qSxq9NRoxkPzgn3LlGXgBTbX33K8VImzFMvyahpOJFTTk2LWUGKA
+         1jigkVOIwngi9JTFEUAXIvWtju9w5txqSO9DR5N/laHxgbEJ03sID0W4TOpz3s9lJk
+         OSJmVJEr1omIa/kGXSOGFhEFvF7xzYyXwiMhz2i4=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Serge Semin <fancer.lancer@gmail.com>,
@@ -56,12 +56,12 @@ Cc:     Serge Semin <fancer.lancer@gmail.com>,
         Juergen Gross <jgross@suse.com>,
         Serge Semin <Sergey.Semin@t-platforms.ru>,
         linux-mips@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 36/99] mips: Make sure dt memory regions are valid
-Date:   Sat,  1 Jun 2019 09:22:43 -0400
-Message-Id: <20190601132346.26558-36-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 053/141] mips: Make sure dt memory regions are valid
+Date:   Sat,  1 Jun 2019 09:20:29 -0400
+Message-Id: <20190601132158.25821-53-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190601132346.26558-1-sashal@kernel.org>
-References: <20190601132346.26558-1-sashal@kernel.org>
+In-Reply-To: <20190601132158.25821-1-sashal@kernel.org>
+References: <20190601132158.25821-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -110,7 +110,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c
-index 0dbcd152a1a9b..90f332f0625f6 100644
+index 89950b7bf536b..bdaf3536241a2 100644
 --- a/arch/mips/kernel/prom.c
 +++ b/arch/mips/kernel/prom.c
 @@ -41,7 +41,19 @@ char *mips_get_machine_name(void)
@@ -133,7 +133,7 @@ index 0dbcd152a1a9b..90f332f0625f6 100644
 +	add_memory_region(base, size, BOOT_MEM_RAM);
  }
  
- void * __init early_init_dt_alloc_memory_arch(u64 size, u64 align)
+ int __init early_init_dt_reserve_memory_arch(phys_addr_t base,
 -- 
 2.20.1
 

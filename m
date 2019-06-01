@@ -4,38 +4,38 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DD791C28CC4
-	for <linux-mips@archiver.kernel.org>; Sat,  1 Jun 2019 07:50:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81B84C28CC3
+	for <linux-mips@archiver.kernel.org>; Sat,  1 Jun 2019 07:51:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B712326E92
-	for <linux-mips@archiver.kernel.org>; Sat,  1 Jun 2019 07:50:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 51DF527149
+	for <linux-mips@archiver.kernel.org>; Sat,  1 Jun 2019 07:51:04 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="hyjPcmLt"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="AU5xvubM"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726851AbfFAHuq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 1 Jun 2019 03:50:46 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:50900 "EHLO
+        id S1727256AbfFAHu6 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 1 Jun 2019 03:50:58 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:51104 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726195AbfFAHup (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 1 Jun 2019 03:50:45 -0400
+        with ESMTP id S1726210AbfFAHu5 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 1 Jun 2019 03:50:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
         MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
         :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
         :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=PtF6JlZd/BfV9Typ91IQ/A0fJXKPUUPSZdBpZtuTT7o=; b=hyjPcmLtpzsxZZqlvh75qKW2VE
-        RoZyn2HMekrjZEzE40C041i52hpzuDfJwM9cPRPWwQv94nzemt2EtQDVo8FnM2sTEjfWULCnI4RpF
-        2erohWRZG7mJT0wIIuj+5YXhdN5c+UEHTV8RpEaE5ee+1/XHYJQkGPkDx5itNmZ8DNZ/IX0VCNnrG
-        f6yXEMbuiDDcfLxwKhbCjeKq2CErUUmhFfeNIhe+YM71UCFFu7fh88Ofk8jVC9pra9GPmUb6HnPDY
-        DL8V2wZ7t0fs4R8RcM+V7Fp1M0082VCLwHugE0FJCxBWvZ1WH4OKbhzAp8L5/ZAIw4saZVbzvvJv+
-        ti/0ydPg==;
+        bh=CX2xDKm/BtwIjEp1GIuII943bJVuO6SxR5dA4QjQvNY=; b=AU5xvubMQ09fI70Q63kOIrJTuq
+        zYJMF3aefcDf0GFcW9nCJfY+4JpjP9HfbzZCCOhkO9v/S83lbkxevdCxzAjjrt+lYvSC2jC2F9L0S
+        uaTVpl+kGZRFRPEZHnofRjsVXNP6xcTfJUZDaU/Dex1wTevMmCnBzqA3ZMuJugywLyWp1lEnk51ZE
+        EwkSMxuTvCaMF9hkxI89xtxd7p7AfF31oQtDcoW3NBjKnMQP93xlio5LR2SkZqaWLRE7QsZ6UjfEU
+        d7G7A4FP2dKMsdkjB+CEpRnZmj4YJU0vIkmAXfxBwOfkSmilr+JV9GofODCn+nUJOW+Jr0S9O57si
+        KiXVyKDQ==;
 Received: from 217-76-161-89.static.highway.a1.net ([217.76.161.89] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hWymE-00077u-Jv; Sat, 01 Jun 2019 07:50:07 +0000
+        id 1hWyms-0007o0-7f; Sat, 01 Jun 2019 07:50:47 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Linus Torvalds <torvalds@linux-foundation.org>,
         Paul Burton <paul.burton@mips.com>,
@@ -51,11 +51,10 @@ Cc:     Nicholas Piggin <npiggin@gmail.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 01/16] uaccess: add untagged_addr definition for other arches
-Date:   Sat,  1 Jun 2019 09:49:44 +0200
-Message-Id: <20190601074959.14036-2-hch@lst.de>
+        linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 11/16] mm: rename CONFIG_HAVE_GENERIC_GUP to CONFIG_HAVE_FAST_GUP
+Date:   Sat,  1 Jun 2019 09:49:54 +0200
+Message-Id: <20190601074959.14036-12-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190601074959.14036-1-hch@lst.de>
 References: <20190601074959.14036-1-hch@lst.de>
@@ -67,37 +66,206 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Andrey Konovalov <andreyknvl@google.com>
+We only support the generic GUP now, so rename the config option to
+be more clear, and always use the mm/Kconfig definition of the
+symbol and select it from the arch Kconfigs.
 
-To allow arm64 syscalls to accept tagged pointers from userspace, we must
-untag them when they are passed to the kernel. Since untagging is done in
-generic parts of the kernel, the untagged_addr macro needs to be defined
-for all architectures.
-
-Define it as a noop for architectures other than arm64.
-
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- include/linux/mm.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/Kconfig     | 5 +----
+ arch/arm64/Kconfig   | 4 +---
+ arch/mips/Kconfig    | 2 +-
+ arch/powerpc/Kconfig | 2 +-
+ arch/s390/Kconfig    | 2 +-
+ arch/sh/Kconfig      | 2 +-
+ arch/sparc/Kconfig   | 2 +-
+ arch/x86/Kconfig     | 4 +---
+ mm/Kconfig           | 2 +-
+ mm/gup.c             | 4 ++--
+ 10 files changed, 11 insertions(+), 18 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 0e8834ac32b7..949d43e9c0b6 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -99,6 +99,10 @@ extern int mmap_rnd_compat_bits __read_mostly;
- #include <asm/pgtable.h>
- #include <asm/processor.h>
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 8869742a85df..3879a3e2c511 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -73,6 +73,7 @@ config ARM
+ 	select HAVE_DYNAMIC_FTRACE_WITH_REGS if HAVE_DYNAMIC_FTRACE
+ 	select HAVE_EFFICIENT_UNALIGNED_ACCESS if (CPU_V6 || CPU_V6K || CPU_V7) && MMU
+ 	select HAVE_EXIT_THREAD
++	select HAVE_FAST_GUP if ARM_LPAE
+ 	select HAVE_FTRACE_MCOUNT_RECORD if !XIP_KERNEL
+ 	select HAVE_FUNCTION_GRAPH_TRACER if !THUMB2_KERNEL && !CC_IS_CLANG
+ 	select HAVE_FUNCTION_TRACER if !XIP_KERNEL
+@@ -1596,10 +1597,6 @@ config ARCH_SELECT_MEMORY_MODEL
+ config HAVE_ARCH_PFN_VALID
+ 	def_bool ARCH_HAS_HOLES_MEMORYMODEL || !SPARSEMEM
  
-+#ifndef untagged_addr
-+#define untagged_addr(addr) (addr)
-+#endif
-+
- #ifndef __pa_symbol
- #define __pa_symbol(x)  __pa(RELOC_HIDE((unsigned long)(x), 0))
- #endif
+-config HAVE_GENERIC_GUP
+-	def_bool y
+-	depends on ARM_LPAE
+-
+ config HIGHMEM
+ 	bool "High Memory Support"
+ 	depends on MMU
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 697ea0510729..4a6ee3e92757 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -140,6 +140,7 @@ config ARM64
+ 	select HAVE_DMA_CONTIGUOUS
+ 	select HAVE_DYNAMIC_FTRACE
+ 	select HAVE_EFFICIENT_UNALIGNED_ACCESS
++	select HAVE_FAST_GUP
+ 	select HAVE_FTRACE_MCOUNT_RECORD
+ 	select HAVE_FUNCTION_TRACER
+ 	select HAVE_FUNCTION_GRAPH_TRACER
+@@ -262,9 +263,6 @@ config GENERIC_CALIBRATE_DELAY
+ config ZONE_DMA32
+ 	def_bool y
+ 
+-config HAVE_GENERIC_GUP
+-	def_bool y
+-
+ config ARCH_ENABLE_MEMORY_HOTPLUG
+ 	def_bool y
+ 
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 64108a2a16d4..b1e42f0e4ed0 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -54,10 +54,10 @@ config MIPS
+ 	select HAVE_DMA_CONTIGUOUS
+ 	select HAVE_DYNAMIC_FTRACE
+ 	select HAVE_EXIT_THREAD
++	select HAVE_FAST_GUP
+ 	select HAVE_FTRACE_MCOUNT_RECORD
+ 	select HAVE_FUNCTION_GRAPH_TRACER
+ 	select HAVE_FUNCTION_TRACER
+-	select HAVE_GENERIC_GUP
+ 	select HAVE_IDE
+ 	select HAVE_IOREMAP_PROT
+ 	select HAVE_IRQ_EXIT_ON_IRQ_STACK
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 8c1c636308c8..992a04796e56 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -185,12 +185,12 @@ config PPC
+ 	select HAVE_DYNAMIC_FTRACE_WITH_REGS	if MPROFILE_KERNEL
+ 	select HAVE_EBPF_JIT			if PPC64
+ 	select HAVE_EFFICIENT_UNALIGNED_ACCESS	if !(CPU_LITTLE_ENDIAN && POWER7_CPU)
++	select HAVE_FAST_GUP
+ 	select HAVE_FTRACE_MCOUNT_RECORD
+ 	select HAVE_FUNCTION_ERROR_INJECTION
+ 	select HAVE_FUNCTION_GRAPH_TRACER
+ 	select HAVE_FUNCTION_TRACER
+ 	select HAVE_GCC_PLUGINS			if GCC_VERSION >= 50200   # plugin support on gcc <= 5.1 is buggy on PPC
+-	select HAVE_GENERIC_GUP
+ 	select HAVE_HW_BREAKPOINT		if PERF_EVENTS && (PPC_BOOK3S || PPC_8xx)
+ 	select HAVE_IDE
+ 	select HAVE_IOREMAP_PROT
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 109243fdb6ec..aaff0376bf53 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -137,6 +137,7 @@ config S390
+ 	select HAVE_DMA_CONTIGUOUS
+ 	select HAVE_DYNAMIC_FTRACE
+ 	select HAVE_DYNAMIC_FTRACE_WITH_REGS
++	select HAVE_FAST_GUP
+ 	select HAVE_EFFICIENT_UNALIGNED_ACCESS
+ 	select HAVE_FENTRY
+ 	select HAVE_FTRACE_MCOUNT_RECORD
+@@ -144,7 +145,6 @@ config S390
+ 	select HAVE_FUNCTION_TRACER
+ 	select HAVE_FUTEX_CMPXCHG if FUTEX
+ 	select HAVE_GCC_PLUGINS
+-	select HAVE_GENERIC_GUP
+ 	select HAVE_KERNEL_BZIP2
+ 	select HAVE_KERNEL_GZIP
+ 	select HAVE_KERNEL_LZ4
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index 6fddfc3c9710..56712f3c9838 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -14,7 +14,7 @@ config SUPERH
+ 	select HAVE_ARCH_TRACEHOOK
+ 	select HAVE_PERF_EVENTS
+ 	select HAVE_DEBUG_BUGVERBOSE
+-	select HAVE_GENERIC_GUP
++	select HAVE_FAST_GUP
+ 	select ARCH_HAVE_CUSTOM_GPIO_H
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG if (GUSA_RB || CPU_SH4A)
+ 	select ARCH_HAS_GCOV_PROFILE_ALL
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index 22435471f942..659232b760e1 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -28,7 +28,7 @@ config SPARC
+ 	select RTC_DRV_M48T59
+ 	select RTC_SYSTOHC
+ 	select HAVE_ARCH_JUMP_LABEL if SPARC64
+-	select HAVE_GENERIC_GUP if SPARC64
++	select HAVE_FAST_GUP if SPARC64
+ 	select GENERIC_IRQ_SHOW
+ 	select ARCH_WANT_IPC_PARSE_VERSION
+ 	select GENERIC_PCI_IOMAP
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 7cd53cc59f0f..44500e0ed630 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -157,6 +157,7 @@ config X86
+ 	select HAVE_EFFICIENT_UNALIGNED_ACCESS
+ 	select HAVE_EISA
+ 	select HAVE_EXIT_THREAD
++	select HAVE_FAST_GUP
+ 	select HAVE_FENTRY			if X86_64 || DYNAMIC_FTRACE
+ 	select HAVE_FTRACE_MCOUNT_RECORD
+ 	select HAVE_FUNCTION_GRAPH_TRACER
+@@ -2874,9 +2875,6 @@ config HAVE_ATOMIC_IOMAP
+ config X86_DEV_DMA_OPS
+ 	bool
+ 
+-config HAVE_GENERIC_GUP
+-	def_bool y
+-
+ source "drivers/firmware/Kconfig"
+ 
+ source "arch/x86/kvm/Kconfig"
+diff --git a/mm/Kconfig b/mm/Kconfig
+index fe51f104a9e0..98dffb0f2447 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -132,7 +132,7 @@ config HAVE_MEMBLOCK_NODE_MAP
+ config HAVE_MEMBLOCK_PHYS_MAP
+ 	bool
+ 
+-config HAVE_GENERIC_GUP
++config HAVE_FAST_GUP
+ 	bool
+ 
+ config ARCH_KEEP_MEMBLOCK
+diff --git a/mm/gup.c b/mm/gup.c
+index a86d65cd7051..a24f52292c7f 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1650,7 +1650,7 @@ struct page *get_dump_page(unsigned long addr)
+ #endif /* CONFIG_ELF_CORE */
+ 
+ /*
+- * Generic Fast GUP
++ * Fast GUP
+  *
+  * get_user_pages_fast attempts to pin user pages by walking the page
+  * tables directly and avoids taking locks. Thus the walker needs to be
+@@ -1682,7 +1682,7 @@ struct page *get_dump_page(unsigned long addr)
+  *
+  * This code is based heavily on the PowerPC implementation by Nick Piggin.
+  */
+-#ifdef CONFIG_HAVE_GENERIC_GUP
++#ifdef CONFIG_HAVE_FAST_GUP
+ #ifdef CONFIG_GUP_GET_PTE_LOW_HIGH
+ /*
+  * WARNING: only to be used in the get_user_pages_fast() implementation.
 -- 
 2.20.1
 

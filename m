@@ -7,19 +7,19 @@ X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75580C28CC1
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DD791C28CC4
 	for <linux-mips@archiver.kernel.org>; Sat,  1 Jun 2019 07:50:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 3E0D426E92
+	by mail.kernel.org (Postfix) with ESMTP id B712326E92
 	for <linux-mips@archiver.kernel.org>; Sat,  1 Jun 2019 07:50:46 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="R8eTXd7Q"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="hyjPcmLt"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726550AbfFAHup (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 1 Jun 2019 03:50:45 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:50896 "EHLO
+        id S1726851AbfFAHuq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 1 Jun 2019 03:50:46 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:50900 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726013AbfFAHup (ORCPT
+        with ESMTP id S1726195AbfFAHup (ORCPT
         <rfc822;linux-mips@vger.kernel.org>); Sat, 1 Jun 2019 03:50:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
@@ -27,15 +27,15 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
         :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=YXjy0WBjpu+AWKxD8h6RRyLkoP4ahwrltsDsU1htN2I=; b=R8eTXd7Qhgr7vURBFw97YaTWlD
-        T3lyN0YEcMJ79ClQ+mCtBMUFLuOiyWyH3g+cHJXsaGhU1ZQW0CpNC7mNNo8HyUgX3FhszTplgD7+X
-        btlqXe68EAzd2OLJNYX0KYYHinh1c1G4uuGiFlpg+5KG/tYnjC/ECmZyFV2W5cbClw1LxVMs9OjOx
-        xz9hhBoldK6Z0Q6nLK7VIYIQIYX28J0b8BdVQdYwzuUP/jm8NauIjZX8wekrKPrycgoI7/Cp1nW8D
-        uv/lWnRuft7vqH/a/ly/wzkcdfMFR+xhY72TZ1pDxHDHpG7pasgAcW1XaGC4eUgJiUS8qppfZsHVh
-        aA9pmEJg==;
+        bh=PtF6JlZd/BfV9Typ91IQ/A0fJXKPUUPSZdBpZtuTT7o=; b=hyjPcmLtpzsxZZqlvh75qKW2VE
+        RoZyn2HMekrjZEzE40C041i52hpzuDfJwM9cPRPWwQv94nzemt2EtQDVo8FnM2sTEjfWULCnI4RpF
+        2erohWRZG7mJT0wIIuj+5YXhdN5c+UEHTV8RpEaE5ee+1/XHYJQkGPkDx5itNmZ8DNZ/IX0VCNnrG
+        f6yXEMbuiDDcfLxwKhbCjeKq2CErUUmhFfeNIhe+YM71UCFFu7fh88Ofk8jVC9pra9GPmUb6HnPDY
+        DL8V2wZ7t0fs4R8RcM+V7Fp1M0082VCLwHugE0FJCxBWvZ1WH4OKbhzAp8L5/ZAIw4saZVbzvvJv+
+        ti/0ydPg==;
 Received: from 217-76-161-89.static.highway.a1.net ([217.76.161.89] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hWymX-0007mJ-HL; Sat, 01 Jun 2019 07:50:26 +0000
+        id 1hWymE-00077u-Jv; Sat, 01 Jun 2019 07:50:07 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Linus Torvalds <torvalds@linux-foundation.org>,
         Paul Burton <paul.burton@mips.com>,
@@ -51,10 +51,11 @@ Cc:     Nicholas Piggin <npiggin@gmail.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 06/16] sh: add the missing pud_page definition
-Date:   Sat,  1 Jun 2019 09:49:49 +0200
-Message-Id: <20190601074959.14036-7-hch@lst.de>
+        linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 01/16] uaccess: add untagged_addr definition for other arches
+Date:   Sat,  1 Jun 2019 09:49:44 +0200
+Message-Id: <20190601074959.14036-2-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190601074959.14036-1-hch@lst.de>
 References: <20190601074959.14036-1-hch@lst.de>
@@ -66,25 +67,37 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-sh only had pud_page_vaddr, but not pud_page.
+From: Andrey Konovalov <andreyknvl@google.com>
 
+To allow arm64 syscalls to accept tagged pointers from userspace, we must
+untag them when they are passed to the kernel. Since untagging is done in
+generic parts of the kernel, the untagged_addr macro needs to be defined
+for all architectures.
+
+Define it as a noop for architectures other than arm64.
+
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/sh/include/asm/pgtable-3level.h | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/mm.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/sh/include/asm/pgtable-3level.h b/arch/sh/include/asm/pgtable-3level.h
-index 7d8587eb65ff..8ff6fb6b4d19 100644
---- a/arch/sh/include/asm/pgtable-3level.h
-+++ b/arch/sh/include/asm/pgtable-3level.h
-@@ -37,6 +37,7 @@ static inline unsigned long pud_page_vaddr(pud_t pud)
- {
- 	return pud_val(pud);
- }
-+#define pud_page(pud)		virt_to_page((void *)pud_page_vaddr(pud))
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 0e8834ac32b7..949d43e9c0b6 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -99,6 +99,10 @@ extern int mmap_rnd_compat_bits __read_mostly;
+ #include <asm/pgtable.h>
+ #include <asm/processor.h>
  
- #define pmd_index(address)	(((address) >> PMD_SHIFT) & (PTRS_PER_PMD-1))
- static inline pmd_t *pmd_offset(pud_t *pud, unsigned long address)
++#ifndef untagged_addr
++#define untagged_addr(addr) (addr)
++#endif
++
+ #ifndef __pa_symbol
+ #define __pa_symbol(x)  __pa(RELOC_HIDE((unsigned long)(x), 0))
+ #endif
 -- 
 2.20.1
 

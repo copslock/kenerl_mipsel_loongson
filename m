@@ -1,120 +1,85 @@
-Return-Path: <SRS0=xtk4=UC=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=o7sj=UD=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
-	SPF_PASS,T_DKIMWL_WL_HIGH,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 98A2BC04AB5
-	for <linux-mips@archiver.kernel.org>; Mon,  3 Jun 2019 19:19:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F2A2FC28CC3
+	for <linux-mips@archiver.kernel.org>; Tue,  4 Jun 2019 06:20:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6DA54271A9
-	for <linux-mips@archiver.kernel.org>; Mon,  3 Jun 2019 19:19:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1559589587;
-	bh=3uwe74qIbMfURcy3Wq0/4CqiYzWU+2RJSBxa5JvCv8s=;
-	h=From:To:Cc:Subject:Date:List-ID:From;
-	b=C89hl4sH96C5dgx1VTHjXpqNi/EhOJgIfIe0ceuakmh9+A5ZuW0rtS+UAPSpRUEOh
-	 NOx+FUJESDZt9XrBXvAzlaO7eZjT/1XTX8/m53IJWP3qe4MwC+stJ+iDMUhYE4Ff/w
-	 lNeC0p2r+wEnkOUJlmp1QGnk0yLCVe7ZnCKs96SQ=
+	by mail.kernel.org (Postfix) with ESMTP id D695324B74
+	for <linux-mips@archiver.kernel.org>; Tue,  4 Jun 2019 06:20:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726520AbfFCTTr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 3 Jun 2019 15:19:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55478 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726049AbfFCTTq (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 3 Jun 2019 15:19:46 -0400
-Received: from localhost.localdomain (unknown [194.230.155.181])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EB11A2719C;
-        Mon,  3 Jun 2019 19:19:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559589586;
-        bh=3uwe74qIbMfURcy3Wq0/4CqiYzWU+2RJSBxa5JvCv8s=;
-        h=From:To:Cc:Subject:Date:From;
-        b=oH5jJWUBFhcCraa5qEP6vros82SVl+juZUaoaRRkGgLVs6zJSe7kz+jBiB2UK78hS
-         9q5LJuGYUThjgZwKF8VLDt5WkMJ8Hoqi2v1RlEgUWjo2e7j09DX+/V3NT/LtnadM6H
-         UlZ139R1zeuamlirjZMjHa7qGv0GOzbnFUeAqZK8=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
+        id S1726652AbfFDGUs (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 4 Jun 2019 02:20:48 -0400
+Received: from relay5-d.mail.gandi.net ([217.70.183.197]:35619 "EHLO
+        relay5-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726595AbfFDGUs (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 4 Jun 2019 02:20:48 -0400
+X-Originating-IP: 79.86.19.127
+Received: from [192.168.0.12] (127.19.86.79.rev.sfr.net [79.86.19.127])
+        (Authenticated sender: alex@ghiti.fr)
+        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 49FAD1C0009;
+        Tue,  4 Jun 2019 06:20:38 +0000 (UTC)
+Subject: Re: [PATCH v4 05/14] arm64, mm: Make randomization selected by
+ generic topdown mmap layout
+To:     Catalin Marinas <catalin.marinas@arm.com>
+Cc:     Albert Ou <aou@eecs.berkeley.edu>,
+        Kees Cook <keescook@chromium.org>,
         James Hogan <jhogan@kernel.org>,
-        James Hartley <james.hartley@sondrel.com>,
-        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH] MIPS: config: Remove left-over BACKLIGHT_LCD_SUPPORT
-Date:   Mon,  3 Jun 2019 21:19:34 +0200
-Message-Id: <20190603191934.20721-1-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
+        Palmer Dabbelt <palmer@sifive.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        Paul Burton <paul.burton@mips.com>,
+        linux-riscv@lists.infradead.org,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        linux-fsdevel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-mips@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+        linux-arm-kernel@lists.infradead.org,
+        Luis Chamberlain <mcgrof@kernel.org>
+References: <20190526134746.9315-1-alex@ghiti.fr>
+ <20190526134746.9315-6-alex@ghiti.fr>
+ <20190603174001.GL63283@arrakis.emea.arm.com>
+From:   Alex Ghiti <alex@ghiti.fr>
+Message-ID: <e8dab94d-679e-8898-033e-3b5dbf0cc044@ghiti.fr>
+Date:   Tue, 4 Jun 2019 02:20:38 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.4.0
+MIME-Version: 1.0
+In-Reply-To: <20190603174001.GL63283@arrakis.emea.arm.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: sv-FI
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The CONFIG_BACKLIGHT_LCD_SUPPORT was removed in commit 8c5dc8d9f19c
-("video: backlight: Remove useless BACKLIGHT_LCD_SUPPORT kernel
-symbol"). Options protected by CONFIG_BACKLIGHT_LCD_SUPPORT are now
-available directly.
+On 6/3/19 1:40 PM, Catalin Marinas wrote:
+> On Sun, May 26, 2019 at 09:47:37AM -0400, Alexandre Ghiti wrote:
+>> This commits selects ARCH_HAS_ELF_RANDOMIZE when an arch uses the generic
+>> topdown mmap layout functions so that this security feature is on by
+>> default.
+>> Note that this commit also removes the possibility for arm64 to have elf
+>> randomization and no MMU: without MMU, the security added by randomization
+>> is worth nothing.
+> Not planning on this anytime soon ;).
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- arch/mips/configs/gpr_defconfig       | 1 -
- arch/mips/configs/lemote2f_defconfig  | 1 -
- arch/mips/configs/pistachio_defconfig | 1 -
- arch/mips/configs/qi_lb60_defconfig   | 1 -
- 4 files changed, 4 deletions(-)
 
-diff --git a/arch/mips/configs/gpr_defconfig b/arch/mips/configs/gpr_defconfig
-index 9d9af5f923c3..9085f4d6c698 100644
---- a/arch/mips/configs/gpr_defconfig
-+++ b/arch/mips/configs/gpr_defconfig
-@@ -249,7 +249,6 @@ CONFIG_WATCHDOG_NOWAYOUT=y
- CONFIG_SSB=m
- CONFIG_SSB_DRIVER_PCICORE=y
- # CONFIG_VGA_ARB is not set
--CONFIG_BACKLIGHT_LCD_SUPPORT=y
- # CONFIG_LCD_CLASS_DEVICE is not set
- CONFIG_BACKLIGHT_CLASS_DEVICE=y
- # CONFIG_BACKLIGHT_GENERIC is not set
-diff --git a/arch/mips/configs/lemote2f_defconfig b/arch/mips/configs/lemote2f_defconfig
-index 300127b0f5b7..2d4cb03dfa03 100644
---- a/arch/mips/configs/lemote2f_defconfig
-+++ b/arch/mips/configs/lemote2f_defconfig
-@@ -144,7 +144,6 @@ CONFIG_FB_TILEBLITTING=y
- CONFIG_FB_SIS=y
- CONFIG_FB_SIS_300=y
- CONFIG_FB_SIS_315=y
--CONFIG_BACKLIGHT_LCD_SUPPORT=y
- # CONFIG_LCD_CLASS_DEVICE is not set
- CONFIG_BACKLIGHT_CLASS_DEVICE=y
- CONFIG_BACKLIGHT_GENERIC=m
-diff --git a/arch/mips/configs/pistachio_defconfig b/arch/mips/configs/pistachio_defconfig
-index 2f08d071ada6..24e07180c57d 100644
---- a/arch/mips/configs/pistachio_defconfig
-+++ b/arch/mips/configs/pistachio_defconfig
-@@ -214,7 +214,6 @@ CONFIG_IR_IMG_RC6=y
- CONFIG_MEDIA_SUPPORT=y
- CONFIG_FB=y
- CONFIG_FB_MODE_HELPERS=y
--CONFIG_BACKLIGHT_LCD_SUPPORT=y
- # CONFIG_LCD_CLASS_DEVICE is not set
- CONFIG_BACKLIGHT_CLASS_DEVICE=y
- CONFIG_SOUND=y
-diff --git a/arch/mips/configs/qi_lb60_defconfig b/arch/mips/configs/qi_lb60_defconfig
-index 1a0677d04982..199c7a7bf692 100644
---- a/arch/mips/configs/qi_lb60_defconfig
-+++ b/arch/mips/configs/qi_lb60_defconfig
-@@ -77,7 +77,6 @@ CONFIG_REGULATOR=y
- CONFIG_REGULATOR_FIXED_VOLTAGE=y
- CONFIG_FB=y
- CONFIG_FB_JZ4740=y
--CONFIG_BACKLIGHT_LCD_SUPPORT=y
- CONFIG_LCD_CLASS_DEVICE=y
- # CONFIG_BACKLIGHT_CLASS_DEVICE is not set
- # CONFIG_VGA_CONSOLE is not set
--- 
-2.17.1
+Great :) Thanks for your time,
 
+Alex
+
+
+>
+> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+>
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv

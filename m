@@ -2,124 +2,95 @@ Return-Path: <SRS0=t3CX=UK=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_NEOMUTT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A31B4C31E44
-	for <linux-mips@archiver.kernel.org>; Tue, 11 Jun 2019 22:04:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1053BC31E44
+	for <linux-mips@archiver.kernel.org>; Tue, 11 Jun 2019 22:22:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6B0F0205ED
-	for <linux-mips@archiver.kernel.org>; Tue, 11 Jun 2019 22:04:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D938320874
+	for <linux-mips@archiver.kernel.org>; Tue, 11 Jun 2019 22:22:13 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="bSN5Qv5Y"
+	dkim=pass (1024-bit key) header.d=wavesemi.onmicrosoft.com header.i=@wavesemi.onmicrosoft.com header.b="p8Z/zWc6"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436717AbfFKWEs (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 11 Jun 2019 18:04:48 -0400
-Received: from mail-eopbgr770120.outbound.protection.outlook.com ([40.107.77.120]:27206
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        id S2436784AbfFKWWJ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 11 Jun 2019 18:22:09 -0400
+Received: from mail-eopbgr790124.outbound.protection.outlook.com ([40.107.79.124]:46880
+        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2405561AbfFKWEr (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 11 Jun 2019 18:04:47 -0400
+        id S2436772AbfFKWWI (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 11 Jun 2019 18:22:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=wavesemi.onmicrosoft.com; s=selector1-wavesemi-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RYlqfgTDbNmEATouxYpaVla38xRVYG5Congtrf73+1o=;
- b=bSN5Qv5YSvd9+5EgL9ykIQUh0XEkVudovlLAWegWn8FiPwPdPTGX+YMxg67feOZjNK4tQhzVT2GgZ/Ms3GhVjv1AktIPSgUERg6IX4BvK15tD4oep2ozZFh9HGqECkjRenZUj38gP6O/Bz2rwdlDlleqJAGi6VAaypNeVUrqRXk=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.172.60.12) by
- MWHPR2201MB1232.namprd22.prod.outlook.com (10.174.160.7) with Microsoft SMTP
+ bh=9mXryIRRx6t9lD9VOFQ5C5hAGQB7QcTB+79DOL9u7sU=;
+ b=p8Z/zWc6McdTQuirDIAAexiENgzLmNwoA19ZdiTn2FaiEqCFMCEg3vnTDlT7Q6rAI3MiJ6jIAFLgwRJQkviTvulBXRvUz6uJ7qCxk83j1ckjb+IX+S2ucbb9LTSegy5r79UVErtdr5A2XHatu5UBUS7nT6f51XsEpBPEvAAtgvQ=
+Received: from CY4PR2201MB1272.namprd22.prod.outlook.com (10.171.214.23) by
+ CY4PR2201MB1367.namprd22.prod.outlook.com (10.171.217.22) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1987.11; Tue, 11 Jun 2019 22:04:43 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::6975:b632:c85b:9e40]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::6975:b632:c85b:9e40%2]) with mapi id 15.20.1987.010; Tue, 11 Jun 2019
- 22:04:43 +0000
+ 15.20.1965.14; Tue, 11 Jun 2019 22:22:06 +0000
+Received: from CY4PR2201MB1272.namprd22.prod.outlook.com
+ ([fe80::d571:f49f:6a5c:4962]) by CY4PR2201MB1272.namprd22.prod.outlook.com
+ ([fe80::d571:f49f:6a5c:4962%7]) with mapi id 15.20.1965.017; Tue, 11 Jun 2019
+ 22:22:06 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-CC:     Paul Cercueil <paul@crapouillou.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, "od@zcrc.me" <od@zcrc.me>,
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Kosina <trivial@kernel.org>,
         "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: lb60: Fix pin mappings
-Thread-Topic: [PATCH] MIPS: lb60: Fix pin mappings
-Thread-Index: AQHVGvNR1qZ4gQD8hE2mZTClh06Tw6aQxdgAgADKEACAADlIgIAFREAA
-Date:   Tue, 11 Jun 2019 22:04:43 +0000
-Message-ID: <20190611220441.2u4udxfmyjcdio65@pburton-laptop>
-References: <20190604163311.19059-1-paul@crapouillou.net>
- <CACRpkdbKg22OyViYhXS=Vyps=2zQ_dmm23Xr8+dBp+uwwjheuQ@mail.gmail.com>
- <1559988846.1815.1@crapouillou.net>
- <CACRpkdbKWC7ULFjN1c5axg5FBeeWWXCsbbQi2ks4+5tg07Br-g@mail.gmail.com>
-In-Reply-To: <CACRpkdbKWC7ULFjN1c5axg5FBeeWWXCsbbQi2ks4+5tg07Br-g@mail.gmail.com>
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Subject: Re: [PATCH trivial] memory: jz4780-nemc: Grammar s/the its/its/
+Thread-Topic: [PATCH trivial] memory: jz4780-nemc: Grammar s/the its/its/
+Thread-Index: AQHVHSTkqF1069CarE6SbLFS+Ro7tqaXDecA
+Date:   Tue, 11 Jun 2019 22:22:05 +0000
+Message-ID: <CY4PR2201MB1272A71C15A3B424B60EB591C1ED0@CY4PR2201MB1272.namprd22.prod.outlook.com>
+References: <20190607113343.14828-1-geert+renesas@glider.be>
+In-Reply-To: <20190607113343.14828-1-geert+renesas@glider.be>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR08CA0040.namprd08.prod.outlook.com
- (2603:10b6:a03:117::17) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:18::12)
-user-agent: NeoMutt/20180716
+x-clientproxiedby: BYAPR11CA0078.namprd11.prod.outlook.com
+ (2603:10b6:a03:f4::19) To CY4PR2201MB1272.namprd22.prod.outlook.com
+ (2603:10b6:910:6e::23)
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [12.94.197.246]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: b14cf263-0b25-40c6-8647-08d6eeb8cec8
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:MWHPR2201MB1232;
-x-ms-traffictypediagnostic: MWHPR2201MB1232:
-x-ms-exchange-purlcount: 2
-x-microsoft-antispam-prvs: <MWHPR2201MB1232DC0383DEC206DADFA553C1ED0@MWHPR2201MB1232.namprd22.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-office365-filtering-correlation-id: b3bc6682-c649-4566-ab84-08d6eebb3c37
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:CY4PR2201MB1367;
+x-ms-traffictypediagnostic: CY4PR2201MB1367:
+x-microsoft-antispam-prvs: <CY4PR2201MB136795444DF5792ACC1516DDC1ED0@CY4PR2201MB1367.namprd22.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:2331;
 x-forefront-prvs: 006546F32A
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(346002)(39840400004)(366004)(136003)(396003)(376002)(189003)(199004)(2906002)(54906003)(6116002)(58126008)(229853002)(44832011)(256004)(33716001)(6486002)(316002)(3846002)(71190400001)(71200400001)(1076003)(6436002)(99286004)(478600001)(6506007)(386003)(66066001)(102836004)(486006)(4326008)(76176011)(6916009)(25786009)(6246003)(186003)(966005)(68736007)(81156014)(8676002)(81166006)(8936002)(5660300002)(26005)(9686003)(305945005)(14454004)(52116002)(446003)(7736002)(6306002)(11346002)(6512007)(73956011)(66556008)(66946007)(66446008)(66476007)(476003)(64756008)(42882007)(53936002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1232;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(136003)(39850400004)(376002)(346002)(396003)(366004)(199004)(189003)(81156014)(446003)(2906002)(8676002)(81166006)(486006)(305945005)(7736002)(478600001)(476003)(11346002)(14454004)(44832011)(66446008)(5660300002)(66556008)(64756008)(66476007)(66946007)(68736007)(52536014)(8936002)(73956011)(6116002)(3846002)(74316002)(256004)(42882007)(71200400001)(71190400001)(26005)(9686003)(6246003)(558084003)(4326008)(102836004)(99286004)(55016002)(25786009)(54906003)(52116002)(6436002)(53936002)(7696005)(316002)(186003)(76176011)(6506007)(386003)(229853002)(66066001)(33656002);DIR:OUT;SFP:1102;SCL:1;SRVR:CY4PR2201MB1367;H:CY4PR2201MB1272.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: ex1oY5d4bn9ob86Bk/ikGdn2i4Fow9qCN3KbfemaFa7IQMfSFyN5aIJFMHUR/yLHVf8GDl/80AyFXpNLnqTH3eAGoh5nIWXJNBjC0yypP3gi6wwCL5shrRfOLPv6420BM+trItsYe/cK4OpaFf+g1QvuDZbjVzTUidZCibreA2Sty0YH3BrBkPFzKrc/WwS7FCkGDckkaHJ3GW094/Ga4DdQqRDGlPnKbTAeKU5CXjIhG55w3ZOGo+7gk1Mw2rgqC/56DoQyoJORNpeIaITO0K2EQCr7LuEoDOjNMOo3hsu7fUn45++JL6lM6xj6TKNo9n756jZcoNcWkgdv6gMb2Yk9cmcQ8Qk/5ao38qQy+Egpl/lYX340phVsCLYeln3ZmLeJR6JlElXB9/oRvlvVfMsXyXUugpnk/kWnLQFSGbI=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <292DA4A93A9B544C8AA0339A409B757D@namprd22.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+x-microsoft-antispam-message-info: ETqTYEy52h3lRIZoZYBzIVXRlTMm6uzg5sB28Dp1WbQ+1x3ANNwQAfCobCKYaJG4GmOCSCUS7Nv/EUQZyaieXJts+ocWH4JI8eRNcpo8GqEr0nFv0l1B7tiB8ZV3xE48a6vpjM7H/bQ6oOcYsh4gSNO38FCgfp2wZVz/GmNK3XZx8Ie2QrKglhfwsYcYwU0593XzQ4aaxTQbx8QY2CsmnL0rmSIaRKrQneEDMLe9l+fVheyQAU6DModEbeth4DEm3yrOZ9fWlJsIPR0PNku2MIi3ldjuMwpyz8s95d0hDo8tOfQHw0G6XCmHbGqYrXpUKWH6aqdUUfN91FFKVoL+a48/OMDSatlVr0MgmipYn61ZbAtZt2dVWVOwhDnE5L/udiNh00Ayqg1VbdyPMbDtE85Kyvat5wz5LAbtWkUs+tg=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b14cf263-0b25-40c6-8647-08d6eeb8cec8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Jun 2019 22:04:43.5669
+X-MS-Exchange-CrossTenant-Network-Message-Id: b3bc6682-c649-4566-ab84-08d6eebb3c37
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Jun 2019 22:22:05.9092
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
 X-MS-Exchange-CrossTenant-userprincipalname: pburton@wavecomp.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1232
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR2201MB1367
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Linus / Paul,
-
-On Sat, Jun 08, 2019 at 03:39:07PM +0200, Linus Walleij wrote:
-> > Yes, that's definitely what's planned; right now the blockers are
-> > patchsets [1] and [2]. [1] is ignored by everybody because there's no
-> > maintainer for drivers/memory/. [2] is a year-long effort that still
-> > doesn't show me the light at the end of the tunnel.
-> >
-> > [1] https://lkml.org/lkml/2019/6/4/743
-> > [2] https://lkml.org/lkml/2019/5/21/679
->=20
-> What? That's unacceptable, the last resort is usually to send the
-> patches to Andrew Morton (whether fair or not) when nothing gets
-> applied.
->=20
-> In this case I would however encourage the MIPS maintainer to
-> simply queue this stuff in the MIPS tree as blocking his arch work
-> if not merged, Ralf would you consider just queueing this?
-> I do not think the other Linus would mind.
-
-I'd be happy to queue up [1] in mips-next, it looks pretty innocuous.
-
-I can definitely feel Paul's pain on [2], but I see v12 is still getting
-feedback so...
-
-Thanks,
-    Paul
+SGVsbG8sDQoNCkdlZXJ0IFV5dHRlcmhvZXZlbiB3cm90ZToNCj4gU2lnbmVkLW9mZi1ieTogR2Vl
+cnQgVXl0dGVyaG9ldmVuIDxnZWVydCtyZW5lc2FzQGdsaWRlci5iZT4NCg0KQXBwbGllZCB0byBt
+aXBzLW5leHQuDQoNClRoYW5rcywNCiAgICBQYXVsDQoNClsgVGhpcyBtZXNzYWdlIHdhcyBhdXRv
+LWdlbmVyYXRlZDsgaWYgeW91IGJlbGlldmUgYW55dGhpbmcgaXMgaW5jb3JyZWN0DQogIHRoZW4g
+cGxlYXNlIGVtYWlsIHBhdWwuYnVydG9uQG1pcHMuY29tIHRvIHJlcG9ydCBpdC4gXQ0K

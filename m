@@ -2,175 +2,142 @@ Return-Path: <SRS0=t3CX=UK=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.6 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	T_DKIMWL_WL_HIGH autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A8E56C43218
-	for <linux-mips@archiver.kernel.org>; Tue, 11 Jun 2019 14:42:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B9CAC4321A
+	for <linux-mips@archiver.kernel.org>; Tue, 11 Jun 2019 14:57:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 80E022054F
-	for <linux-mips@archiver.kernel.org>; Tue, 11 Jun 2019 14:42:59 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Qsrqx7Gj"
+	by mail.kernel.org (Postfix) with ESMTP id 145AE205ED
+	for <linux-mips@archiver.kernel.org>; Tue, 11 Jun 2019 14:57:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1560265043;
+	bh=PDMT40Esdo8UkFki3UsNcPeLwMVn2sjMM5JVniOL9yM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:List-ID:From;
+	b=eJgiXgC6oaoktIlDI8QlgWocdP2OLx4A9nVvQjED4fEIaaVMLMz0Oji8JbCinZAPL
+	 vJsUbA58rzZJ/pcJ0B6NsTLrFtbE4JR60adjm6ITwkWQMN0LPAJYUlSIDTJVgvc4Nq
+	 6ndq86Y5TCMW1yGaE/jOlUuwZuIuwuam4Qv5Nvwc=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391127AbfFKOli (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 11 Jun 2019 10:41:38 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:37474 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388535AbfFKOlh (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 11 Jun 2019 10:41:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
-        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=gzNr8cC+RcaEr7a/7B73Y02JTGGTEGr38/f2ngv8wBc=; b=Qsrqx7Gjl2GC8vf87J1kV0OBS9
-        Tt5zTsC9u5FMT4aBrJhjCtE6a9K5hEj6huEHcTGHIZTp0lPnrD3O3q6Taf6l5zAkrj04NvtpjMFZz
-        QSbVSiRFTFj1K1DWEpoIo8npKLbZp/icZRb4FmghwPVhUl2hQQ3GZ8V/iVwFa0djVedxsNvetvYQ/
-        U8rrAK2RSgtkuzMw1qKgToiMIX3BNteGcXa0JARj45dk/04PT26mlULgR6rFGQSTQUrd9alXQpxPZ
-        v2Ok1HiUy9mTgFSunZi7dGsxAIdFawyIN5trdPG1sAjbfv2nBSw2rK5taBkGiygEsnDU61sdcdRaz
-        phR5Tu6w==;
-Received: from mpp-cp1-natpool-1-037.ethz.ch ([82.130.71.37] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hahxZ-0005O7-RH; Tue, 11 Jun 2019 14:41:14 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        id S1728497AbfFKO5T (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 11 Jun 2019 10:57:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50186 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728412AbfFKO5T (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 11 Jun 2019 10:57:19 -0400
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6658F21744;
+        Tue, 11 Jun 2019 14:57:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560265037;
+        bh=PDMT40Esdo8UkFki3UsNcPeLwMVn2sjMM5JVniOL9yM=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=nu5wxM+HHrfkCtF1x7Or3Pfim08FfQSDgXG4CQD+Rc2l6fNTBFaPzIY/2oXtvKbaN
+         Xd2X+N0unRik84mrPZ5Wsm9KbLaZ3hB029Qef3sj2yLkRboL3jfNPIyy7ePHxgCGaw
+         lNfiD7EMj7AL+FTtGDAmI6iFUX19qQ1GOmATJvOo=
+Received: by mail-qt1-f181.google.com with SMTP id p15so7473511qtl.3;
+        Tue, 11 Jun 2019 07:57:17 -0700 (PDT)
+X-Gm-Message-State: APjAAAV1uWddM6YE7IIgAHlYvUIi6DxNUlLJ44rKVli56JkJB+vkQ3fo
+        9phEQQ6MCLddcQWH5s1yFFxs1alJFWo5+9Lhyw==
+X-Google-Smtp-Source: APXvYqwKXudcUIloIxvnM9Z3TUTq2TYTbIEqBlR3HwB9Ltpy5J5xKf3f0bzDLgxra6FePQCRpDyY/kcLrLWZl6w7kAo=
+X-Received: by 2002:a0c:acef:: with SMTP id n44mr5105568qvc.39.1560265036455;
+ Tue, 11 Jun 2019 07:57:16 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190521145141.9813-1-paul@crapouillou.net> <20190521145141.9813-4-paul@crapouillou.net>
+ <20190524202103.GA15650@bogus> <1558811596.2016.1@crapouillou.net>
+In-Reply-To: <1558811596.2016.1@crapouillou.net>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 11 Jun 2019 08:57:04 -0600
+X-Gmail-Original-Message-ID: <CAL_Jsq+ZhoW9xM_7-7CcCm2RKRbMRzmXD-oEMfoVkvcaAFxGug@mail.gmail.com>
+Message-ID: <CAL_Jsq+ZhoW9xM_7-7CcCm2RKRbMRzmXD-oEMfoVkvcaAFxGug@mail.gmail.com>
+Subject: Re: [PATCH v12 03/13] dt-bindings: Add doc for the Ingenic TCU drivers
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     Nicholas Piggin <npiggin@gmail.com>,
-        Khalid Aziz <khalid.aziz@oracle.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 02/16] mm: simplify gup_fast_permitted
-Date:   Tue, 11 Jun 2019 16:40:48 +0200
-Message-Id: <20190611144102.8848-3-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190611144102.8848-1-hch@lst.de>
-References: <20190611144102.8848-1-hch@lst.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+        Jonathan Corbet <corbet@lwn.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Mathieu Malaterre <malat@debian.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        devicetree@vger.kernel.org, linux-mips@vger.kernel.org,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>, od@zcrc.me
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Pass in the already calculated end value instead of recomputing it, and
-leave the end > start check in the callers instead of duplicating them
-in the arch code.
+On Sat, May 25, 2019 at 1:13 PM Paul Cercueil <paul@crapouillou.net> wrote:
+>
+>
+>
+> Le ven. 24 mai 2019 =C3=A0 22:21, Rob Herring <robh@kernel.org> a =C3=A9c=
+rit :
+> > On Tue, May 21, 2019 at 04:51:31PM +0200, Paul Cercueil wrote:
+> >>  Add documentation about how to properly use the Ingenic TCU
+> >>  (Timer/Counter Unit) drivers from devicetree.
+> >>
+> >>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> >>  ---
+> >>
+> >>  Notes:
+> >>      v4: New patch in this series. Corresponds to V2 patches 3-4-5
+> >> with
+> >>       added content.
+> >>
+> >>      v5: - Edited PWM/watchdog DT bindings documentation to point to
+> >> the new
+> >>         document.
+> >>       - Moved main document to
+> >>         Documentation/devicetree/bindings/timer/ingenic,tcu.txt
+> >>       - Updated documentation to reflect the new devicetree bindings.
+> >>
+> >>      v6: - Removed PWM/watchdog documentation files as asked by
+> >> upstream
+> >>       - Removed doc about properties that should be implicit
+> >>       - Removed doc about ingenic,timer-channel /
+> >>         ingenic,clocksource-channel as they are gone
+> >>       - Fix WDT clock name in the binding doc
+> >>       - Fix lengths of register areas in watchdog/pwm nodes
+> >>
+> >>      v7: No change
+> >>
+> >>      v8: - Fix address of the PWM node
+> >>       - Added doc about system timer and clocksource children nodes
+> >>
+> >>      v9: - Remove doc about system timer and clocksource children
+> >>         nodes...
+> >>      - Add doc about ingenic,pwm-channels-mask property
+> >>
+> >>      v10: No change
+> >>
+> >>      v11: Fix info about default value of ingenic,pwm-channels-mask
+> >>
+> >>      v12: Drop sub-nodes for now; they will be introduced in a
+> >> follow-up
+> >>               patchset.
+> >
+> > Why? I believe I acked them.
+>
+> The patchset was too big, and I've already been trying to get it
+> upstream for
+> more than one year now. So I cut it in half in hope that it'll be
+> easier to
+> upstream it that way.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/s390/include/asm/pgtable.h   |  8 +-------
- arch/x86/include/asm/pgtable_64.h |  8 +-------
- mm/gup.c                          | 17 +++++++----------
- 3 files changed, 9 insertions(+), 24 deletions(-)
+You can drop the driver part and keep the binding. Unlike drivers, we
+don't want bindings to needlessly evolve, and you don't have to wait
+til a driver implements some functionality to add that to the binding.
 
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index 9f0195d5fa16..9b274fcaacb6 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -1270,14 +1270,8 @@ static inline pte_t *pte_offset(pmd_t *pmd, unsigned long address)
- #define pte_offset_map(pmd, address) pte_offset_kernel(pmd, address)
- #define pte_unmap(pte) do { } while (0)
- 
--static inline bool gup_fast_permitted(unsigned long start, int nr_pages)
-+static inline bool gup_fast_permitted(unsigned long start, unsigned long end)
- {
--	unsigned long len, end;
--
--	len = (unsigned long) nr_pages << PAGE_SHIFT;
--	end = start + len;
--	if (end < start)
--		return false;
- 	return end <= current->mm->context.asce_limit;
- }
- #define gup_fast_permitted gup_fast_permitted
-diff --git a/arch/x86/include/asm/pgtable_64.h b/arch/x86/include/asm/pgtable_64.h
-index 0bb566315621..4990d26dfc73 100644
---- a/arch/x86/include/asm/pgtable_64.h
-+++ b/arch/x86/include/asm/pgtable_64.h
-@@ -259,14 +259,8 @@ extern void init_extra_mapping_uc(unsigned long phys, unsigned long size);
- extern void init_extra_mapping_wb(unsigned long phys, unsigned long size);
- 
- #define gup_fast_permitted gup_fast_permitted
--static inline bool gup_fast_permitted(unsigned long start, int nr_pages)
-+static inline bool gup_fast_permitted(unsigned long start, unsigned long end)
- {
--	unsigned long len, end;
--
--	len = (unsigned long)nr_pages << PAGE_SHIFT;
--	end = start + len;
--	if (end < start)
--		return false;
- 	if (end >> __VIRTUAL_MASK_SHIFT)
- 		return false;
- 	return true;
-diff --git a/mm/gup.c b/mm/gup.c
-index 6bb521db67ec..3237f33792e6 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2123,13 +2123,9 @@ static void gup_pgd_range(unsigned long addr, unsigned long end,
-  * Check if it's allowed to use __get_user_pages_fast() for the range, or
-  * we need to fall back to the slow version:
-  */
--bool gup_fast_permitted(unsigned long start, int nr_pages)
-+static bool gup_fast_permitted(unsigned long start, unsigned long end)
- {
--	unsigned long len, end;
--
--	len = (unsigned long) nr_pages << PAGE_SHIFT;
--	end = start + len;
--	return end >= start;
-+	return true;
- }
- #endif
- 
-@@ -2150,6 +2146,8 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
- 	len = (unsigned long) nr_pages << PAGE_SHIFT;
- 	end = start + len;
- 
-+	if (end <= start)
-+		return 0;
- 	if (unlikely(!access_ok((void __user *)start, len)))
- 		return 0;
- 
-@@ -2165,7 +2163,7 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
- 	 * block IPIs that come from THPs splitting.
- 	 */
- 
--	if (gup_fast_permitted(start, nr_pages)) {
-+	if (gup_fast_permitted(start, end)) {
- 		local_irq_save(flags);
- 		gup_pgd_range(start, end, write ? FOLL_WRITE : 0, pages, &nr);
- 		local_irq_restore(flags);
-@@ -2224,13 +2222,12 @@ int get_user_pages_fast(unsigned long start, int nr_pages,
- 	len = (unsigned long) nr_pages << PAGE_SHIFT;
- 	end = start + len;
- 
--	if (nr_pages <= 0)
-+	if (end <= start)
- 		return 0;
--
- 	if (unlikely(!access_ok((void __user *)start, len)))
- 		return -EFAULT;
- 
--	if (gup_fast_permitted(start, nr_pages)) {
-+	if (gup_fast_permitted(start, end)) {
- 		local_irq_disable();
- 		gup_pgd_range(addr, end, gup_flags, pages, &nr);
- 		local_irq_enable();
--- 
-2.20.1
-
+Rob

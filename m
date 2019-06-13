@@ -2,107 +2,124 @@ Return-Path: <SRS0=RAP1=UM=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DE4BC31E49
-	for <linux-mips@archiver.kernel.org>; Thu, 13 Jun 2019 17:08:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1664C31E45
+	for <linux-mips@archiver.kernel.org>; Thu, 13 Jun 2019 20:04:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 40A312063F
-	for <linux-mips@archiver.kernel.org>; Thu, 13 Jun 2019 17:08:13 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AA7442133D
+	for <linux-mips@archiver.kernel.org>; Thu, 13 Jun 2019 20:04:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1560456263;
+	bh=STyJgmmKr944RjOkqQ8HWC3xeSyqe7HVqnGI2LWRsD8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:List-ID:From;
+	b=Cg5RMf5dGTMX7hPZuIZcDPEVBbQtsrubZ2A4+AnHRh6bTuPA0xSCJ/CWFAjTCzfu9
+	 DmXCl9dep9ORZyzx+sy6BQFNRsxP1eoynhHZzzBf4gUPEQKspT7fFau5e9k18Wl++K
+	 HBmI+YmwYgDUeMQ7Pn/YTajBuaEpMwsUEwU/x2v0=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393445AbfFMRG5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 13 Jun 2019 13:06:57 -0400
-Received: from mx2.suse.de ([195.135.220.15]:52056 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2393384AbfFMRG5 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 13 Jun 2019 13:06:57 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 7BB62ADCB;
-        Thu, 13 Jun 2019 17:06:55 +0000 (UTC)
-From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
+        id S1727571AbfFMUEM (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 13 Jun 2019 16:04:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43706 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728752AbfFMUEM (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 13 Jun 2019 16:04:12 -0400
+Received: from akpm3.svl.corp.google.com (unknown [104.133.8.65])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1E84021537;
+        Thu, 13 Jun 2019 20:04:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560456250;
+        bh=STyJgmmKr944RjOkqQ8HWC3xeSyqe7HVqnGI2LWRsD8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=N2gTptqwNshky9t39zHrhF/tFwNwxgbkrbTJor+tak1vLqX97uKewRk8bUnzrn4Ko
+         U5IaH0MfRPlK77bT7Yc/4PbSrlc3n6J8M0GsjcRBoXIwR5bmuZZez1tgkNHDFM277/
+         c+zGeW7mHjTeucDkGZEHLB7VbopRA5mQ7/vZdAH4=
+Date:   Thu, 13 Jun 2019 13:04:08 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, Michal Hocko <mhocko@suse.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
         "David S. Miller" <davem@davemloft.net>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-        netdev@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-serial@vger.kernel.org
-Subject: [PATCH v3 0/7] Use MFD framework for SGI IOC3 drivers
-Date:   Thu, 13 Jun 2019 19:06:26 +0200
-Message-Id: <20190613170636.6647-1-tbogendoerfer@suse.de>
-X-Mailer: git-send-email 2.13.7
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] mm: Generalize and rename notify_page_fault() as
+ kprobe_page_fault()
+Message-Id: <20190613130408.3091869d8e50d0524157523f@linux-foundation.org>
+In-Reply-To: <1560420444-25737-1-git-send-email-anshuman.khandual@arm.com>
+References: <1560420444-25737-1-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-SGI IOC3 ASIC includes support for ethernet, PS2 keyboard/mouse,
-NIC (number in a can), GPIO and a byte  bus. By attaching a
-SuperIO chip to it, it also supports serial lines and a parallel
-port. The chip is used on a variety of SGI systems with different
-configurations. This patchset moves code out of the network driver,
-which doesn't belong there, into its new place a MFD driver and
-specific platform drivers for the different subfunctions.
+On Thu, 13 Jun 2019 15:37:24 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
 
-Changes in v3:
- - use 1-wire subsystem for handling proms
- - pci-xtalk driver uses prom information to create PCI subsystem
-   ids for use in MFD driver
- - changed MFD driver to only use static declared mfd_cells
- - added IP30 system board setup to MFD driver
- - mac address is now read from ioc3-eth driver with nvmem framework 
+> Architectures which support kprobes have very similar boilerplate around
+> calling kprobe_fault_handler(). Use a helper function in kprobes.h to unify
+> them, based on the x86 code.
+> 
+> This changes the behaviour for other architectures when preemption is
+> enabled. Previously, they would have disabled preemption while calling the
+> kprobe handler. However, preemption would be disabled if this fault was
+> due to a kprobe, so we know the fault was not due to a kprobe handler and
+> can simply return failure.
+> 
+> This behaviour was introduced in the commit a980c0ef9f6d ("x86/kprobes:
+> Refactor kprobes_fault() like kprobe_exceptions_notify()")
+> 
+> ...
+>
+> --- a/arch/arm/mm/fault.c
+> +++ b/arch/arm/mm/fault.c
+> @@ -30,28 +30,6 @@
+>  
+>  #ifdef CONFIG_MMU
+>  
+> -#ifdef CONFIG_KPROBES
+> -static inline int notify_page_fault(struct pt_regs *regs, unsigned int fsr)
 
-Changes in v2:
- - fixed issue in ioc3kbd.c reported by Dmitry Torokhov
- - merged IP27 RTC removal and 8250 serial driver addition into
-   main MFD patch to keep patches bisectable
+Some architectures make this `static inline'.  Others make it
+`nokprobes_inline', others make it `static inline __kprobes'.  The
+latter seems weird - why try to put an inline function into
+.kprobes.text?
 
-Thomas Bogendoerfer (7):
-  nvmem: core: add nvmem_device_find
-  MIPS: PCI: refactor ioc3 special handling
-  MIPS: PCI: use information from 1-wire PROM for IOC3 detection
-  MIPS: SGI-IP27: remove ioc3 ethernet init
-  mfd: ioc3: Add driver for SGI IOC3 chip
-  MIPS: SGI-IP27: fix readb/writeb addressing
-  Input: add IOC3 serio driver
+So..  what's the best thing to do here?  You chose `static
+nokprobe_inline' - is that the best approach, if so why?  Does
+kprobe_page_fault() actually need to be inlined?
 
- arch/mips/include/asm/mach-ip27/mangle-port.h |    4 +-
- arch/mips/include/asm/pci/bridge.h            |    1 +
- arch/mips/include/asm/sn/ioc3.h               |  356 ++---
- arch/mips/pci/pci-xtalk-bridge.c              |  296 ++--
- arch/mips/sgi-ip27/ip27-console.c             |    5 +-
- arch/mips/sgi-ip27/ip27-init.c                |   13 -
- arch/mips/sgi-ip27/ip27-timer.c               |   20 -
- arch/mips/sgi-ip27/ip27-xtalk.c               |   38 +-
- drivers/input/serio/Kconfig                   |   10 +
- drivers/input/serio/Makefile                  |    1 +
- drivers/input/serio/ioc3kbd.c                 |  158 ++
- drivers/mfd/Kconfig                           |   13 +
- drivers/mfd/Makefile                          |    1 +
- drivers/mfd/ioc3.c                            |  683 +++++++++
- drivers/net/ethernet/sgi/Kconfig              |    4 +-
- drivers/net/ethernet/sgi/ioc3-eth.c           | 1932 ++++++++++---------------
- drivers/nvmem/core.c                          |   62 +-
- drivers/rtc/rtc-m48t35.c                      |   11 +
- drivers/tty/serial/8250/8250_ioc3.c           |   98 ++
- drivers/tty/serial/8250/Kconfig               |   11 +
- drivers/tty/serial/8250/Makefile              |    1 +
- include/linux/nvmem-consumer.h                |    9 +
- 22 files changed, 2152 insertions(+), 1575 deletions(-)
- create mode 100644 drivers/input/serio/ioc3kbd.c
- create mode 100644 drivers/mfd/ioc3.c
- create mode 100644 drivers/tty/serial/8250/8250_ioc3.c
-
--- 
-2.13.7
-
+Also, some architectures had notify_page_fault returning int, others
+bool.  You chose bool and that seems appropriate and all callers are OK
+with that.

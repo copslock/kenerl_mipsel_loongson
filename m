@@ -5,39 +5,39 @@ X-Spam-Level:
 X-Spam-Status: No, score=-8.7 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C41FC31E49
-	for <linux-mips@archiver.kernel.org>; Thu, 13 Jun 2019 16:18:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CBBB9C31E45
+	for <linux-mips@archiver.kernel.org>; Thu, 13 Jun 2019 16:27:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E5C8B20644
-	for <linux-mips@archiver.kernel.org>; Thu, 13 Jun 2019 16:18:24 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A2D972147A
+	for <linux-mips@archiver.kernel.org>; Thu, 13 Jun 2019 16:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1560442705;
-	bh=C6d/i0uXdJ8+nqPibNnQK8H7JqpkEK6lAr0XOumabc0=;
+	s=default; t=1560443232;
+	bh=iP6jYzHfUINowF7qCGsk1zqpztI8LShfOQD5iyTaOSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=CxTIaZIwAAr+ygW94FqaxASOvvgV4uPzqM+li7lFdu6hX0geA9/o+BpUIyDYttKFc
-	 QSTDtYTYAlxOQ5+jTKHAdqZXQJXG4CwVhXrRH9jSaY1hNVy8Jd/7Jf+gHo1cjWvpGb
-	 qAGT5bs2zOevjf4n1ED+6nKaDyFagpCQipA8v3Yo=
+	b=s+7PUl53MEOtcAxDL4OZG/En/WQu/J9Zhuupy2SOfH0Ecxz8Q6rFZb+QczTLJ7Cnl
+	 nNV0NAd2ehKroMs46mf6Rz/s9hN0p5Dkr4uYPuK9c+nOiLY+6tsBiw2YsuGmsfM55X
+	 D+EVEzdF3mpZW5n6rSuFYDPIza6YWahoa/X9uxpg=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732186AbfFMQR5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 13 Jun 2019 12:17:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57944 "EHLO mail.kernel.org"
+        id S2392032AbfFMQ1M (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 13 Jun 2019 12:27:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53586 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731120AbfFMIkb (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 13 Jun 2019 04:40:31 -0400
+        id S1730953AbfFMIgB (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 13 Jun 2019 04:36:01 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 78C152147A;
-        Thu, 13 Jun 2019 08:40:30 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 26BFB2133D;
+        Thu, 13 Jun 2019 08:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560415231;
-        bh=C6d/i0uXdJ8+nqPibNnQK8H7JqpkEK6lAr0XOumabc0=;
+        s=default; t=1560414959;
+        bh=iP6jYzHfUINowF7qCGsk1zqpztI8LShfOQD5iyTaOSU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RkDmfAiQl2zvdOmbvh+fFQeAqNGbvXuW2k3TlpTqwvJKZDxmUSPt4bqysjDAULqcr
-         S7J0Cnf/dRL7QMv/C9uJm2zl5nZuE41rd7WUJj7KvpeudkpguZ8xBpcjJ22HX9G71W
-         /LFB/JvvZRUf2KNDJHTI8e0ocBqizgk8ZpifhZ0g=
+        b=UJMGGzfPWPLQiQtmT9EhUhBWyl9PJI7YVf6UanFRgfVFTup0XYqWywLREialMc791
+         +XLigljfc2YwUOzkMLbPMd8wMjvnJo4vUUkoQANqjLbtPuSiFH4HDZrk6Urz6e2RrI
+         P7Zob8SIY1lJ6htwWcKhD6FHIYg3CdSmtJQAY/hY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -56,12 +56,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Juergen Gross <jgross@suse.com>,
         Serge Semin <Sergey.Semin@t-platforms.ru>,
         linux-mips@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 051/118] mips: Make sure dt memory regions are valid
-Date:   Thu, 13 Jun 2019 10:33:09 +0200
-Message-Id: <20190613075646.719848269@linuxfoundation.org>
+Subject: [PATCH 4.14 34/81] mips: Make sure dt memory regions are valid
+Date:   Thu, 13 Jun 2019 10:33:17 +0200
+Message-Id: <20190613075651.799315210@linuxfoundation.org>
 X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190613075643.642092651@linuxfoundation.org>
-References: <20190613075643.642092651@linuxfoundation.org>
+In-Reply-To: <20190613075649.074682929@linuxfoundation.org>
+References: <20190613075649.074682929@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -108,7 +108,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c
-index 89950b7bf536..bdaf3536241a 100644
+index 0dbcd152a1a9..90f332f0625f 100644
 --- a/arch/mips/kernel/prom.c
 +++ b/arch/mips/kernel/prom.c
 @@ -41,7 +41,19 @@ char *mips_get_machine_name(void)
@@ -131,7 +131,7 @@ index 89950b7bf536..bdaf3536241a 100644
 +	add_memory_region(base, size, BOOT_MEM_RAM);
  }
  
- int __init early_init_dt_reserve_memory_arch(phys_addr_t base,
+ void * __init early_init_dt_alloc_memory_arch(u64 size, u64 align)
 -- 
 2.20.1
 

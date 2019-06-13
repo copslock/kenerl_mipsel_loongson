@@ -2,138 +2,106 @@ Return-Path: <SRS0=RAP1=UM=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.7 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,URIBL_SBL,URIBL_SBL_A,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C031C46477
-	for <linux-mips@archiver.kernel.org>; Thu, 13 Jun 2019 16:03:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C25CFC31E49
+	for <linux-mips@archiver.kernel.org>; Thu, 13 Jun 2019 16:12:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 555F0215EA
-	for <linux-mips@archiver.kernel.org>; Thu, 13 Jun 2019 16:03:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1560441829;
-	bh=rhGaHDwv9dUaGCsFFnIec7tDiELzAKFONg2bR2RZwYc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=NDGY3IVmzyvajQWPoUEiPyQSTwk+T8ArMWga6XLBmQMGCnwWj/HcBKWJyJsfo4GJh
-	 NMnGbj5Em315kj0vguMium+lVvtLabThHiUy/8svQDfxC3mThbOn5QuiHS3W8ks9QQ
-	 H1c6jjHsiMGNcsJI0CQcMStOtxhp86AhIhNo0ZmQ=
+	by mail.kernel.org (Postfix) with ESMTP id 9BE0320665
+	for <linux-mips@archiver.kernel.org>; Thu, 13 Jun 2019 16:12:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389791AbfFMQDR (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 13 Jun 2019 12:03:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35598 "EHLO mail.kernel.org"
+        id S1732222AbfFMQMP (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 13 Jun 2019 12:12:15 -0400
+Received: from smtp5-g21.free.fr ([212.27.42.5]:32442 "EHLO smtp5-g21.free.fr"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731380AbfFMIrV (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 13 Jun 2019 04:47:21 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6C45020851;
-        Thu, 13 Jun 2019 08:47:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560415640;
-        bh=rhGaHDwv9dUaGCsFFnIec7tDiELzAKFONg2bR2RZwYc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=115yItnlo6TdyWZarkFyT6JqJ+1neXO1BKqomSIj1KLog1dEd1Yx5mZkVWxvghzj1
-         pWeoMmL3HdxeP2GDDfki0H+zTmzd0L2/vwaUJuuFowIzoKhrVI4WQZGIsOXx7+nBIR
-         7IrZVi65a7tocb2RGOI59BvV8nmZKS8EAYY8f2Ew=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Serge Semin <fancer.lancer@gmail.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-        Huacai Chen <chenhc@lemote.com>,
-        Stefan Agner <stefan@agner.ch>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Juergen Gross <jgross@suse.com>,
-        Serge Semin <Sergey.Semin@t-platforms.ru>,
-        linux-mips@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.1 066/155] mips: Make sure dt memory regions are valid
-Date:   Thu, 13 Jun 2019 10:32:58 +0200
-Message-Id: <20190613075656.699404735@linuxfoundation.org>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190613075652.691765927@linuxfoundation.org>
-References: <20190613075652.691765927@linuxfoundation.org>
-User-Agent: quilt/0.66
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        id S2391625AbfFMQMO (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 13 Jun 2019 12:12:14 -0400
+Received: from heffalump.sk2.org (unknown [88.186.243.14])
+        by smtp5-g21.free.fr (Postfix) with ESMTPS id 4DB325FFB9;
+        Thu, 13 Jun 2019 18:12:12 +0200 (CEST)
+Received: from steve by heffalump.sk2.org with local (Exim 4.89)
+        (envelope-from <steve@sk2.org>)
+        id 1hbSKh-0004Qa-LM; Thu, 13 Jun 2019 18:12:11 +0200
+From:   Stephen Kitt <steve@sk2.org>
+To:     x86@kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Stephen Kitt <steve@sk2.org>
+Subject: [PATCH] Drop unused isa_page_to_bus
+Date:   Thu, 13 Jun 2019 18:11:55 +0200
+Message-Id: <20190613161155.16946-1-steve@sk2.org>
+X-Mailer: git-send-email 2.11.0
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-[ Upstream commit 93fa5b280761a4dbb14c5330f260380385ab2b49 ]
+isa_page_to_bus is deprecated and no longer used anywhere, this patch
+removes it entirely.
 
-There are situations when memory regions coming from dts may be
-too big for the platform physical address space. This especially
-concerns XPA-capable systems. Bootloader may determine more than 4GB
-memory available and pass it to the kernel over dts memory node, while
-kernel is built without XPA/64BIT support. In this case the region
-may either simply be truncated by add_memory_region() method
-or by u64->phys_addr_t type casting. But in worst case the method
-can even drop the memory region if it exceeds PHYS_ADDR_MAX size.
-So lets make sure the retrieved from dts memory regions are valid,
-and if some of them aren't, just manually truncate them with a warning
-printed out.
-
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Mike Rapoport <rppt@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Cc: Huacai Chen <chenhc@lemote.com>
-Cc: Stefan Agner <stefan@agner.ch>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: Serge Semin <Sergey.Semin@t-platforms.ru>
-Cc: linux-mips@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Stephen Kitt <steve@sk2.org>
 ---
- arch/mips/kernel/prom.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ arch/alpha/include/asm/io.h | 5 -----
+ arch/arm/include/asm/io.h   | 1 -
+ arch/mips/include/asm/io.h  | 2 --
+ arch/x86/include/asm/io.h   | 1 -
+ 4 files changed, 9 deletions(-)
 
-diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c
-index 93b8e0b4332f..b9d6c6ec4177 100644
---- a/arch/mips/kernel/prom.c
-+++ b/arch/mips/kernel/prom.c
-@@ -41,7 +41,19 @@ char *mips_get_machine_name(void)
- #ifdef CONFIG_USE_OF
- void __init early_init_dt_add_memory_arch(u64 base, u64 size)
- {
--	return add_memory_region(base, size, BOOT_MEM_RAM);
-+	if (base >= PHYS_ADDR_MAX) {
-+		pr_warn("Trying to add an invalid memory region, skipped\n");
-+		return;
-+	}
-+
-+	/* Truncate the passed memory region instead of type casting */
-+	if (base + size - 1 >= PHYS_ADDR_MAX || base + size < base) {
-+		pr_warn("Truncate memory region %llx @ %llx to size %llx\n",
-+			size, base, PHYS_ADDR_MAX - base);
-+		size = PHYS_ADDR_MAX - base;
-+	}
-+
-+	add_memory_region(base, size, BOOT_MEM_RAM);
+diff --git a/arch/alpha/include/asm/io.h b/arch/alpha/include/asm/io.h
+index ccf9d65166bb..af2c0063dc75 100644
+--- a/arch/alpha/include/asm/io.h
++++ b/arch/alpha/include/asm/io.h
+@@ -93,11 +93,6 @@ static inline void * phys_to_virt(unsigned long address)
+ 
+ #define page_to_phys(page)	page_to_pa(page)
+ 
+-static inline dma_addr_t __deprecated isa_page_to_bus(struct page *page)
+-{
+-	return page_to_phys(page);
+-}
+-
+ /* Maximum PIO space address supported?  */
+ #define IO_SPACE_LIMIT 0xffff
+ 
+diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
+index 7e22c81398c4..f96ec93679b7 100644
+--- a/arch/arm/include/asm/io.h
++++ b/arch/arm/include/asm/io.h
+@@ -33,7 +33,6 @@
+  * ISA I/O bus memory addresses are 1:1 with the physical address.
+  */
+ #define isa_virt_to_bus virt_to_phys
+-#define isa_page_to_bus page_to_phys
+ #define isa_bus_to_virt phys_to_virt
+ 
+ /*
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index 29997e42480e..1790274c27eb 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -149,8 +149,6 @@ static inline void *isa_bus_to_virt(unsigned long address)
+ 	return phys_to_virt(address);
  }
  
- int __init early_init_dt_reserve_memory_arch(phys_addr_t base,
+-#define isa_page_to_bus page_to_phys
+-
+ /*
+  * However PCI ones are not necessarily 1:1 and therefore these interfaces
+  * are forbidden in portable PCI drivers.
+diff --git a/arch/x86/include/asm/io.h b/arch/x86/include/asm/io.h
+index a06a9f8294ea..6bed97ff6db2 100644
+--- a/arch/x86/include/asm/io.h
++++ b/arch/x86/include/asm/io.h
+@@ -165,7 +165,6 @@ static inline unsigned int isa_virt_to_bus(volatile void *address)
+ {
+ 	return (unsigned int)virt_to_phys(address);
+ }
+-#define isa_page_to_bus(page)	((unsigned int)page_to_phys(page))
+ #define isa_bus_to_virt		phys_to_virt
+ 
+ /*
 -- 
-2.20.1
-
-
+2.11.0
 

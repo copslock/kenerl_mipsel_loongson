@@ -2,95 +2,100 @@ Return-Path: <SRS0=Ffnl=UN=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD3B9C31E4B
-	for <linux-mips@archiver.kernel.org>; Fri, 14 Jun 2019 13:07:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BD43AC31E4E
+	for <linux-mips@archiver.kernel.org>; Fri, 14 Jun 2019 20:31:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 879FC20850
-	for <linux-mips@archiver.kernel.org>; Fri, 14 Jun 2019 13:07:30 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 87B1B21841
+	for <linux-mips@archiver.kernel.org>; Fri, 14 Jun 2019 20:31:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1560544293;
+	bh=F+anLLuCwXvo7UdHUf2b8qxkr5pxdKd/+T5t+Wh0p2Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=TsG6bVuiFh37INKYNAbwqTCMbZTpV/Jo9dPFwX42rNDfi3Gx/56fnNrpgUBg2DzRf
+	 LYcIlufVB042D6wLeX4N7sHwQSj/0FRhkI9jsijEpESY3m3MgMbzL+WCKINv3dVtIC
+	 pffMR8FFvhNe4qhsHoleJdKBzG/jhf+LjHmEES1U=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727827AbfFNNHa (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 14 Jun 2019 09:07:30 -0400
-Received: from Galois.linutronix.de ([146.0.238.70]:37904 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727789AbfFNNHa (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 14 Jun 2019 09:07:30 -0400
-Received: from [5.158.153.52] (helo=nanos.tec.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1hblvS-0004Pz-5b; Fri, 14 Jun 2019 15:07:26 +0200
-Date:   Fri, 14 Jun 2019 15:07:25 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Vincenzo Frascino <vincenzo.frascino@arm.com>
-cc:     linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Mark Salyzyn <salyzyn@android.com>,
-        Peter Collingbourne <pcc@google.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Dmitry Safonov <0x7f454c46@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Huw Davies <huw@codeweavers.com>
-Subject: Re: [PATCH v6 03/19] kernel: Unify update_vsyscall implementation
-In-Reply-To: <9371eabc-ed74-3db8-794c-44c37ada2163@arm.com>
-Message-ID: <alpine.DEB.2.21.1906141506500.1722@nanos.tec.linutronix.de>
-References: <20190530141531.43462-1-vincenzo.frascino@arm.com> <20190530141531.43462-4-vincenzo.frascino@arm.com> <alpine.DEB.2.21.1906141307430.1722@nanos.tec.linutronix.de> <a69e48a2-575d-255c-2653-d3e99b7ba760@arm.com> <alpine.DEB.2.21.1906141416100.1722@nanos.tec.linutronix.de>
- <9371eabc-ed74-3db8-794c-44c37ada2163@arm.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        id S1727971AbfFNUaw (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 14 Jun 2019 16:30:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54642 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727963AbfFNUaw (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 14 Jun 2019 16:30:52 -0400
+Received: from sasha-vm.mshome.net (unknown [131.107.159.134])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9A8A7217F9;
+        Fri, 14 Jun 2019 20:30:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560544251;
+        bh=F+anLLuCwXvo7UdHUf2b8qxkr5pxdKd/+T5t+Wh0p2Y=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=PCv/8t90kbpCsFsemava6/k66xUUgdqWSaHND//1zHUwOqUvFQn8wZOBaA1OetMKb
+         YdDL5jyb275VvR76UJDLf6kxcoOuhp+9SY48YtmjWlGmCzdHFiEuD5b33JC4SfwzZm
+         7s0UvlqqjC3/0A//MNEsYju1f9jrC+MXoqih68YY=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     YueHaibing <yuehaibing@huawei.com>,
+        Paul Burton <paul.burton@mips.com>, ralf@linux-mips.org,
+        jhogan@kernel.org, linux-mips@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 04/10] MIPS: uprobes: remove set but not used variable 'epc'
+Date:   Fri, 14 Jun 2019 16:30:40 -0400
+Message-Id: <20190614203046.28077-4-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190614203046.28077-1-sashal@kernel.org>
+References: <20190614203046.28077-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Fri, 14 Jun 2019, Vincenzo Frascino wrote:
-> On 6/14/19 1:19 PM, Thomas Gleixner wrote:
-> > On Fri, 14 Jun 2019, Vincenzo Frascino wrote:
-> >> On 6/14/19 12:10 PM, Thomas Gleixner wrote:
-> >>> On Thu, 30 May 2019, Vincenzo Frascino wrote:
-> >>>> +
-> >>>> +	if (__arch_use_vsyscall(vdata)) {
-> >>>> +		vdata[CS_HRES_COARSE].cycle_last	=
-> >>>> +						tk->tkr_mono.cycle_last;
-> >>>> +		vdata[CS_HRES_COARSE].mask		=
-> >>>> +						tk->tkr_mono.mask;
-> >>>> +		vdata[CS_HRES_COARSE].mult		=
-> >>>> +						tk->tkr_mono.mult;
-> >>>
-> >>> These line breaks make it really hard to read. Can you fold in the patch
-> >>> below please?
-> >>>
-> >>
-> >> Thanks for this. I will do it in v7.
-> > 
-> > Talking about v7. I'd like to get this into 5.3. That means you'd have to
-> > rebase it on
-> > 
-> >   git://git.kernel.org/pub/scm/linux/kernel/git/hyperv/linux.git hyperv-next
-> > 
-> > to avoid the hyperv conflict. I'll sort this out with the hyperv folks how
-> > I can get these bits as a base for a tip branch which holds all the vdso
-> > pieces.
-> >
-> 
-> Ok, I will rebase and test the patches against the hyperv-next branch. Could you
-> please let me know when all the bits are sorted?
+From: YueHaibing <yuehaibing@huawei.com>
 
-Don't worry. Just post it against that branch and I'll sort out the
-logistics independently.
+[ Upstream commit f532beeeff0c0a3586cc15538bc52d249eb19e7c ]
 
-Thanks,
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-	tglx
+arch/mips/kernel/uprobes.c: In function 'arch_uprobe_pre_xol':
+arch/mips/kernel/uprobes.c:115:17: warning: variable 'epc' set but not used [-Wunused-but-set-variable]
+
+It's never used since introduction in
+commit 40e084a506eb ("MIPS: Add uprobes support.")
+
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: <ralf@linux-mips.org>
+Cc: <jhogan@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>
+Cc: <linux-mips@vger.kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/mips/kernel/uprobes.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/arch/mips/kernel/uprobes.c b/arch/mips/kernel/uprobes.c
+index 4e7b89f2e244..1363d705cc8c 100644
+--- a/arch/mips/kernel/uprobes.c
++++ b/arch/mips/kernel/uprobes.c
+@@ -164,9 +164,6 @@ int arch_uprobe_pre_xol(struct arch_uprobe *aup, struct pt_regs *regs)
+ 	 */
+ 	aup->resume_epc = regs->cp0_epc + 4;
+ 	if (insn_has_delay_slot((union mips_instruction) aup->insn[0])) {
+-		unsigned long epc;
+-
+-		epc = regs->cp0_epc;
+ 		__compute_return_epc_for_insn(regs,
+ 			(union mips_instruction) aup->insn[0]);
+ 		aup->resume_epc = regs->cp0_epc;
+-- 
+2.20.1
+

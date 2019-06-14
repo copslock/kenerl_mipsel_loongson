@@ -2,38 +2,51 @@ Return-Path: <SRS0=Ffnl=UN=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	URIBL_SBL,URIBL_SBL_A autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F0DECC31E4B
-	for <linux-mips@archiver.kernel.org>; Fri, 14 Jun 2019 13:04:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD3B9C31E4B
+	for <linux-mips@archiver.kernel.org>; Fri, 14 Jun 2019 13:07:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D006B208CA
-	for <linux-mips@archiver.kernel.org>; Fri, 14 Jun 2019 13:04:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 879FC20850
+	for <linux-mips@archiver.kernel.org>; Fri, 14 Jun 2019 13:07:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727837AbfFNNEy (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 14 Jun 2019 09:04:54 -0400
-Received: from Galois.linutronix.de ([146.0.238.70]:37893 "EHLO
+        id S1727827AbfFNNHa (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 14 Jun 2019 09:07:30 -0400
+Received: from Galois.linutronix.de ([146.0.238.70]:37904 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727807AbfFNNEy (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 14 Jun 2019 09:04:54 -0400
+        with ESMTP id S1727789AbfFNNHa (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 14 Jun 2019 09:07:30 -0400
 Received: from [5.158.153.52] (helo=nanos.tec.linutronix.de)
         by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
         (Exim 4.80)
         (envelope-from <tglx@linutronix.de>)
-        id 1hblst-0004De-V0; Fri, 14 Jun 2019 15:04:48 +0200
-Date:   Fri, 14 Jun 2019 15:04:47 +0200 (CEST)
+        id 1hblvS-0004Pz-5b; Fri, 14 Jun 2019 15:07:26 +0200
+Date:   Fri, 14 Jun 2019 15:07:25 +0200 (CEST)
 From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Stephen Kitt <steve@sk2.org>
-cc:     x86@kernel.org, linux-alpha@vger.kernel.org,
-        LAK <linux-arm-kernel@lists.infradead.org>,
-        linux-mips@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] Drop unused isa_page_to_bus
-In-Reply-To: <20190613161155.16946-1-steve@sk2.org>
-Message-ID: <alpine.DEB.2.21.1906141504230.1722@nanos.tec.linutronix.de>
-References: <20190613161155.16946-1-steve@sk2.org>
+To:     Vincenzo Frascino <vincenzo.frascino@arm.com>
+cc:     linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Mark Salyzyn <salyzyn@android.com>,
+        Peter Collingbourne <pcc@google.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Dmitry Safonov <0x7f454c46@gmail.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Huw Davies <huw@codeweavers.com>
+Subject: Re: [PATCH v6 03/19] kernel: Unify update_vsyscall implementation
+In-Reply-To: <9371eabc-ed74-3db8-794c-44c37ada2163@arm.com>
+Message-ID: <alpine.DEB.2.21.1906141506500.1722@nanos.tec.linutronix.de>
+References: <20190530141531.43462-1-vincenzo.frascino@arm.com> <20190530141531.43462-4-vincenzo.frascino@arm.com> <alpine.DEB.2.21.1906141307430.1722@nanos.tec.linutronix.de> <a69e48a2-575d-255c-2653-d3e99b7ba760@arm.com> <alpine.DEB.2.21.1906141416100.1722@nanos.tec.linutronix.de>
+ <9371eabc-ed74-3db8-794c-44c37ada2163@arm.com>
 User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,11 +55,42 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, 13 Jun 2019, Stephen Kitt wrote:
-
-> isa_page_to_bus is deprecated and no longer used anywhere, this patch
-> removes it entirely.
+On Fri, 14 Jun 2019, Vincenzo Frascino wrote:
+> On 6/14/19 1:19 PM, Thomas Gleixner wrote:
+> > On Fri, 14 Jun 2019, Vincenzo Frascino wrote:
+> >> On 6/14/19 12:10 PM, Thomas Gleixner wrote:
+> >>> On Thu, 30 May 2019, Vincenzo Frascino wrote:
+> >>>> +
+> >>>> +	if (__arch_use_vsyscall(vdata)) {
+> >>>> +		vdata[CS_HRES_COARSE].cycle_last	=
+> >>>> +						tk->tkr_mono.cycle_last;
+> >>>> +		vdata[CS_HRES_COARSE].mask		=
+> >>>> +						tk->tkr_mono.mask;
+> >>>> +		vdata[CS_HRES_COARSE].mult		=
+> >>>> +						tk->tkr_mono.mult;
+> >>>
+> >>> These line breaks make it really hard to read. Can you fold in the patch
+> >>> below please?
+> >>>
+> >>
+> >> Thanks for this. I will do it in v7.
+> > 
+> > Talking about v7. I'd like to get this into 5.3. That means you'd have to
+> > rebase it on
+> > 
+> >   git://git.kernel.org/pub/scm/linux/kernel/git/hyperv/linux.git hyperv-next
+> > 
+> > to avoid the hyperv conflict. I'll sort this out with the hyperv folks how
+> > I can get these bits as a base for a tip branch which holds all the vdso
+> > pieces.
+> >
 > 
-> Signed-off-by: Stephen Kitt <steve@sk2.org>
+> Ok, I will rebase and test the patches against the hyperv-next branch. Could you
+> please let me know when all the bits are sorted?
 
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Don't worry. Just post it against that branch and I'll sort out the
+logistics independently.
+
+Thanks,
+
+	tglx

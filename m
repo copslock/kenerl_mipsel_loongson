@@ -7,49 +7,49 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 24A4AC31E4E
-	for <linux-mips@archiver.kernel.org>; Fri, 14 Jun 2019 20:35:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C3305C31E4E
+	for <linux-mips@archiver.kernel.org>; Fri, 14 Jun 2019 20:38:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E0D592084D
-	for <linux-mips@archiver.kernel.org>; Fri, 14 Jun 2019 20:35:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 906DB21473
+	for <linux-mips@archiver.kernel.org>; Fri, 14 Jun 2019 20:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1560544535;
+	s=default; t=1560544687;
 	bh=JcfqUTP6x4yGsT+rMP4Hw8NWJSGWT2N9YWh0L6aHju8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=pJN3sTW4RIeIlMzgD//QFACie/vnX7tdKd/FpIliOOwkrfEJRpEJCJY7l0JXvNzY9
-	 I6tlKsONXzchYcRxD4sdNW9G8wNj0uHT+M/kVN2F/TwJH/PfrcvOrAGtt1UhFrp5k6
-	 S5wraQDyrZuDcF1x8LjbD+D8ZpfEW8+YR/dzfbpM=
+	b=FItpd2pgPIBZTqnE1O2xF+CA2E1bLc3ZdkSgRtelAbLUwBuQYgJejY/ZIFG2BEIVn
+	 BW4qdGMm3p/6QYjVb+V4M+EsAcHwXACmkRp54GIND1hz0XFBVdpYaVwG91lCiphcq+
+	 0i1KLPM5V37oyGhtRErDtPDt4JfKyfry3H0UMhTU=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727758AbfFNUfY (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 14 Jun 2019 16:35:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52436 "EHLO mail.kernel.org"
+        id S1726762AbfFNUh6 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 14 Jun 2019 16:37:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50938 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727273AbfFNU35 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 14 Jun 2019 16:29:57 -0400
+        id S1726755AbfFNU3F (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 14 Jun 2019 16:29:05 -0400
 Received: from sasha-vm.mshome.net (unknown [131.107.159.134])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1085321848;
-        Fri, 14 Jun 2019 20:29:57 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8035B2184D;
+        Fri, 14 Jun 2019 20:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560544197;
+        s=default; t=1560544144;
         bh=JcfqUTP6x4yGsT+rMP4Hw8NWJSGWT2N9YWh0L6aHju8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qE1cgiyan7Hj5RvInwG7K1yS0/azt7g3VYxCtPIeW7HrraSh9VgqC+15fIfr0BsP9
-         Hxk2ejcfsDG9Go1V7rpb32orVNHjjxWYDtAcs9MG77Fh/fxTAs7l9tsFNtJdzW8r4C
-         itCEAThxd+RxFd4aVYaxP8cYE05+YHJcQwZD6030=
+        b=AycFfBCoOGVUm55nn3t6nEhvx7WfRKONxYFPxnDoyg2mMe229CUPiRuTBuaQFvl8O
+         JuqrEjD7LVQ7FtNTg8sfIOi1WNdnFfWKT36o/h8nB+czHpP+hXjyoTAr0BB0tNXFr8
+         lX9sa0DQx+VJ9hlUqYTWwgDFJaAIG2nL9wMqq7w0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     YueHaibing <yuehaibing@huawei.com>,
         Paul Burton <paul.burton@mips.com>, ralf@linux-mips.org,
         jhogan@kernel.org, linux-mips@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 15/39] MIPS: uprobes: remove set but not used variable 'epc'
-Date:   Fri, 14 Jun 2019 16:29:20 -0400
-Message-Id: <20190614202946.27385-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.1 25/59] MIPS: uprobes: remove set but not used variable 'epc'
+Date:   Fri, 14 Jun 2019 16:28:09 -0400
+Message-Id: <20190614202843.26941-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190614202946.27385-1-sashal@kernel.org>
-References: <20190614202946.27385-1-sashal@kernel.org>
+In-Reply-To: <20190614202843.26941-1-sashal@kernel.org>
+References: <20190614202843.26941-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore

@@ -7,24 +7,24 @@ X-Spam-Status: No, score=-8.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E38C9C43613
-	for <linux-mips@archiver.kernel.org>; Fri, 21 Jun 2019 09:55:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64717C43613
+	for <linux-mips@archiver.kernel.org>; Fri, 21 Jun 2019 09:55:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C245520665
-	for <linux-mips@archiver.kernel.org>; Fri, 21 Jun 2019 09:55:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 478EA20665
+	for <linux-mips@archiver.kernel.org>; Fri, 21 Jun 2019 09:55:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726876AbfFUJx2 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 21 Jun 2019 05:53:28 -0400
-Received: from foss.arm.com ([217.140.110.172]:55330 "EHLO foss.arm.com"
+        id S1726851AbfFUJxY (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 21 Jun 2019 05:53:24 -0400
+Received: from foss.arm.com ([217.140.110.172]:55296 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726875AbfFUJx1 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 21 Jun 2019 05:53:27 -0400
+        id S1726835AbfFUJxY (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 21 Jun 2019 05:53:24 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BD96A1478;
-        Fri, 21 Jun 2019 02:53:26 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EFAE414F6;
+        Fri, 21 Jun 2019 02:53:23 -0700 (PDT)
 Received: from e119884-lin.cambridge.arm.com (e119884-lin.cambridge.arm.com [10.1.196.72])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 31B663F246;
-        Fri, 21 Jun 2019 02:53:24 -0700 (PDT)
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6648F3F246;
+        Fri, 21 Jun 2019 02:53:21 -0700 (PDT)
 From:   Vincenzo Frascino <vincenzo.frascino@arm.com>
 To:     linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
@@ -45,9 +45,9 @@ Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         Huw Davies <huw@codeweavers.com>,
         Shijith Thotton <sthotton@marvell.com>,
         Andre Przywara <andre.przywara@arm.com>
-Subject: [PATCH v7 07/25] arm64: compat: Expose signal related structures
-Date:   Fri, 21 Jun 2019 10:52:34 +0100
-Message-Id: <20190621095252.32307-8-vincenzo.frascino@arm.com>
+Subject: [PATCH v7 06/25] arm64: compat: Add missing syscall numbers
+Date:   Fri, 21 Jun 2019 10:52:33 +0100
+Message-Id: <20190621095252.32307-7-vincenzo.frascino@arm.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190621095252.32307-1-vincenzo.frascino@arm.com>
 References: <20190621095252.32307-1-vincenzo.frascino@arm.com>
@@ -58,143 +58,39 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The compat signal data structures are required as part of the compat
-vDSO implementation in order to provide the unwinding information for
-the sigreturn trampolines.
+vDSO requires gettimeofday and clock_gettime syscalls to implement the
+fallback mechanism.
 
-Expose the mentioned data structures as part of signal32.h.
+Add the missing syscall numbers to unistd.h for arm64.
 
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will.deacon@arm.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Tested-by: Shijith Thotton <sthotton@marvell.com>
 Tested-by: Andre Przywara <andre.przywara@arm.com>
 ---
- arch/arm64/include/asm/signal32.h | 46 +++++++++++++++++++++++++++++++
- arch/arm64/kernel/signal32.c      | 46 -------------------------------
- 2 files changed, 46 insertions(+), 46 deletions(-)
+ arch/arm64/include/asm/unistd.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/include/asm/signal32.h b/arch/arm64/include/asm/signal32.h
-index 58e288aaf0ba..1f05268f4c6d 100644
---- a/arch/arm64/include/asm/signal32.h
-+++ b/arch/arm64/include/asm/signal32.h
-@@ -20,6 +20,52 @@
- #ifdef CONFIG_COMPAT
- #include <linux/compat.h>
+diff --git a/arch/arm64/include/asm/unistd.h b/arch/arm64/include/asm/unistd.h
+index 70e6882853c0..81cc05acccc9 100644
+--- a/arch/arm64/include/asm/unistd.h
++++ b/arch/arm64/include/asm/unistd.h
+@@ -33,8 +33,13 @@
+ #define __NR_compat_exit		1
+ #define __NR_compat_read		3
+ #define __NR_compat_write		4
++#define __NR_compat_gettimeofday	78
+ #define __NR_compat_sigreturn		119
+ #define __NR_compat_rt_sigreturn	173
++#define __NR_compat_clock_getres	247
++#define __NR_compat_clock_gettime	263
++#define __NR_compat_clock_gettime64	403
++#define __NR_compat_clock_getres_time64	406
  
-+struct compat_sigcontext {
-+	/* We always set these two fields to 0 */
-+	compat_ulong_t			trap_no;
-+	compat_ulong_t			error_code;
-+
-+	compat_ulong_t			oldmask;
-+	compat_ulong_t			arm_r0;
-+	compat_ulong_t			arm_r1;
-+	compat_ulong_t			arm_r2;
-+	compat_ulong_t			arm_r3;
-+	compat_ulong_t			arm_r4;
-+	compat_ulong_t			arm_r5;
-+	compat_ulong_t			arm_r6;
-+	compat_ulong_t			arm_r7;
-+	compat_ulong_t			arm_r8;
-+	compat_ulong_t			arm_r9;
-+	compat_ulong_t			arm_r10;
-+	compat_ulong_t			arm_fp;
-+	compat_ulong_t			arm_ip;
-+	compat_ulong_t			arm_sp;
-+	compat_ulong_t			arm_lr;
-+	compat_ulong_t			arm_pc;
-+	compat_ulong_t			arm_cpsr;
-+	compat_ulong_t			fault_address;
-+};
-+
-+struct compat_ucontext {
-+	compat_ulong_t			uc_flags;
-+	compat_uptr_t			uc_link;
-+	compat_stack_t			uc_stack;
-+	struct compat_sigcontext	uc_mcontext;
-+	compat_sigset_t			uc_sigmask;
-+	int 				__unused[32 - (sizeof(compat_sigset_t) / sizeof(int))];
-+	compat_ulong_t			uc_regspace[128] __attribute__((__aligned__(8)));
-+};
-+
-+struct compat_sigframe {
-+	struct compat_ucontext	uc;
-+	compat_ulong_t		retcode[2];
-+};
-+
-+struct compat_rt_sigframe {
-+	struct compat_siginfo info;
-+	struct compat_sigframe sig;
-+};
-+
- int compat_setup_frame(int usig, struct ksignal *ksig, sigset_t *set,
- 		       struct pt_regs *regs);
- int compat_setup_rt_frame(int usig, struct ksignal *ksig, sigset_t *set,
-diff --git a/arch/arm64/kernel/signal32.c b/arch/arm64/kernel/signal32.c
-index caea6e25db2a..74e06d8c7c2b 100644
---- a/arch/arm64/kernel/signal32.c
-+++ b/arch/arm64/kernel/signal32.c
-@@ -30,42 +30,6 @@
- #include <linux/uaccess.h>
- #include <asm/unistd.h>
- 
--struct compat_sigcontext {
--	/* We always set these two fields to 0 */
--	compat_ulong_t			trap_no;
--	compat_ulong_t			error_code;
--
--	compat_ulong_t			oldmask;
--	compat_ulong_t			arm_r0;
--	compat_ulong_t			arm_r1;
--	compat_ulong_t			arm_r2;
--	compat_ulong_t			arm_r3;
--	compat_ulong_t			arm_r4;
--	compat_ulong_t			arm_r5;
--	compat_ulong_t			arm_r6;
--	compat_ulong_t			arm_r7;
--	compat_ulong_t			arm_r8;
--	compat_ulong_t			arm_r9;
--	compat_ulong_t			arm_r10;
--	compat_ulong_t			arm_fp;
--	compat_ulong_t			arm_ip;
--	compat_ulong_t			arm_sp;
--	compat_ulong_t			arm_lr;
--	compat_ulong_t			arm_pc;
--	compat_ulong_t			arm_cpsr;
--	compat_ulong_t			fault_address;
--};
--
--struct compat_ucontext {
--	compat_ulong_t			uc_flags;
--	compat_uptr_t			uc_link;
--	compat_stack_t			uc_stack;
--	struct compat_sigcontext	uc_mcontext;
--	compat_sigset_t			uc_sigmask;
--	int		__unused[32 - (sizeof (compat_sigset_t) / sizeof (int))];
--	compat_ulong_t	uc_regspace[128] __attribute__((__aligned__(8)));
--};
--
- struct compat_vfp_sigframe {
- 	compat_ulong_t	magic;
- 	compat_ulong_t	size;
-@@ -92,16 +56,6 @@ struct compat_aux_sigframe {
- 	unsigned long			end_magic;
- } __attribute__((__aligned__(8)));
- 
--struct compat_sigframe {
--	struct compat_ucontext	uc;
--	compat_ulong_t		retcode[2];
--};
--
--struct compat_rt_sigframe {
--	struct compat_siginfo info;
--	struct compat_sigframe sig;
--};
--
- #define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
- 
- static inline int put_sigset_t(compat_sigset_t __user *uset, sigset_t *set)
+ /*
+  * The following SVCs are ARM private.
 -- 
 2.21.0
 

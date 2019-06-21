@@ -2,177 +2,71 @@ Return-Path: <SRS0=qUPb=UU=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7DD8C43613
-	for <linux-mips@archiver.kernel.org>; Fri, 21 Jun 2019 09:55:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 74EC0C43613
+	for <linux-mips@archiver.kernel.org>; Fri, 21 Jun 2019 10:09:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id BB50520665
-	for <linux-mips@archiver.kernel.org>; Fri, 21 Jun 2019 09:55:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 55324208CA
+	for <linux-mips@archiver.kernel.org>; Fri, 21 Jun 2019 10:09:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726645AbfFUJxL (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 21 Jun 2019 05:53:11 -0400
-Received: from foss.arm.com ([217.140.110.172]:55122 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726218AbfFUJxK (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 21 Jun 2019 05:53:10 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CBA4B1478;
-        Fri, 21 Jun 2019 02:53:09 -0700 (PDT)
-Received: from e119884-lin.cambridge.arm.com (e119884-lin.cambridge.arm.com [10.1.196.72])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4246B3F246;
-        Fri, 21 Jun 2019 02:53:07 -0700 (PDT)
-From:   Vincenzo Frascino <vincenzo.frascino@arm.com>
-To:     linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-kselftest@vger.kernel.org
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
+        id S1726622AbfFUKJG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 21 Jun 2019 06:09:06 -0400
+Received: from eddie.linux-mips.org ([148.251.95.138]:56132 "EHLO
+        cvs.linux-mips.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726759AbfFUKJG (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 21 Jun 2019 06:09:06 -0400
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S23994550AbfFUKJDD0AoN (ORCPT
+        <rfc822;linux-kernel@vger.kernel.org> + 1 other);
+        Fri, 21 Jun 2019 12:09:03 +0200
+Date:   Fri, 21 Jun 2019 11:09:03 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+cc:     Paul Burton <paul.burton@mips.com>,
+        Serge Semin <fancer.lancer@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mark Salyzyn <salyzyn@android.com>,
-        Peter Collingbourne <pcc@google.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Dmitry Safonov <0x7f454c46@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Huw Davies <huw@codeweavers.com>,
-        Shijith Thotton <sthotton@marvell.com>,
-        Andre Przywara <andre.przywara@arm.com>
-Subject: [PATCH v7 01/25] kernel: Standardize vdso_datapage
-Date:   Fri, 21 Jun 2019 10:52:28 +0100
-Message-Id: <20190621095252.32307-2-vincenzo.frascino@arm.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190621095252.32307-1-vincenzo.frascino@arm.com>
-References: <20190621095252.32307-1-vincenzo.frascino@arm.com>
+        James Hogan <jhogan@kernel.org>,
+        Serge Semin <Sergey.Semin@t-platforms.ru>,
+        "Vadim V . Vlasov" <vadim.vlasov@t-platforms.ru>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mips: Remove q-accessors from non-64bit platforms
+In-Reply-To: <CAK8P3a28Dp3UygNyomDPDxDmCmey37VS7TJkmDogaKUGZMF2mw@mail.gmail.com>
+Message-ID: <alpine.LFD.2.21.1906211048360.21654@eddie.linux-mips.org>
+References: <20190614063341.1672-1-fancer.lancer@gmail.com> <20190620174002.tgayzon7dc5d57fh@pburton-laptop> <alpine.LFD.2.21.1906201851580.21654@eddie.linux-mips.org> <CAK8P3a28Dp3UygNyomDPDxDmCmey37VS7TJkmDogaKUGZMF2mw@mail.gmail.com>
+User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-In an effort to unify the common code for managing the vdso library in
-between all the architectures that support it, this patch tries to
-provide a common format for the vdso datapage.
+On Fri, 21 Jun 2019, Arnd Bergmann wrote:
 
-As a result of this, this patch generalized the data structures in vgtod.h
-from x86 private includes to general includes (include/vdso).
+> >  The use of 64-bit operations to access option's packet memory, which is
+> > true SRAM, i.e. no side effects, is to improve throughput only and there's
+> > no need for atomicity here nor also any kind of barriers, except at the
+> > conclusion.  Splitting 64-bit accesses into 32-bit halves in software
+> > would not be a functional error here.
+> 
+> The other property of packet memory and similar things is that you
+> basically want memcpy()-behavior with no byteswaps. This is one
+> of the few cases in which __raw_readq() is actually the right accessor
+> in (mostly) portable code.
 
-Cc: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Tested-by: Shijith Thotton <sthotton@marvell.com>
-Tested-by: Andre Przywara <andre.przywara@arm.com>
----
- include/vdso/datapage.h | 93 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 93 insertions(+)
- create mode 100644 include/vdso/datapage.h
+ Correct, but we're missing an `__raw_readq_relaxed', etc. interface and 
+having additional barriers applied on every access would hit performance 
+very badly; in fact even the barriers `*_relaxed' accessors imply would 
+best be removed in this use (which is why defza.c uses `readw_o' vs 
+`readw_u', etc. internally), but after all the struggles over the years 
+for weakly ordered internal APIs x86 people are so averse to I'm not sure 
+if I want to start another one.  We can get away with `readq_relaxed' in 
+this use though as all the systems this device can be used with are 
+little-endian as is TURBOchannel, so no byte-swapping will ever actually 
+occur.
 
-diff --git a/include/vdso/datapage.h b/include/vdso/datapage.h
-new file mode 100644
-index 000000000000..770f40254b08
---- /dev/null
-+++ b/include/vdso/datapage.h
-@@ -0,0 +1,93 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __VDSO_DATAPAGE_H
-+#define __VDSO_DATAPAGE_H
-+
-+#ifdef __KERNEL__
-+
-+#ifndef __ASSEMBLY__
-+
-+#include <linux/bits.h>
-+#include <linux/time.h>
-+#include <linux/types.h>
-+
-+#define VDSO_BASES	(CLOCK_TAI + 1)
-+#define VDSO_HRES	(BIT(CLOCK_REALTIME)		| \
-+			 BIT(CLOCK_MONOTONIC)		| \
-+			 BIT(CLOCK_BOOTTIME)		| \
-+			 BIT(CLOCK_TAI))
-+#define VDSO_COARSE	(BIT(CLOCK_REALTIME_COARSE)	| \
-+			 BIT(CLOCK_MONOTONIC_COARSE))
-+#define VDSO_RAW	(BIT(CLOCK_MONOTONIC_RAW))
-+
-+#define CS_HRES_COARSE	0
-+#define CS_RAW		1
-+#define CS_BASES	(CS_RAW + 1)
-+
-+/**
-+ * struct vdso_timestamp - basetime per clock_id
-+ * @sec: seconds
-+ * @nsec: nanoseconds
-+ *
-+ * There is one vdso_timestamp object in vvar for each vDSO-accelerated
-+ * clock_id. For high-resolution clocks, this encodes the time
-+ * corresponding to vdso_data.cycle_last. For coarse clocks this encodes
-+ * the actual time.
-+ *
-+ * To be noticed that for highres clocks nsec is left-shifted by
-+ * vdso_data.cs[x].shift.
-+ */
-+struct vdso_timestamp {
-+	u64	sec;
-+	u64	nsec;
-+};
-+
-+/**
-+ * struct vdso_data - vdso datapage representation
-+ * @seq: timebase sequence counter
-+ * @clock_mode: clock mode
-+ * @cycle_last: timebase at clocksource init
-+ * @mask: clocksource mask
-+ * @mult: clocksource multiplier
-+ * @shift: clocksource shift
-+ * @basetime[clock_id]: basetime per clock_id
-+ * @tz_minuteswest: minutes west of Greenwich
-+ * @tz_dsttime: type of DST correction
-+ * @hrtimer_res: hrtimer resolution
-+ * @__unused: unused
-+ *
-+ * vdso_data will be accessed by 64 bit and compat code at the same time
-+ * so we should be careful before modifying this structure.
-+ */
-+struct vdso_data {
-+	u32			seq;
-+
-+	s32			clock_mode;
-+	u64			cycle_last;
-+	u64			mask;
-+	u32			mult;
-+	u32			shift;
-+
-+	struct vdso_timestamp	basetime[VDSO_BASES];
-+
-+	s32			tz_minuteswest;
-+	s32			tz_dsttime;
-+	u32			hrtimer_res;
-+	u32			__unused;
-+};
-+
-+/*
-+ * We use the hidden visibility to prevent the compiler from generating a GOT
-+ * relocation. Not only is going through a GOT useless (the entry couldn't and
-+ * must not be overridden by another library), it does not even work: the linker
-+ * cannot generate an absolute address to the data page.
-+ *
-+ * With the hidden visibility, the compiler simply generates a PC-relative
-+ * relocation, and this is what we need.
-+ */
-+extern struct vdso_data _vdso_data[CS_BASES] __attribute__((visibility("hidden")));
-+
-+#endif /* !__ASSEMBLY__ */
-+
-+#endif /* __KERNEL__ */
-+
-+#endif /* __VDSO_DATAPAGE_H */
--- 
-2.21.0
-
+  Maciej

@@ -2,60 +2,102 @@ Return-Path: <SRS0=Sfs/=UV=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A44B9C4646C
-	for <linux-mips@archiver.kernel.org>; Sat, 22 Jun 2019 12:22:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A119C43613
+	for <linux-mips@archiver.kernel.org>; Sat, 22 Jun 2019 12:40:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 79CC2206BA
-	for <linux-mips@archiver.kernel.org>; Sat, 22 Jun 2019 12:22:00 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="TPezhZpc"
+	by mail.kernel.org (Postfix) with ESMTP id 39056206B7
+	for <linux-mips@archiver.kernel.org>; Sat, 22 Jun 2019 12:40:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726290AbfFVMVy (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 22 Jun 2019 08:21:54 -0400
-Received: from outils.crapouillou.net ([89.234.176.41]:42082 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726112AbfFVMVy (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 22 Jun 2019 08:21:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1561206110; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=AcJP+F7zzArO1aHbhKRqb5EiXnIEhX3CopkWcQGeA34=;
-        b=TPezhZpcdABh8N8LO4bNhWS4FIx9TmAYvj4yeuCLdDs4ojk8C6DROwldqNUr6UMdyEp6DU
-        jnWIJpi2MEG6s+1gbFGf+EJBKyfre3Dd2oCgG1tsgpwx2XPT+3qKyXU5earohHgPNcQhrW
-        HF1bdoxRNHp9UwrpXry4jky/iuSPLiY=
-Date:   Sat, 22 Jun 2019 14:21:42 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v12 04/13] mfd: Add Ingenic TCU driver
-To:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Lee Jones <lee.jones@linaro.org>
-Cc:     Mathieu Malaterre <malat@debian.org>, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-clk@vger.kernel.org, od@zcrc.me
-Message-Id: <1561206102.1777.2@crapouillou.net>
-In-Reply-To: <20190521145141.9813-5-paul@crapouillou.net>
-References: <20190521145141.9813-1-paul@crapouillou.net>
-        <20190521145141.9813-5-paul@crapouillou.net>
+        id S1726286AbfFVMkc (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 22 Jun 2019 08:40:32 -0400
+Received: from mx2.mailbox.org ([80.241.60.215]:62004 "EHLO mx2.mailbox.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726112AbfFVMkc (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 22 Jun 2019 08:40:32 -0400
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
+        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        (No client certificate requested)
+        by mx2.mailbox.org (Postfix) with ESMTPS id 3A44AA1335
+        for <linux-mips@vger.kernel.org>; Sat, 22 Jun 2019 14:40:29 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+        by spamfilter04.heinlein-hosting.de (spamfilter04.heinlein-hosting.de [80.241.56.122]) (amavisd-new, port 10030)
+        with ESMTP id YB7LCOt0SSsX for <linux-mips@vger.kernel.org>;
+        Sat, 22 Jun 2019 14:40:27 +0200 (CEST)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+Subject: Call trace stops at static callback functions
+Openpgp: preference=signencrypt
+Autocrypt: addr=hauke@hauke-m.de; keydata=
+ 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
+To:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Message-ID: <b201c33a-5beb-3dfb-b99b-d9b8fc6c2c64@hauke-m.de>
+Date:   Sat, 22 Jun 2019 14:40:26 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
@@ -63,222 +105,48 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 Hi,
 
-I'll make a V13 of this patchset on top of -rc6, any feedback
-for this MFD driver? It's been already one month.
+When I add a WARN_ON(1) to trigger a backtrace into the static callback
+function veth_newlink() in drivers/net/veth.c the backtrace stops at
+this functions. When I remove the static from this function the
+backtrace is looking like expected.
 
-Thanks,
--Paul
+Call trace with static function:
+[   30.686208] Call Trace:
+[   30.686583] [<8010ca98>] show_stack+0x90/0x138
+[   30.686953] [<8066ae80>] dump_stack+0x94/0xcc
+[   30.687122] [<801307cc>] __warn+0x130/0x144
+[   30.687293] [<80130898>] warn_slowpath_null+0x44/0x58
+[   30.687545] [<c0023800>] 0xc0023800
+[   30.687959] ---[ end trace df91e2ca103d67ec ]---
 
+Call trace without static:
+[   26.519328] Call Trace:
+[   26.519648] [<8010ca98>] show_stack+0x90/0x138
+[   26.520067] [<8066ae80>] dump_stack+0x94/0xcc
+[   26.520282] [<801307cc>] __warn+0x130/0x144
+[   26.520466] [<80130898>] warn_slowpath_null+0x44/0x58
+[   26.520773] [<c0023800>] veth_newlink+0x64/0x1464 [veth]
+[   26.521041] [<80541628>] __rtnl_newlink+0x5c8/0x790
+[   26.521259] [<80541840>] rtnl_newlink+0x50/0x84
+[   26.521456] [<8053b430>] rtnetlink_rcv_msg+0x340/0x3ec
+[   26.521697] [<80571ba4>] netlink_rcv_skb+0xa0/0x150
+[   26.521908] [<805712d8>] netlink_unicast+0x1c4/0x2b0
+[   26.522121] [<805716ac>] netlink_sendmsg+0x2e8/0x3f8
+[   26.522336] [<804fcf6c>] ___sys_sendmsg+0x144/0x2ac
+[   26.522546] [<804fe22c>] __sys_sendmsg+0x4c/0x94
+[   26.522748] [<80114a98>] syscall_common+0x34/0x58
+[   26.523214] ---[ end trace 9a18b9fb2030ab29 ]---
 
+This was done with kernel 5.2-rc5 build with OpenWrt (GCC 7.4) for Malta
+24Kc big endian, the kernel did not contain any extra OpenWrt patches,
+only the WARN_ON(1) was added to trigger this call trace.
 
-Le mar. 21 mai 2019 =E0 16:51, Paul Cercueil <paul@crapouillou.net> a=20
-=E9crit :
-> This driver will provide a regmap that can be retrieved very early in
-> the boot process through the API function ingenic_tcu_get_regmap().
->=20
-> Additionally, it will call devm_of_platform_populate() so that all the
-> children devices will be probed.
->=20
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> ---
->=20
-> Notes:
->     v12: New patch
->=20
->  drivers/mfd/Kconfig             |   8 +++
->  drivers/mfd/Makefile            |   1 +
->  drivers/mfd/ingenic-tcu.c       | 113=20
-> ++++++++++++++++++++++++++++++++
->  include/linux/mfd/ingenic-tcu.h |   8 +++
->  4 files changed, 130 insertions(+)
->  create mode 100644 drivers/mfd/ingenic-tcu.c
->=20
-> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-> index 294d9567cc71..a13544474e05 100644
-> --- a/drivers/mfd/Kconfig
-> +++ b/drivers/mfd/Kconfig
-> @@ -494,6 +494,14 @@ config HTC_I2CPLD
->  	  This device provides input and output GPIOs through an I2C
->  	  interface to one or more sub-chips.
->=20
-> +config INGENIC_TCU
-> +	bool "Ingenic Timer/Counter Unit (TCU) support"
-> +	depends on MIPS || COMPILE_TEST
-> +	select REGMAP_MMIO
-> +	help
-> +	  Say yes here to support the Timer/Counter Unit (TCU) IP present
-> +	  in the JZ47xx SoCs from Ingenic.
-> +
->  config MFD_INTEL_QUARK_I2C_GPIO
->  	tristate "Intel Quark MFD I2C GPIO"
->  	depends on PCI
-> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-> index 52b1a90ff515..fb89e131ae98 100644
-> --- a/drivers/mfd/Makefile
-> +++ b/drivers/mfd/Makefile
-> @@ -180,6 +180,7 @@ obj-$(CONFIG_AB8500_CORE)	+=3D ab8500-core.o=20
-> ab8500-sysctrl.o
->  obj-$(CONFIG_MFD_TIMBERDALE)    +=3D timberdale.o
->  obj-$(CONFIG_PMIC_ADP5520)	+=3D adp5520.o
->  obj-$(CONFIG_MFD_KEMPLD)	+=3D kempld-core.o
-> +obj-$(CONFIG_INGENIC_TCU)	+=3D ingenic-tcu.o
->  obj-$(CONFIG_MFD_INTEL_QUARK_I2C_GPIO)	+=3D intel_quark_i2c_gpio.o
->  obj-$(CONFIG_LPC_SCH)		+=3D lpc_sch.o
->  obj-$(CONFIG_LPC_ICH)		+=3D lpc_ich.o
-> diff --git a/drivers/mfd/ingenic-tcu.c b/drivers/mfd/ingenic-tcu.c
-> new file mode 100644
-> index 000000000000..6c1d5e4310c1
-> --- /dev/null
-> +++ b/drivers/mfd/ingenic-tcu.c
-> @@ -0,0 +1,113 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * JZ47xx SoCs TCU MFD driver
-> + * Copyright (C) 2019 Paul Cercueil <paul@crapouillou.net>
-> + */
-> +
-> +#include <linux/mfd/ingenic-tcu.h>
-> +#include <linux/of_address.h>
-> +#include <linux/of_platform.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regmap.h>
-> +
-> +struct ingenic_soc_info {
-> +	unsigned int num_channels;
-> +};
-> +
-> +static struct regmap *tcu_regmap __initdata;
-> +
-> +static const struct regmap_config ingenic_tcu_regmap_config =3D {
-> +	.reg_bits =3D 32,
-> +	.val_bits =3D 32,
-> +	.reg_stride =3D 4,
-> +	.max_register =3D TCU_REG_OST_CNTHBUF,
-> +};
-> +
-> +static const struct ingenic_soc_info jz4740_soc_info =3D {
-> +	.num_channels =3D 8,
-> +};
-> +
-> +static const struct ingenic_soc_info jz4725b_soc_info =3D {
-> +	.num_channels =3D 6,
-> +};
-> +
-> +static const struct of_device_id ingenic_tcu_of_match[] =3D {
-> +	{ .compatible =3D "ingenic,jz4740-tcu", .data =3D &jz4740_soc_info, },
-> +	{ .compatible =3D "ingenic,jz4725b-tcu", .data =3D &jz4725b_soc_info, }=
-,
-> +	{ .compatible =3D "ingenic,jz4770-tcu", .data =3D &jz4740_soc_info, },
-> +	{ }
-> +};
-> +
-> +static struct regmap * __init ingenic_tcu_create_regmap(struct=20
-> device_node *np)
-> +{
-> +	struct resource res;
-> +	void __iomem *base;
-> +	struct regmap *map;
-> +
-> +	if (!of_match_node(ingenic_tcu_of_match, np))
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	base =3D of_io_request_and_map(np, 0, "TCU");
-> +	if (IS_ERR(base))
-> +		return ERR_PTR(PTR_ERR(base));
-> +
-> +	map =3D regmap_init_mmio(NULL, base, &ingenic_tcu_regmap_config);
-> +	if (IS_ERR(map))
-> +		goto err_iounmap;
-> +
-> +	return map;
-> +
-> +err_iounmap:
-> +	iounmap(base);
-> +	of_address_to_resource(np, 0, &res);
-> +	release_mem_region(res.start, resource_size(&res));
-> +
-> +	return map;
-> +}
-> +
-> +static int __init ingenic_tcu_probe(struct platform_device *pdev)
-> +{
-> +	struct regmap *map =3D ingenic_tcu_get_regmap(pdev->dev.of_node);
-> +
-> +	platform_set_drvdata(pdev, map);
-> +
-> +	regmap_attach_dev(&pdev->dev, map, &ingenic_tcu_regmap_config);
-> +
-> +	return devm_of_platform_populate(&pdev->dev);
-> +}
-> +
-> +static struct platform_driver ingenic_tcu_driver =3D {
-> +	.driver =3D {
-> +		.name =3D "ingenic-tcu",
-> +		.of_match_table =3D ingenic_tcu_of_match,
-> +	},
-> +};
-> +
-> +static int __init ingenic_tcu_platform_init(void)
-> +{
-> +	return platform_driver_probe(&ingenic_tcu_driver,
-> +				     ingenic_tcu_probe);
-> +}
-> +subsys_initcall(ingenic_tcu_platform_init);
-> +
-> +struct regmap * __init ingenic_tcu_get_regmap(struct device_node *np)
-> +{
-> +	if (!tcu_regmap)
-> +		tcu_regmap =3D ingenic_tcu_create_regmap(np);
-> +
-> +	return tcu_regmap;
-> +}
-> +
-> +bool ingenic_tcu_pwm_can_use_chn(struct device *dev, unsigned int=20
-> channel)
-> +{
-> +	const struct ingenic_soc_info *soc =3D=20
-> device_get_match_data(dev->parent);
-> +
-> +	/* Enable all TCU channels for PWM use by default except channels=20
-> 0/1 */
-> +	u32 pwm_channels_mask =3D GENMASK(soc->num_channels - 1, 2);
-> +
-> +	device_property_read_u32(dev->parent, "ingenic,pwm-channels-mask",
-> +				 &pwm_channels_mask);
-> +
-> +	return !!(pwm_channels_mask & BIT(channel));
-> +}
-> +EXPORT_SYMBOL_GPL(ingenic_tcu_pwm_can_use_chn);
-> diff --git a/include/linux/mfd/ingenic-tcu.h=20
-> b/include/linux/mfd/ingenic-tcu.h
-> index 2083fa20821d..21df23916cd2 100644
-> --- a/include/linux/mfd/ingenic-tcu.h
-> +++ b/include/linux/mfd/ingenic-tcu.h
-> @@ -6,6 +6,11 @@
->  #define __LINUX_MFD_INGENIC_TCU_H_
->=20
->  #include <linux/bitops.h>
-> +#include <linux/init.h>
-> +
-> +struct device;
-> +struct device_node;
-> +struct regmap;
->=20
->  #define TCU_REG_WDT_TDR		0x00
->  #define TCU_REG_WDT_TCER	0x04
-> @@ -53,4 +58,7 @@
->  #define TCU_REG_TCNTc(c)	(TCU_REG_TCNT0 + ((c) * TCU_CHANNEL_STRIDE))
->  #define TCU_REG_TCSRc(c)	(TCU_REG_TCSR0 + ((c) * TCU_CHANNEL_STRIDE))
->=20
-> +struct regmap * __init ingenic_tcu_get_regmap(struct device_node=20
-> *np);
-> +bool ingenic_tcu_pwm_can_use_chn(struct device *dev, unsigned int=20
-> channel);
-> +
->  #endif /* __LINUX_MFD_INGENIC_TCU_H_ */
-> --
-> 2.21.0.593.g511ec345e18
->=20
+Is it excepted that the call trace stops at such positions? It would be
+really nice if it would go further to better interpret such call traces.
 
-=
+I used this command to call this function:
+	ip link add veth0 type veth peer name veth1
 
+I also saw this with kernel 4.9.
+
+Hauke

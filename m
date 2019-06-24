@@ -2,33 +2,34 @@ Return-Path: <SRS0=+lB5=UX=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+X-Spam-Status: No, score=-3.7 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E324BC4646C
-	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 22:58:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D5F9AC4646B
+	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 22:58:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B367520663
-	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 22:58:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A9FE920663
+	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 22:58:30 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="tvIWw1fq"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="dnWMNGFw"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727503AbfFXW6T (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 24 Jun 2019 18:58:19 -0400
-Received: from outils.crapouillou.net ([89.234.176.41]:33022 "EHLO
+        id S1727735AbfFXW6a (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 24 Jun 2019 18:58:30 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:33254 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727479AbfFXW6S (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 24 Jun 2019 18:58:18 -0400
+        with ESMTP id S1727027AbfFXW63 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 24 Jun 2019 18:58:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1561417096; h=from:from:sender:reply-to:subject:subject:date:date:
+        s=mail; t=1561417106; h=from:from:sender:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BKUOdb8Y8FSPjs1DwkQBMqy8cIVIlNL2F1Wb5t+CtSg=;
-        b=tvIWw1fqGtAIVOvNexNbSmWWnNODQWRPs5DmfM1/fM6dVQQSxZ+JZSQ8qIVMbl3V1U5WRx
-        s6NKavsze3CLfV+YbPwsZ96JbPZC3w/5LWKrrMCiiTrzGEjOexPy8s0MuP22Hut8D8794n
-        0iI6UmjsgYn6y+55eENF07FbphHeyYQ=
+        bh=+rI3XtKq+pny7a5Hom8ysd9GhWX9mZe5NPQkRd3rOHA=;
+        b=dnWMNGFwA14HWZlRDOrezEdLd3fj6IFHk+99gu5dJIAcvQMvJd9Cb/zLC/Q4oLlrS96CJL
+        a1pLUaQK330A+bMh0bXZw2deOW5lW25siOH7vbSrANnwvJRguNQmR5iojyuDcPOBFZvx57
+        Rykm3A4OiVx7flPTn2QRQvdE56r69mU=
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -45,11 +46,11 @@ Cc:     Mathieu Malaterre <malat@debian.org>, od@zcrc.me,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
         linux-clk@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
-        Rob Herring <robh@kernel.org>,
-        Artur Rojek <contact@artur-rojek.eu>
-Subject: [PATCH v13 03/13] dt-bindings: Add doc for the Ingenic TCU drivers
-Date:   Tue, 25 Jun 2019 00:57:49 +0200
-Message-Id: <20190624225759.18299-4-paul@crapouillou.net>
+        Artur Rojek <contact@artur-rojek.eu>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH v13 08/13] clk: jz4740: Add TCU clock
+Date:   Tue, 25 Jun 2019 00:57:54 +0200
+Message-Id: <20190624225759.18299-9-paul@crapouillou.net>
 In-Reply-To: <20190624225759.18299-1-paul@crapouillou.net>
 References: <20190624225759.18299-1-paul@crapouillou.net>
 MIME-Version: 1.0
@@ -59,260 +60,53 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Add documentation about how to properly use the Ingenic TCU
-(Timer/Counter Unit) drivers from devicetree.
+Add the missing TCU clock to the list of clocks supplied by the CGU for
+the JZ4740 SoC.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Reviewed-by: Rob Herring <robh@kernel.org>
 Tested-by: Mathieu Malaterre <malat@debian.org>
 Tested-by: Artur Rojek <contact@artur-rojek.eu>
+Acked-by: Stephen Boyd <sboyd@kernel.org>
+Acked-by: Rob Herring <robh@kernel.org>
 ---
 
 Notes:
-    v4: New patch in this series. Corresponds to V2 patches 3-4-5 with
-     added content.
+    v5: New patch
     
-    v5:
-     - Edited PWM/watchdog DT bindings documentation to point to the new
-       document.
-     - Moved main document to
-       Documentation/devicetree/bindings/timer/ingenic,tcu.txt
-     - Updated documentation to reflect the new devicetree bindings.
-    
-    v6:
-     - Removed PWM/watchdog documentation files as asked by upstream
-     - Removed doc about properties that should be implicit
-     - Removed doc about ingenic,timer-channel /
-       ingenic,clocksource-channel as they are gone
-     - Fix WDT clock name in the binding doc
-     - Fix lengths of register areas in watchdog/pwm nodes
-    
-    v7: No change
-    
-    v8:
-     - Fix address of the PWM node
-     - Added doc about system timer and clocksource children nodes
-    
-    v9:
-     - Remove doc about system timer and clocksource children
-       nodes...
-     - Add doc about ingenic,pwm-channels-mask property
-    
-    v10: No change
-    
-    v11: Fix info about default value of ingenic,pwm-channels-mask
-    
-    v12: Drop sub-nodes for now; they will be introduced in a follow-up
-         patchset.
-    
-    v13:
-     - Revert back to v11. Turns out it was okay.
-     - Remove 'interrupt-parent' of the list of required properties.
+    v6-v13: No change
 
- .../bindings/pwm/ingenic,jz47xx-pwm.txt       |  25 ----
- .../devicetree/bindings/timer/ingenic,tcu.txt | 136 ++++++++++++++++++
- .../bindings/watchdog/ingenic,jz4740-wdt.txt  |  17 ---
- 3 files changed, 136 insertions(+), 42 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/pwm/ingenic,jz47xx-pwm.txt
- create mode 100644 Documentation/devicetree/bindings/timer/ingenic,tcu.txt
- delete mode 100644 Documentation/devicetree/bindings/watchdog/ingenic,jz4740-wdt.txt
+ drivers/clk/ingenic/jz4740-cgu.c       | 6 ++++++
+ include/dt-bindings/clock/jz4740-cgu.h | 1 +
+ 2 files changed, 7 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/pwm/ingenic,jz47xx-pwm.txt b/Documentation/devicetree/bindings/pwm/ingenic,jz47xx-pwm.txt
-deleted file mode 100644
-index 7d9d3f90641b..000000000000
---- a/Documentation/devicetree/bindings/pwm/ingenic,jz47xx-pwm.txt
-+++ /dev/null
-@@ -1,25 +0,0 @@
--Ingenic JZ47xx PWM Controller
--=============================
--
--Required properties:
--- compatible: One of:
--  * "ingenic,jz4740-pwm"
--  * "ingenic,jz4770-pwm"
--  * "ingenic,jz4780-pwm"
--- #pwm-cells: Should be 3. See pwm.txt in this directory for a description
--  of the cells format.
--- clocks : phandle to the external clock.
--- clock-names : Should be "ext".
--
--
--Example:
--
--	pwm: pwm@10002000 {
--		compatible = "ingenic,jz4740-pwm";
--		reg = <0x10002000 0x1000>;
--
--		#pwm-cells = <3>;
--
--		clocks = <&ext>;
--		clock-names = "ext";
--	};
-diff --git a/Documentation/devicetree/bindings/timer/ingenic,tcu.txt b/Documentation/devicetree/bindings/timer/ingenic,tcu.txt
-new file mode 100644
-index 000000000000..87962da64561
---- /dev/null
-+++ b/Documentation/devicetree/bindings/timer/ingenic,tcu.txt
-@@ -0,0 +1,136 @@
-+Ingenic JZ47xx SoCs Timer/Counter Unit devicetree bindings
-+==========================================================
+diff --git a/drivers/clk/ingenic/jz4740-cgu.c b/drivers/clk/ingenic/jz4740-cgu.c
+index c77f4e1506dc..176d911b5839 100644
+--- a/drivers/clk/ingenic/jz4740-cgu.c
++++ b/drivers/clk/ingenic/jz4740-cgu.c
+@@ -203,6 +203,12 @@ static const struct ingenic_cgu_clk_info jz4740_cgu_clocks[] = {
+ 		.parents = { JZ4740_CLK_EXT, -1, -1, -1 },
+ 		.gate = { CGU_REG_CLKGR, 5 },
+ 	},
 +
-+For a description of the TCU hardware and drivers, have a look at
-+Documentation/mips/ingenic-tcu.txt.
-+
-+Required properties:
-+
-+- compatible: Must be one of:
-+  * ingenic,jz4740-tcu
-+  * ingenic,jz4725b-tcu
-+  * ingenic,jz4770-tcu
-+- reg: Should be the offset/length value corresponding to the TCU registers
-+- clocks: List of phandle & clock specifiers for clocks external to the TCU.
-+  The "pclk", "rtc" and "ext" clocks should be provided. The "tcu" clock
-+  should be provided if the SoC has it.
-+- clock-names: List of name strings for the external clocks.
-+- #clock-cells: Should be <1>;
-+  Clock consumers specify this argument to identify a clock. The valid values
-+  may be found in <dt-bindings/clock/ingenic,tcu.h>.
-+- interrupt-controller : Identifies the node as an interrupt controller
-+- #interrupt-cells : Specifies the number of cells needed to encode an
-+  interrupt source. The value should be 1.
-+- interrupts : Specifies the interrupt the controller is connected to.
-+
-+Optional properties:
-+
-+- ingenic,pwm-channels-mask: Bitmask of TCU channels reserved for PWM use.
-+  Default value is 0xfc.
-+
-+
-+Children nodes
-+==========================================================
-+
-+
-+PWM node:
-+---------
-+
-+Required properties:
-+
-+- compatible: Must be one of:
-+  * ingenic,jz4740-pwm
-+  * ingenic,jz4725b-pwm
-+- #pwm-cells: Should be 3. See ../pwm/pwm.txt for a description of the cell
-+  format.
-+- clocks: List of phandle & clock specifiers for the TCU clocks.
-+- clock-names: List of name strings for the TCU clocks.
-+
-+
-+Watchdog node:
-+--------------
-+
-+Required properties:
-+
-+- compatible: Must be "ingenic,jz4740-watchdog"
-+- clocks: phandle to the WDT clock
-+- clock-names: should be "wdt"
-+
-+
-+OS Timer node:
-+---------
-+
-+Required properties:
-+
-+- compatible: Must be one of:
-+  * ingenic,jz4725b-ost
-+  * ingenic,jz4770-ost
-+- clocks: phandle to the OST clock
-+- clock-names: should be "ost"
-+- interrupts : Specifies the interrupt the OST is connected to.
-+
-+
-+Example
-+==========================================================
-+
-+#include <dt-bindings/clock/jz4770-cgu.h>
-+#include <dt-bindings/clock/ingenic,tcu.h>
-+
-+/ {
-+	tcu: timer@10002000 {
-+		compatible = "ingenic,jz4770-tcu";
-+		reg = <0x10002000 0x1000>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges = <0x0 0x10002000 0x1000>;
-+
-+		#clock-cells = <1>;
-+
-+		clocks = <&cgu JZ4770_CLK_RTC
-+			  &cgu JZ4770_CLK_EXT
-+			  &cgu JZ4770_CLK_PCLK>;
-+		clock-names = "rtc", "ext", "pclk";
-+
-+		interrupt-controller;
-+		#interrupt-cells = <1>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <27 26 25>;
-+
-+		watchdog: watchdog@0 {
-+			compatible = "ingenic,jz4740-watchdog";
-+			reg = <0x0 0xc>;
-+
-+			clocks = <&tcu TCU_CLK_WDT>;
-+			clock-names = "wdt";
-+		};
-+
-+		pwm: pwm@40 {
-+			compatible = "ingenic,jz4740-pwm";
-+			reg = <0x40 0x80>;
-+
-+			#pwm-cells = <3>;
-+
-+			clocks = <&tcu TCU_CLK_TIMER0
-+				  &tcu TCU_CLK_TIMER1
-+				  &tcu TCU_CLK_TIMER2
-+				  &tcu TCU_CLK_TIMER3
-+				  &tcu TCU_CLK_TIMER4
-+				  &tcu TCU_CLK_TIMER5
-+				  &tcu TCU_CLK_TIMER6
-+				  &tcu TCU_CLK_TIMER7>;
-+			clock-names = "timer0", "timer1", "timer2", "timer3",
-+				      "timer4", "timer5", "timer6", "timer7";
-+		};
-+
-+		ost: timer@e0 {
-+			compatible = "ingenic,jz4770-ost";
-+			reg = <0xe0 0x20>;
-+
-+			clocks = <&tcu TCU_CLK_OST>;
-+			clock-names = "ost";
-+
-+			interrupts = <15>;
-+		};
-+	};
-+};
-diff --git a/Documentation/devicetree/bindings/watchdog/ingenic,jz4740-wdt.txt b/Documentation/devicetree/bindings/watchdog/ingenic,jz4740-wdt.txt
-deleted file mode 100644
-index ce1cb72d5345..000000000000
---- a/Documentation/devicetree/bindings/watchdog/ingenic,jz4740-wdt.txt
-+++ /dev/null
-@@ -1,17 +0,0 @@
--Ingenic Watchdog Timer (WDT) Controller for JZ4740 & JZ4780
--
--Required properties:
--compatible: "ingenic,jz4740-watchdog" or "ingenic,jz4780-watchdog"
--reg: Register address and length for watchdog registers
--clocks: phandle to the RTC clock
--clock-names: should be "rtc"
--
--Example:
--
--watchdog: jz4740-watchdog@10002000 {
--	compatible = "ingenic,jz4740-watchdog";
--	reg = <0x10002000 0x10>;
--
--	clocks = <&cgu JZ4740_CLK_RTC>;
--	clock-names = "rtc";
--};
++	[JZ4740_CLK_TCU] = {
++		"tcu", CGU_CLK_GATE,
++		.parents = { JZ4740_CLK_EXT, -1, -1, -1 },
++		.gate = { CGU_REG_CLKGR, 1 },
++	},
+ };
+ 
+ static void __init jz4740_cgu_init(struct device_node *np)
+diff --git a/include/dt-bindings/clock/jz4740-cgu.h b/include/dt-bindings/clock/jz4740-cgu.h
+index 6ed83f926ae7..e82d77028581 100644
+--- a/include/dt-bindings/clock/jz4740-cgu.h
++++ b/include/dt-bindings/clock/jz4740-cgu.h
+@@ -34,5 +34,6 @@
+ #define JZ4740_CLK_ADC		19
+ #define JZ4740_CLK_I2C		20
+ #define JZ4740_CLK_AIC		21
++#define JZ4740_CLK_TCU		22
+ 
+ #endif /* __DT_BINDINGS_CLOCK_JZ4740_CGU_H__ */
 -- 
 2.21.0.593.g511ec345e18
 

@@ -2,83 +2,199 @@ Return-Path: <SRS0=+lB5=UX=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_MUTT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DD9BC4646C
-	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 22:07:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CCDF1C4646C
+	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 22:58:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 2A9E7204FD
-	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 22:07:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8F02D20663
+	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 22:58:16 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="ePeR47dq"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726331AbfFXWHc (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 24 Jun 2019 18:07:32 -0400
-Received: from sauhun.de ([88.99.104.3]:38274 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725268AbfFXWHb (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 24 Jun 2019 18:07:31 -0400
-Received: from localhost (p54B33083.dip0.t-ipconnect.de [84.179.48.131])
-        by pokefinder.org (Postfix) with ESMTPSA id 4296E2C0398;
-        Tue, 25 Jun 2019 00:07:30 +0200 (CEST)
-Date:   Tue, 25 Jun 2019 00:07:29 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Paul Burton <paul.burton@mips.com>
-Cc:     Stefan Roese <sr@denx.de>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        Harvey Hunt <harveyhuntnexus@gmail.com>,
-        John Crispin <john@phrozen.org>
-Subject: Re: [PATCH 5/8 v2] MIPS: ralink: mt7628a.dtsi: Add I2C controller DT
- node
-Message-ID: <20190624220729.GA8885@kunai>
-References: <20190527091323.4582-1-sr@denx.de>
- <20190527091323.4582-5-sr@denx.de>
- <20190528204119.g7kvutxcprhwo56d@pburton-laptop>
- <96f6564a-e45b-a082-4682-c81dde8d22d5@denx.de>
- <20190624212431.lopvs57iondijlyh@pburton-laptop>
+        id S1727457AbfFXW6Q (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 24 Jun 2019 18:58:16 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:32970 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727399AbfFXW6P (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 24 Jun 2019 18:58:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1561417093; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=D2CMzr0HnIYJoEeILgiCD6Jlz7ZctXtV1AhQey+VLLE=;
+        b=ePeR47dqb13tKsCcdq+nJs9juqkJOVH33QcSfePFOYy3xnbeOo/zu6OZo3I7saycJUHkgF
+        hhZKpq3aWDeAKh/fZHg0hAweIG+5nLGF3Q9Wnclq1kUapIpTyTP2KBXqMBSi7rwL8jz4YD
+        UV+D3hC1RaaZE84Il6DZzNNUEArbiDc=
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Lee Jones <lee.jones@linaro.org>
+Cc:     Mathieu Malaterre <malat@debian.org>, od@zcrc.me,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-clk@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
+        Artur Rojek <contact@artur-rojek.eu>
+Subject: [PATCH v13 02/13] doc: Add doc for the Ingenic TCU hardware
+Date:   Tue, 25 Jun 2019 00:57:48 +0200
+Message-Id: <20190624225759.18299-3-paul@crapouillou.net>
+In-Reply-To: <20190624225759.18299-1-paul@crapouillou.net>
+References: <20190624225759.18299-1-paul@crapouillou.net>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="gBBFr7Ir9EOA20Yy"
-Content-Disposition: inline
-In-Reply-To: <20190624212431.lopvs57iondijlyh@pburton-laptop>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
+Add a documentation file about the Timer/Counter Unit (TCU) present in
+the Ingenic JZ47xx SoCs.
 
---gBBFr7Ir9EOA20Yy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The Timer/Counter Unit (TCU) in Ingenic JZ47xx SoCs is a multi-function
+hardware block. It features up to to eight channels, that can be used as
+counters, timers, or PWM.
 
+- JZ4725B, JZ4750, JZ4755 only have six TCU channels. The other SoCs all
+  have eight channels.
 
-> OK, I don't see the driver queued up yet so in the meantime I've applied
-> patches 1-4 & 6-7. If you could ping me or resend this one once the I2C
-> binding is in-tree, that would be wonderful.
+- JZ4725B introduced a separate channel, called Operating System Timer
+  (OST). It is a 32-bit programmable timer. On JZ4770 and above, it is
+  64-bit.
 
-I was waiting for Rob's ack for the driver, but with the merge window
-coming, I will apply it tomorrow. The bindings are simple enough.
+- Each one of the TCU channels has its own clock, which can be reparented
+  to three different clocks (pclk, ext, rtc), gated, and reclocked, through
+  their TCSR register.
+  * The watchdog and OST hardware blocks also feature a TCSR register with
+    the same format in their register space.
+  * The TCU registers used to gate/ungate can also gate/ungate the watchdog
+    and OST clocks.
 
+- Each TCU channel works in one of two modes:
+  * mode TCU1: channels cannot work in sleep mode, but are easier to
+    operate.
+  * mode TCU2: channels can work in sleep mode, but the operation is a bit
+    more complicated than with TCU1 channels.
 
---gBBFr7Ir9EOA20Yy
-Content-Type: application/pgp-signature; name="signature.asc"
+- The mode of each TCU channel depends on the SoC used:
+  * On the oldest SoCs (up to JZ4740), all of the eight channels operate in
+    TCU1 mode.
+  * On JZ4725B, channel 5 operates as TCU2, the others operate as TCU1.
+  * On newest SoCs (JZ4750 and above), channels 1-2 operate as TCU2, the
+    others operate as TCU1.
 
------BEGIN PGP SIGNATURE-----
+- Each channel can generate an interrupt. Some channels share an interrupt
+  line, some don't, and this changes between SoC versions:
+  * on older SoCs (JZ4740 and below), channel 0 and channel 1 have their
+    own interrupt line; channels 2-7 share the last interrupt line.
+  * On JZ4725B, channel 0 has its own interrupt; channels 1-5 share one
+    interrupt line; the OST uses the last interrupt line.
+  * on newer SoCs (JZ4750 and above), channel 5 has its own interrupt;
+    channels 0-4 and (if eight channels) 6-7 all share one interrupt line;
+    the OST uses the last interrupt line.
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl0RSZwACgkQFA3kzBSg
-KbbarA//csuPWq2D2CiyBGsoZLYkieuHP0ymfAs8ZVPfgAyLo7rYgEIkGsgxhxXk
-hhWyHaKB7o+M8e/tRLBhjoyO7PZHR/pgzr4BUQz7S4dKYGmLFFgGPufFFywH6Xgl
-Qn8PBk8x0ejS5GR6tTT6+qnMEIkMOon3J8yZIXqH2ue98AZLAV4UA5D5WLQqdpoi
-C0bYaqu8nu8DObNvqt4GD7pN4GKU8kA8hczWfPvpDfjssBY8U3E/ISGmaQnYRLnh
-6m8q1coyaR5JLRIQhBgvuZTfPX0KStOtVBJzn14fesZPUXwWsbca6PFKa2NCaPbw
-X04N+ZsUyPNOg+Y9y3xLft25aqH33DIIFRvKhKN93B+fo/rLJ/2inl4Iko9Zbk2M
-nh3a5zotDAy9zVei+KtO3jlzLbQGvfyjfgVQPJvecl0vxzV4B69UaOlI86Sgjzp3
-CfnxYtR1KvvlMzIV+Jxj7fDaHokS+252AUqcAQA197wX9IM3XC8COO+ZlVQrb7WS
-jfzNtuhHthivtOKAvjAu4CZquNXh+tL0liN4Nls1vCVcMDgH5HRLkwrEhIKZ4Nkk
-c7vZeh/+J3/7R27vTFC0HDzzIzen73fIfdH4sRutIoNq/kzhfGxPcfRSW3sr3vnv
-VPqM4xXYK1aqV0O6aq2WgwRbll/MXYP0uXaC0nJnvblGYcp2/z4=
-=7JOw
------END PGP SIGNATURE-----
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Tested-by: Mathieu Malaterre <malat@debian.org>
+Tested-by: Artur Rojek <contact@artur-rojek.eu>
+---
 
---gBBFr7Ir9EOA20Yy--
+Notes:
+    v4: New patch in this series
+    
+    v5: Added information about number of channels, and improved
+        documentation about channel modes
+    
+    v6: Add info about OST (can be 32-bit on older SoCs)
+    
+    v7-v11: No change
+    
+    v12: Add details about new implementation
+    
+    v13: No change
+
+ Documentation/mips/ingenic-tcu.txt | 63 ++++++++++++++++++++++++++++++
+ 1 file changed, 63 insertions(+)
+ create mode 100644 Documentation/mips/ingenic-tcu.txt
+
+diff --git a/Documentation/mips/ingenic-tcu.txt b/Documentation/mips/ingenic-tcu.txt
+new file mode 100644
+index 000000000000..1a753805779c
+--- /dev/null
++++ b/Documentation/mips/ingenic-tcu.txt
+@@ -0,0 +1,63 @@
++Ingenic JZ47xx SoCs Timer/Counter Unit hardware
++-----------------------------------------------
++
++The Timer/Counter Unit (TCU) in Ingenic JZ47xx SoCs is a multi-function
++hardware block. It features up to to eight channels, that can be used as
++counters, timers, or PWM.
++
++- JZ4725B, JZ4750, JZ4755 only have six TCU channels. The other SoCs all
++  have eight channels.
++
++- JZ4725B introduced a separate channel, called Operating System Timer
++  (OST). It is a 32-bit programmable timer. On JZ4760B and above, it is
++  64-bit.
++
++- Each one of the TCU channels has its own clock, which can be reparented
++  to three different clocks (pclk, ext, rtc), gated, and reclocked, through
++  their TCSR register.
++  * The watchdog and OST hardware blocks also feature a TCSR register with
++    the same format in their register space.
++  * The TCU registers used to gate/ungate can also gate/ungate the watchdog
++    and OST clocks.
++
++- Each TCU channel works in one of two modes:
++  * mode TCU1: channels cannot work in sleep mode, but are easier to
++    operate.
++  * mode TCU2: channels can work in sleep mode, but the operation is a bit
++    more complicated than with TCU1 channels.
++
++- The mode of each TCU channel depends on the SoC used:
++  * On the oldest SoCs (up to JZ4740), all of the eight channels operate in
++    TCU1 mode.
++  * On JZ4725B, channel 5 operates as TCU2, the others operate as TCU1.
++  * On newest SoCs (JZ4750 and above), channels 1-2 operate as TCU2, the
++    others operate as TCU1.
++
++- Each channel can generate an interrupt. Some channels share an interrupt
++  line, some don't, and this changes between SoC versions:
++  * on older SoCs (JZ4740 and below), channel 0 and channel 1 have their
++    own interrupt line; channels 2-7 share the last interrupt line.
++  * On JZ4725B, channel 0 has its own interrupt; channels 1-5 share one
++    interrupt line; the OST uses the last interrupt line.
++  * on newer SoCs (JZ4750 and above), channel 5 has its own interrupt;
++    channels 0-4 and (if eight channels) 6-7 all share one interrupt line;
++    the OST uses the last interrupt line.
++
++Implementation
++--------------
++
++The functionalities of the TCU hardware are spread across multiple drivers:
++- boilerplate:      drivers/mfd/ingenic-tcu.c
++- clocks:           drivers/clk/ingenic/tcu.c
++- interrupts:       drivers/irqchip/irq-ingenic-tcu.c
++- timers:           drivers/clocksource/ingenic-timer.c
++- PWM:              drivers/pwm/pwm-jz4740.c
++- watchdog:         drivers/watchdog/jz4740_wdt.c
++- OST:              drivers/clocksource/ingenic-ost.c
++
++Because various functionalities of the TCU that belong to different drivers
++and frameworks can be controlled from the same registers, all of these
++drivers access their registers through the same regmap.
++
++For more information regarding the devicetree bindings of the TCU drivers,
++have a look at Documentation/devicetree/bindings/mfd/ingenic,tcu.txt.
+-- 
+2.21.0.593.g511ec345e18
+

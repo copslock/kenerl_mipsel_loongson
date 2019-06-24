@@ -2,97 +2,102 @@ Return-Path: <SRS0=+lB5=UX=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29942C43613
-	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 10:10:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA051C43613
+	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 12:51:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id F05A52063F
-	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 10:10:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1561371019;
-	bh=InnUAcskl1+Nq8HujBZuuO9oVUwRKPIL3VUFQVlFKk8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=YE6zzdQqH420dRUvQo1QA/lI5I3+tAaoLE6LBMQtOJD2Ajcbo+WK7o0yr4ATgFOIa
-	 G8xnaIb3gQGfgwWkfdvZiQI+6V6B9XlAmMAlPKydGh+PN4BIii1BhPA1+sdjIiDjVp
-	 EZs1XozVWNEDfsFeCYK+HX3Hjhv8XXSB8aXsiDt4=
+	by mail.kernel.org (Postfix) with ESMTP id 86756212F5
+	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 12:51:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730194AbfFXKKN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 24 Jun 2019 06:10:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41706 "EHLO mail.kernel.org"
+        id S1728395AbfFXMvC (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 24 Jun 2019 08:51:02 -0400
+Received: from foss.arm.com ([217.140.110.172]:49274 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730434AbfFXKIU (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 24 Jun 2019 06:08:20 -0400
-Received: from localhost (f4.8f.5177.ip4.static.sl-reverse.com [119.81.143.244])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CDA0C2089F;
-        Mon, 24 Jun 2019 10:08:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561370900;
-        bh=InnUAcskl1+Nq8HujBZuuO9oVUwRKPIL3VUFQVlFKk8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v3U5ysA1VK5fDL+uHbRMIGDo+RYoHST4c8srAPY2HrrGBpJOKAOElM6n6gUzdC/8J
-         qu81Z4Gcu79av5HryD+gAjkGK3/z36IGFGrMNRe0ML2EIb9NBeQdy/RXv10dNMAYsU
-         F3/nOEDBOf+eNVugWbnINPzG1gpg3LNkMYV529Oo=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
+        id S1727965AbfFXMvC (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 24 Jun 2019 08:51:02 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F20E7344;
+        Mon, 24 Jun 2019 05:51:00 -0700 (PDT)
+Received: from donnerap.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7EDFB3F718;
+        Mon, 24 Jun 2019 05:50:58 -0700 (PDT)
+Date:   Mon, 24 Jun 2019 13:50:55 +0100
+From:   Andre Przywara <andre.przywara@arm.com>
+To:     Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc:     <linux-arch@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mips@vger.kernel.org>,
+        <linux-kselftest@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.1 043/121] MIPS: mark ginvt() as __always_inline
-Date:   Mon, 24 Jun 2019 17:56:15 +0800
-Message-Id: <20190624092322.981619939@linuxfoundation.org>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190624092320.652599624@linuxfoundation.org>
-References: <20190624092320.652599624@linuxfoundation.org>
-User-Agent: quilt/0.66
+        Paul Burton <paul.burton@mips.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mark Salyzyn <salyzyn@android.com>,
+        Peter Collingbourne <pcc@google.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Dmitry Safonov <0x7f454c46@gmail.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Huw Davies <huw@codeweavers.com>,
+        Shijith Thotton <sthotton@marvell.com>
+Subject: Re: [PATCH v7 00/25] Unify vDSOs across more architectures
+Message-ID: <20190624135055.7020fc2a@donnerap.cambridge.arm.com>
+In-Reply-To: <20190621095252.32307-1-vincenzo.frascino@arm.com>
+References: <20190621095252.32307-1-vincenzo.frascino@arm.com>
+Organization: ARM
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; aarch64-unknown-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-[ Upstream commit 6074c33c6b2eabc70867ef76d57ca256e9ea9da7 ]
+On Fri, 21 Jun 2019 10:52:27 +0100
+Vincenzo Frascino <vincenzo.frascino@arm.com> wrote:
 
-To meet the 'i' (immediate) constraint for the asm operands,
-this function must be always inlined.
+Hi,
 
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: linux-mips@vger.kernel.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/mips/include/asm/ginvt.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> vDSO (virtual dynamic shared object) is a mechanism that the Linux
+> kernel provides as an alternative to system calls to reduce where
+> possible the costs in terms of cycles.
+[ ... ]
 
-diff --git a/arch/mips/include/asm/ginvt.h b/arch/mips/include/asm/ginvt.h
-index 49c6dbe37338..6eb7c2b94dc7 100644
---- a/arch/mips/include/asm/ginvt.h
-+++ b/arch/mips/include/asm/ginvt.h
-@@ -19,7 +19,7 @@ _ASM_MACRO_1R1I(ginvt, rs, type,
- # define _ASM_SET_GINV
- #endif
- 
--static inline void ginvt(unsigned long addr, enum ginvt_type type)
-+static __always_inline void ginvt(unsigned long addr, enum ginvt_type type)
- {
- 	asm volatile(
- 		".set	push\n"
--- 
-2.20.1
+Some numbers for the ARM(32) part:
 
+I booted my trusted old Calxeda Midway server (Cortex A-15 cores) and ran
+the vdsotest benchmark on it. The results are:
+(vdso: times, in nsec/call; n/t: "not tested" (=not implemented))
+call				5.2-rc3	5.2-rc3-vdso
+clock-gettime-monotonic:        147     142
+clock-getres-monotonic:         n/t     34
+clock-gettime-monotonic-coarse: 90      96
+clock-getres-monotonic-coarse:  n/t     36
+clock-gettime-monotonic-raw:    431     142
+clock-getres-monotonic-raw:     n/t     35
+clock-gettime-tai:              598     150
+clock-getres-tai:               n/t     34
+clock-gettime-boottime:         592     142
+clock-getres-boottime:          n/t     34
+clock-gettime-realtime:         149     142
+clock-getres-realtime:          n/t     34
+clock-gettime-realtime-coarse:  86      96
+clock-getres-realtime-coarse:   n/t     36
+getcpu:                         n/t     n/t
+gettimeofday:                   133     110
 
+So there are some minor improvements, two minor regressions, some
+significant improvements (factor 3-4), and some dramatic improvements
+(where we actually gained VDSO support).
+Overall a pretty impressive outcome for an "Odd fixes" architecture,
+especially as it should reduce the future maintenance burden.
 
+Cheers,
+Andre.

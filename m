@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1562CC48BE9
-	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 10:01:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ADEB4C43613
+	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 10:04:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D5717208E3
-	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 10:01:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 877C2213F2
+	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 10:04:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1561370499;
-	bh=Zg15pztu//YRoIkB29z76JytlOishIF08DkqrF/PHKY=;
+	s=default; t=1561370663;
+	bh=/LuzipxlxcA01dUG2PDDkaVnU54GDF4QMOE/ETs3E9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=Vhlend7WymbSwoeMgDVWiUBpYR+iP/tuOqtLflF+hhG7jsyX4RRV2Q51vDI4z+M17
-	 kx9ViFDIWOP5GJ26kmw7Tq42YCXs2grgtBfN7t7YyK/ywB/1ZfB+JgjHcoFxl5YLRK
-	 3BlidG8ZqnV8nvUkwvWO/9sywCKs3Jpi8cZlK9rs=
+	b=ndVR+6x1vmAgVkIU8D4UnDIjKWVgR2MeJSGwF28YtmNqiRA8W6O/fLtFB57q2MLUu
+	 iMaogTUqPOPL5kNcZzdR8TtbpalQLaluo9kwkpXdTOZdVF5Z4GQ3P8rtM2O+6UNn5P
+	 D34agKvAeGKiiDp1wLKDhXhmCK21+hdqWv2kUMyU=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728318AbfFXJ6W (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 24 Jun 2019 05:58:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56804 "EHLO mail.kernel.org"
+        id S1729679AbfFXKEW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 24 Jun 2019 06:04:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35820 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728958AbfFXJ6T (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 24 Jun 2019 05:58:19 -0400
+        id S1729666AbfFXKEV (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 24 Jun 2019 06:04:21 -0400
 Received: from localhost (f4.8f.5177.ip4.static.sl-reverse.com [119.81.143.244])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 70643214C6;
-        Mon, 24 Jun 2019 09:58:18 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 20C92205ED;
+        Mon, 24 Jun 2019 10:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561370298;
-        bh=Zg15pztu//YRoIkB29z76JytlOishIF08DkqrF/PHKY=;
+        s=default; t=1561370660;
+        bh=/LuzipxlxcA01dUG2PDDkaVnU54GDF4QMOE/ETs3E9o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K/8KxwFLH8aDnXKbuaUaK7wx1t3CZWaEmkdiwz73M+ZBzBS/GBMWMGObFvPSmSXAA
-         yo6k4oCLm7oFXkmGIdFWNpn3TVAg8er8fSjoV58wljh9cEgs6AvJGufq8AhYLO7cjR
-         Ep7WnvvUglE8JEZcBdj3uGVkrk5jWM/Kd60VTsA0=
+        b=ZLAT9J7Oryy947lYGzwpSGibothfgkSPZpvNDXp1UJt2iEUJeivwTWJHhmMO9m9k3
+         Yq8cGGUwPevVALyCXWBEN8LMxr22lB2whl491FyMQlyHav62Is7s8dS/KhwqGsJOlo
+         5INlj5pBuLhi69nz4rWTHgmH+K9j3e+gPPxD2r0s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Paul Burton <paul.burton@mips.com>, ralf@linux-mips.org,
         jhogan@kernel.org, linux-mips@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 21/51] MIPS: uprobes: remove set but not used variable epc
-Date:   Mon, 24 Jun 2019 17:56:39 +0800
-Message-Id: <20190624092308.703469152@linuxfoundation.org>
+Subject: [PATCH 4.19 43/90] MIPS: uprobes: remove set but not used variable epc
+Date:   Mon, 24 Jun 2019 17:56:33 +0800
+Message-Id: <20190624092317.105339061@linuxfoundation.org>
 X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190624092305.919204959@linuxfoundation.org>
-References: <20190624092305.919204959@linuxfoundation.org>
+In-Reply-To: <20190624092313.788773607@linuxfoundation.org>
+References: <20190624092313.788773607@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -82,7 +82,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 deletions(-)
 
 diff --git a/arch/mips/kernel/uprobes.c b/arch/mips/kernel/uprobes.c
-index f7a0645ccb82..6305e91ffc44 100644
+index 4aaff3b3175c..6dbe4eab0a0e 100644
 --- a/arch/mips/kernel/uprobes.c
 +++ b/arch/mips/kernel/uprobes.c
 @@ -112,9 +112,6 @@ int arch_uprobe_pre_xol(struct arch_uprobe *aup, struct pt_regs *regs)

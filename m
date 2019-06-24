@@ -7,44 +7,44 @@ X-Spam-Status: No, score=-8.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DA059C43613
-	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 05:47:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF9B6C43613
+	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 05:47:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B0250205F4
-	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 05:47:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 85EEE20663
+	for <linux-mips@archiver.kernel.org>; Mon, 24 Jun 2019 05:47:54 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Geyx+EEj"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Ci5+0iR9"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726688AbfFXFrm (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 24 Jun 2019 01:47:42 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:40386 "EHLO
+        id S1726853AbfFXFru (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 24 Jun 2019 01:47:50 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:40950 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725782AbfFXFrm (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 24 Jun 2019 01:47:42 -0400
+        with ESMTP id S1725782AbfFXFrt (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 24 Jun 2019 01:47:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
         MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
         :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
         :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=4Cn/I+p4O/dbVe7rVqc9HfZYCz1ua5PfF/f6FCO/YsM=; b=Geyx+EEj8T8Rvcz2Io7FLL5Jdm
-        Ogm9Jhc851oKHZT0kV/vC3eLhZ09tHwq3dWKNbe0D8Sedurnva0SuZEGd0WRmARR+Nz5ScmspEMUM
-        l/5opovU3wZ8IF6uIJRY88EYzfwdP41aU8I3PKX/0WQyXV7FP82MN4MGx9m1ox0VUC2ENEwpM7CpJ
-        yacLxsXR5hNZkK6+TZdMpUseUCLyLCLw78SG+EHnpY3+FU1PSQO2QdDxeXsd+614Mj6kk70bm+UEh
-        atxuArY7t6MJ9EFx21aV7qXqVlhdBelGPqoYJ3aa36BM6+kmColhuNQUyZGxO337kMY690JDvCLKG
-        4X+91xqw==;
+        bh=NY427GqDdRNkyAv+tBBYH0SQrZdA67Hr19cX1FOH20g=; b=Ci5+0iR95pPJ/eO1F6O/vi9HDM
+        f84+QqXhJjdMrT1reoaPWmxnUiCC+Rt5N7gU46UxGvWSqHUrJyqJmyhk2pcVHraJ1IPTQsPZzag+G
+        AsPn/VJTaG3ey5J7018Ajjq+ZGp5mtdSgUkXMqzarKJeiQT7G8MEMRHtGg8suQs2cGhxnKOmwUFKg
+        tMA7ylxwSL0MkmiNKJILb4aVGFsvm1BcL3m79IuCOQ0nAZMZuaJuv1lXYzdj3mfcPXPZaistT/XLw
+        K3Eod9JXeBG176HvxtNFCFYd2VrACWlSAs8h1D/vrO8jtCtUaK6igVoChVDz6afG0PzbXssb5apvw
+        QXSjzAPg==;
 Received: from 213-225-6-159.nat.highway.a1.net ([213.225.6.159] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hfHpJ-0000Qb-9c; Mon, 24 Jun 2019 05:47:37 +0000
+        id 1hfHpQ-0000XA-54; Mon, 24 Jun 2019 05:47:44 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Oleg Nesterov <oleg@redhat.com>, Arnd Bergmann <arnd@arndb.de>
 Cc:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-sh@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 2/5] powerpc: don't use asm-generic/ptrace.h
-Date:   Mon, 24 Jun 2019 07:47:25 +0200
-Message-Id: <20190624054728.30966-3-hch@lst.de>
+        linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 4/5] x86: don't use asm-generic/ptrace.h
+Date:   Mon, 24 Jun 2019 07:47:27 +0200
+Message-Id: <20190624054728.30966-5-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190624054728.30966-1-hch@lst.de>
 References: <20190624054728.30966-1-hch@lst.de>
@@ -62,55 +62,61 @@ makes them harder to read, so implement the helpers directly.
 Note that only the helpers actually used are implemented now.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
 ---
- arch/powerpc/include/asm/ptrace.h | 29 ++++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/ptrace.h | 30 +++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
-index faa5a338ac5a..feee1b21bbd5 100644
---- a/arch/powerpc/include/asm/ptrace.h
-+++ b/arch/powerpc/include/asm/ptrace.h
-@@ -111,18 +111,33 @@ struct pt_regs
+diff --git a/arch/x86/include/asm/ptrace.h b/arch/x86/include/asm/ptrace.h
+index 8a7fc0cca2d1..e22816e865ca 100644
+--- a/arch/x86/include/asm/ptrace.h
++++ b/arch/x86/include/asm/ptrace.h
+@@ -98,7 +98,6 @@ struct cpuinfo_x86;
+ struct task_struct;
  
- #ifndef __ASSEMBLY__
+ extern unsigned long profile_pc(struct pt_regs *regs);
+-#define profile_pc profile_pc
  
--#define GET_IP(regs)		((regs)->nip)
--#define GET_USP(regs)		((regs)->gpr[1])
--#define GET_FP(regs)		(0)
--#define SET_FP(regs, val)
+ extern unsigned long
+ convert_ip_to_linear(struct task_struct *child, struct pt_regs *regs);
+@@ -175,11 +174,32 @@ static inline unsigned long kernel_stack_pointer(struct pt_regs *regs)
+ }
+ #endif
+ 
+-#define GET_IP(regs) ((regs)->ip)
+-#define GET_FP(regs) ((regs)->bp)
+-#define GET_USP(regs) ((regs)->sp)
 +static inline unsigned long instruction_pointer(struct pt_regs *regs)
 +{
-+	return regs->nip;
++	return regs->ip;
 +}
 +
 +static inline void instruction_pointer_set(struct pt_regs *regs,
 +		unsigned long val)
 +{
-+	regs->nip = val;
-+}
-+
-+static inline unsigned long user_stack_pointer(struct pt_regs *regs)
-+{
-+	return regs->gpr[1];
++	regs->ip = val;
 +}
 +
 +static inline unsigned long frame_pointer(struct pt_regs *regs)
 +{
-+	return 0;
++	return regs->bp;
 +}
  
- #ifdef CONFIG_SMP
- extern unsigned long profile_pc(struct pt_regs *regs);
--#define profile_pc profile_pc
-+#else
-+#define profile_pc(regs) instruction_pointer(regs)
- #endif
- 
 -#include <asm-generic/ptrace.h>
--
- #define kernel_stack_pointer(regs) ((regs)->gpr[1])
- static inline int is_syscall_success(struct pt_regs *regs)
- {
++static inline unsigned long user_stack_pointer(struct pt_regs *regs)
++{
++	return regs->sp;
++}
++
++static inline void user_stack_pointer_set(struct pt_regs *regs,
++		unsigned long val)
++{
++	regs->sp = val;
++}
+ 
+ /* Query offset/name of register from its name/offset */
+ extern int regs_query_register_offset(const char *name);
 -- 
 2.20.1
 

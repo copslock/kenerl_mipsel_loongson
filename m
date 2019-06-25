@@ -7,35 +7,35 @@ X-Spam-Status: No, score=-8.6 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4682CC48BD7
-	for <linux-mips@archiver.kernel.org>; Tue, 25 Jun 2019 14:38:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E5998C48BD5
+	for <linux-mips@archiver.kernel.org>; Tue, 25 Jun 2019 14:38:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 1465A21655
-	for <linux-mips@archiver.kernel.org>; Tue, 25 Jun 2019 14:38:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AF9CC213F2
+	for <linux-mips@archiver.kernel.org>; Tue, 25 Jun 2019 14:38:22 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Gh3t9gEM"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Voixl5wJ"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731803AbfFYOiL (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 25 Jun 2019 10:38:11 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:53136 "EHLO
+        id S1731938AbfFYOiT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 25 Jun 2019 10:38:19 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:53646 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730588AbfFYOiK (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 25 Jun 2019 10:38:10 -0400
+        with ESMTP id S1730588AbfFYOiQ (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 25 Jun 2019 10:38:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
         MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
         :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
         :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=a9NQkpmukXy1lWC/LI5ypTEQqGqYwv/FPxR2noqbWvI=; b=Gh3t9gEMOW6SDRUUvXiEP7+/4L
-        PLWxDogq/bQJmJEZDQIER0y9ehwsl5Otedae1zKqu84nl8L/27DqZhrM1xp+bQMcpQduYYZsYEJL4
-        hce1U06se+qhkRCmEo+Te29xinOTrMS4zfk7Sb3cvAi7Kop9gqzUijqVQP6dxi/ol8dKsa3wANDt9
-        AtLJmnFZGuiGC9A1UDO5h+0MDj+xYIpiqPP44h+vCRXpmJ+cQV0J9BgIAMqyn2JlN9IJ8HrBFTgu3
-        QmYu3C8I7KE2jOHIkrQanNqZNfwJyyCsGkyXqqgTzVVB4rCKH9aQKAUNoeEM8q7GM84whzOkUANgG
-        W2E9f2ng==;
+        bh=nhYNp2rhSSMYWrdeYfaQg9xtCg/tCYGSAHXqYjk4fcU=; b=Voixl5wJryX6fnOcp1CrbyiJxt
+        svVwJ6IVf1Zg9nS0a8eQaOFx2NiEThIjQNDbCBJfjtCBqp69jRTpmqtm47ZfIM/ml/dreqYANF5Km
+        CiiFPYBjHfbc1h+Wh1MG6O6XayGPhs8aR3X2t+eks1uA8MAaK2irFJkU4/p/AU22qh5JYOhiO41sp
+        OSis/Ri1OoSLC3Ze5PeoJ7a1d3oj/RgEkuVs02sYa4KCLru/bHe1zpvH5jWqWoMrHBV1Ht8p8em7c
+        u/QvzbfzbAONII0CN0vqJMYUA9EKSmd1YW6p22xcI55o3GRvVKUTxyJIh1BNF3T6Wxroel8kNaPlM
+        4pr+FgJA==;
 Received: from 213-225-6-159.nat.highway.a1.net ([213.225.6.159] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hfma4-00083b-Sr; Tue, 25 Jun 2019 14:37:57 +0000
+        id 1hfmaB-00086r-Ed; Tue, 25 Jun 2019 14:38:04 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
@@ -53,9 +53,9 @@ Cc:     Nicholas Piggin <npiggin@gmail.com>,
         linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 12/16] mm: consolidate the get_user_pages* implementations
-Date:   Tue, 25 Jun 2019 16:37:11 +0200
-Message-Id: <20190625143715.1689-13-hch@lst.de>
+Subject: [PATCH 14/16] mm: move the powerpc hugepd code to mm/gup.c
+Date:   Tue, 25 Jun 2019 16:37:13 +0200
+Message-Id: <20190625143715.1689-15-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190625143715.1689-1-hch@lst.de>
 References: <20190625143715.1689-1-hch@lst.de>
@@ -67,346 +67,263 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Always build mm/gup.c so that we don't have to provide separate nommu
-stubs.  Also merge the get_user_pages_fast and __get_user_pages_fast
-stubs when HAVE_FAST_GUP into the main implementations, which will
-never call the fast path if HAVE_FAST_GUP is not set.
-
-This also ensures the new put_user_pages* helpers are available for
-nommu, as those are currently missing, which would create a problem as
-soon as we actually grew users for it.
+While only powerpc supports the hugepd case, the code is pretty
+generic and I'd like to keep all GUP internals in one place.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- mm/Kconfig  |  1 +
- mm/Makefile |  4 +--
- mm/gup.c    | 67 +++++++++++++++++++++++++++++++++++++---
- mm/nommu.c  | 88 -----------------------------------------------------
- mm/util.c   | 47 ----------------------------
- 5 files changed, 65 insertions(+), 142 deletions(-)
+ arch/powerpc/Kconfig          |  1 +
+ arch/powerpc/mm/hugetlbpage.c | 72 ------------------------------
+ include/linux/hugetlb.h       | 18 --------
+ mm/Kconfig                    | 10 +++++
+ mm/gup.c                      | 82 +++++++++++++++++++++++++++++++++++
+ 5 files changed, 93 insertions(+), 90 deletions(-)
 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 98dffb0f2447..5c41409557da 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -133,6 +133,7 @@ config HAVE_MEMBLOCK_PHYS_MAP
- 	bool
- 
- config HAVE_FAST_GUP
-+	depends on MMU
- 	bool
- 
- config ARCH_KEEP_MEMBLOCK
-diff --git a/mm/Makefile b/mm/Makefile
-index ac5e5ba78874..dc0746ca1109 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -22,7 +22,7 @@ KCOV_INSTRUMENT_mmzone.o := n
- KCOV_INSTRUMENT_vmstat.o := n
- 
- mmu-y			:= nommu.o
--mmu-$(CONFIG_MMU)	:= gup.o highmem.o memory.o mincore.o \
-+mmu-$(CONFIG_MMU)	:= highmem.o memory.o mincore.o \
- 			   mlock.o mmap.o mmu_gather.o mprotect.o mremap.o \
- 			   msync.o page_vma_mapped.o pagewalk.o \
- 			   pgtable-generic.o rmap.o vmalloc.o
-@@ -39,7 +39,7 @@ obj-y			:= filemap.o mempool.o oom_kill.o fadvise.o \
- 			   mm_init.o mmu_context.o percpu.o slab_common.o \
- 			   compaction.o vmacache.o \
- 			   interval_tree.o list_lru.o workingset.o \
--			   debug.o $(mmu-y)
-+			   debug.o gup.o $(mmu-y)
- 
- # Give 'page_alloc' its own module-parameter namespace
- page-alloc-y := page_alloc.o
-diff --git a/mm/gup.c b/mm/gup.c
-index b29249581672..0e83dba98dfd 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -134,6 +134,7 @@ void put_user_pages(struct page **pages, unsigned long npages)
- }
- EXPORT_SYMBOL(put_user_pages);
- 
-+#ifdef CONFIG_MMU
- static struct page *no_page_table(struct vm_area_struct *vma,
- 		unsigned int flags)
- {
-@@ -1322,6 +1323,51 @@ struct page *get_dump_page(unsigned long addr)
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 992a04796e56..4f1b00979cde 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -125,6 +125,7 @@ config PPC
+ 	select ARCH_HAS_FORTIFY_SOURCE
+ 	select ARCH_HAS_GCOV_PROFILE_ALL
+ 	select ARCH_HAS_KCOV
++	select ARCH_HAS_HUGEPD			if HUGETLB_PAGE
+ 	select ARCH_HAS_MMIOWB			if PPC64
+ 	select ARCH_HAS_PHYS_TO_DMA
+ 	select ARCH_HAS_PMEM_API                if PPC64
+diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
+index b5d92dc32844..51716c11d0fb 100644
+--- a/arch/powerpc/mm/hugetlbpage.c
++++ b/arch/powerpc/mm/hugetlbpage.c
+@@ -511,13 +511,6 @@ struct page *follow_huge_pd(struct vm_area_struct *vma,
  	return page;
  }
- #endif /* CONFIG_ELF_CORE */
-+#else /* CONFIG_MMU */
-+static long __get_user_pages_locked(struct task_struct *tsk,
-+		struct mm_struct *mm, unsigned long start,
-+		unsigned long nr_pages, struct page **pages,
-+		struct vm_area_struct **vmas, int *locked,
-+		unsigned int foll_flags)
-+{
-+	struct vm_area_struct *vma;
-+	unsigned long vm_flags;
-+	int i;
-+
-+	/* calculate required read or write permissions.
-+	 * If FOLL_FORCE is set, we only require the "MAY" flags.
-+	 */
-+	vm_flags  = (foll_flags & FOLL_WRITE) ?
-+			(VM_WRITE | VM_MAYWRITE) : (VM_READ | VM_MAYREAD);
-+	vm_flags &= (foll_flags & FOLL_FORCE) ?
-+			(VM_MAYREAD | VM_MAYWRITE) : (VM_READ | VM_WRITE);
-+
-+	for (i = 0; i < nr_pages; i++) {
-+		vma = find_vma(mm, start);
-+		if (!vma)
-+			goto finish_or_fault;
-+
-+		/* protect what we can, including chardevs */
-+		if ((vma->vm_flags & (VM_IO | VM_PFNMAP)) ||
-+		    !(vm_flags & vma->vm_flags))
-+			goto finish_or_fault;
-+
-+		if (pages) {
-+			pages[i] = virt_to_page(start);
-+			if (pages[i])
-+				get_page(pages[i]);
-+		}
-+		if (vmas)
-+			vmas[i] = vma;
-+		start = (start + PAGE_SIZE) & PAGE_MASK;
-+	}
-+
-+	return i;
-+
-+finish_or_fault:
-+	return i ? : -EFAULT;
-+}
-+#endif /* !CONFIG_MMU */
  
- #if defined(CONFIG_FS_DAX) || defined (CONFIG_CMA)
- static bool check_dax_vmas(struct vm_area_struct **vmas, long nr_pages)
-@@ -1484,7 +1530,7 @@ static long check_and_migrate_cma_pages(struct task_struct *tsk,
- {
- 	return nr_pages;
- }
--#endif
-+#endif /* CONFIG_CMA */
- 
- /*
-  * __gup_longterm_locked() is a wrapper for __get_user_pages_locked which
-@@ -2160,6 +2206,12 @@ static void gup_pgd_range(unsigned long addr, unsigned long end,
- 			return;
- 	} while (pgdp++, addr = next, addr != end);
- }
-+#else
-+static inline void gup_pgd_range(unsigned long addr, unsigned long end,
-+		unsigned int flags, struct page **pages, int *nr)
-+{
-+}
-+#endif /* CONFIG_HAVE_FAST_GUP */
- 
- #ifndef gup_fast_permitted
- /*
-@@ -2177,6 +2229,9 @@ static bool gup_fast_permitted(unsigned long start, unsigned long end)
-  * the regular GUP.
-  * Note a difference with get_user_pages_fast: this always returns the
-  * number of pages pinned, 0 if no pages were pinned.
-+ *
-+ * If the architecture does not support this function, simply return with no
-+ * pages pinned.
-  */
- int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
- 			  struct page **pages)
-@@ -2206,7 +2261,8 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
- 	 * block IPIs that come from THPs splitting.
- 	 */
- 
--	if (gup_fast_permitted(start, end)) {
-+	if (IS_ENABLED(CONFIG_HAVE_FAST_GUP) &&
-+	    gup_fast_permitted(start, end)) {
- 		local_irq_save(flags);
- 		gup_pgd_range(start, end, write ? FOLL_WRITE : 0, pages, &nr);
- 		local_irq_restore(flags);
-@@ -2214,6 +2270,7 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
- 
- 	return nr;
- }
-+EXPORT_SYMBOL_GPL(__get_user_pages_fast);
- 
- static int __gup_longterm_unlocked(unsigned long start, int nr_pages,
- 				   unsigned int gup_flags, struct page **pages)
-@@ -2270,7 +2327,8 @@ int get_user_pages_fast(unsigned long start, int nr_pages,
- 	if (unlikely(!access_ok((void __user *)start, len)))
- 		return -EFAULT;
- 
--	if (gup_fast_permitted(start, end)) {
-+	if (IS_ENABLED(CONFIG_HAVE_FAST_GUP) &&
-+	    gup_fast_permitted(start, end)) {
- 		local_irq_disable();
- 		gup_pgd_range(addr, end, gup_flags, pages, &nr);
- 		local_irq_enable();
-@@ -2296,5 +2354,4 @@ int get_user_pages_fast(unsigned long start, int nr_pages,
- 
- 	return ret;
- }
--
--#endif /* CONFIG_HAVE_GENERIC_GUP */
-+EXPORT_SYMBOL_GPL(get_user_pages_fast);
-diff --git a/mm/nommu.c b/mm/nommu.c
-index d8c02fbe03b5..07165ad2e548 100644
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -111,94 +111,6 @@ unsigned int kobjsize(const void *objp)
- 	return PAGE_SIZE << compound_order(page);
- }
- 
--static long __get_user_pages(struct task_struct *tsk, struct mm_struct *mm,
--		      unsigned long start, unsigned long nr_pages,
--		      unsigned int foll_flags, struct page **pages,
--		      struct vm_area_struct **vmas, int *nonblocking)
+-static unsigned long hugepte_addr_end(unsigned long addr, unsigned long end,
+-				      unsigned long sz)
 -{
--	struct vm_area_struct *vma;
--	unsigned long vm_flags;
--	int i;
+-	unsigned long __boundary = (addr + sz) & ~(sz-1);
+-	return (__boundary - 1 < end - 1) ? __boundary : end;
+-}
 -
--	/* calculate required read or write permissions.
--	 * If FOLL_FORCE is set, we only require the "MAY" flags.
--	 */
--	vm_flags  = (foll_flags & FOLL_WRITE) ?
--			(VM_WRITE | VM_MAYWRITE) : (VM_READ | VM_MAYREAD);
--	vm_flags &= (foll_flags & FOLL_FORCE) ?
--			(VM_MAYREAD | VM_MAYWRITE) : (VM_READ | VM_WRITE);
+ #ifdef CONFIG_PPC_MM_SLICES
+ unsigned long hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
+ 					unsigned long len, unsigned long pgoff,
+@@ -665,68 +658,3 @@ void flush_dcache_icache_hugepage(struct page *page)
+ 		}
+ 	}
+ }
 -
--	for (i = 0; i < nr_pages; i++) {
--		vma = find_vma(mm, start);
--		if (!vma)
--			goto finish_or_fault;
+-static int gup_hugepte(pte_t *ptep, unsigned long sz, unsigned long addr,
+-		       unsigned long end, int write, struct page **pages, int *nr)
+-{
+-	unsigned long pte_end;
+-	struct page *head, *page;
+-	pte_t pte;
+-	int refs;
 -
--		/* protect what we can, including chardevs */
--		if ((vma->vm_flags & (VM_IO | VM_PFNMAP)) ||
--		    !(vm_flags & vma->vm_flags))
--			goto finish_or_fault;
+-	pte_end = (addr + sz) & ~(sz-1);
+-	if (pte_end < end)
+-		end = pte_end;
 -
--		if (pages) {
--			pages[i] = virt_to_page(start);
--			if (pages[i])
--				get_page(pages[i]);
--		}
--		if (vmas)
--			vmas[i] = vma;
--		start = (start + PAGE_SIZE) & PAGE_MASK;
+-	pte = READ_ONCE(*ptep);
+-
+-	if (!pte_access_permitted(pte, write))
+-		return 0;
+-
+-	/* hugepages are never "special" */
+-	VM_BUG_ON(!pfn_valid(pte_pfn(pte)));
+-
+-	refs = 0;
+-	head = pte_page(pte);
+-
+-	page = head + ((addr & (sz-1)) >> PAGE_SHIFT);
+-	do {
+-		VM_BUG_ON(compound_head(page) != head);
+-		pages[*nr] = page;
+-		(*nr)++;
+-		page++;
+-		refs++;
+-	} while (addr += PAGE_SIZE, addr != end);
+-
+-	if (!page_cache_add_speculative(head, refs)) {
+-		*nr -= refs;
+-		return 0;
 -	}
 -
--	return i;
+-	if (unlikely(pte_val(pte) != pte_val(*ptep))) {
+-		/* Could be optimized better */
+-		*nr -= refs;
+-		while (refs--)
+-			put_page(head);
+-		return 0;
+-	}
 -
--finish_or_fault:
--	return i ? : -EFAULT;
+-	return 1;
 -}
 -
--/*
-- * get a list of pages in an address range belonging to the specified process
-- * and indicate the VMA that covers each page
-- * - this is potentially dodgy as we may end incrementing the page count of a
-- *   slab page or a secondary page from a compound page
-- * - don't permit access to VMAs that don't support it, such as I/O mappings
-- */
--long get_user_pages(unsigned long start, unsigned long nr_pages,
--		    unsigned int gup_flags, struct page **pages,
--		    struct vm_area_struct **vmas)
+-int gup_huge_pd(hugepd_t hugepd, unsigned long addr, unsigned int pdshift,
+-		unsigned long end, int write, struct page **pages, int *nr)
 -{
--	return __get_user_pages(current, current->mm, start, nr_pages,
--				gup_flags, pages, vmas, NULL);
--}
--EXPORT_SYMBOL(get_user_pages);
+-	pte_t *ptep;
+-	unsigned long sz = 1UL << hugepd_shift(hugepd);
+-	unsigned long next;
 -
--long get_user_pages_locked(unsigned long start, unsigned long nr_pages,
--			    unsigned int gup_flags, struct page **pages,
--			    int *locked)
--{
--	return get_user_pages(start, nr_pages, gup_flags, pages, NULL);
--}
--EXPORT_SYMBOL(get_user_pages_locked);
+-	ptep = hugepte_offset(hugepd, addr, pdshift);
+-	do {
+-		next = hugepte_addr_end(addr, end, sz);
+-		if (!gup_hugepte(ptep, sz, addr, end, write, pages, nr))
+-			return 0;
+-	} while (ptep++, addr = next, addr != end);
 -
--static long __get_user_pages_unlocked(struct task_struct *tsk,
--			struct mm_struct *mm, unsigned long start,
--			unsigned long nr_pages, struct page **pages,
--			unsigned int gup_flags)
--{
--	long ret;
--	down_read(&mm->mmap_sem);
--	ret = __get_user_pages(tsk, mm, start, nr_pages, gup_flags, pages,
--				NULL, NULL);
--	up_read(&mm->mmap_sem);
--	return ret;
+-	return 1;
 -}
--
--long get_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
--			     struct page **pages, unsigned int gup_flags)
--{
--	return __get_user_pages_unlocked(current, current->mm, start, nr_pages,
--					 pages, gup_flags);
--}
--EXPORT_SYMBOL(get_user_pages_unlocked);
--
- /**
-  * follow_pfn - look up PFN at a user virtual address
-  * @vma: memory mapping
-diff --git a/mm/util.c b/mm/util.c
-index 9834c4ab7d8e..68575a315dc5 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -300,53 +300,6 @@ void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
- }
- #endif
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index edf476c8cfb9..0f91761e2c53 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -16,29 +16,11 @@ struct user_struct;
+ struct mmu_gather;
  
+ #ifndef is_hugepd
 -/*
-- * Like get_user_pages_fast() except its IRQ-safe in that it won't fall
-- * back to the regular GUP.
-- * Note a difference with get_user_pages_fast: this always returns the
-- * number of pages pinned, 0 if no pages were pinned.
-- * If the architecture does not support this function, simply return with no
-- * pages pinned.
+- * Some architectures requires a hugepage directory format that is
+- * required to support multiple hugepage sizes. For example
+- * a4fe3ce76 "powerpc/mm: Allow more flexible layouts for hugepage pagetables"
+- * introduced the same on powerpc. This allows for a more flexible hugepage
+- * pagetable layout.
 - */
--int __weak __get_user_pages_fast(unsigned long start,
--				 int nr_pages, int write, struct page **pages)
+ typedef struct { unsigned long pd; } hugepd_t;
+ #define is_hugepd(hugepd) (0)
+ #define __hugepd(x) ((hugepd_t) { (x) })
+-static inline int gup_huge_pd(hugepd_t hugepd, unsigned long addr,
+-			      unsigned pdshift, unsigned long end,
+-			      int write, struct page **pages, int *nr)
 -{
 -	return 0;
 -}
--EXPORT_SYMBOL_GPL(__get_user_pages_fast);
+-#else
+-extern int gup_huge_pd(hugepd_t hugepd, unsigned long addr,
+-		       unsigned pdshift, unsigned long end,
+-		       int write, struct page **pages, int *nr);
+ #endif
+ 
 -
--/**
-- * get_user_pages_fast() - pin user pages in memory
-- * @start:	starting user address
-- * @nr_pages:	number of pages from start to pin
-- * @gup_flags:	flags modifying pin behaviour
-- * @pages:	array that receives pointers to the pages pinned.
-- *		Should be at least nr_pages long.
-- *
-- * get_user_pages_fast provides equivalent functionality to get_user_pages,
-- * operating on current and current->mm, with force=0 and vma=NULL. However
-- * unlike get_user_pages, it must be called without mmap_sem held.
-- *
-- * get_user_pages_fast may take mmap_sem and page table locks, so no
-- * assumptions can be made about lack of locking. get_user_pages_fast is to be
-- * implemented in a way that is advantageous (vs get_user_pages()) when the
-- * user memory area is already faulted in and present in ptes. However if the
-- * pages have to be faulted in, it may turn out to be slightly slower so
-- * callers need to carefully consider what to use. On many architectures,
-- * get_user_pages_fast simply falls back to get_user_pages.
-- *
-- * Return: number of pages pinned. This may be fewer than the number
-- * requested. If nr_pages is 0 or negative, returns 0. If no pages
-- * were pinned, returns -errno.
-- */
--int __weak get_user_pages_fast(unsigned long start,
--				int nr_pages, unsigned int gup_flags,
--				struct page **pages)
--{
--	return get_user_pages_unlocked(start, nr_pages, pages, gup_flags);
--}
--EXPORT_SYMBOL_GPL(get_user_pages_fast);
--
- unsigned long vm_mmap_pgoff(struct file *file, unsigned long addr,
- 	unsigned long len, unsigned long prot,
- 	unsigned long flag, unsigned long pgoff)
+ #ifdef CONFIG_HUGETLB_PAGE
+ 
+ #include <linux/mempolicy.h>
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 5c41409557da..44be3f01a2b2 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -769,4 +769,14 @@ config GUP_GET_PTE_LOW_HIGH
+ config ARCH_HAS_PTE_SPECIAL
+ 	bool
+ 
++#
++# Some architectures require a special hugepage directory format that is
++# required to support multiple hugepage sizes. For example a4fe3ce76
++# "powerpc/mm: Allow more flexible layouts for hugepage pagetables"
++# introduced it on powerpc.  This allows for a more flexible hugepage
++# pagetable layouts.
++#
++config ARCH_HAS_HUGEPD
++	bool
++
+ endmenu
+diff --git a/mm/gup.c b/mm/gup.c
+index 37a2083b1ed8..7077549bc8ea 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1966,6 +1966,88 @@ static int __gup_device_huge_pud(pud_t pud, pud_t *pudp, unsigned long addr,
+ }
+ #endif
+ 
++#ifdef CONFIG_ARCH_HAS_HUGEPD
++static unsigned long hugepte_addr_end(unsigned long addr, unsigned long end,
++				      unsigned long sz)
++{
++	unsigned long __boundary = (addr + sz) & ~(sz-1);
++	return (__boundary - 1 < end - 1) ? __boundary : end;
++}
++
++static int gup_hugepte(pte_t *ptep, unsigned long sz, unsigned long addr,
++		       unsigned long end, int write, struct page **pages, int *nr)
++{
++	unsigned long pte_end;
++	struct page *head, *page;
++	pte_t pte;
++	int refs;
++
++	pte_end = (addr + sz) & ~(sz-1);
++	if (pte_end < end)
++		end = pte_end;
++
++	pte = READ_ONCE(*ptep);
++
++	if (!pte_access_permitted(pte, write))
++		return 0;
++
++	/* hugepages are never "special" */
++	VM_BUG_ON(!pfn_valid(pte_pfn(pte)));
++
++	refs = 0;
++	head = pte_page(pte);
++
++	page = head + ((addr & (sz-1)) >> PAGE_SHIFT);
++	do {
++		VM_BUG_ON(compound_head(page) != head);
++		pages[*nr] = page;
++		(*nr)++;
++		page++;
++		refs++;
++	} while (addr += PAGE_SIZE, addr != end);
++
++	if (!page_cache_add_speculative(head, refs)) {
++		*nr -= refs;
++		return 0;
++	}
++
++	if (unlikely(pte_val(pte) != pte_val(*ptep))) {
++		/* Could be optimized better */
++		*nr -= refs;
++		while (refs--)
++			put_page(head);
++		return 0;
++	}
++
++	return 1;
++}
++
++static int gup_huge_pd(hugepd_t hugepd, unsigned long addr,
++		unsigned int pdshift, unsigned long end, int write,
++		struct page **pages, int *nr)
++{
++	pte_t *ptep;
++	unsigned long sz = 1UL << hugepd_shift(hugepd);
++	unsigned long next;
++
++	ptep = hugepte_offset(hugepd, addr, pdshift);
++	do {
++		next = hugepte_addr_end(addr, end, sz);
++		if (!gup_hugepte(ptep, sz, addr, end, write, pages, nr))
++			return 0;
++	} while (ptep++, addr = next, addr != end);
++
++	return 1;
++}
++#else
++static inline int gup_huge_pd(hugepd_t hugepd, unsigned long addr,
++		unsigned pdshift, unsigned long end, int write,
++		struct page **pages, int *nr)
++{
++	return 0;
++}
++#endif /* CONFIG_ARCH_HAS_HUGEPD */
++
+ static int gup_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
+ 		unsigned long end, unsigned int flags, struct page **pages, int *nr)
+ {
 -- 
 2.20.1
 

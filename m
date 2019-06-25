@@ -2,141 +2,110 @@ Return-Path: <SRS0=yIBi=UY=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-8.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_MUTT autolearn=unavailable autolearn_force=no
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9104FC48BD4
-	for <linux-mips@archiver.kernel.org>; Tue, 25 Jun 2019 15:33:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E1B5C48BD5
+	for <linux-mips@archiver.kernel.org>; Tue, 25 Jun 2019 16:18:45 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6EC3A2080C
-	for <linux-mips@archiver.kernel.org>; Tue, 25 Jun 2019 15:33:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 04B4D2133F
+	for <linux-mips@archiver.kernel.org>; Tue, 25 Jun 2019 16:18:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728827AbfFYPdn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 25 Jun 2019 11:33:43 -0400
-Received: from foss.arm.com ([217.140.110.172]:44174 "EHLO foss.arm.com"
+        id S1728339AbfFYQSl (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 25 Jun 2019 12:18:41 -0400
+Received: from foss.arm.com ([217.140.110.172]:44832 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728273AbfFYPdn (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 25 Jun 2019 11:33:43 -0400
+        id S1726420AbfFYQSk (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 25 Jun 2019 12:18:40 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2AF882B;
-        Tue, 25 Jun 2019 08:33:42 -0700 (PDT)
-Received: from e103592.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 738EB3F718;
-        Tue, 25 Jun 2019 08:33:39 -0700 (PDT)
-Date:   Tue, 25 Jun 2019 16:33:37 +0100
-From:   Dave Martin <Dave.Martin@arm.com>
-To:     Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc:     linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2D8ACED1;
+        Tue, 25 Jun 2019 09:18:40 -0700 (PDT)
+Received: from e119884-lin.cambridge.arm.com (e119884-lin.cambridge.arm.com [10.1.196.72])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 96EB73F718;
+        Tue, 25 Jun 2019 09:18:37 -0700 (PDT)
+From:   Vincenzo Frascino <vincenzo.frascino@arm.com>
+To:     linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
-        Andre Przywara <andre.przywara@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Huw Davies <huw@codeweavers.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Will Deacon <will.deacon@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Mark Salyzyn <salyzyn@android.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Dmitry Safonov <0x7f454c46@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Shijith Thotton <sthotton@marvell.com>,
-        Peter Collingbourne <pcc@google.com>
-Subject: Re: [PATCH v7 04/25] arm64: Substitute gettimeofday with C
- implementation
-Message-ID: <20190625153336.GZ2790@e103592.cambridge.arm.com>
-References: <20190621095252.32307-1-vincenzo.frascino@arm.com>
- <20190621095252.32307-5-vincenzo.frascino@arm.com>
+        linux-kselftest@vger.kernel.org
+Cc:     catalin.marinas@arm.com, will.deacon@arm.com, arnd@arndb.de,
+        linux@armlinux.org.uk, ralf@linux-mips.org, paul.burton@mips.com,
+        daniel.lezcano@linaro.org, tglx@linutronix.de, salyzyn@android.com,
+        pcc@google.com, shuah@kernel.org, 0x7f454c46@gmail.com,
+        linux@rasmusvillemoes.dk, huw@codeweavers.com,
+        sthotton@marvell.com, andre.przywara@arm.com
+Subject: [PATCH 3/3] arm64: compat: Fix __arch_get_hw_counter() implementation
+Date:   Tue, 25 Jun 2019 17:18:04 +0100
+Message-Id: <20190625161804.38713-3-vincenzo.frascino@arm.com>
+X-Mailer: git-send-email 2.22.0
+In-Reply-To: <20190625161804.38713-1-vincenzo.frascino@arm.com>
+References: <20190624133607.GI29497@fuggles.cambridge.arm.com>
+ <20190625161804.38713-1-vincenzo.frascino@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190621095252.32307-5-vincenzo.frascino@arm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Fri, Jun 21, 2019 at 10:52:31AM +0100, Vincenzo Frascino wrote:
-> To take advantage of the commonly defined vdso interface for
-> gettimeofday the architectural code requires an adaptation.
-> 
-> Re-implement the gettimeofday vdso in C in order to use lib/vdso.
-> 
-> With the new implementation arm64 gains support for CLOCK_BOOTTIME
-> and CLOCK_TAI.
-> 
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will.deacon@arm.com>
-> Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
-> Tested-by: Shijith Thotton <sthotton@marvell.com>
-> Tested-by: Andre Przywara <andre.przywara@arm.com>
+Provide the following fixes for the __arch_get_hw_counter()
+implementation on arm64:
+- Fallback on syscall when an unstable counter is detected.
+- Introduce isb()s before and after the counter read to avoid
+speculation of the counter value and of the seq lock
+respectively.
+The second isb() is a temporary solution that will be revisited
+in 5.3-rc1.
 
-[...]
+These fixes restore the semantics that __arch_counter_get_cntvct()
+had on arm64.
 
-> diff --git a/arch/arm64/include/asm/vdso/gettimeofday.h b/arch/arm64/include/asm/vdso/gettimeofday.h
-> new file mode 100644
-> index 000000000000..bc3cb6738051
-> --- /dev/null
-> +++ b/arch/arm64/include/asm/vdso/gettimeofday.h
-> @@ -0,0 +1,86 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Copyright (C) 2018 ARM Limited
-> + */
-> +#ifndef __ASM_VDSO_GETTIMEOFDAY_H
-> +#define __ASM_VDSO_GETTIMEOFDAY_H
-> +
-> +#ifndef __ASSEMBLY__
-> +
-> +#include <asm/unistd.h>
-> +#include <uapi/linux/time.h>
-> +
-> +#define VDSO_HAS_CLOCK_GETRES		1
-> +
-> +static __always_inline int gettimeofday_fallback(
-> +					struct __kernel_old_timeval *_tv,
-> +					struct timezone *_tz)
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will.deacon@arm.com>
+Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
+---
+ .../include/asm/vdso/compat_gettimeofday.h     | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-Out of interest, does this need to be __always_inline?
+diff --git a/arch/arm64/include/asm/vdso/compat_gettimeofday.h b/arch/arm64/include/asm/vdso/compat_gettimeofday.h
+index 93dbd935b66d..f4812777f5c5 100644
+--- a/arch/arm64/include/asm/vdso/compat_gettimeofday.h
++++ b/arch/arm64/include/asm/vdso/compat_gettimeofday.h
+@@ -12,6 +12,8 @@
+ 
+ #include <asm/vdso/compat_barrier.h>
+ 
++#define __VDSO_USE_SYSCALL		ULLONG_MAX
++
+ #define VDSO_HAS_CLOCK_GETRES		1
+ 
+ static __always_inline
+@@ -74,8 +76,24 @@ static __always_inline u64 __arch_get_hw_counter(s32 clock_mode)
+ {
+ 	u64 res;
+ 
++	/*
++	 * clock_mode == 0 implies that vDSO are enabled otherwise
++	 * fallback on syscall.
++	 */
++	if (clock_mode)
++		return __VDSO_USE_SYSCALL;
++
++	/*
++	 * This isb() is required to prevent that the counter value
++	 * is speculated.
++	 */
+ 	isb();
+ 	asm volatile("mrrc p15, 1, %Q0, %R0, c14" : "=r" (res));
++	/*
++	 * This isb() is required to prevent that the seq lock is
++	 * speculated.
++	 */
++	isb();
+ 
+ 	return res;
+ }
+-- 
+2.22.0
 
-> +{
-> +	register struct timezone *tz asm("x1") = _tz;
-> +	register struct __kernel_old_timeval *tv asm("x0") = _tv;
-> +	register long ret asm ("x0");
-> +	register long nr asm("x8") = __NR_gettimeofday;
-> +
-> +	asm volatile(
-> +	"       svc #0\n"
-
-Can inlining of this function result in non-trivial expressions being
-substituted for _tz or _tv?
-
-A function call can clobber register asm vars that are assigned to the
-caller-save registers or that the PCS uses for function arguments, and
-the situations where this can happen are poorly defined AFAICT.  There's
-also no reliable way to detect at build time whether the compiler has
-done this, and no robust way to stop if happening.
-
-(IMHO the compiler is wrong to do this, but it's been that way for ever,
-and I think I saw GCC 9 show this behaviour recently when I was
-investigating something related.)
-
-
-To be safe, it's better to put this out of line, or remove the reg asm()
-specifiers, mark x0-x18 and lr as clobbered here (so that the compiler
-doesn't map arguments to them), and put movs in the asm to move things
-into the right registers.  The syscall number can be passed with an "i"
-constraint.  (And yes, this sucks.)
-
-If the code this is inlined in is simple enough though, we can be fairly
-confident of getting away with it.
-
-[...]
-
-Cheers
----Dave

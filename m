@@ -2,89 +2,77 @@ Return-Path: <SRS0=dgrR=U6=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D27BC06511
-	for <linux-mips@archiver.kernel.org>; Mon,  1 Jul 2019 15:19:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D501C0650E
+	for <linux-mips@archiver.kernel.org>; Mon,  1 Jul 2019 15:41:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id F163820B7C
-	for <linux-mips@archiver.kernel.org>; Mon,  1 Jul 2019 15:19:05 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="tPLKCpRQ"
+	by mail.kernel.org (Postfix) with ESMTP id 5137820B7C
+	for <linux-mips@archiver.kernel.org>; Mon,  1 Jul 2019 15:41:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728261AbfGAPS4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 1 Jul 2019 11:18:56 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:59148 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727423AbfGAPSz (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 1 Jul 2019 11:18:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
-        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=W24hVTkWBqif5TpM38UrHl82eo9rhQffmi/qNIa3KQw=; b=tPLKCpRQPwcfjNA8YQTbRBgjwB
-        cTeldU53kGIZcXI4ZC+66G3bZsYi+NAOgC4hOnQDtHKBLPmjwM+rCM6k4MLq2saC76pV36iLBv82D
-        7f8KK3JXNsZf4LqhlioGjqhdX7pQYdEm/6TVxvutgT8sqqkerg+ArxXH8RLmHVoobF5EWszZys7o+
-        HvdKHl/gFGLrYBfl+57ncL82vSfHXvjNgMvVtore1OcJU2Z5i7SW8B083w3nloAyxPCd2IvOHGq1p
-        +tdLt6vxN7p94V4K+zYQ3ireYu6T2Z2UCjgCJlAQhL731e0VNjeSx3YWFQa+mS//b6h2QwnVnPcbd
-        +3WxPSsw==;
-Received: from [38.98.37.141] (helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hhy4h-0003zX-TP; Mon, 01 Jul 2019 15:18:36 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-Cc:     linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] sh: stub out pud_page
-Date:   Mon,  1 Jul 2019 17:18:17 +0200
-Message-Id: <20190701151818.32227-2-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190701151818.32227-1-hch@lst.de>
-References: <20190701151818.32227-1-hch@lst.de>
+        id S1728417AbfGAPlP (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 1 Jul 2019 11:41:15 -0400
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:39331 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727279AbfGAPlO (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 1 Jul 2019 11:41:14 -0400
+Received: by mail-qt1-f193.google.com with SMTP id i34so15100671qta.6;
+        Mon, 01 Jul 2019 08:41:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QX/9XC0DeimGVTmEjV3E87RMFjV7Hn7tB/e6eJ8Xuyo=;
+        b=ejjtpGiH8/is5Db3IZRvRC/GCThiuYRbhxrnux/OsudS/Lq5eoufZRL8Ui/0xCR5ip
+         GI0yYXoyxEBipEFfgnO+IQAAnFedM1spbpCyUh5GTJCJ5kQOlvzbYZJJQafRqWNSxTU4
+         mh4yaVuQsrFexf5waUC2LzkZOkKrupYOliNq+4IPuNiS3bA28FDnoPTFe3vzvmQwq5dJ
+         3bF/51inZa/2rvNkw6svo7XyhrvqMXZ2FwGo2RjI7XVnrFNBy81p1zT2U5Q2lXDW4LNL
+         2IZYRqP7V+6wNMQsLm8dAyJOeQNWnR1b3s/PkMPWMQL1RNAwv5t3jPAxMQypXAQ6cS4Z
+         c3Hg==
+X-Gm-Message-State: APjAAAWFLipdafpmkC6gkAOXxaq5uyG28oGBqRXpJ1h+dPdafsE+ZCpQ
+        3zf/DxICUAqkz2U0sJ17B6Bk/ytYBawomgUBDcA=
+X-Google-Smtp-Source: APXvYqxGHBFa8P5vpjbVLPEama12INy2Pt2H83NHNiep+1vxl9TlwguBVZ4KnSLAGXloUkCXunz2yug6gKdinLc2iX0=
+X-Received: by 2002:ac8:3485:: with SMTP id w5mr20305367qtb.142.1561995673724;
+ Mon, 01 Jul 2019 08:41:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+References: <20190624054728.30966-1-hch@lst.de> <alpine.DEB.2.21.1906240922420.32342@nanos.tec.linutronix.de>
+In-Reply-To: <alpine.DEB.2.21.1906240922420.32342@nanos.tec.linutronix.de>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Mon, 1 Jul 2019 17:40:57 +0200
+Message-ID: <CAK8P3a3YHstHAs9OsWNHTtXjHnWtQfqr=WUZTpK+bONLTWLj+w@mail.gmail.com>
+Subject: Re: remove asm-generic/ptrace.h v3
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     Christoph Hellwig <hch@lst.de>, Oleg Nesterov <oleg@redhat.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-mips@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-There wasn't any actual need to add a real pud_page, as pud_huge
-always returns false on sh.  Just stub it out to fix the sh3
-compile failure.
+On Mon, Jun 24, 2019 at 9:23 AM Thomas Gleixner <tglx@linutronix.de> wrote:
+>
+> On Mon, 24 Jun 2019, Christoph Hellwig wrote:
+> >
+> > asm-generic/ptrace.h is a little weird in that it doesn't actually
+> > implement any functionality, but it provided multiple layers of macros
+> > that just implement trivial inline functions.  We implement those
+> > directly in the few architectures and be off with a much simpler
+> > design.
+> >
+> > I'm not sure which tree is the right place, but may this can go through
+> > the asm-generic tree since it removes an asm-generic header?
+>
+> Makes sense.
 
-Fixes: 937b4e1d6471 ("sh: add the missing pud_page definition")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/sh/include/asm/pgtable-3level.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Applied and pushed to asm-generic.git/master now, sorry for the delay.
 
-diff --git a/arch/sh/include/asm/pgtable-3level.h b/arch/sh/include/asm/pgtable-3level.h
-index 3c7ff20f3f94..779260b721ca 100644
---- a/arch/sh/include/asm/pgtable-3level.h
-+++ b/arch/sh/include/asm/pgtable-3level.h
-@@ -37,7 +37,9 @@ static inline unsigned long pud_page_vaddr(pud_t pud)
- {
- 	return pud_val(pud);
- }
--#define pud_page(pud)		pfn_to_page(pud_pfn(pud))
-+
-+/* only used by the stubbed out hugetlb gup code, should never be called */
-+#define pud_page(pud)		NULL
- 
- #define pmd_index(address)	(((address) >> PMD_SHIFT) & (PTRS_PER_PMD-1))
- static inline pmd_t *pmd_offset(pud_t *pud, unsigned long address)
--- 
-2.20.1
-
+     Arnd

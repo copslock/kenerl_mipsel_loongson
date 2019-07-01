@@ -4,26 +4,25 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-10.0 required=3.0
 	tests=HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6906BC06514
-	for <linux-mips@archiver.kernel.org>; Mon,  1 Jul 2019 10:05:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BDF6C0650E
+	for <linux-mips@archiver.kernel.org>; Mon,  1 Jul 2019 10:05:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 42B3D20881
-	for <linux-mips@archiver.kernel.org>; Mon,  1 Jul 2019 10:05:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6A97520881
+	for <linux-mips@archiver.kernel.org>; Mon,  1 Jul 2019 10:05:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728649AbfGAKFa (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 1 Jul 2019 06:05:30 -0400
-Received: from relay3-d.mail.gandi.net ([217.70.183.195]:42467 "EHLO
-        relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728648AbfGAKF3 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 1 Jul 2019 06:05:29 -0400
-X-Originating-IP: 86.250.200.211
+        id S1728661AbfGAKFf (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 1 Jul 2019 06:05:35 -0400
+Received: from relay10.mail.gandi.net ([217.70.178.230]:52561 "EHLO
+        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728648AbfGAKFf (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 1 Jul 2019 06:05:35 -0400
 Received: from localhost (lfbn-1-17395-211.w86-250.abo.wanadoo.fr [86.250.200.211])
         (Authenticated sender: antoine.tenart@bootlin.com)
-        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 97B3E60006;
-        Mon,  1 Jul 2019 10:05:26 +0000 (UTC)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id C6386240012;
+        Mon,  1 Jul 2019 10:05:30 +0000 (UTC)
 From:   Antoine Tenart <antoine.tenart@bootlin.com>
 To:     davem@davemloft.net, richardcochran@gmail.com,
         alexandre.belloni@bootlin.com, UNGLinuxDriver@microchip.com,
@@ -31,9 +30,9 @@ To:     davem@davemloft.net, richardcochran@gmail.com,
 Cc:     Antoine Tenart <antoine.tenart@bootlin.com>,
         netdev@vger.kernel.org, linux-mips@vger.kernel.org,
         thomas.petazzoni@bootlin.com, allan.nielsen@microchip.com
-Subject: [PATCH net-next 7/8] net: mscc: remove the frame_info cpuq member
-Date:   Mon,  1 Jul 2019 12:03:26 +0200
-Message-Id: <20190701100327.6425-8-antoine.tenart@bootlin.com>
+Subject: [PATCH net-next 4/8] MIPS: dts: mscc: describe the PTP ready interrupt
+Date:   Mon,  1 Jul 2019 12:03:23 +0200
+Message-Id: <20190701100327.6425-5-antoine.tenart@bootlin.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190701100327.6425-1-antoine.tenart@bootlin.com>
 References: <20190701100327.6425-1-antoine.tenart@bootlin.com>
@@ -44,40 +43,29 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-In struct frame_info, the cpuq member is never used. This cosmetic patch
-removes it from the structure, and from the parsing of the frame header
-as it's only set but never used.
+This patch adds a description of the PTP ready interrupt, which can be
+triggered when a PTP timestamp is available on an hardware FIFO.
 
 Signed-off-by: Antoine Tenart <antoine.tenart@bootlin.com>
 ---
- drivers/net/ethernet/mscc/ocelot.h       | 1 -
- drivers/net/ethernet/mscc/ocelot_board.c | 1 -
- 2 files changed, 2 deletions(-)
+ arch/mips/boot/dts/mscc/ocelot.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mscc/ocelot.h b/drivers/net/ethernet/mscc/ocelot.h
-index e0da8b4eddf2..515dee6fa8a6 100644
---- a/drivers/net/ethernet/mscc/ocelot.h
-+++ b/drivers/net/ethernet/mscc/ocelot.h
-@@ -45,7 +45,6 @@ struct frame_info {
- 	u32 len;
- 	u16 port;
- 	u16 vid;
--	u8 cpuq;
- 	u8 tag_type;
- };
+diff --git a/arch/mips/boot/dts/mscc/ocelot.dtsi b/arch/mips/boot/dts/mscc/ocelot.dtsi
+index 1e55a778def5..797d336db54d 100644
+--- a/arch/mips/boot/dts/mscc/ocelot.dtsi
++++ b/arch/mips/boot/dts/mscc/ocelot.dtsi
+@@ -139,8 +139,8 @@
+ 				    "port2", "port3", "port4", "port5", "port6",
+ 				    "port7", "port8", "port9", "port10", "qsys",
+ 				    "ana", "s2";
+-			interrupts = <21 22>;
+-			interrupt-names = "xtr", "inj";
++			interrupts = <18 21 22>;
++			interrupt-names = "ptp_rdy", "xtr", "inj";
  
-diff --git a/drivers/net/ethernet/mscc/ocelot_board.c b/drivers/net/ethernet/mscc/ocelot_board.c
-index 09ad6a123347..008a762512b9 100644
---- a/drivers/net/ethernet/mscc/ocelot_board.c
-+++ b/drivers/net/ethernet/mscc/ocelot_board.c
-@@ -33,7 +33,6 @@ static int ocelot_parse_ifh(u32 *_ifh, struct frame_info *info)
- 
- 	info->port = IFH_EXTRACT_BITFIELD64(ifh[1], 43, 4);
- 
--	info->cpuq = IFH_EXTRACT_BITFIELD64(ifh[1], 20, 8);
- 	info->tag_type = IFH_EXTRACT_BITFIELD64(ifh[1], 16,  1);
- 	info->vid = IFH_EXTRACT_BITFIELD64(ifh[1], 0,  12);
- 
+ 			ethernet-ports {
+ 				#address-cells = <1>;
 -- 
 2.21.0
 

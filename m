@@ -2,69 +2,60 @@ Return-Path: <SRS0=dgrR=U6=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC251C0650E
-	for <linux-mips@archiver.kernel.org>; Mon,  1 Jul 2019 15:15:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C166FC06511
+	for <linux-mips@archiver.kernel.org>; Mon,  1 Jul 2019 15:18:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id A4D51208E4
-	for <linux-mips@archiver.kernel.org>; Mon,  1 Jul 2019 15:15:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 97727206A3
+	for <linux-mips@archiver.kernel.org>; Mon,  1 Jul 2019 15:18:52 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="cRCvg6L0"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ZMRbdM6e"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728473AbfGAPOS (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 1 Jul 2019 11:14:18 -0400
-Received: from outils.crapouillou.net ([89.234.176.41]:57160 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727652AbfGAPOS (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 1 Jul 2019 11:14:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1561994055; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:references; bh=trQukpoD76EMuG9zgz5EGRmnNs/XLZ7ZjzLFF89DSQk=;
-        b=cRCvg6L071xvaTc7ikBWQD5w2yHmpUkKZOzr+BqKW5KfvNCOza8zEDcgjeANafKi14hNwW
-        /rl8a5XorTary5os2frno2y18GEC7Dbk4HiAIlYMq4Ib9irzVlC9iLqE+omSifp3dGXmgm
-        ffbxz7ycoj7RmC7RUSF4y5LarKEh0OA=
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Lee Jones <lee.jones@linaro.org>, Jonathan Corbet <corbet@lwn.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
+        id S1727694AbfGAPSt (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 1 Jul 2019 11:18:49 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:59130 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727423AbfGAPSs (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 1 Jul 2019 11:18:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=u8Ydyg4ThM0wZoBNokarC4fhtypB6gh7eVSA4X7ZgvI=; b=ZMRbdM6eOD9DM9nl6ih789M+y
+        /weD9Lv7MDAu/CkQxbpv6QZnMuIyETVExshi+1qmnmnaTXdmHMSrlLoIXuaO7l0dnM4tD4+VfHeov
+        AZK1HKJTguGVTdeXg8LvmaNayitxSZjnDL+h+Hl/eBzxAClHClYV+1lrcnrioPqf04ucw5hIc0gMP
+        7bbnXDhHd+WL/tYi3+f46y24jlftwmt0AoqQzjccriLZLGt7l0YjsbrMfsc4k65raCANyn6stx65w
+        eK/FAwcqvNmmPGNbv661FRa6YFXNZW+8nAQgUPqATFtFbUOFkFcGoGezQh/jUAQjtMBJLL/XVj+SV
+        5qSjmlCFg==;
+Received: from [38.98.37.141] (helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hhy4Z-0003oc-HJ; Mon, 01 Jul 2019 15:18:28 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     Mathieu Malaterre <malat@debian.org>, od@zcrc.me,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Subject: [PATCH v14 00/13] Ingenic TCU patchset v14
-Date:   Mon,  1 Jul 2019 17:13:57 +0200
-Message-Id: <20190701151410.23127-1-paul@crapouillou.net>
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>
+Cc:     linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: generic gup fixups
+Date:   Mon,  1 Jul 2019 17:18:16 +0200
+Message-Id: <20190701151818.32227-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi,
+Hi Andrew,
 
-Changelog from v13:
-
-- [02/13]: The documentation has been converted to ReStructured Text.
-- [04/13]: - Use ERR_CAST() instead of ERR_PTR(PTR_ERR())
-           - Remove ingenic_tcu_can_use_pwm().
-- [05/13]: Use %d instead of %i in messages
-- [06/13]: Remove empty lines in structure definitions
-- [07/13]: Remove empty lines in structure definitions
-
-The patches that are not listed above did not see any change since v13.
-
-Regards,
--Paul
-
-
+below two fixups for the generic GUP series, as reported by Guenter.

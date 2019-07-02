@@ -2,130 +2,201 @@ Return-Path: <SRS0=dwk6=VA=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.0 required=3.0 tests=DATE_IN_PAST_03_06,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B095EC06511
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Jul 2019 01:05:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D5162C5B57D
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Jul 2019 01:42:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 876522089C
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Jul 2019 01:05:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A46F220673
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Jul 2019 01:42:21 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ZMFtd4fn"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="QHcgFWZu"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727117AbfGCBFJ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 2 Jul 2019 21:05:09 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:45056 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727065AbfGCBFJ (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 2 Jul 2019 21:05:09 -0400
-Received: by mail-pf1-f195.google.com with SMTP id r1so299625pfq.12
-        for <linux-mips@vger.kernel.org>; Tue, 02 Jul 2019 18:05:08 -0700 (PDT)
+        id S1726430AbfGCBmR (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 2 Jul 2019 21:42:17 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:37571 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726329AbfGCBmR (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 2 Jul 2019 21:42:17 -0400
+Received: by mail-wm1-f67.google.com with SMTP id f17so494242wme.2;
+        Tue, 02 Jul 2019 18:42:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=a6DSR9zMVNSIPOHutOGYYowzxyygnNjjAgHH6t/fH3Q=;
-        b=ZMFtd4fnwBhjqDgEcmMPYqwTfM3scvxup6E9ES0eTl1QBLbkm4L+EYQQqrUrDt7I0f
-         1W7i7K4qFAKEM9FkLZbBvOwEPA2KShqct0FnQuEtwjRtbN+49uyAwET1ta2fkPFntUdL
-         d1HKAJ/XrkEjycdCCsfgQI1lqoOc8poLOC7Ys=
+        d=googlemail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=QD7PTDoTKJ7Xg819N/X9fbQ0hWhUP/U0zNIc8U8b15M=;
+        b=QHcgFWZuIAWVxoHoyptyZ0vhwJGPMgbUT4AOymWxPnjHiwDGeLycngPGR62hMJXRsW
+         oFuOJ7ugVuC/+Eh9Ssm8I+MzGlI8dYOdaXgGJVARGU0icUeSe957hDhmJPVE8rAKa5pi
+         SK6zRYV1aSTXnCLc5tWWmAFwg4vIjDMe/rLu0pkSoUkLTVer1SDFw8YpL5g1Vkn9TYMF
+         ST2EZM+gaP9AfL9uqzvR2cRHDbHMFVm10EUBd6j8ThaYmHkgHEZIp28Rp/Pwgt/EBnWa
+         OeWCbx7iqHBCJ7ZS6jGC99ohwVxFdmMmbO+ArhAKASGRW260fcpfumHpm4mvk2dRNnM1
+         fSJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=a6DSR9zMVNSIPOHutOGYYowzxyygnNjjAgHH6t/fH3Q=;
-        b=LNGP7nPbg8PwNSqzkBnBlLLCzWGzda32T8BIpx0TvOc73xx8HYnetWcTwwTiSi/mGi
-         T0WFPDCrG8MEtt2Ue+MepQF8ocPop2DoyGJE1+elHIsP0cU1q73UHandFJl1BifvGh9R
-         KIKpNe6Jy272tfIbuu2iYAxz9AfpNn2r/jazYTkxzTRn4pjLu+WIobMYA6OIFFSz4yzK
-         3VDzSwqBTqN+Yh1CRDSvIEJIQtLXJV9CwaOr/t/sGNKJ+MDMM28R8bQ3ClYWH8JgN5/S
-         3rI9fq3rnTf21WqxnE3J5+Zd886yb87QCeFVDVqBdKl7jG4qDCJRMl4I9g+TIZChwDen
-         GzNw==
-X-Gm-Message-State: APjAAAVPWplRgBqoiuC/eZQmPOmpdhnntzhwxF/NYwCSls+hSPk96mqt
-        WgfiUrUVLC1TD3M+vfZY5P3AUQ==
-X-Google-Smtp-Source: APXvYqxbnDf0epA4zxEVMf+KQtiS47h5ZVi4HVl0lxeY8pfHVzHmCshNhotvWTcEjEQC+XEnSbkkRg==
-X-Received: by 2002:a17:90a:b908:: with SMTP id p8mr7901348pjr.94.1562101447970;
-        Tue, 02 Jul 2019 14:04:07 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id g1sm52207pgg.27.2019.07.02.14.04.02
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 02 Jul 2019 14:04:03 -0700 (PDT)
-Date:   Tue, 2 Jul 2019 09:33:02 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Joe Perches <joe@perches.com>
-Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
-        Andreas Dilger <adilger@dilger.ca>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Shyam Saini <shyam.saini@amarulasolutions.com>,
-        kernel-hardening@lists.openwall.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        intel-gvt-dev@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        netdev@vger.kernel.org, linux-ext4 <linux-ext4@vger.kernel.org>,
-        devel@lists.orangefs.org, linux-mm@kvack.org,
-        linux-sctp@vger.kernel.org, bpf@vger.kernel.org,
-        kvm@vger.kernel.org, mayhs11saini@gmail.com
-Subject: Re: [PATCH V2] include: linux: Regularise the use of FIELD_SIZEOF
- macro
-Message-ID: <201907020931.2170BAB@keescook>
-References: <20190611193836.2772-1-shyam.saini@amarulasolutions.com>
- <20190611134831.a60c11f4b691d14d04a87e29@linux-foundation.org>
- <6DCAE4F8-3BEC-45F2-A733-F4D15850B7F3@dilger.ca>
- <20190629142510.GA10629@avx2>
- <c3b83ba7f9b003dd4fb9cad885461ce93165dc04.camel@perches.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=QD7PTDoTKJ7Xg819N/X9fbQ0hWhUP/U0zNIc8U8b15M=;
+        b=CaqJFNJOGlN47WeMCK3yixvUehLHCrmM9N7+HcZubUWPY0Seya35F1mcd1ETbczV/a
+         iAyuFk/X6mZ5+/DoQrDNpo7FZT4SXT8L1i/4eC+nWfNpWF+hoBLoUqIY14jCZlv96SYC
+         WcLCwQmuIIgKMYRrYOXbtzkGHaS8zm87SX8YVK6IOSlCyIusifejHcjAwXBVlzYukhAK
+         fSNVePOGT4RF3wv/esY3SoWbFb9qjT4VDhrOp1ajZqCKbCAUJxl147cvYisAyB/qE0Ve
+         Pjb7Rh9SBR+dy5RKZweBmX+zOZLyS2Wj7icvktw48rWs0ZAApmo65z0cloH07WLAJpyy
+         TH/w==
+X-Gm-Message-State: APjAAAXec0+sNXndZ/kYmdJQVWv3nCONZxjWBigIQHVAfS8rDw0oEGkE
+        wZ2NfRfn4ZVj1G/gSK7LjyBmTiXi
+X-Google-Smtp-Source: APXvYqz8QYHBVW4jvwhPk0+4Sg4vtY8mm4+L3Sxs8VHy/Dsb9SdqndHsmTjxO09mij/b/DclZsRk6w==
+X-Received: by 2002:a1c:a1c1:: with SMTP id k184mr4772701wme.81.1562099730087;
+        Tue, 02 Jul 2019 13:35:30 -0700 (PDT)
+Received: from blackbox.darklights.net (p200300F133D62000A09003363445C98E.dip0.t-ipconnect.de. [2003:f1:33d6:2000:a090:336:3445:c98e])
+        by smtp.googlemail.com with ESMTPSA id s12sm100041wmh.34.2019.07.02.13.35.28
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 02 Jul 2019 13:35:29 -0700 (PDT)
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To:     linux-mips@vger.kernel.org, devicetree@vger.kernel.org,
+        john@phrozen.org, kishon@ti.com, robh+dt@kernel.org
+Cc:     linux-kernel@vger.kernel.org, hauke@hauke-m.de,
+        paul.burton@mips.com, ralf@linux-mips.org, mark.rutland@arm.com,
+        ms@dev.tdt.de,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH 1/4] dt-bindings: phy: add binding for the Lantiq VRX200 and ARX300 PCIe PHYs
+Date:   Tue,  2 Jul 2019 22:35:20 +0200
+Message-Id: <20190702203523.2412-2-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.22.0
+In-Reply-To: <20190702203523.2412-1-martin.blumenstingl@googlemail.com>
+References: <20190702203523.2412-1-martin.blumenstingl@googlemail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c3b83ba7f9b003dd4fb9cad885461ce93165dc04.camel@perches.com>
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Sat, Jun 29, 2019 at 09:45:10AM -0700, Joe Perches wrote:
-> On Sat, 2019-06-29 at 17:25 +0300, Alexey Dobriyan wrote:
-> > On Tue, Jun 11, 2019 at 03:00:10PM -0600, Andreas Dilger wrote:
-> > > On Jun 11, 2019, at 2:48 PM, Andrew Morton <akpm@linux-foundation.org> wrote:
-> > > > On Wed, 12 Jun 2019 01:08:36 +0530 Shyam Saini <shyam.saini@amarulasolutions.com> wrote:
-> > > I did a check, and FIELD_SIZEOF() is used about 350x, while sizeof_field()
-> > > is about 30x, and SIZEOF_FIELD() is only about 5x.
-> > > 
-> > > That said, I'm much more in favour of "sizeof_field()" or "sizeof_member()"
-> > > than FIELD_SIZEOF().  Not only does that better match "offsetof()", with
-> > > which it is closely related, but is also closer to the original "sizeof()".
-> > > 
-> > > Since this is a rather trivial change, it can be split into a number of
-> > > patches to get approval/landing via subsystem maintainers, and there is no
-> > > huge urgency to remove the original macros until the users are gone.  It
-> > > would make sense to remove SIZEOF_FIELD() and sizeof_field() quickly so
-> > > they don't gain more users, and the remaining FIELD_SIZEOF() users can be
-> > > whittled away as the patches come through the maintainer trees.
-> > 
-> > The signature should be
-> > 
-> > 	sizeof_member(T, m)
-> > 
-> > it is proper English,
-> > it is lowercase, so is easier to type,
-> > it uses standard term (member, not field),
-> > it blends in with standard "sizeof" operator,
-> 
-> yes please.
-> 
-> Also, a simple script conversion applied
-> immediately after an rc1 might be easiest
-> rather than individual patches.
+Add the bindings for the PCIe PHY on Lantiq VRX200 and ARX300 SoCs.
+The IP block contains settings for the PHY and a PLL.
+The PLL mode is configurable through a dedicated #phy-cell in .dts.
 
-This seems reasonable to me. I think the patch steps would be:
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+---
+ .../bindings/phy/lantiq,vrx200-pcie-phy.yaml  | 87 +++++++++++++++++++
+ .../dt-bindings/phy/phy-lantiq-vrx200-pcie.h  | 11 +++
+ 2 files changed, 98 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/phy/lantiq,vrx200-pcie-phy.yaml
+ create mode 100644 include/dt-bindings/phy/phy-lantiq-vrx200-pcie.h
 
-1) implement sizeof_member(T, m) as a stand-alone macro
-2) do a scripted replacement of all identical macros.
-3) remove all the identical macros.
-
-Step 2 can be a patch that includes the script used to do the
-replacement. That way Linus can choose to just run the script instead of
-taking the patch.
-
+diff --git a/Documentation/devicetree/bindings/phy/lantiq,vrx200-pcie-phy.yaml b/Documentation/devicetree/bindings/phy/lantiq,vrx200-pcie-phy.yaml
+new file mode 100644
+index 000000000000..b7b222e772d0
+--- /dev/null
++++ b/Documentation/devicetree/bindings/phy/lantiq,vrx200-pcie-phy.yaml
+@@ -0,0 +1,87 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/phy/lantiq,vrx200-pcie-phy.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Lantiq VRX200 and ARX300 PCIe PHY Device Tree Bindings
++
++maintainers:
++  - Martin Blumenstingl <martin.blumenstingl@googlemail.com>
++
++properties:
++  "#phy-cells":
++    const: 1
++    description: selects the PHY mode as defined in <dt-bindings/phy/phy-lantiq-vrx200-pcie.h>
++
++  compatible:
++    enum:
++      - lantiq,vrx200-pcie-phy
++      - lantiq,arx300-pcie-phy
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    items:
++      - description: PHY module clock
++      - description: PDI register clock
++
++  clock-names:
++    items:
++      - const: phy
++      - const: pdi
++
++  resets:
++    items:
++      - description: exclusive PHY reset line
++      - description: shared reset line between the PCIe PHY and PCIe controller
++
++  resets-names:
++    items:
++      - const: phy
++      - const: pcie
++
++  lantiq,rcu:
++    maxItems: 1
++    description: phandle to the RCU syscon
++
++  lantiq,rcu-endian-offset:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: the offset of the endian registers for this PHY instance in the RCU syscon
++
++  lantiq,rcu-big-endian-mask:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: the mask to set the PDI (PHY) registers for this PHY instance to big endian
++
++required:
++  - "#phy-cells"
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++  - resets
++  - reset-names
++  - lantiq,rcu
++  - lantiq,rcu-endian-offset
++  - lantiq,rcu-big-endian-mask
++
++additionalProperties: false
++
++examples:
++  - |
++    pcie0_phy: phy@106800 {
++        compatible = "lantiq,vrx200-pcie-phy";
++        reg = <0x106800 0x100>;
++        lantiq,rcu = <&rcu0>;
++        lantiq,rcu-endian-offset = <0x4c>;
++        lantiq,rcu-big-endian-mask = <0x80>; /* bit 7 */
++        big-endian;
++        clocks = <&pmu PCIE_PHY>, <&pmu PCIE_PHY_PDI>;
++        clock-names = "phy", "pdi";
++        resets = <&reset0 12 24>, <&reset0 22 22>;
++        reset-names = "phy", "pcie";
++        #phy-cells = <1>;
++    };
++
++...
+diff --git a/include/dt-bindings/phy/phy-lantiq-vrx200-pcie.h b/include/dt-bindings/phy/phy-lantiq-vrx200-pcie.h
+new file mode 100644
+index 000000000000..95a7896356d6
+--- /dev/null
++++ b/include/dt-bindings/phy/phy-lantiq-vrx200-pcie.h
+@@ -0,0 +1,11 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) 2019 Martin Blumenstingl <martin.blumenstingl@googlemail.com>
++ */
++
++#define LANTIQ_PCIE_PHY_MODE_25MHZ		0
++#define LANTIQ_PCIE_PHY_MODE_25MHZ_SSC		1
++#define LANTIQ_PCIE_PHY_MODE_36MHZ		2
++#define LANTIQ_PCIE_PHY_MODE_36MHZ_SSC		3
++#define LANTIQ_PCIE_PHY_MODE_100MHZ		4
++#define LANTIQ_PCIE_PHY_MODE_100MHZ_SSC		5
 -- 
-Kees Cook
+2.22.0
+

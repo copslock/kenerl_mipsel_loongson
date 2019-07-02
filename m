@@ -1,97 +1,111 @@
-Return-Path: <SRS0=dgrR=U6=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=dwk6=VA=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+X-Spam-Status: No, score=-10.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 811F1C5B578
-	for <linux-mips@archiver.kernel.org>; Mon,  1 Jul 2019 20:41:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BDFEDC5B57D
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Jul 2019 00:27:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 54BC620663
-	for <linux-mips@archiver.kernel.org>; Mon,  1 Jul 2019 20:41:58 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 902CE21E6C
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Jul 2019 00:27:04 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K9W18XN5"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="uGGmnOmR"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726658AbfGAUl6 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 1 Jul 2019 16:41:58 -0400
-Received: from mail-yb1-f171.google.com ([209.85.219.171]:39457 "EHLO
-        mail-yb1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726620AbfGAUl5 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 1 Jul 2019 16:41:57 -0400
-Received: by mail-yb1-f171.google.com with SMTP id u9so515057ybu.6
-        for <linux-mips@vger.kernel.org>; Mon, 01 Jul 2019 13:41:57 -0700 (PDT)
+        id S1727084AbfGCA1E (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 2 Jul 2019 20:27:04 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:39509 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726150AbfGCA1E (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 2 Jul 2019 20:27:04 -0400
+Received: by mail-wm1-f68.google.com with SMTP id z23so383552wma.4;
+        Tue, 02 Jul 2019 17:27:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=tmwTjBaBEjCcnXSMwgqKIPST2Lk3AbJK4zNOvtmMH78=;
-        b=K9W18XN5AWgW8FXcrA357ulXlIA+ubp/CK4SQVyS3hsphD51/HpPhfcF4ekzFcR6oz
-         wwX8kp5UNJu/wXdb76Fi2+Kf0zuxndxpcek8J0GRScSd6EPhJ/Rn0wyB6rX1+5Ml7zKN
-         2r54P7rbkiul47QqWMjS7alMGPSrg/2GxGWikS3IpuU7g7509oe2F5VpxPM5KTu8mJ5k
-         u/W9nsNIlOg8D/+Bt9tdt/wr+og6TuDlvqvdKe5l2fRzVQCzJoEH4alZeRB73lKjIjeg
-         ib8FgfEKsvsZysyWAZPAemC5ebOPOvRe3ttAmaHiTcQUn2UsDp5QYBTq1aGWbDshnmsL
-         dC4g==
+        d=googlemail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=+O/4XlmLaQhsCgT7V+9YOmnXRrZX0P274rj7HawDPDc=;
+        b=uGGmnOmRvda3YKo0xznaly0v881+AvMmMbLuaDgk0Pjv00bnUVWBMhCL0lvOR3JfEf
+         AFrm/yStdB5n+mQAOeN2gXP4JRCSYbsnHnLWi/VPoHZGJDOLlwDOI85Gmowdkd98LoFm
+         3vW36XqWaXkKQgVXTSUb9j8WtJ1hHPjUOFdYnFVudX37IOtaNE7NMB+R5mJHbeGm1yQD
+         aoMl//ecNu8rE8XolH86QwR26UQHaSYsaGbZ2HMqxVDqlZWyE6hiWpED8mcSvzXG1efz
+         IZCG3qSXkr7lbzRL0Zedpr0b83FbLgQVF4MLbJF3Sum3+fyddZ0JDkhVLYFP+LEUxeob
+         14CA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tmwTjBaBEjCcnXSMwgqKIPST2Lk3AbJK4zNOvtmMH78=;
-        b=Dd3Lij/XyYLENL5JIGKif8tm8sHUwnksYZaQW0Qi1FDB7kK/lAoiIu88UCnFXl1S4O
-         qZOsWqz0GX3FnxtGfEKtqIQNvBu/oWL3N2jszknFwEZdA1LooMnBtwdcXpI3ZB9N0UbD
-         sh5mQ3VTlz+D+1m2KsYQqamO5mObhbZ/Fq63NEtmTIU2oktwao/dIsGNNYMOGgU7lKEF
-         BQQShYBmimafiZ9jremxc8WZGH7wFUQ7khP/oSGx4sYmkMRgSYVY8qBHs2gcLypsF3tI
-         BMzwt1zYh/xCKlSpUvIY3iySbcDsiTC7YbxVa28bUkaVF07T6Ue8HHYt2EPMPV4QWkYJ
-         svgw==
-X-Gm-Message-State: APjAAAXPEvFRDX3rtAS/fmv797vEXa1ykeaGJ/wcLN9mOH63yqxaLgru
-        M5wjh2udxUWTsrSuRBVqa/d1JuxSh/xb/s65Ejw=
-X-Google-Smtp-Source: APXvYqxxxgpxJDDF8xU5KVDE2Gpc2d8PvvAArpHn2yL6ZOgOW6L7qAb26KF7N1YyzuBYXl5EuBl/+eSFWnjw4h5zEKs=
-X-Received: by 2002:a25:bacf:: with SMTP id a15mr17361865ybk.213.1562013717224;
- Mon, 01 Jul 2019 13:41:57 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=+O/4XlmLaQhsCgT7V+9YOmnXRrZX0P274rj7HawDPDc=;
+        b=R7v9xpiNGhWzxUmuYDOuSQygt0AsBOluF2/1jR3ZGT7n65mtGmgUSAOZwUUZ1oNwpN
+         BpxmN0SbPNPaY+o09CCMXP0OANha1t59n/OAKylE+GTp6KviXk6SR0DGyO+SPv1fAIdm
+         3GxY7Y+ax6gwtIcycQZ8si2OfZ8SQRGPmC77gODllQ2vPm8gT5hPn83mJSXHHjSWDdWv
+         aSnT9ZhiLeDvxKQTsrFjeT91w66p125uphJCnzbZJe9kyBVy/td6NfV7DFK8sXJkUj+Y
+         dFG/WV4CVDV0TNybfVPxXOZoxpOhZk6hd7FiOjvYMu/1WTdSHfMGyuJXr6OjL7XRbQEm
+         gyjg==
+X-Gm-Message-State: APjAAAU/GR7gxjaysaAtLCIw/+Diva69PR/R5dH8Oel/yPOi6se9qq4R
+        j3Gaw7dbbm920de3D3xUL3rUMKSg
+X-Google-Smtp-Source: APXvYqz/C8NzljAqkT2+IPe9wv6/jTO8TaQOLQdWFlx/v7fDDx4zsKAxYUR3mJvsWfOyeIqwFAEgfg==
+X-Received: by 2002:a1c:ddd6:: with SMTP id u205mr4377605wmg.54.1562099733574;
+        Tue, 02 Jul 2019 13:35:33 -0700 (PDT)
+Received: from blackbox.darklights.net (p200300F133D62000A09003363445C98E.dip0.t-ipconnect.de. [2003:f1:33d6:2000:a090:336:3445:c98e])
+        by smtp.googlemail.com with ESMTPSA id s12sm100041wmh.34.2019.07.02.13.35.31
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 02 Jul 2019 13:35:32 -0700 (PDT)
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To:     linux-mips@vger.kernel.org, devicetree@vger.kernel.org,
+        john@phrozen.org, kishon@ti.com, robh+dt@kernel.org
+Cc:     linux-kernel@vger.kernel.org, hauke@hauke-m.de,
+        paul.burton@mips.com, ralf@linux-mips.org, mark.rutland@arm.com,
+        ms@dev.tdt.de,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH 3/4] phy: enable compile-testing for the Lantiq PHY drivers
+Date:   Tue,  2 Jul 2019 22:35:22 +0200
+Message-Id: <20190702203523.2412-4-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.22.0
+In-Reply-To: <20190702203523.2412-1-martin.blumenstingl@googlemail.com>
+References: <20190702203523.2412-1-martin.blumenstingl@googlemail.com>
 MIME-Version: 1.0
-References: <b201c33a-5beb-3dfb-b99b-d9b8fc6c2c64@hauke-m.de>
- <CA+QBN9A3JmvfCZkXZ2-Yd=nkQCQD48OgYEpe+Po4MuZFpmnPrQ@mail.gmail.com>
- <20190624175553.2tpepq5zsamovrra@pburton-laptop> <060345a6-bef2-ec17-e264-eccda29f5c8b@gentoo.org>
- <CAEdQ38F6gG1Ee5h6PXZ-wuxuOxAycaWBD_+hTNRjtfQHNw696g@mail.gmail.com>
- <CA+QBN9DO9sAadwFU6kpAfBxZuTVEx8_9DUYFBs6fTA6==cVDwQ@mail.gmail.com>
- <CA+QBN9B33Crhyahn5SXZJY8Pk7tDnhqgReuJKx5FhgguG=GXWg@mail.gmail.com>
- <f633861c-900f-02c5-e592-2ea1c3f1f8f2@gentoo.org> <CA+QBN9Bdnppin1s882OzvkOFCoWmOi_ctWkas2EsxD2mintS7w@mail.gmail.com>
- <5b019eaa-5e2f-b9ce-9c56-5bb0cfc253ed@gentoo.org>
-In-Reply-To: <5b019eaa-5e2f-b9ce-9c56-5bb0cfc253ed@gentoo.org>
-From:   Carlo Pisani <carlojpisani@gmail.com>
-Date:   Mon, 1 Jul 2019 22:41:45 +0200
-Message-ID: <CA+QBN9CDWAe6YQ6nvnWOK5MrjdCD-PrQehsaT4PJf13cEPCBoQ@mail.gmail.com>
-Subject: Re: SGI-IP30
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     Matt Turner <mattst88@gmail.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        =?UTF-8?Q?Ren=C3=A9_Rebe?= <rene@exactcode.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-> The early widget addresses you show, 0x1axxxxxx
+Unconditionally include the lantiq subdirectory in the phy Makefile.
 
-can you give me a memory mapping table for the those XIO devices?
+All drivers in there have their dependencies maintained. One of these
+(optional) dependencies is COMPILE_TEST, however this can only be
+evaluated when Kconfig scans the lantiq subdirectory.
 
-> shows Slot D (widget 9) being populated by something that has a BRIDGE chip in it.
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+---
+ drivers/phy/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The BRIGE is a ShoeHorn. I have three units here and two Octanes.
-They have always shown the same behavior.
+diff --git a/drivers/phy/Makefile b/drivers/phy/Makefile
+index 0d9fddc498a6..c96a1afc95bd 100644
+--- a/drivers/phy/Makefile
++++ b/drivers/phy/Makefile
+@@ -10,7 +10,6 @@ obj-$(CONFIG_PHY_XGENE)			+= phy-xgene.o
+ obj-$(CONFIG_PHY_PISTACHIO_USB)		+= phy-pistachio-usb.o
+ obj-$(CONFIG_ARCH_SUNXI)		+= allwinner/
+ obj-$(CONFIG_ARCH_MESON)		+= amlogic/
+-obj-$(CONFIG_LANTIQ)			+= lantiq/
+ obj-$(CONFIG_ARCH_MEDIATEK)		+= mediatek/
+ obj-$(CONFIG_ARCH_RENESAS)		+= renesas/
+ obj-$(CONFIG_ARCH_ROCKCHIP)		+= rockchip/
+@@ -19,6 +18,7 @@ obj-y					+= broadcom/	\
+ 					   cadence/	\
+ 					   freescale/	\
+ 					   hisilicon/	\
++					   lantiq/	\
+ 					   marvell/	\
+ 					   motorola/	\
+ 					   mscc/	\
+-- 
+2.22.0
 
-My conclusion is: the hardware is not damaged, it's a software problem.
-
-> Does that address space probe correctly (0x19xxxxxx)?
-
-It seems so. Anyway, even the ShoeBox is probed correctly but it
-doesn't work correctly!
-It doesn't panic, but it shows a lot of quirks.
-
-What have I to enable in the kernel to debug the PCI and stuff?

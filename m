@@ -2,110 +2,60 @@ Return-Path: <SRS0=dwk6=VA=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.9 required=3.0 tests=DATE_IN_PAST_03_06,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BDFEDC5B57D
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Jul 2019 00:27:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D7B3C5B57D
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Jul 2019 00:40:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 902CE21E6C
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Jul 2019 00:27:04 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="uGGmnOmR"
+	by mail.kernel.org (Postfix) with ESMTP id 70BA4218AD
+	for <linux-mips@archiver.kernel.org>; Wed,  3 Jul 2019 00:40:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727084AbfGCA1E (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 2 Jul 2019 20:27:04 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:39509 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726150AbfGCA1E (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 2 Jul 2019 20:27:04 -0400
-Received: by mail-wm1-f68.google.com with SMTP id z23so383552wma.4;
-        Tue, 02 Jul 2019 17:27:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=+O/4XlmLaQhsCgT7V+9YOmnXRrZX0P274rj7HawDPDc=;
-        b=uGGmnOmRvda3YKo0xznaly0v881+AvMmMbLuaDgk0Pjv00bnUVWBMhCL0lvOR3JfEf
-         AFrm/yStdB5n+mQAOeN2gXP4JRCSYbsnHnLWi/VPoHZGJDOLlwDOI85Gmowdkd98LoFm
-         3vW36XqWaXkKQgVXTSUb9j8WtJ1hHPjUOFdYnFVudX37IOtaNE7NMB+R5mJHbeGm1yQD
-         aoMl//ecNu8rE8XolH86QwR26UQHaSYsaGbZ2HMqxVDqlZWyE6hiWpED8mcSvzXG1efz
-         IZCG3qSXkr7lbzRL0Zedpr0b83FbLgQVF4MLbJF3Sum3+fyddZ0JDkhVLYFP+LEUxeob
-         14CA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=+O/4XlmLaQhsCgT7V+9YOmnXRrZX0P274rj7HawDPDc=;
-        b=R7v9xpiNGhWzxUmuYDOuSQygt0AsBOluF2/1jR3ZGT7n65mtGmgUSAOZwUUZ1oNwpN
-         BpxmN0SbPNPaY+o09CCMXP0OANha1t59n/OAKylE+GTp6KviXk6SR0DGyO+SPv1fAIdm
-         3GxY7Y+ax6gwtIcycQZ8si2OfZ8SQRGPmC77gODllQ2vPm8gT5hPn83mJSXHHjSWDdWv
-         aSnT9ZhiLeDvxKQTsrFjeT91w66p125uphJCnzbZJe9kyBVy/td6NfV7DFK8sXJkUj+Y
-         dFG/WV4CVDV0TNybfVPxXOZoxpOhZk6hd7FiOjvYMu/1WTdSHfMGyuJXr6OjL7XRbQEm
-         gyjg==
-X-Gm-Message-State: APjAAAU/GR7gxjaysaAtLCIw/+Diva69PR/R5dH8Oel/yPOi6se9qq4R
-        j3Gaw7dbbm920de3D3xUL3rUMKSg
-X-Google-Smtp-Source: APXvYqz/C8NzljAqkT2+IPe9wv6/jTO8TaQOLQdWFlx/v7fDDx4zsKAxYUR3mJvsWfOyeIqwFAEgfg==
-X-Received: by 2002:a1c:ddd6:: with SMTP id u205mr4377605wmg.54.1562099733574;
-        Tue, 02 Jul 2019 13:35:33 -0700 (PDT)
-Received: from blackbox.darklights.net (p200300F133D62000A09003363445C98E.dip0.t-ipconnect.de. [2003:f1:33d6:2000:a090:336:3445:c98e])
-        by smtp.googlemail.com with ESMTPSA id s12sm100041wmh.34.2019.07.02.13.35.31
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 02 Jul 2019 13:35:32 -0700 (PDT)
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-To:     linux-mips@vger.kernel.org, devicetree@vger.kernel.org,
-        john@phrozen.org, kishon@ti.com, robh+dt@kernel.org
-Cc:     linux-kernel@vger.kernel.org, hauke@hauke-m.de,
-        paul.burton@mips.com, ralf@linux-mips.org, mark.rutland@arm.com,
-        ms@dev.tdt.de,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: [PATCH 3/4] phy: enable compile-testing for the Lantiq PHY drivers
-Date:   Tue,  2 Jul 2019 22:35:22 +0200
-Message-Id: <20190702203523.2412-4-martin.blumenstingl@googlemail.com>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190702203523.2412-1-martin.blumenstingl@googlemail.com>
-References: <20190702203523.2412-1-martin.blumenstingl@googlemail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1726736AbfGCAkf convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 2 Jul 2019 20:40:35 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:45130 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727099AbfGCAkf (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 2 Jul 2019 20:40:35 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id C0FD613EABC39;
+        Tue,  2 Jul 2019 14:06:03 -0700 (PDT)
+Date:   Tue, 02 Jul 2019 14:06:03 -0700 (PDT)
+Message-Id: <20190702.140603.579018215880523684.davem@davemloft.net>
+To:     opensource@vdorst.com
+Cc:     sean.wang@mediatek.com, f.fainelli@gmail.com,
+        linux@armlinux.org.uk, matthias.bgg@gmail.com, andrew@lunn.ch,
+        vivien.didelot@gmail.com, frank-w@public-files.de,
+        netdev@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        linux-mips@vger.kernel.org
+Subject: Re: [PATCH] net: ethernet: mediatek: Allow non TRGMII mode with
+ MT7621 DDR2 devices
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190629122451.19578-1-opensource@vdorst.com>
+References: <20190629122451.19578-1-opensource@vdorst.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8BIT
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 02 Jul 2019 14:06:04 -0700 (PDT)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Unconditionally include the lantiq subdirectory in the phy Makefile.
+From: René van Dorst <opensource@vdorst.com>
+Date: Sat, 29 Jun 2019 14:24:51 +0200
 
-All drivers in there have their dependencies maintained. One of these
-(optional) dependencies is COMPILE_TEST, however this can only be
-evaluated when Kconfig scans the lantiq subdirectory.
+> No reason to error out on a MT7621 device with DDR2 memory when non
+> TRGMII mode is selected.
+> Only MT7621 DDR2 clock setup is not supported for TRGMII mode.
+> But non TRGMII mode doesn't need any special clock setup.
+> 
+> Signed-off-by: René van Dorst <opensource@vdorst.com>
 
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
----
- drivers/phy/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/phy/Makefile b/drivers/phy/Makefile
-index 0d9fddc498a6..c96a1afc95bd 100644
---- a/drivers/phy/Makefile
-+++ b/drivers/phy/Makefile
-@@ -10,7 +10,6 @@ obj-$(CONFIG_PHY_XGENE)			+= phy-xgene.o
- obj-$(CONFIG_PHY_PISTACHIO_USB)		+= phy-pistachio-usb.o
- obj-$(CONFIG_ARCH_SUNXI)		+= allwinner/
- obj-$(CONFIG_ARCH_MESON)		+= amlogic/
--obj-$(CONFIG_LANTIQ)			+= lantiq/
- obj-$(CONFIG_ARCH_MEDIATEK)		+= mediatek/
- obj-$(CONFIG_ARCH_RENESAS)		+= renesas/
- obj-$(CONFIG_ARCH_ROCKCHIP)		+= rockchip/
-@@ -19,6 +18,7 @@ obj-y					+= broadcom/	\
- 					   cadence/	\
- 					   freescale/	\
- 					   hisilicon/	\
-+					   lantiq/	\
- 					   marvell/	\
- 					   motorola/	\
- 					   mscc/	\
--- 
-2.22.0
-
+Applied to net-next, thanks.

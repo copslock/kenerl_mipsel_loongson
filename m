@@ -1,417 +1,131 @@
-Return-Path: <SRS0=dwk6=VA=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=tQwU=VB=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 59BA4C0650E
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Jul 2019 18:44:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C62C3C06513
+	for <linux-mips@archiver.kernel.org>; Thu,  4 Jul 2019 12:23:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id F26BE21852
-	for <linux-mips@archiver.kernel.org>; Wed,  3 Jul 2019 18:44:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9B49D2064A
+	for <linux-mips@archiver.kernel.org>; Thu,  4 Jul 2019 12:23:40 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=vdorst.com header.i=@vdorst.com header.b="RVNsqyJj"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="lB60wAvd"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726951AbfGCSov (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 3 Jul 2019 14:44:51 -0400
-Received: from mx.0dd.nl ([5.2.79.48]:33268 "EHLO mx.0dd.nl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726430AbfGCSov (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 3 Jul 2019 14:44:51 -0400
-Received: from mail.vdorst.com (mail.vdorst.com [IPv6:fd01::250])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx.0dd.nl (Postfix) with ESMTPS id 80B105FFEB;
-        Wed,  3 Jul 2019 20:44:46 +0200 (CEST)
-Authentication-Results: mx.0dd.nl;
-        dkim=pass (2048-bit key; secure) header.d=vdorst.com header.i=@vdorst.com header.b="RVNsqyJj";
-        dkim-atps=neutral
-Received: from pc-rene.vdorst.com (pc-rene.vdorst.com [192.168.2.125])
-        by mail.vdorst.com (Postfix) with ESMTPA id 366EA1CF14F6;
-        Wed,  3 Jul 2019 20:44:46 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.vdorst.com 366EA1CF14F6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vdorst.com;
-        s=default; t=1562179486;
-        bh=hxJWsmSkxYpQJrqKnqk3u8T+dtiNZjot3SQsJMrlmjQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=RVNsqyJjB6oHbWrBm+q0X0ViI2UNm6oo/cQHAYS13Fgg6nc4srYMBlwfnm4alNKWb
-         une7RVaOZaXuJmmtbaiR2NEzFMYWQBHRhQQpGaFYbfSVQ+Vl2nnzztJvCi3B2uWDWU
-         Z8qbtUJ228xF/pKDVU29M7QShTedfFwJKtFjvUI3Cxq7ANVsxjQeIjFdbaAppr3KSI
-         hcMh2xtn+GcN05wWDBoyNKRP0X+slW1T0H4xR146K62weYoca6nmQNVj4BlO6wlEV0
-         Wgm9yTJFHXdDN8387HnauO9+1HenNQghlrUlyvLsU8LcYyZzheDaDiyGCBxAnaW/J6
-         90th4YMf2YZwg==
-From:   =?UTF-8?q?Ren=C3=A9=20van=20Dorst?= <opensource@vdorst.com>
-To:     sean.wang@mediatek.com, f.fainelli@gmail.com,
-        linux@armlinux.org.uk, davem@davemloft.net, matthias.bgg@gmail.com,
-        andrew@lunn.ch, vivien.didelot@gmail.com
-Cc:     frank-w@public-files.de, netdev@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-mips@vger.kernel.org,
-        =?UTF-8?q?Ren=C3=A9=20van=20Dorst?= <opensource@vdorst.com>
-Subject: [PATCH net-next v2] net: ethernet: mediatek: Fix overlapping capability bits.
-Date:   Wed,  3 Jul 2019 20:42:04 +0200
-Message-Id: <20190703184203.20137-1-opensource@vdorst.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727662AbfGDMXk (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 4 Jul 2019 08:23:40 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:36012 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727602AbfGDMXk (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 4 Jul 2019 08:23:40 -0400
+Received: by mail-wr1-f65.google.com with SMTP id n4so6456754wrs.3;
+        Thu, 04 Jul 2019 05:23:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qwx+amj3WRfYzgXNR4PosQkjB/DhPpsKz3xM2MWOuhg=;
+        b=lB60wAvdwAXQPsIs0rxtxyLdOEgh4rYG/iTiyWUT0RtuRSl0vJcW+Q7bSy73jbhUtF
+         +sIwLa+L+VPr4NiFKwfd96eSh6e+gqu/qZz7HWAqF+/5chuK3EPKhx+n+6H5X/JGNH/2
+         o1Q2yvzbViaPnvp4bFLrNfA2TY3vfbHILazOdDHZ+pGqKy2+BqPBPM3Uyjl5OuEyE2NH
+         3RZW1TBWpgkQaoQ3zm/malU4rhSP1Ke/DjuP3TOw7LsAuBJLCvJ+9toT+ObF3dvIor5V
+         dm/aaAEgNo7XKIIkc1uGx3RT8k3vduNC1UXOPcNPRSX25DVYXxl3N3sZ3JV4pnsW/Fqs
+         oQQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qwx+amj3WRfYzgXNR4PosQkjB/DhPpsKz3xM2MWOuhg=;
+        b=jOnQk3XFNFpHqKNOqRU8EdcxLHdTvhZ4nZtYnal+MlIsCYJN/mWroDRuo41iQU5FC1
+         PMU/QPa3fEo3RL7qZNeED+HGwdYjILOflUS3U6QUyhbyWerTINstkVqccYc7zLdCYTQL
+         NRoD/XoJDD80t/24sazwfQeCG4QHCcdTTrXoud7cPVoKwKoZn+7jws/hcuZAVdJajpOZ
+         1vxezMtQh9HgWV9+64/r/IH3tg0ItH8jM+UBEe7I2OLmdksLnvkjPg1Rcg5CQROG6SFC
+         /w4XJ4rlVlxQlkHDVtpOIk+Ol1GQTotYd8ewFuYfbNmUG683qPL6FtG5IKg1wzgAxIfs
+         +HAA==
+X-Gm-Message-State: APjAAAXU5vBZ+gc7gP7j9sZmHiBYMTW8Bdj2hchdCUinmvSyJ18FLI5h
+        WoFbPMuNrI8f+YMF1c4shDXNIiqL
+X-Google-Smtp-Source: APXvYqyZv+I/AMA5X7FL1cYGtfnx1spJoOe0Vjclwt6jhT7+cAjxbhj3KltZ0L/0ZqM8W8mqrA/1JQ==
+X-Received: by 2002:a5d:438f:: with SMTP id i15mr28646159wrq.37.1562243017363;
+        Thu, 04 Jul 2019 05:23:37 -0700 (PDT)
+Received: from blackbox.darklights.net (p200300F133D6200090FB6F2A0C02D39B.dip0.t-ipconnect.de. [2003:f1:33d6:2000:90fb:6f2a:c02:d39b])
+        by smtp.googlemail.com with ESMTPSA id w10sm5141825wru.76.2019.07.04.05.23.35
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 04 Jul 2019 05:23:36 -0700 (PDT)
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To:     linux-mips@vger.kernel.org, devicetree@vger.kernel.org,
+        john@phrozen.org, kishon@ti.com, robh+dt@kernel.org
+Cc:     linux-kernel@vger.kernel.org, hauke@hauke-m.de,
+        paul.burton@mips.com, ralf@linux-mips.org, mark.rutland@arm.com,
+        ms@dev.tdt.de,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH v2 0/4] Lantiq VRX200/ARX300 PCIe PHY driver
+Date:   Thu,  4 Jul 2019 14:23:15 +0200
+Message-Id: <20190704122319.8983-1-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Both MTK_TRGMII_MT7621_CLK and MTK_PATH_BIT are defined as bit 10.
+Various Lantiq (now Intel) SoCs contain one or more PCIe controllers
+and PHYs.
+This adds a driver for the PCIe PHYs found on the Lantiq VRX200 and
+ARX300 SoCs. GRX390 should also be supported as far as I can tell,
+but I don't have any of these devices to further verify that.
 
-This can causes issues on non-MT7621 devices which has the
-MTK_PATH_BIT(MTK_ETH_PATH_GMAC1_RGMII) and MTK_TRGMII capability set.
-The wrong TRGMII setup code can be executed. The current wrongly executed
-code doesn’t do any harm on MT7623 and the TRGMII setup for the MT7623
-SOC side is done in MT7530 driver So it wasn’t noticed in the test.
+I have tested this PCIe PHY driver with the out-of-tree PCIe controller
+driver in OpenWrt: [0]
 
-Move all capability bits in one enum so that they are all unique and easy
-to expand in the future.
+dependencies for this series:
+none
 
-Because mtk_eth_path enum is merged in to mkt_eth_capabilities, the
-variable path value is no longer between 0 to number of paths,
-mtk_eth_path_name can’t be used anymore in this form. Convert the
-mtk_eth_path_name array to a function to lookup the pathname.
+patches 1-3 should go through the PHY tree
+patch 4 should go through the mips tree
 
-The old code walked thru the mtk_eth_path enum, which is also merged
-with mkt_eth_capabilities. Expand array mtk_eth_muxc so it can store the
-name and capability bit of the mux. Convert the code so it can walk thru
-the mtk_eth_muxc array.
+I am aware that this series is too late for the v5.3 development cycle.
+Getting review comments is still appreciated so this can be queued early
+in the v5.4 development cycle.
 
-Fixes: 8efaa653a8a5 ("net: ethernet: mediatek: Add MT7621 TRGMII mode
-support")
-Signed-off-by: René van Dorst <opensource@vdorst.com>
+Changes since v1 at [1]:
+- many thanks to Rob for giving me many hints regarding the .yaml bindings!
+- update the .yaml binding license to (GPL-2.0-only OR BSD-2-Clause)
+- changed the property lantiq,rcu to type phandle
+- add the optional big-endian and little-endian boolean properties
+- use numeric values for the clock phandles in the example to make the
+  dt_binding_check build happy
+- replaced two mdelay(1); with usleep_range(1000, 2000); in patch #2
+  (spotted and reported by Hauke off-list)
 
-v1->v2:
-- Move all capability bits in one enum, suggested by Willem de Bruijn
-- Convert the mtk_eth_path_name array to a function to lookup the pathname
-- Expand array mtk_eth_muxc so it can also store the name and capability
-  bit of the mux
-- Updated commit message
----
- drivers/net/ethernet/mediatek/mtk_eth_path.c |  81 ++++++++----
- drivers/net/ethernet/mediatek/mtk_eth_soc.h  | 129 ++++++++++---------
- 2 files changed, 125 insertions(+), 85 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_path.c b/drivers/net/ethernet/mediatek/mtk_eth_path.c
-index 61f705d945e5..7f05880cf9ef 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_path.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_path.c
-@@ -13,19 +13,32 @@
- #include "mtk_eth_soc.h"
- 
- struct mtk_eth_muxc {
--	int (*set_path)(struct mtk_eth *eth, int path);
-+	const char	*name;
-+	int		cap_bit;
-+	int		(*set_path)(struct mtk_eth *eth, int path);
- };
- 
--static const char * const mtk_eth_mux_name[] = {
--	"mux_gdm1_to_gmac1_esw", "mux_gmac2_gmac0_to_gephy",
--	"mux_u3_gmac2_to_qphy", "mux_gmac1_gmac2_to_sgmii_rgmii",
--	"mux_gmac12_to_gephy_sgmii",
--};
--
--static const char * const mtk_eth_path_name[] = {
--	"gmac1_rgmii", "gmac1_trgmii", "gmac1_sgmii", "gmac2_rgmii",
--	"gmac2_sgmii", "gmac2_gephy", "gdm1_esw",
--};
-+static const char *mtk_eth_path_name(int path)
-+{
-+	switch (path) {
-+	case MTK_ETH_PATH_GMAC1_RGMII:
-+		return "gmac1_rgmii";
-+	case MTK_ETH_PATH_GMAC1_TRGMII:
-+		return "gmac1_trgmii";
-+	case MTK_ETH_PATH_GMAC1_SGMII:
-+		return "gmac1_sgmii";
-+	case MTK_ETH_PATH_GMAC2_RGMII:
-+		return "gmac2_rgmii";
-+	case MTK_ETH_PATH_GMAC2_SGMII:
-+		return "gmac2_sgmii";
-+	case MTK_ETH_PATH_GMAC2_GEPHY:
-+		return "gmac2_gephy";
-+	case MTK_ETH_PATH_GDM1_ESW:
-+		return "gdm1_esw";
-+	default:
-+		return "unknown path";
-+	}
-+}
- 
- static int set_mux_gdm1_to_gmac1_esw(struct mtk_eth *eth, int path)
- {
-@@ -53,7 +66,7 @@ static int set_mux_gdm1_to_gmac1_esw(struct mtk_eth *eth, int path)
- 	}
- 
- 	dev_dbg(eth->dev, "path %s in %s updated = %d\n",
--		mtk_eth_path_name[path], __func__, updated);
-+		mtk_eth_path_name(path), __func__, updated);
- 
- 	return 0;
- }
-@@ -76,7 +89,7 @@ static int set_mux_gmac2_gmac0_to_gephy(struct mtk_eth *eth, int path)
- 		regmap_update_bits(eth->infra, INFRA_MISC2, GEPHY_MAC_SEL, val);
- 
- 	dev_dbg(eth->dev, "path %s in %s updated = %d\n",
--		mtk_eth_path_name[path], __func__, updated);
-+		mtk_eth_path_name(path), __func__, updated);
- 
- 	return 0;
- }
-@@ -99,7 +112,7 @@ static int set_mux_u3_gmac2_to_qphy(struct mtk_eth *eth, int path)
- 		regmap_update_bits(eth->infra, INFRA_MISC2, CO_QPHY_SEL, val);
- 
- 	dev_dbg(eth->dev, "path %s in %s updated = %d\n",
--		mtk_eth_path_name[path], __func__, updated);
-+		mtk_eth_path_name(path), __func__, updated);
- 
- 	return 0;
- }
-@@ -137,7 +150,7 @@ static int set_mux_gmac1_gmac2_to_sgmii_rgmii(struct mtk_eth *eth, int path)
- 				   SYSCFG0_SGMII_MASK, val);
- 
- 	dev_dbg(eth->dev, "path %s in %s updated = %d\n",
--		mtk_eth_path_name[path], __func__, updated);
-+		mtk_eth_path_name(path), __func__, updated);
- 
- 	return 0;
- }
-@@ -168,26 +181,42 @@ static int set_mux_gmac12_to_gephy_sgmii(struct mtk_eth *eth, int path)
- 				   SYSCFG0_SGMII_MASK, val);
- 
- 	dev_dbg(eth->dev, "path %s in %s updated = %d\n",
--		mtk_eth_path_name[path], __func__, updated);
-+		mtk_eth_path_name(path), __func__, updated);
- 
- 	return 0;
- }
- 
- static const struct mtk_eth_muxc mtk_eth_muxc[] = {
--	{ .set_path = set_mux_gdm1_to_gmac1_esw, },
--	{ .set_path = set_mux_gmac2_gmac0_to_gephy, },
--	{ .set_path = set_mux_u3_gmac2_to_qphy, },
--	{ .set_path = set_mux_gmac1_gmac2_to_sgmii_rgmii, },
--	{ .set_path = set_mux_gmac12_to_gephy_sgmii, }
-+	{
-+		.name = "mux_gdm1_to_gmac1_esw",
-+		.cap_bit = MTK_ETH_MUX_GDM1_TO_GMAC1_ESW,
-+		.set_path = set_mux_gdm1_to_gmac1_esw,
-+	}, {
-+		.name = "mux_gmac2_gmac0_to_gephy",
-+		.cap_bit = MTK_ETH_MUX_GMAC2_GMAC0_TO_GEPHY,
-+		.set_path = set_mux_gmac2_gmac0_to_gephy,
-+	}, {
-+		.name = "mux_u3_gmac2_to_qphy",
-+		.cap_bit = MTK_ETH_MUX_U3_GMAC2_TO_QPHY,
-+		.set_path = set_mux_u3_gmac2_to_qphy,
-+	}, {
-+		.name = "mux_gmac1_gmac2_to_sgmii_rgmii",
-+		.cap_bit = MTK_ETH_MUX_GMAC1_GMAC2_TO_SGMII_RGMII,
-+		.set_path = set_mux_gmac1_gmac2_to_sgmii_rgmii,
-+	}, {
-+		.name = "mux_gmac12_to_gephy_sgmii",
-+		.cap_bit = MTK_ETH_MUX_GMAC12_TO_GEPHY_SGMII,
-+		.set_path = set_mux_gmac12_to_gephy_sgmii,
-+	},
- };
- 
- static int mtk_eth_mux_setup(struct mtk_eth *eth, int path)
- {
- 	int i, err = 0;
- 
--	if (!MTK_HAS_CAPS(eth->soc->caps, MTK_PATH_BIT(path))) {
-+	if (!MTK_HAS_CAPS(eth->soc->caps, path)) {
- 		dev_err(eth->dev, "path %s isn't support on the SoC\n",
--			mtk_eth_path_name[path]);
-+			mtk_eth_path_name(path));
- 		return -EINVAL;
- 	}
- 
-@@ -195,14 +224,14 @@ static int mtk_eth_mux_setup(struct mtk_eth *eth, int path)
- 		return 0;
- 
- 	/* Setup MUX in path fabric */
--	for (i = 0; i < MTK_ETH_MUX_MAX; i++) {
--		if (MTK_HAS_CAPS(eth->soc->caps, MTK_MUX_BIT(i))) {
-+	for (i = 0; i < ARRAY_SIZE(mtk_eth_muxc); i++) {
-+		if (MTK_HAS_CAPS(eth->soc->caps, mtk_eth_muxc[i].cap_bit)) {
- 			err = mtk_eth_muxc[i].set_path(eth, path);
- 			if (err)
- 				goto out;
- 		} else {
- 			dev_dbg(eth->dev, "mux %s isn't present on the SoC\n",
--				mtk_eth_mux_name[i]);
-+				mtk_eth_muxc[i].name);
- 		}
- 	}
- 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.h b/drivers/net/ethernet/mediatek/mtk_eth_soc.h
-index 876ce6798709..c6be599ed94d 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.h
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.h
-@@ -592,86 +592,97 @@ struct mtk_rx_ring {
- 	u32 crx_idx_reg;
- };
- 
--enum mtk_eth_mux {
--	MTK_ETH_MUX_GDM1_TO_GMAC1_ESW,
--	MTK_ETH_MUX_GMAC2_GMAC0_TO_GEPHY,
--	MTK_ETH_MUX_U3_GMAC2_TO_QPHY,
--	MTK_ETH_MUX_GMAC1_GMAC2_TO_SGMII_RGMII,
--	MTK_ETH_MUX_GMAC12_TO_GEPHY_SGMII,
--	MTK_ETH_MUX_MAX,
--};
--
--enum mtk_eth_path {
--	MTK_ETH_PATH_GMAC1_RGMII,
--	MTK_ETH_PATH_GMAC1_TRGMII,
--	MTK_ETH_PATH_GMAC1_SGMII,
--	MTK_ETH_PATH_GMAC2_RGMII,
--	MTK_ETH_PATH_GMAC2_SGMII,
--	MTK_ETH_PATH_GMAC2_GEPHY,
--	MTK_ETH_PATH_GDM1_ESW,
--	MTK_ETH_PATH_MAX,
-+enum mkt_eth_capabilities {
-+	MTK_RGMII_BIT = 0,
-+	MTK_TRGMII_BIT,
-+	MTK_SGMII_BIT,
-+	MTK_ESW_BIT,
-+	MTK_GEPHY_BIT,
-+	MTK_MUX_BIT,
-+	MTK_INFRA_BIT,
-+	MTK_SHARED_SGMII_BIT,
-+	MTK_HWLRO_BIT,
-+	MTK_SHARED_INT_BIT,
-+	MTK_TRGMII_MT7621_CLK_BIT,
-+
-+	/* MUX BITS*/
-+	MTK_ETH_MUX_GDM1_TO_GMAC1_ESW_BIT,
-+	MTK_ETH_MUX_GMAC2_GMAC0_TO_GEPHY_BIT,
-+	MTK_ETH_MUX_U3_GMAC2_TO_QPHY_BIT,
-+	MTK_ETH_MUX_GMAC1_GMAC2_TO_SGMII_RGMII_BIT,
-+	MTK_ETH_MUX_GMAC12_TO_GEPHY_SGMII_BIT,
-+
-+	/* PATH BITS */
-+	MTK_ETH_PATH_GMAC1_RGMII_BIT,
-+	MTK_ETH_PATH_GMAC1_TRGMII_BIT,
-+	MTK_ETH_PATH_GMAC1_SGMII_BIT,
-+	MTK_ETH_PATH_GMAC2_RGMII_BIT,
-+	MTK_ETH_PATH_GMAC2_SGMII_BIT,
-+	MTK_ETH_PATH_GMAC2_GEPHY_BIT,
-+	MTK_ETH_PATH_GDM1_ESW_BIT,
- };
- 
- /* Supported hardware group on SoCs */
--#define MTK_RGMII			BIT(0)
--#define MTK_TRGMII			BIT(1)
--#define MTK_SGMII			BIT(2)
--#define MTK_ESW				BIT(3)
--#define MTK_GEPHY			BIT(4)
--#define MTK_MUX				BIT(5)
--#define MTK_INFRA			BIT(6)
--#define MTK_SHARED_SGMII		BIT(7)
--#define MTK_HWLRO			BIT(8)
--#define MTK_SHARED_INT			BIT(9)
--#define MTK_TRGMII_MT7621_CLK		BIT(10)
-+#define MTK_RGMII		BIT(MTK_RGMII_BIT)
-+#define MTK_TRGMII		BIT(MTK_TRGMII_BIT)
-+#define MTK_SGMII		BIT(MTK_SGMII_BIT)
-+#define MTK_ESW			BIT(MTK_ESW_BIT)
-+#define MTK_GEPHY		BIT(MTK_GEPHY_BIT)
-+#define MTK_MUX			BIT(MTK_MUX_BIT)
-+#define MTK_INFRA		BIT(MTK_INFRA_BIT)
-+#define MTK_SHARED_SGMII	BIT(MTK_SHARED_SGMII_BIT)
-+#define MTK_HWLRO		BIT(MTK_HWLRO_BIT)
-+#define MTK_SHARED_INT		BIT(MTK_SHARED_INT_BIT)
-+#define MTK_TRGMII_MT7621_CLK	BIT(MTK_TRGMII_MT7621_CLK_BIT)
-+
-+#define MTK_ETH_MUX_GDM1_TO_GMAC1_ESW		\
-+	BIT(MTK_ETH_MUX_GDM1_TO_GMAC1_ESW_BIT)
-+#define MTK_ETH_MUX_GMAC2_GMAC0_TO_GEPHY	\
-+	BIT(MTK_ETH_MUX_GMAC2_GMAC0_TO_GEPHY_BIT)
-+#define MTK_ETH_MUX_U3_GMAC2_TO_QPHY		\
-+	BIT(MTK_ETH_MUX_U3_GMAC2_TO_QPHY_BIT)
-+#define MTK_ETH_MUX_GMAC1_GMAC2_TO_SGMII_RGMII	\
-+	BIT(MTK_ETH_MUX_GMAC1_GMAC2_TO_SGMII_RGMII_BIT)
-+#define MTK_ETH_MUX_GMAC12_TO_GEPHY_SGMII	\
-+	BIT(MTK_ETH_MUX_GMAC12_TO_GEPHY_SGMII_BIT)
- 
- /* Supported path present on SoCs */
--#define MTK_PATH_BIT(x)         BIT((x) + 10)
--
--#define MTK_GMAC1_RGMII \
--	(MTK_PATH_BIT(MTK_ETH_PATH_GMAC1_RGMII) | MTK_RGMII)
--
--#define MTK_GMAC1_TRGMII \
--	(MTK_PATH_BIT(MTK_ETH_PATH_GMAC1_TRGMII) | MTK_TRGMII)
--
--#define MTK_GMAC1_SGMII \
--	(MTK_PATH_BIT(MTK_ETH_PATH_GMAC1_SGMII) | MTK_SGMII)
--
--#define MTK_GMAC2_RGMII \
--	(MTK_PATH_BIT(MTK_ETH_PATH_GMAC2_RGMII) | MTK_RGMII)
--
--#define MTK_GMAC2_SGMII \
--	(MTK_PATH_BIT(MTK_ETH_PATH_GMAC2_SGMII) | MTK_SGMII)
--
--#define MTK_GMAC2_GEPHY \
--	(MTK_PATH_BIT(MTK_ETH_PATH_GMAC2_GEPHY) | MTK_GEPHY)
--
--#define MTK_GDM1_ESW \
--	(MTK_PATH_BIT(MTK_ETH_PATH_GDM1_ESW) | MTK_ESW)
--
--#define MTK_MUX_BIT(x)          BIT((x) + 20)
-+#define MTK_ETH_PATH_GMAC1_RGMII	BIT(MTK_ETH_PATH_GMAC1_RGMII_BIT)
-+#define MTK_ETH_PATH_GMAC1_TRGMII	BIT(MTK_ETH_PATH_GMAC1_TRGMII_BIT)
-+#define MTK_ETH_PATH_GMAC1_SGMII	BIT(MTK_ETH_PATH_GMAC1_SGMII_BIT)
-+#define MTK_ETH_PATH_GMAC2_RGMII	BIT(MTK_ETH_PATH_GMAC2_RGMII_BIT)
-+#define MTK_ETH_PATH_GMAC2_SGMII	BIT(MTK_ETH_PATH_GMAC2_SGMII_BIT)
-+#define MTK_ETH_PATH_GMAC2_GEPHY	BIT(MTK_ETH_PATH_GMAC2_GEPHY_BIT)
-+#define MTK_ETH_PATH_GDM1_ESW		BIT(MTK_ETH_PATH_GDM1_ESW_BIT)
-+
-+#define MTK_GMAC1_RGMII		(MTK_ETH_PATH_GMAC1_RGMII | MTK_RGMII)
-+#define MTK_GMAC1_TRGMII	(MTK_ETH_PATH_GMAC1_TRGMII | MTK_TRGMII)
-+#define MTK_GMAC1_SGMII		(MTK_ETH_PATH_GMAC1_SGMII | MTK_SGMII)
-+#define MTK_GMAC2_RGMII		(MTK_ETH_PATH_GMAC2_RGMII | MTK_RGMII)
-+#define MTK_GMAC2_SGMII		(MTK_ETH_PATH_GMAC2_SGMII | MTK_SGMII)
-+#define MTK_GMAC2_GEPHY		(MTK_ETH_PATH_GMAC2_GEPHY | MTK_GEPHY)
-+#define MTK_GDM1_ESW		(MTK_ETH_PATH_GDM1_ESW | MTK_ESW)
- 
- /* MUXes present on SoCs */
- /* 0: GDM1 -> GMAC1, 1: GDM1 -> ESW */
--#define MTK_MUX_GDM1_TO_GMAC1_ESW       \
--	(MTK_MUX_BIT(MTK_ETH_MUX_GDM1_TO_GMAC1_ESW) | MTK_MUX)
-+#define MTK_MUX_GDM1_TO_GMAC1_ESW (MTK_ETH_MUX_GDM1_TO_GMAC1_ESW | MTK_MUX)
- 
- /* 0: GMAC2 -> GEPHY, 1: GMAC0 -> GePHY */
- #define MTK_MUX_GMAC2_GMAC0_TO_GEPHY    \
--	(MTK_MUX_BIT(MTK_ETH_MUX_GMAC2_GMAC0_TO_GEPHY) | MTK_MUX | MTK_INFRA)
-+	(MTK_ETH_MUX_GMAC2_GMAC0_TO_GEPHY | MTK_MUX | MTK_INFRA)
- 
- /* 0: U3 -> QPHY, 1: GMAC2 -> QPHY */
- #define MTK_MUX_U3_GMAC2_TO_QPHY        \
--	(MTK_MUX_BIT(MTK_ETH_MUX_U3_GMAC2_TO_QPHY) | MTK_MUX | MTK_INFRA)
-+	(MTK_ETH_MUX_U3_GMAC2_TO_QPHY | MTK_MUX | MTK_INFRA)
- 
- /* 2: GMAC1 -> SGMII, 3: GMAC2 -> SGMII */
- #define MTK_MUX_GMAC1_GMAC2_TO_SGMII_RGMII      \
--	(MTK_MUX_BIT(MTK_ETH_MUX_GMAC1_GMAC2_TO_SGMII_RGMII) | MTK_MUX | \
-+	(MTK_ETH_MUX_GMAC1_GMAC2_TO_SGMII_RGMII | MTK_MUX | \
- 	MTK_SHARED_SGMII)
- 
- /* 0: GMACx -> GEPHY, 1: GMACx -> SGMII where x is 1 or 2 */
- #define MTK_MUX_GMAC12_TO_GEPHY_SGMII   \
--	(MTK_MUX_BIT(MTK_ETH_MUX_GMAC12_TO_GEPHY_SGMII) | MTK_MUX)
-+	(MTK_ETH_MUX_GMAC12_TO_GEPHY_SGMII | MTK_MUX)
- 
- #define MTK_HAS_CAPS(caps, _x)		(((caps) & (_x)) == (_x))
- 
+[0] https://github.com/xdarklight/openwrt/commits/lantiq-mainline-pcie-phy-20190702
+[1] https://patchwork.kernel.org/cover/11028797/
+
+
+Martin Blumenstingl (4):
+  dt-bindings: phy: add binding for the Lantiq VRX200 and ARX300 PCIe
+    PHYs
+  phy: lantiq: vrx200-pcie: add a driver for the Lantiq VRX200 PCIe PHY
+  phy: enable compile-testing for the Lantiq PHY drivers
+  MIPS: lantiq: update the clock alias' for the mainline PCIe PHY driver
+
+ .../bindings/phy/lantiq,vrx200-pcie-phy.yaml  |  95 ++++
+ arch/mips/lantiq/xway/sysctrl.c               |  16 +-
+ drivers/phy/Makefile                          |   2 +-
+ drivers/phy/lantiq/Kconfig                    |  11 +
+ drivers/phy/lantiq/Makefile                   |   1 +
+ drivers/phy/lantiq/phy-lantiq-vrx200-pcie.c   | 494 ++++++++++++++++++
+ .../dt-bindings/phy/phy-lantiq-vrx200-pcie.h  |  11 +
+ 7 files changed, 621 insertions(+), 9 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/phy/lantiq,vrx200-pcie-phy.yaml
+ create mode 100644 drivers/phy/lantiq/phy-lantiq-vrx200-pcie.c
+ create mode 100644 include/dt-bindings/phy/phy-lantiq-vrx200-pcie.h
+
 -- 
-2.20.1
+2.22.0
 

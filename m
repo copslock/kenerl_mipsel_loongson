@@ -2,88 +2,144 @@ Return-Path: <SRS0=aTje=VC=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 60A73C46499
-	for <linux-mips@archiver.kernel.org>; Fri,  5 Jul 2019 20:49:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2230DC5B57D
+	for <linux-mips@archiver.kernel.org>; Fri,  5 Jul 2019 21:58:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 227F6216E3
-	for <linux-mips@archiver.kernel.org>; Fri,  5 Jul 2019 20:49:07 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EF22220856
+	for <linux-mips@archiver.kernel.org>; Fri,  5 Jul 2019 21:58:47 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TbBw3AxO"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728000AbfGEUtG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 5 Jul 2019 16:49:06 -0400
-Received: from mslow2.mail.gandi.net ([217.70.178.242]:56530 "EHLO
-        mslow2.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727994AbfGEUtG (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 5 Jul 2019 16:49:06 -0400
-Received: from relay12.mail.gandi.net (unknown [217.70.178.232])
-        by mslow2.mail.gandi.net (Postfix) with ESMTP id A94D53A5DF1;
-        Fri,  5 Jul 2019 19:55:19 +0000 (UTC)
-Received: from localhost (lfbn-1-2078-236.w90-76.abo.wanadoo.fr [90.76.143.236])
-        (Authenticated sender: antoine.tenart@bootlin.com)
-        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 3F710200006;
-        Fri,  5 Jul 2019 19:55:07 +0000 (UTC)
-From:   Antoine Tenart <antoine.tenart@bootlin.com>
-To:     davem@davemloft.net, richardcochran@gmail.com,
-        alexandre.belloni@bootlin.com, UNGLinuxDriver@microchip.com,
-        ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org
-Cc:     Antoine Tenart <antoine.tenart@bootlin.com>,
-        netdev@vger.kernel.org, linux-mips@vger.kernel.org,
-        thomas.petazzoni@bootlin.com, allan.nielsen@microchip.com
-Subject: [PATCH net-next v2 0/8] net: mscc: PTP Hardware Clock (PHC) support
-Date:   Fri,  5 Jul 2019 21:52:05 +0200
-Message-Id: <20190705195213.22041-1-antoine.tenart@bootlin.com>
-X-Mailer: git-send-email 2.21.0
+        id S1725884AbfGEV6r (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 5 Jul 2019 17:58:47 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:40149 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725882AbfGEV6r (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 5 Jul 2019 17:58:47 -0400
+Received: by mail-pl1-f193.google.com with SMTP id a93so5163087pla.7;
+        Fri, 05 Jul 2019 14:58:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=RawdHlmHGrqtF0TAtNn3rZDOX8J8ZLc09OxC8vLfhCI=;
+        b=TbBw3AxOG7dgy2QZhRt7WIzMidEbf6oU/MAyOQ7/plG9wnkYJ/6DoIHVeXBF04IZDL
+         5bNHoSwgs5T677/WIEvmxMOZTNvoZhpfc1Dn8XflRrc+LNOFlziw6/kXJRAkrw4nXmWX
+         b0cAPQeP7BTtvjUBihlqIb2JkeELzYK29M7AuOHomKFpSTxMi/5Y12eKV/Wtz6GSawPC
+         eRt3i5qIVUG2aPVZdJRqgca+j8ao4BwOp2ZH61n4kMzWMoMx1QHAHFw8EdbhNW8fOO5V
+         2u9YFs4/Ey9nWmmM91BvF7mL1XhmmtkRlzlzTPGaa4LlRNzqPPuE29y7piahkkfESpVa
+         4Z4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=RawdHlmHGrqtF0TAtNn3rZDOX8J8ZLc09OxC8vLfhCI=;
+        b=VdERc912UlnMrbUo/MGLliVh7NZkGA6QSHiNIJypP2Dd5D1EKo3b23mDPnmG+ZeIBe
+         Q0HcOJ7q2QsPdSHe8EzrwHmLCRCjjul3ayiGyemcDAcC3oM7V0dmYA8W5xwVPNY619dJ
+         AEjjWJmhsZqDBppnbbOQ/0VF0UaWq4t8Wfe8Pfxiyh25sSxOH81zajlj+mk/4YWFy8ss
+         GFqW8guGH8EUHP3Z4KSqQKRkZUkDTO6rQf478WDsu9CKU9bF0ipWHbnpKuvFeWFjU8rY
+         +/9h6W+jt3l07Az+Q4tSDN6N0N5dSLu9NWjM2cgy/2CIBUnu0DHvNxJnY5I6+yIoSKlE
+         abnw==
+X-Gm-Message-State: APjAAAUUxOapUXKzeSlmTVkyukxUo5wRw9aP8cknjyaDMGIU32+I5zvu
+        /FAUDOE5Yo5fVuCH4yIQnOOmOSAa
+X-Google-Smtp-Source: APXvYqxU6fZAaC3JnKZiY0nANxvDspFgu7iiedGqsbBKD3qFKWnEwswkzambum7r7vGWPys1D5kVpA==
+X-Received: by 2002:a17:902:694a:: with SMTP id k10mr7947139plt.255.1562363926562;
+        Fri, 05 Jul 2019 14:58:46 -0700 (PDT)
+Received: from localhost (c-73-222-71-142.hsd1.ca.comcast.net. [73.222.71.142])
+        by smtp.gmail.com with ESMTPSA id q144sm14737513pfc.103.2019.07.05.14.58.45
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 05 Jul 2019 14:58:45 -0700 (PDT)
+Date:   Fri, 5 Jul 2019 14:58:43 -0700
+From:   Richard Cochran <richardcochran@gmail.com>
+To:     Antoine Tenart <antoine.tenart@bootlin.com>
+Cc:     davem@davemloft.net, alexandre.belloni@bootlin.com,
+        UNGLinuxDriver@microchip.com, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, netdev@vger.kernel.org,
+        linux-mips@vger.kernel.org, thomas.petazzoni@bootlin.com,
+        allan.nielsen@microchip.com
+Subject: Re: [PATCH net-next 8/8] net: mscc: PTP Hardware Clock (PHC) support
+Message-ID: <20190705215843.ncku546l3lktpwni@localhost>
+References: <20190701100327.6425-1-antoine.tenart@bootlin.com>
+ <20190701100327.6425-9-antoine.tenart@bootlin.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190701100327.6425-9-antoine.tenart@bootlin.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hello,
+On Mon, Jul 01, 2019 at 12:03:27PM +0200, Antoine Tenart wrote:
 
-This series introduces the PTP Hardware Clock (PHC) support to the Mscc
-Ocelot switch driver. In order to make use of this, a new register bank
-is added and described in the device tree, as well as a new interrupt.
-The use this bank and interrupt was made optional in the driver for dt
-compatibility reasons.
+> +static irqreturn_t ocelot_ptp_rdy_irq_handler(int irq, void *arg)
+> +{
+> +	struct ocelot *ocelot = arg;
+> +
+> +	do {
+> +		struct skb_shared_hwtstamps shhwtstamps;
+> +		struct list_head *pos, *tmp;
+> +		struct ocelot_skb *entry;
+> +		struct ocelot_port *port;
+> +		struct timespec64 ts;
+> +		struct sk_buff *skb = NULL;
+> +		u32 val, id, txport;
+> +
+> +		val = ocelot_read(ocelot, SYS_PTP_STATUS);
+> +
+> +		/* Check if a timestamp can be retrieved */
+> +		if (!(val & SYS_PTP_STATUS_PTP_MESS_VLD))
+> +			break;
 
-Patches 2 and 4 should probably go through the MIPS tree.
+Instead of an infinite do/while loop, I suggest a for loop bounded by
+number of iterations or by execution time.  That would avoid getting
+stuck here forever.  After all, this code is an ISR.
 
-Thanks!
-Antoine
+Thanks,
+Richard
 
-Since v1:
-  - Used list_for_each_safe() in ocelot_deinit().
-  - Fixed a memory leak in ocelot_deinit() by calling
-    dev_kfree_skb_any().
-  - Fixed a locking issue in get_hwtimestamp().
-  - Handled the NULL case of ptp_clock_register().
-  - Added comments on optional dt properties.
-
-Antoine Tenart (8):
-  Documentation/bindings: net: ocelot: document the PTP bank
-  MIPS: dts: mscc: describe the PTP register range
-  Documentation/bindings: net: ocelot: document the PTP ready IRQ
-  MIPS: dts: mscc: describe the PTP ready interrupt
-  net: mscc: describe the PTP register range
-  net: mscc: improve the frame header parsing readability
-  net: mscc: remove the frame_info cpuq member
-  net: mscc: PTP Hardware Clock (PHC) support
-
- .../devicetree/bindings/net/mscc-ocelot.txt   |  20 +-
- arch/mips/boot/dts/mscc/ocelot.dtsi           |   7 +-
- drivers/net/ethernet/mscc/ocelot.c            | 393 +++++++++++++++++-
- drivers/net/ethernet/mscc/ocelot.h            |  47 ++-
- drivers/net/ethernet/mscc/ocelot_board.c      | 139 ++++++-
- drivers/net/ethernet/mscc/ocelot_ptp.h        |  41 ++
- drivers/net/ethernet/mscc/ocelot_regs.c       |  11 +
- 7 files changed, 626 insertions(+), 32 deletions(-)
- create mode 100644 drivers/net/ethernet/mscc/ocelot_ptp.h
-
--- 
-2.21.0
-
+> +		WARN_ON(val & SYS_PTP_STATUS_PTP_OVFL);
+> +
+> +		/* Retrieve the ts ID and Tx port */
+> +		id = SYS_PTP_STATUS_PTP_MESS_ID_X(val);
+> +		txport = SYS_PTP_STATUS_PTP_MESS_TXPORT_X(val);
+> +
+> +		/* Retrieve its associated skb */
+> +		port = ocelot->ports[txport];
+> +
+> +		list_for_each_safe(pos, tmp, &port->skbs) {
+> +			entry = list_entry(pos, struct ocelot_skb, head);
+> +			if (entry->id != id)
+> +				continue;
+> +
+> +			skb = entry->skb;
+> +
+> +			list_del(pos);
+> +			kfree(entry);
+> +		}
+> +
+> +		/* Next ts */
+> +		ocelot_write(ocelot, SYS_PTP_NXT_PTP_NXT, SYS_PTP_NXT);
+> +
+> +		if (unlikely(!skb))
+> +			continue;
+> +
+> +		/* Get the h/w timestamp */
+> +		ocelot_get_hwtimestamp(ocelot, &ts);
+> +
+> +		/* Set the timestamp into the skb */
+> +		memset(&shhwtstamps, 0, sizeof(shhwtstamps));
+> +		shhwtstamps.hwtstamp = ktime_set(ts.tv_sec, ts.tv_nsec);
+> +		skb_tstamp_tx(skb, &shhwtstamps);
+> +
+> +		dev_kfree_skb_any(skb);
+> +	} while (true);
+> +
+> +	return IRQ_HANDLED;
+> +}

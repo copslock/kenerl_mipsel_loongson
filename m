@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 730F3C606C1
-	for <linux-mips@archiver.kernel.org>; Mon,  8 Jul 2019 15:38:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E0EAC606BD
+	for <linux-mips@archiver.kernel.org>; Mon,  8 Jul 2019 15:41:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 4CA9B21537
-	for <linux-mips@archiver.kernel.org>; Mon,  8 Jul 2019 15:38:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 141E521537
+	for <linux-mips@archiver.kernel.org>; Mon,  8 Jul 2019 15:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1562600301;
-	bh=avJf7wnwkGLtjEh97bhBHT1UUBecX7MojlY0LIMzEMI=;
+	s=default; t=1562600503;
+	bh=TyveilUALvDoB0sNVZgB50SNWf/7MN4fyP6ovVm/rf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=jxCFKehZ1BAzGuKeddA9MV2qqCj1Ws3oe78LjnxjBuPPbf6/Sglhtby/JffyqxL6E
-	 kf2ZX/PaKzq1IHuZQ3Ggc1LGcXQwAcWu9g2SyjHLz9QLdrQa99K1QLUh2LNquvKfVM
-	 cNQzUmFfemPfAnt66HgosXshBEv5glYDLhx6FiI8=
+	b=jgPONbvR91xtNQh6yung8k1jbNUCCZb0a5ArdXEHpwPOw/Ulx+B348H4tGyJ/O5Rw
+	 FqIGYB0Ycm1JpDDUuEsOA3tfrzZgVJ1mPvtz0jPkKoj+grsh9Ky/9SEW9g+TvaqtA4
+	 ndIs5E/k4nvgB4wopX7NE7fs37ZB7U+iQhfcV8bM=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389688AbfGHPaf (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 8 Jul 2019 11:30:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59552 "EHLO mail.kernel.org"
+        id S2388775AbfGHP0O (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 8 Jul 2019 11:26:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53898 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389649AbfGHPad (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 8 Jul 2019 11:30:33 -0400
+        id S2388766AbfGHP0M (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 8 Jul 2019 11:26:12 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DF8DD20665;
-        Mon,  8 Jul 2019 15:30:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 67B9B2166E;
+        Mon,  8 Jul 2019 15:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562599832;
-        bh=avJf7wnwkGLtjEh97bhBHT1UUBecX7MojlY0LIMzEMI=;
+        s=default; t=1562599571;
+        bh=TyveilUALvDoB0sNVZgB50SNWf/7MN4fyP6ovVm/rf4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TUlhsbpS+cRmvB3NOKuRb8Pdrp/QzJ73W7p2cZ6qWR3vtD1WYhwJD4nxlXUIHgH4B
-         4APYDsw2rGDvMPn7TUXI+jDOgbYJbBNriNOv7AQNmKbwwKlSVlhl57nBasCGV+1LlP
-         5h4qFNvRrDQVy91jAxkqkEDJpmoa8vSbjVKx8MQE=
+        b=QA9MC2Gn6m9viE8dTTKZmxERiduLrlWkPEUqR498HaCRi+HJAU0WTdY0N/cAsOADi
+         xRdUfzBSniBDPSetOmMxEGIVRq84EHHeaHDs6R+LrM/jgmfcu5FnvvOaqOAMj9hG4E
+         H/SY9ZYJy0fQLVul22hlYSmeH3waKyyj7bwNVlqQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Dmitry Korotin <dkorotin@wavecomp.com>,
         Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
-Subject: [PATCH 4.19 87/90] MIPS: Add missing EHB in mtc0 -> mfc0 sequence.
-Date:   Mon,  8 Jul 2019 17:13:54 +0200
-Message-Id: <20190708150526.893695293@linuxfoundation.org>
+Subject: [PATCH 4.14 54/56] MIPS: Add missing EHB in mtc0 -> mfc0 sequence.
+Date:   Mon,  8 Jul 2019 17:13:46 +0200
+Message-Id: <20190708150524.245236513@linuxfoundation.org>
 X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190708150521.829733162@linuxfoundation.org>
-References: <20190708150521.829733162@linuxfoundation.org>
+In-Reply-To: <20190708150514.376317156@linuxfoundation.org>
+References: <20190708150514.376317156@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -94,7 +94,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/mm/tlbex.c
 +++ b/arch/mips/mm/tlbex.c
-@@ -391,6 +391,7 @@ static struct work_registers build_get_w
+@@ -388,6 +388,7 @@ static struct work_registers build_get_w
  static void build_restore_work_registers(u32 **p)
  {
  	if (scratch_reg >= 0) {
@@ -102,7 +102,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		UASM_i_MFC0(p, 1, c0_kscratch(), scratch_reg);
  		return;
  	}
-@@ -667,10 +668,12 @@ static void build_restore_pagemask(u32 *
+@@ -671,10 +672,12 @@ static void build_restore_pagemask(u32 *
  			uasm_i_mtc0(p, 0, C0_PAGEMASK);
  			uasm_il_b(p, r, lid);
  		}
@@ -117,7 +117,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	} else {
  		/* Reset default page size */
  		if (PM_DEFAULT_MASK >> 16) {
-@@ -935,10 +938,12 @@ build_get_pgd_vmalloc64(u32 **p, struct
+@@ -939,10 +942,12 @@ build_get_pgd_vmalloc64(u32 **p, struct
  		uasm_i_jr(p, ptr);
  
  		if (mode == refill_scratch) {
@@ -132,7 +132,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		} else {
  			uasm_i_nop(p);
  		}
-@@ -1255,6 +1260,7 @@ build_fast_tlb_refill_handler (u32 **p,
+@@ -1259,6 +1264,7 @@ build_fast_tlb_refill_handler (u32 **p,
  	UASM_i_MTC0(p, odd, C0_ENTRYLO1); /* load it */
  
  	if (c0_scratch_reg >= 0) {
@@ -140,7 +140,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		UASM_i_MFC0(p, scratch, c0_kscratch(), c0_scratch_reg);
  		build_tlb_write_entry(p, l, r, tlb_random);
  		uasm_l_leave(l, *p);
-@@ -1600,15 +1606,17 @@ static void build_setup_pgd(void)
+@@ -1615,15 +1621,17 @@ static void build_setup_pgd(void)
  		uasm_i_dinsm(&p, a0, 0, 29, 64 - 29);
  		uasm_l_tlbl_goaround1(&l, p);
  		UASM_i_SLL(&p, a0, a0, 11);
@@ -160,7 +160,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	}
  #else
  #ifdef CONFIG_SMP
-@@ -1622,13 +1630,16 @@ static void build_setup_pgd(void)
+@@ -1637,13 +1645,16 @@ static void build_setup_pgd(void)
  	UASM_i_LA_mostly(&p, a2, pgdc);
  	UASM_i_SW(&p, a0, uasm_rel_lo(pgdc), a2);
  #endif /* SMP */
@@ -178,7 +178,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		uasm_i_nop(&p);
 +	}
  #endif
- 	if (p >= (u32 *)tlbmiss_handler_setup_pgd_end)
+ 	if (p >= tlbmiss_handler_setup_pgd_end)
  		panic("tlbmiss_handler_setup_pgd space exceeded");
 
 

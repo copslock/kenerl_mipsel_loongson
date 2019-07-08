@@ -7,46 +7,47 @@ X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C20CEC606C2
-	for <linux-mips@archiver.kernel.org>; Mon,  8 Jul 2019 15:35:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 24D0AC606BD
+	for <linux-mips@archiver.kernel.org>; Mon,  8 Jul 2019 15:35:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 915D2204EC
-	for <linux-mips@archiver.kernel.org>; Mon,  8 Jul 2019 15:35:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F284421537
+	for <linux-mips@archiver.kernel.org>; Mon,  8 Jul 2019 15:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1562600110;
-	bh=z/ooAq1ICsAXqKXJ0w7Avw/GipHY/HsT8UzX+CHjg6Q=;
+	s=default; t=1562600129;
+	bh=oqJOOPIzXqtL84WhyP7K9dTw3vqk5/8dazpQ8iRpGL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=HlW+R6+n8H4gavAKLyWOkkA1pIIZrWEowUKG6lTDeKfXg+GXyT70P/2y/ycYAjP21
-	 hFmQCSADesTIqYtlMjat7nyrYEbEpRJLkJFvBYZ6FAz9XaD2OpZUunVUfsHli6UtuO
-	 TWoy/H2AcnpiWduI2fgwmdTiqtVWN0Q6U3/YNWMI=
+	b=H3ZA6D5EBt1ckR4ufAzVfWLecPWg/ww7r0due1oF+aISwhtEs5LwhqWDyRYYXY8WP
+	 QDL8TNsBt3YsYQbz/SKN0jeyKxOHLdKhyImmY//EvylvoJ5/jIrAbzRkR17an0h0l+
+	 jczgkPIAvE+QDm8cjG0qTek2O/VJ8ioS6dGojoEQ=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390729AbfGHPfJ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 8 Jul 2019 11:35:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37614 "EHLO mail.kernel.org"
+        id S2390672AbfGHPf1 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 8 Jul 2019 11:35:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38020 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390892AbfGHPfI (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 8 Jul 2019 11:35:08 -0400
+        id S2390650AbfGHPf0 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 8 Jul 2019 11:35:26 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 429AC20651;
-        Mon,  8 Jul 2019 15:35:07 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3D58620665;
+        Mon,  8 Jul 2019 15:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562600107;
-        bh=z/ooAq1ICsAXqKXJ0w7Avw/GipHY/HsT8UzX+CHjg6Q=;
+        s=default; t=1562600125;
+        bh=oqJOOPIzXqtL84WhyP7K9dTw3vqk5/8dazpQ8iRpGL4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MJeJmyDbVhaYTFKvup8TFoJ9pZPPe4krMsNPB0XJui2DLob+ULB66Y7K3GX35NqaS
-         v/h7GpI0Qb1PMNCiGuV2fKuu3gs1UDgHj114QM+wYxOT5NYMnMS7exZ8Tz2I3xnsWO
-         aRAiQyyptr8+th6cTCuCPoUz/spXZWq8Vhm4v9FI=
+        b=iG7ODRBQTcYqhtc5Erjlc93taDmC0Cl0BN0o+9ti1BVMRcUOEqIF4/TZN37/j3cCK
+         To9ZR8209fRyDIITQJvubRb5xy44JMCXF02nq44eKlezajyd8PA/MsxxtMnKBRzNZW
+         KFQ3F2yOlwuM0ahuO9ztNzq37v9jezQuuz3rsDkM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Cedric Hombourger <Cedric_Hombourger@mentor.com>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
-Subject: [PATCH 5.1 91/96] MIPS: have "plain" make calls build dtbs for selected platforms
-Date:   Mon,  8 Jul 2019 17:14:03 +0200
-Message-Id: <20190708150531.357282183@linuxfoundation.org>
+        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>, ralf@linux-mips.org,
+        jhogan@kernel.org, f4bug@amsat.org, linux-mips@vger.kernel.org,
+        ysu@wavecomp.com, jcristau@debian.org
+Subject: [PATCH 5.1 89/96] MIPS: Fix bounds check virt_addr_valid
+Date:   Mon,  8 Jul 2019 17:14:01 +0200
+Message-Id: <20190708150531.247785719@linuxfoundation.org>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20190708150526.234572443@linuxfoundation.org>
 References: <20190708150526.234572443@linuxfoundation.org>
@@ -59,44 +60,46 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Cedric Hombourger <Cedric_Hombourger@mentor.com>
+From: Hauke Mehrtens <hauke@hauke-m.de>
 
-commit 637dfa0fad6d91a9a709dc70549a6d20fa77f615 upstream.
+commit d6ed083f5cc621e15c15b56c3b585fd524dbcb0f upstream.
 
-scripts/package/builddeb calls "make dtbs_install" after executing
-a plain make (i.e. no build targets specified). It will fail if dtbs
-were not built beforehand. Match the arm64 architecture where DTBs get
-built by the "all" target.
+The bounds check used the uninitialized variable vaddr, it should use
+the given parameter kaddr instead. When using the uninitialized value
+the compiler assumed it to be 0 and optimized this function to just
+return 0 in all cases.
 
-Signed-off-by: Cedric Hombourger <Cedric_Hombourger@mentor.com>
-[paul.burton@mips.com: s/builddep/builddeb]
+This should make the function check the range of the given address and
+only do the page map check in case it is in the expected range of
+virtual addresses.
+
+Fixes: 074a1e1167af ("MIPS: Bounds check virt_addr_valid")
+Cc: stable@vger.kernel.org # v4.12+
+Cc: Paul Burton <paul.burton@mips.com>
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: ralf@linux-mips.org
+Cc: jhogan@kernel.org
+Cc: f4bug@amsat.org
 Cc: linux-mips@vger.kernel.org
-Cc: stable@vger.kernel.org # v4.1+
+Cc: ysu@wavecomp.com
+Cc: jcristau@debian.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/Makefile |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/mm/mmap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -17,6 +17,7 @@ archscripts: scripts_basic
- 	$(Q)$(MAKE) $(build)=arch/mips/boot/tools relocs
+--- a/arch/mips/mm/mmap.c
++++ b/arch/mips/mm/mmap.c
+@@ -203,7 +203,7 @@ unsigned long arch_randomize_brk(struct
  
- KBUILD_DEFCONFIG := 32r2el_defconfig
-+KBUILD_DTBS      := dtbs
+ int __virt_addr_valid(const volatile void *kaddr)
+ {
+-	unsigned long vaddr = (unsigned long)vaddr;
++	unsigned long vaddr = (unsigned long)kaddr;
  
- #
- # Select the object file format to substitute into the linker script.
-@@ -384,7 +385,7 @@ quiet_cmd_64 = OBJCOPY $@
- vmlinux.64: vmlinux
- 	$(call cmd,64)
- 
--all:	$(all-y)
-+all:	$(all-y) $(KBUILD_DTBS)
- 
- # boot
- $(boot-y): $(vmlinux-32) FORCE
+ 	if ((vaddr < PAGE_OFFSET) || (vaddr >= MAP_BASE))
+ 		return 0;
 
 

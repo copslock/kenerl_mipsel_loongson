@@ -2,90 +2,101 @@ Return-Path: <SRS0=SDB9=VF=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.3 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3AAAFC606AC
-	for <linux-mips@archiver.kernel.org>; Mon,  8 Jul 2019 13:09:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F76BC606C2
+	for <linux-mips@archiver.kernel.org>; Mon,  8 Jul 2019 15:15:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 12B8220861
-	for <linux-mips@archiver.kernel.org>; Mon,  8 Jul 2019 13:09:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 673AE216F4
+	for <linux-mips@archiver.kernel.org>; Mon,  8 Jul 2019 15:15:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1562598906;
+	bh=K/qKOvKa4IfSM1AWI6P//8+67RHLGB7hh6YIp2jELY0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=s/0UEKyn2B8EFKzb2giGrzgT63qJ2l7wckizG2RlADpyTMuO4V0DZbRE1BB1UqtBR
+	 2MZREhh3aYKhceAXIq+/VMrZYOYIqGTHXCqQAOjNQ3pFtiToRpNukCWlEE+X6o+b8J
+	 eF1mJK2Q8UKy+r1a9tu967jvTzzfmA0uv23n444I=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731181AbfGHNJO (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 8 Jul 2019 09:09:14 -0400
-Received: from foss.arm.com ([217.140.110.172]:47580 "EHLO foss.arm.com"
+        id S1732239AbfGHPPF (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 8 Jul 2019 11:15:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37354 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731110AbfGHNJN (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 8 Jul 2019 09:09:13 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BA27B2B;
-        Mon,  8 Jul 2019 06:09:12 -0700 (PDT)
-Received: from [10.1.196.72] (e119884-lin.cambridge.arm.com [10.1.196.72])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C89363F738;
-        Mon,  8 Jul 2019 06:09:08 -0700 (PDT)
-Subject: Re: [PATCH v7 04/25] arm64: Substitute gettimeofday with C
- implementation
-To:     Sylwester Nawrocki <s.nawrocki@samsung.com>
-Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
-        Andre Przywara <andre.przywara@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Huw Davies <huw@codeweavers.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Will Deacon <will.deacon@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Mark Salyzyn <salyzyn@android.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Dmitry Safonov <0x7f454c46@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Shijith Thotton <sthotton@marvell.com>,
-        Peter Collingbourne <pcc@google.com>
-References: <20190621095252.32307-1-vincenzo.frascino@arm.com>
- <20190621095252.32307-5-vincenzo.frascino@arm.com>
- <CGME20190628130921eucas1p239935b0771032c331911eacc1a69dd2e@eucas1p2.samsung.com>
- <1fd47b0d-f77f-8d07-c039-6ac9072834fc@samsung.com>
- <27386d82-2906-b541-f71d-3c61f5099bdf@arm.com>
- <530cd07e-0da7-1d83-be4e-b14813029424@samsung.com>
- <06c264a8-8778-18b1-1094-4281a4a2abc9@arm.com>
- <ed758c10-7260-bec3-caf1-08cae7e0968d@samsung.com>
-From:   Vincenzo Frascino <vincenzo.frascino@arm.com>
-Message-ID: <b10b6723-6d5f-e667-b626-f13f5a5c3400@arm.com>
-Date:   Mon, 8 Jul 2019 14:09:07 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1732236AbfGHPPE (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 8 Jul 2019 11:15:04 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 570C92166E;
+        Mon,  8 Jul 2019 15:15:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1562598903;
+        bh=K/qKOvKa4IfSM1AWI6P//8+67RHLGB7hh6YIp2jELY0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=QVg7Fnfz11ON1GENKmWi2b3S3TX4ZF1eRg7cx47Q/zg4hfdCt5B34iSDhvkcSP91g
+         Crz8vwwUpMfgmVjoaFoZjXTyIQK9VvB8r6q4YjG1qiKCyZ6ZiVq4ByOx4aNmh+dHPt
+         QBoodKdjIRKaDzKYjRBenTdktvcCKWikWZnRROyc=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, YueHaibing <yuehaibing@huawei.com>,
+        Paul Burton <paul.burton@mips.com>, ralf@linux-mips.org,
+        jhogan@kernel.org, linux-mips@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.4 12/73] MIPS: uprobes: remove set but not used variable epc
+Date:   Mon,  8 Jul 2019 17:12:22 +0200
+Message-Id: <20190708150519.510934941@linuxfoundation.org>
+X-Mailer: git-send-email 2.22.0
+In-Reply-To: <20190708150513.136580595@linuxfoundation.org>
+References: <20190708150513.136580595@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-In-Reply-To: <ed758c10-7260-bec3-caf1-08cae7e0968d@samsung.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Sylwester,
+[ Upstream commit f532beeeff0c0a3586cc15538bc52d249eb19e7c ]
 
-On 08/07/2019 13:57, Sylwester Nawrocki wrote:
-> Hi Vincenzo, 
-> 
-> On 6/29/19 08:58, Vincenzo Frascino wrote:
->> If I may, I would like to ask to you one favor, could you please keep an eye on
->> next and once those patches are merged repeat the test?
->>
->> I want just to make sure that the regression does not reappear.
-> 
-> My apologies, I forgot about this for a moment. I repeated the test with 
-> next-20190705 tag and couldn't see any regressions.
-> 
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-No problem and thank you for the confirmation.
+arch/mips/kernel/uprobes.c: In function 'arch_uprobe_pre_xol':
+arch/mips/kernel/uprobes.c:115:17: warning: variable 'epc' set but not used [-Wunused-but-set-variable]
 
+It's never used since introduction in
+commit 40e084a506eb ("MIPS: Add uprobes support.")
+
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: <ralf@linux-mips.org>
+Cc: <jhogan@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>
+Cc: <linux-mips@vger.kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/mips/kernel/uprobes.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/arch/mips/kernel/uprobes.c b/arch/mips/kernel/uprobes.c
+index 4e7b89f2e244..1363d705cc8c 100644
+--- a/arch/mips/kernel/uprobes.c
++++ b/arch/mips/kernel/uprobes.c
+@@ -164,9 +164,6 @@ int arch_uprobe_pre_xol(struct arch_uprobe *aup, struct pt_regs *regs)
+ 	 */
+ 	aup->resume_epc = regs->cp0_epc + 4;
+ 	if (insn_has_delay_slot((union mips_instruction) aup->insn[0])) {
+-		unsigned long epc;
+-
+-		epc = regs->cp0_epc;
+ 		__compute_return_epc_for_insn(regs,
+ 			(union mips_instruction) aup->insn[0]);
+ 		aup->resume_epc = regs->cp0_epc;
 -- 
-Regards,
-Vincenzo
+2.20.1
+
+
+

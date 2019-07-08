@@ -2,101 +2,106 @@ Return-Path: <SRS0=SDB9=VF=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3748FC606C2
-	for <linux-mips@archiver.kernel.org>; Mon,  8 Jul 2019 15:47:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B81DC606CA
+	for <linux-mips@archiver.kernel.org>; Mon,  8 Jul 2019 19:06:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 038DE216F4
-	for <linux-mips@archiver.kernel.org>; Mon,  8 Jul 2019 15:47:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1562600851;
-	bh=64B04qnmvZygFQWN6yPW1MsjGXByIe48pi0PzVtB4lc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=QtMkJn0vdlp8SyPPUvWC9VJUqPJYFXWQjTT99O6K23X016BUIr+eeKym1A1GHa2ET
-	 gCaa1geoleTooVJPkrPIUNCSHpt39VHiBQgBq1flePpawi6xUwHED0niJfQC9pSbL/
-	 FsIUMwEtXNUNACMeFIfa+kzhpq4zgl9Xv9zOeO+k=
+	by mail.kernel.org (Postfix) with ESMTP id D18DD21783
+	for <linux-mips@archiver.kernel.org>; Mon,  8 Jul 2019 19:06:33 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=netronome-com.20150623.gappssmtp.com header.i=@netronome-com.20150623.gappssmtp.com header.b="vjpk1DmZ"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733106AbfGHPSq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 8 Jul 2019 11:18:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42646 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733089AbfGHPSq (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 8 Jul 2019 11:18:46 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C39BE216C4;
-        Mon,  8 Jul 2019 15:18:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562599125;
-        bh=64B04qnmvZygFQWN6yPW1MsjGXByIe48pi0PzVtB4lc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zkNUSclZZjFsCOuGC7ha+Xh1znRydR50Qt4bbS5lBtdtaypoor1/rW/2j/kkd0W2x
-         VAk+xcxJmr1flIYDzE1+M/jOGAAXlhLKc5bNZsxzS61L880QDkCPQXv/IviUhc2c1K
-         3c7HkkNFrQsFI6ReRw8JKPnrPiHGRFjxTO8s0kk0=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, YueHaibing <yuehaibing@huawei.com>,
-        Paul Burton <paul.burton@mips.com>, ralf@linux-mips.org,
-        jhogan@kernel.org, linux-mips@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.9 014/102] MIPS: uprobes: remove set but not used variable epc
-Date:   Mon,  8 Jul 2019 17:12:07 +0200
-Message-Id: <20190708150526.851587530@linuxfoundation.org>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190708150525.973820964@linuxfoundation.org>
-References: <20190708150525.973820964@linuxfoundation.org>
-User-Agent: quilt/0.66
+        id S1729009AbfGHTGd (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 8 Jul 2019 15:06:33 -0400
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:36894 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726126AbfGHTGd (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 8 Jul 2019 15:06:33 -0400
+Received: by mail-qt1-f193.google.com with SMTP id y26so6575293qto.4
+        for <linux-mips@vger.kernel.org>; Mon, 08 Jul 2019 12:06:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=netronome-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :organization:mime-version:content-transfer-encoding;
+        bh=VrVrMm/1sGvO1AtHPCpDj09pM9ej99uvdp0h/aIUafY=;
+        b=vjpk1DmZpSCtppK1dLplX2MObatzOD4kJ+QzWr4ZpWGTbYQncnW553KcIssWjZ5p0r
+         RwP1ilLqMOgtMUAhregkpO8AY91GGqgjFdsWXmTVoK0uztnxe0NtuwI2yjgmVv9an4/O
+         mgHexLpRFwgM6z/0ORm18mQF7SDtSxrbmOBpgut1AsRKnmncoSenv1gUbATEnLGanYu+
+         EyL8LDMVW2086Tau+SgU0iGw0hzmn6H4ZbjYGftek4UDRBdnrZvbHn/Xqv1gyIC3TuaA
+         jgxSTgtmsc8QJEX5gkCFLozYigsyypt/QdasFM5r2FK+6i4Fptctjng77L5zKt2V418q
+         ttcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:organization:mime-version:content-transfer-encoding;
+        bh=VrVrMm/1sGvO1AtHPCpDj09pM9ej99uvdp0h/aIUafY=;
+        b=RPMbTbDS04o9QkwUVcms17HaYDQo2elGGSZXo7m0y4YwcLmLHCehoORlr4qOZ8wQ3G
+         xG28B8wcVnvGTwkQ/DWz60wrKNRR1jpM1GTsnFYaJF76VUjq3TLU2MvopOy63bk5ROXb
+         tOKSl+4MyQKQZx+C4l/wcRClDuN7kkydo4IorpJghDT3/+W5Q22P+c5RyTz2+Z7qNEH8
+         yGQ2HdyAIVDvBraITZNz7rdu5+vu2O4zlBZXyfL7HiAKCyNUzMdVTCgUu+hQnxcGXae1
+         1Z4B6I30HkWJ2DCmTPy9Oo4xeX9d7SXoNas1bHbNQrCKzVxJk1mA6htEdIj52OsnmQPy
+         J5Vg==
+X-Gm-Message-State: APjAAAV1DcamAJOPK/TBaja46nYYWNeo3iLgvkJfAxmr6z1gXL6N56SP
+        hHdUhfIz99J6N5S5N+ZFdzVVBg==
+X-Google-Smtp-Source: APXvYqxHKCLgJp3Ha6v+66EanGTOAxhTgf30cjlh1S+XUFymB0hl55sa3QkW3LydHhu0HuXgV/bIwQ==
+X-Received: by 2002:aed:222d:: with SMTP id n42mr15455953qtc.144.1562612792246;
+        Mon, 08 Jul 2019 12:06:32 -0700 (PDT)
+Received: from cakuba.netronome.com ([66.60.152.14])
+        by smtp.gmail.com with ESMTPSA id i62sm5145664qke.52.2019.07.08.12.06.30
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 08 Jul 2019 12:06:32 -0700 (PDT)
+Date:   Mon, 8 Jul 2019 12:06:26 -0700
+From:   Jakub Kicinski <jakub.kicinski@netronome.com>
+To:     Antoine Tenart <antoine.tenart@bootlin.com>
+Cc:     davem@davemloft.net, richardcochran@gmail.com,
+        alexandre.belloni@bootlin.com, UNGLinuxDriver@microchip.com,
+        ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
+        netdev@vger.kernel.org, linux-mips@vger.kernel.org,
+        thomas.petazzoni@bootlin.com, allan.nielsen@microchip.com
+Subject: Re: [PATCH net-next v2 8/8] net: mscc: PTP Hardware Clock (PHC)
+ support
+Message-ID: <20190708120626.2cecc86b@cakuba.netronome.com>
+In-Reply-To: <20190708084809.GB2932@kwain>
+References: <20190705195213.22041-1-antoine.tenart@bootlin.com>
+        <20190705195213.22041-9-antoine.tenart@bootlin.com>
+        <20190705151038.0581a052@cakuba.netronome.com>
+        <20190708084809.GB2932@kwain>
+Organization: Netronome Systems, Ltd.
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-[ Upstream commit f532beeeff0c0a3586cc15538bc52d249eb19e7c ]
+On Mon, 8 Jul 2019 10:48:09 +0200, Antoine Tenart wrote:
+> > > +	/* Commit back the result & save it */
+> > > +	memcpy(&ocelot->hwtstamp_config, &cfg, sizeof(cfg));
+> > > +	mutex_unlock(&ocelot->ptp_lock);
+> > > +
+> > > +	return copy_to_user(ifr->ifr_data, &cfg, sizeof(cfg)) ? -EFAULT : 0;
+> > > +}
+> > >  
+> > > +static int ocelot_get_ts_info(struct net_device *dev,
+> > > +			      struct ethtool_ts_info *info)
+> > > +{
+> > > +	struct ocelot_port *ocelot_port = netdev_priv(dev);
+> > > +	struct ocelot *ocelot = ocelot_port->ocelot;
+> > > +	int ret;
+> > > +
+> > > +	if (!ocelot->ptp)
+> > > +		return -EOPNOTSUPP;  
+> > 
+> > Hmm.. why does software timestamping depend on PTP?  
+> 
+> Because it depends on the "PTP" register bank (and the "PTP" interrupt)
+> being described and available. This is why I named the flag 'ptp', but
+> it could be named 'timestamp' or 'ts' as well.
 
-Fixes gcc '-Wunused-but-set-variable' warning:
-
-arch/mips/kernel/uprobes.c: In function 'arch_uprobe_pre_xol':
-arch/mips/kernel/uprobes.c:115:17: warning: variable 'epc' set but not used [-Wunused-but-set-variable]
-
-It's never used since introduction in
-commit 40e084a506eb ("MIPS: Add uprobes support.")
-
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: <ralf@linux-mips.org>
-Cc: <jhogan@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>
-Cc: <linux-mips@vger.kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/mips/kernel/uprobes.c | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/arch/mips/kernel/uprobes.c b/arch/mips/kernel/uprobes.c
-index dbb917403131..ec951dde0999 100644
---- a/arch/mips/kernel/uprobes.c
-+++ b/arch/mips/kernel/uprobes.c
-@@ -111,9 +111,6 @@ int arch_uprobe_pre_xol(struct arch_uprobe *aup, struct pt_regs *regs)
- 	 */
- 	aup->resume_epc = regs->cp0_epc + 4;
- 	if (insn_has_delay_slot((union mips_instruction) aup->insn[0])) {
--		unsigned long epc;
--
--		epc = regs->cp0_epc;
- 		__compute_return_epc_for_insn(regs,
- 			(union mips_instruction) aup->insn[0]);
- 		aup->resume_epc = regs->cp0_epc;
--- 
-2.20.1
-
-
-
+Right, but software timestamps are done by calling skb_tx_timestamp(skb)
+in the driver, no need for HW support there (software RX timestamp is
+handled by the stack).

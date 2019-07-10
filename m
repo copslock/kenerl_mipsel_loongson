@@ -2,57 +2,52 @@ Return-Path: <SRS0=EetP=VH=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C470CC74A2B
-	for <linux-mips@archiver.kernel.org>; Wed, 10 Jul 2019 15:04:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 57BDFC74A21
+	for <linux-mips@archiver.kernel.org>; Wed, 10 Jul 2019 15:04:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9DEBA21670
-	for <linux-mips@archiver.kernel.org>; Wed, 10 Jul 2019 15:04:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 22ABB21670
+	for <linux-mips@archiver.kernel.org>; Wed, 10 Jul 2019 15:04:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1562771065;
-	bh=vqB+e4fK0m/j7/RW0v5N58vZY4/WKiJKUii6RhbyzyU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=KHKaBLq0FkeOx8IZ5F/4M8W7wGIE383Du/IwyRk5fmy0ea974lWZgz4Bgsm1BoR/o
-	 6enTQ0iSup9v3UGnC6LDNFTVtzIF+l4vjXHN1MWAb3/Dzs6A/xdiVd+LDNWv+h33v3
-	 0M0SrMoDelkNZCmHH1/wJTBtdM6C6qtXx0OVZA78=
+	s=default; t=1562771068;
+	bh=/vtEnW8CheOg/PZakRy0pEmXXolFD9Kz9w6eiA82Mds=;
+	h=From:To:Cc:Subject:Date:List-ID:From;
+	b=j14deMcEsoUZia8cISAUZDeiO5xoH51I0Fh5jec/QgquswI5wKLSXejiGNYvwxbft
+	 2VRiX6Kqij2ULUjsv34jmbjiMnaqXtl2Vy1pX/ht8ZPbaSSBla20tdQ7XdgeJ5nrSv
+	 gFOdclUkiV4WOTvjiBl7WBMAancvJZvXPjye5zxQ=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728261AbfGJPDn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 10 Jul 2019 11:03:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35712 "EHLO mail.kernel.org"
+        id S1728248AbfGJPDk (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 10 Jul 2019 11:03:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35674 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727717AbfGJPDm (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 10 Jul 2019 11:03:42 -0400
+        id S1727717AbfGJPDj (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 10 Jul 2019 11:03:39 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4B949208E4;
-        Wed, 10 Jul 2019 15:03:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 24C0621655;
+        Wed, 10 Jul 2019 15:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562771022;
-        bh=vqB+e4fK0m/j7/RW0v5N58vZY4/WKiJKUii6RhbyzyU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j3tTXjjtWhpivmb7KmXENngQl9kWhMbRxn2HqaeKaG8JlK/VV+R5/D5jwChhiWhtW
-         bptGUzy8SielS7ndKZjDpiQsN4LrJIbqmnm/jI+rQd9BnzwJzlmV8wrDmtSYX6KIyZ
-         tYftXV3RqdSfDnjw2nRHpcscxmYhfpZAry+RAIks=
+        s=default; t=1562771018;
+        bh=/vtEnW8CheOg/PZakRy0pEmXXolFD9Kz9w6eiA82Mds=;
+        h=From:To:Cc:Subject:Date:From;
+        b=BU/Ue2kxJH3BW907VnuGKhmorX3wEaBzCYiCzzi0ALgcXmD/pPVa6xUG0M6NeonNn
+         emlgh2pCnWoCFq94wQf0mq79footbDis77P4fiTdFu8NFUF6lBJX0iUlpAV3lqUGQL
+         axVtMOmm9vfSgkWjwLOIih29TjQowdVFOAFLuHTw=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Kevin Darbyshire-Bryant <ldir@darbyshire-bryant.me.uk>,
-        Jo-Philipp Wich <jo@mein.io>,
-        =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>,
+Cc:     Stefan Hellermann <stefan@the2masters.de>,
         Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.9 2/7] MIPS: fix build on non-linux hosts
-Date:   Wed, 10 Jul 2019 11:03:30 -0400
-Message-Id: <20190710150337.7390-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 1/7] MIPS: ath79: fix ar933x uart parity mode
+Date:   Wed, 10 Jul 2019 11:03:29 -0400
+Message-Id: <20190710150337.7390-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190710150337.7390-1-sashal@kernel.org>
-References: <20190710150337.7390-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -61,64 +56,40 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Kevin Darbyshire-Bryant <ldir@darbyshire-bryant.me.uk>
+From: Stefan Hellermann <stefan@the2masters.de>
 
-[ Upstream commit 1196364f21ffe5d1e6d83cafd6a2edb89404a3ae ]
+[ Upstream commit db13a5ba2732755cf13320f3987b77cf2a71e790 ]
 
-calc_vmlinuz_load_addr.c requires SZ_64K to be defined for alignment
-purposes.  It included "../../../../include/linux/sizes.h" to define
-that size, however "sizes.h" tries to include <linux/const.h> which
-assumes linux system headers.  These may not exist eg. the following
-error was encountered when building Linux for OpenWrt under macOS:
+While trying to get the uart with parity working I found setting even
+parity enabled odd parity insted. Fix the register settings to match
+the datasheet of AR9331.
 
-In file included from arch/mips/boot/compressed/calc_vmlinuz_load_addr.c:16:
-arch/mips/boot/compressed/../../../../include/linux/sizes.h:11:10: fatal error: 'linux/const.h' file not found
-         ^~~~~~~~~~
+A similar patch was created by 8devices, but not sent upstream.
+https://github.com/8devices/openwrt-8devices/commit/77c5586ade3bb72cda010afad3f209ed0c98ea7c
 
-Change makefile to force building on local linux headers instead of
-system headers.  Also change eye-watering relative reference in include
-file spec.
-
-Thanks to Jo-Philip Wich & Petr Štetiar for assistance in tracking this
-down & fixing.
-
-Suggested-by: Jo-Philipp Wich <jo@mein.io>
-Signed-off-by: Petr Štetiar <ynezz@true.cz>
-Signed-off-by: Kevin Darbyshire-Bryant <ldir@darbyshire-bryant.me.uk>
+Signed-off-by: Stefan Hellermann <stefan@the2masters.de>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
 Cc: linux-mips@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/compressed/Makefile                 | 2 ++
- arch/mips/boot/compressed/calc_vmlinuz_load_addr.c | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/mach-ath79/ar933x_uart.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-index 90aca95fe314..ad31c76c7a29 100644
---- a/arch/mips/boot/compressed/Makefile
-+++ b/arch/mips/boot/compressed/Makefile
-@@ -75,6 +75,8 @@ OBJCOPYFLAGS_piggy.o := --add-section=.image=$(obj)/vmlinux.bin.z \
- $(obj)/piggy.o: $(obj)/dummy.o $(obj)/vmlinux.bin.z FORCE
- 	$(call if_changed,objcopy)
- 
-+HOSTCFLAGS_calc_vmlinuz_load_addr.o += $(LINUXINCLUDE)
-+
- # Calculate the load address of the compressed kernel image
- hostprogs-y := calc_vmlinuz_load_addr
- 
-diff --git a/arch/mips/boot/compressed/calc_vmlinuz_load_addr.c b/arch/mips/boot/compressed/calc_vmlinuz_load_addr.c
-index 542c3ede9722..d14f75ec8273 100644
---- a/arch/mips/boot/compressed/calc_vmlinuz_load_addr.c
-+++ b/arch/mips/boot/compressed/calc_vmlinuz_load_addr.c
-@@ -13,7 +13,7 @@
- #include <stdint.h>
- #include <stdio.h>
- #include <stdlib.h>
--#include "../../../../include/linux/sizes.h"
-+#include <linux/sizes.h>
- 
- int main(int argc, char *argv[])
- {
+diff --git a/arch/mips/include/asm/mach-ath79/ar933x_uart.h b/arch/mips/include/asm/mach-ath79/ar933x_uart.h
+index c2917b39966b..bba2c8837951 100644
+--- a/arch/mips/include/asm/mach-ath79/ar933x_uart.h
++++ b/arch/mips/include/asm/mach-ath79/ar933x_uart.h
+@@ -27,8 +27,8 @@
+ #define AR933X_UART_CS_PARITY_S		0
+ #define AR933X_UART_CS_PARITY_M		0x3
+ #define	  AR933X_UART_CS_PARITY_NONE	0
+-#define	  AR933X_UART_CS_PARITY_ODD	1
+-#define	  AR933X_UART_CS_PARITY_EVEN	2
++#define	  AR933X_UART_CS_PARITY_ODD	2
++#define	  AR933X_UART_CS_PARITY_EVEN	3
+ #define AR933X_UART_CS_IF_MODE_S	2
+ #define AR933X_UART_CS_IF_MODE_M	0x3
+ #define	  AR933X_UART_CS_IF_MODE_NONE	0
 -- 
 2.20.1
 

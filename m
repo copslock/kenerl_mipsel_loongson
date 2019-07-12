@@ -2,52 +2,44 @@ Return-Path: <SRS0=r+5q=VJ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
+X-Spam-Status: No, score=-2.3 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E707EC742B9
-	for <linux-mips@archiver.kernel.org>; Fri, 12 Jul 2019 12:13:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BE66CC742BB
+	for <linux-mips@archiver.kernel.org>; Fri, 12 Jul 2019 12:40:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id CB0B520863
-	for <linux-mips@archiver.kernel.org>; Fri, 12 Jul 2019 12:13:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 989BA2080A
+	for <linux-mips@archiver.kernel.org>; Fri, 12 Jul 2019 12:40:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727124AbfGLMNB (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 12 Jul 2019 08:13:01 -0400
-Received: from mx2.mailbox.org ([80.241.60.215]:49784 "EHLO mx2.mailbox.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726601AbfGLMNA (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 12 Jul 2019 08:13:00 -0400
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mx2.mailbox.org (Postfix) with ESMTPS id F1641A117C;
-        Fri, 12 Jul 2019 14:12:54 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173]) (amavisd-new, port 10030)
-        with ESMTP id P6ek3O6D-xUo; Fri, 12 Jul 2019 14:12:48 +0200 (CEST)
-Date:   Fri, 12 Jul 2019 22:12:01 +1000
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Al Viro <viro@zeniv.linux.org.uk>
+        id S1729135AbfGLMj7 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 12 Jul 2019 08:39:59 -0400
+Received: from zeniv.linux.org.uk ([195.92.253.2]:37880 "EHLO
+        ZenIV.linux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729066AbfGLMj6 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 12 Jul 2019 08:39:58 -0400
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92 #3 (Red Hat Linux))
+        id 1hlupg-0006xX-Tg; Fri, 12 Jul 2019 12:39:25 +0000
+Date:   Fri, 12 Jul 2019 13:39:24 +0100
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     Aleksa Sarai <cyphar@cyphar.com>
 Cc:     Jeff Layton <jlayton@kernel.org>,
         "J. Bruce Fields" <bfields@fieldses.org>,
         Arnd Bergmann <arnd@arndb.de>,
         David Howells <dhowells@redhat.com>,
         Shuah Khan <shuah@kernel.org>,
         Shuah Khan <skhan@linuxfoundation.org>,
-        Eric Biederman <ebiederm@xmission.com>,
+        Christian Brauner <christian@brauner.io>,
+        David Drysdale <drysdale@google.com>,
         Andy Lutomirski <luto@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Eric Biederman <ebiederm@xmission.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Alexei Starovoitov <ast@kernel.org>,
         Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>,
-        Christian Brauner <christian@brauner.io>,
-        Tycho Andersen <tycho@tycho.ws>,
-        David Drysdale <drysdale@google.com>,
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
         Chanho Min <chanho.min@lge.com>,
         Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
         containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
         linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
@@ -57,75 +49,47 @@ Cc:     Jeff Layton <jlayton@kernel.org>,
         linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v9 04/10] namei: split out nd->dfd handling to
- dirfd_path_init
-Message-ID: <20190712121201.ouhwqgeszfq44t33@yavin>
+Subject: Re: [PATCH v9 05/10] namei: O_BENEATH-style path resolution flags
+Message-ID: <20190712123924.GK17978@ZenIV.linux.org.uk>
 References: <20190706145737.5299-1-cyphar@cyphar.com>
- <20190706145737.5299-5-cyphar@cyphar.com>
- <20190712042050.GH17978@ZenIV.linux.org.uk>
- <20190712120743.mka3vl5t4zndc5wj@yavin>
+ <20190706145737.5299-6-cyphar@cyphar.com>
+ <20190712043341.GI17978@ZenIV.linux.org.uk>
+ <20190712105745.nruaftgeat6irhzr@yavin>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="37fzaqczvbcmjfqh"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190712120743.mka3vl5t4zndc5wj@yavin>
+In-Reply-To: <20190712105745.nruaftgeat6irhzr@yavin>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
+On Fri, Jul 12, 2019 at 08:57:45PM +1000, Aleksa Sarai wrote:
 
---37fzaqczvbcmjfqh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> > > @@ -2350,9 +2400,11 @@ static const char *path_init(struct nameidata *nd, unsigned flags)
+> > >  			s = ERR_PTR(error);
+> > >  		return s;
+> > >  	}
+> > > -	error = dirfd_path_init(nd);
+> > > -	if (unlikely(error))
+> > > -		return ERR_PTR(error);
+> > > +	if (likely(!nd->path.mnt)) {
+> > 
+> > Is that a weird way of saying "if we hadn't already called dirfd_path_init()"?
+> 
+> Yes. I did it to be more consistent with the other "have we got the
+> root" checks elsewhere. Is there another way you'd prefer I do it?
 
-On 2019-07-12, Aleksa Sarai <cyphar@cyphar.com> wrote:
-> On 2019-07-12, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> > On Sun, Jul 07, 2019 at 12:57:31AM +1000, Aleksa Sarai wrote:
-> > > Previously, path_init's handling of *at(dfd, ...) was only done once,
-> > > but with LOOKUP_BENEATH (and LOOKUP_IN_ROOT) we have to parse the
-> > > initial nd->path at different times (before or after absolute path
-> > > handling) depending on whether we have been asked to scope resolution
-> > > within a root.
-> >=20
-> > >  	if (*s =3D=3D '/') {
-> > > -		set_root(nd);
-> > > -		if (likely(!nd_jump_root(nd)))
-> > > -			return s;
-> > > -		return ERR_PTR(-ECHILD);
-> >=20
-> > > +		if (likely(!nd->root.mnt))
-> > > +			set_root(nd);
-> >=20
-> > How can we get there with non-NULL nd->root.mnt, when LOOKUP_ROOT case
-> > has been already handled by that point?
->=20
-> Yup, you're completely right. I will remove the
->   if (!nd->root.mnt)
-> in the next version.
+"Have we got the root" checks are inevitable evil; here you are making the
+control flow in a single function hard to follow.
 
-Ah sorry, there is a reason for it -- later in the series the
-LOOKUP_BENEATH case means that you might end up with a non-NULL
-nd->root.mnt. If you want, I can move the addition of the conditional to
-later in the series (it was easier to split the patch by-hunk back when
-you originally asked me to split out dirfd_path_init()).
-
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---37fzaqczvbcmjfqh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXSh5DgAKCRCdlLljIbnQ
-EktsAQC+xy1gwgzkK07JhvJgn8Q1pT79AOQ14p3p2Zp9thYafQD9FEgBMo7bE+TU
-IjLN9tnpuJF+ybsPFaA/VNK4FHH0igw=
-=ZC2p
------END PGP SIGNATURE-----
-
---37fzaqczvbcmjfqh--
+I *think* what you are doing is
+	absolute pathname, no LOOKUP_BENEATH:
+		set_root
+		error = nd_jump_root(nd)
+	else
+		error = dirfd_path_init(nd)
+	return unlikely(error) ? ERR_PTR(error) : s;
+which should be a lot easier to follow (not to mention shorter), but I might
+be missing something in all of that.

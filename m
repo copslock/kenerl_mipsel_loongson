@@ -2,313 +2,122 @@ Return-Path: <SRS0=IGt2=VV=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-8.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EC766C76186
-	for <linux-mips@archiver.kernel.org>; Wed, 24 Jul 2019 17:24:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ABB49C76191
+	for <linux-mips@archiver.kernel.org>; Wed, 24 Jul 2019 17:24:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id BD16322387
-	for <linux-mips@archiver.kernel.org>; Wed, 24 Jul 2019 17:24:01 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="npRaiHxU"
+	by mail.kernel.org (Postfix) with ESMTP id 81D6122387
+	for <linux-mips@archiver.kernel.org>; Wed, 24 Jul 2019 17:24:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1563989044;
+	bh=guS+r4IKhpVld2c2q30PBfHYR6nxmEyfPp8JIogCr6M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=YLBDAmbWHyFH/criNJo0idvvHs5xzVm8QX0OdI35WEfvEKJnBWoc0lpy0W6MFq1yv
+	 o6dm5XOK2I9cLST0GDeavhaKe3mm+LNoFhdBdLgEpDxBfst+goV8z/V9uOoo8WLfMO
+	 rdJXRPvCylPOV2T2Lie/mFRstWyMJCDPYZSIuIYk=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728460AbfGXRRS (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 24 Jul 2019 13:17:18 -0400
-Received: from outils.crapouillou.net ([89.234.176.41]:49472 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728454AbfGXRRR (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 24 Jul 2019 13:17:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1563988630; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ILp1SaZijfp42WzbgD4jMiCq15AQEEzGtNHNYECP5Jw=;
-        b=npRaiHxUx/FFaOh+Vedtf/J4SHoXNAphls6dmr1qOC7mrI/pCUCG0LOjxTQNB/YvJFr5XE
-        igmFz5mvD2SAOM1CbtYQbZ0vpoisoCnqoO5GVoY2WEYdg0PMzboe6dofkhIjER4s5Tnxwj
-        W0Wli9W2tOZWIMvhRlHMclnKTJaUx3k=
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Ralf Baechle <ralf@linux-mips.org>,
+        id S1727823AbfGXRQw (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 24 Jul 2019 13:16:52 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:33055 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726074AbfGXRQv (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 24 Jul 2019 13:16:51 -0400
+Received: by mail-pf1-f194.google.com with SMTP id g2so21278490pfq.0;
+        Wed, 24 Jul 2019 10:16:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=156P/sv9kl3W4lzShHBiZ6Cb3GP3B3vD0ubCKwHKThU=;
+        b=ogZkITl+R1w0hlSIWbPt04yOFXv9P1LNco/jXgKGy6aCdE5vvKx725w0Yn5VLJQsGT
+         flYPS3UmtM44igz+SqHnUdE1uRJXIg7BOnlu+/LOWDPyT/j7pZ3dN7G7kWpS3ioASkTs
+         5Z5unLj5Uq2mFnJ8qvBvnVqCCzFn/gMLRjLq8TEDqaAiXAgUyYu/Psg5B2pTjRndZg7U
+         QebIeliYQQczUaMNqVVoBwyp6vVOBfv1uDVsuRTr4h0DLnkrk6F3rlPdyAH3mmzBGxxC
+         dB6WRBN691blgNgtINJ/cWxZPKv0VBvcCP0u8sEbgfXQGGSH+99KBbTD2tXP3P8jlcBz
+         MSDg==
+X-Gm-Message-State: APjAAAXJbteQYt2/BlkRDh3PDcca0tn7Lv0JStjcMeM8Pyrp/2vdQHXP
+        xVP/ku5ZyOBQMH4pIhJ1v4Q=
+X-Google-Smtp-Source: APXvYqwTVGKd3fvTa9LEjWhqIcTFIJiIjYs9TLAcnxEPWXeforQowmcaSvI2CRLGqprBSYmGXcozlQ==
+X-Received: by 2002:a17:90a:8a91:: with SMTP id x17mr89006769pjn.95.1563988610289;
+        Wed, 24 Jul 2019 10:16:50 -0700 (PDT)
+Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
+        by smtp.gmail.com with ESMTPSA id n140sm49450927pfd.132.2019.07.24.10.16.49
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 24 Jul 2019 10:16:49 -0700 (PDT)
+Received: by 42.do-not-panic.com (Postfix, from userid 1000)
+        id ADB7B402A1; Wed, 24 Jul 2019 17:16:48 +0000 (UTC)
+Date:   Wed, 24 Jul 2019 17:16:48 +0000
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Alexandre Ghiti <alex@ghiti.fr>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-clk@vger.kernel.org, od@zcrc.me,
-        Mathieu Malaterre <malat@debian.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Artur Rojek <contact@artur-rojek.eu>
-Subject: [PATCH v15 06/13] irqchip: Add irq-ingenic-tcu driver
-Date:   Wed, 24 Jul 2019 13:16:08 -0400
-Message-Id: <20190724171615.20774-7-paul@crapouillou.net>
-In-Reply-To: <20190724171615.20774-1-paul@crapouillou.net>
-References: <20190724171615.20774-1-paul@crapouillou.net>
+        Palmer Dabbelt <palmer@sifive.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Kees Cook <keescook@chromium.org>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH REBASE v4 12/14] mips: Replace arch specific way to
+ determine 32bit task with generic version
+Message-ID: <20190724171648.GW19023@42.do-not-panic.com>
+References: <20190724055850.6232-1-alex@ghiti.fr>
+ <20190724055850.6232-13-alex@ghiti.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190724055850.6232-13-alex@ghiti.fr>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-This driver handles the interrupt controller built in the Timer/Counter
-Unit (TCU) of the JZ47xx SoCs from Ingenic.
+On Wed, Jul 24, 2019 at 01:58:48AM -0400, Alexandre Ghiti wrote:
+> Mips uses TASK_IS_32BIT_ADDR to determine if a task is 32bit, but
+> this define is mips specific and other arches do not have it: instead,
+> use !IS_ENABLED(CONFIG_64BIT) || is_compat_task() condition.
+> 
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> ---
+>  arch/mips/mm/mmap.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/mm/mmap.c b/arch/mips/mm/mmap.c
+> index faa5aa615389..d4eafbb82789 100644
+> --- a/arch/mips/mm/mmap.c
+> +++ b/arch/mips/mm/mmap.c
+> @@ -17,6 +17,7 @@
+>  #include <linux/sched/signal.h>
+>  #include <linux/sched/mm.h>
+>  #include <linux/sizes.h>
+> +#include <linux/compat.h>
+>  
+>  unsigned long shm_align_mask = PAGE_SIZE - 1;	/* Sane caches */
+>  EXPORT_SYMBOL(shm_align_mask);
+> @@ -191,7 +192,7 @@ static inline unsigned long brk_rnd(void)
+>  
+>  	rnd = rnd << PAGE_SHIFT;
+>  	/* 32MB for 32bit, 1GB for 64bit */
+> -	if (TASK_IS_32BIT_ADDR)
+> +	if (!IS_ENABLED(CONFIG_64BIT) || is_compat_task())
+>  		rnd = rnd & SZ_32M;
+>  	else
+>  		rnd = rnd & SZ_1G;
+> -- 
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Tested-by: Mathieu Malaterre <malat@debian.org>
-Tested-by: Artur Rojek <contact@artur-rojek.eu>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
----
+Since there are at least two users why not just create an inline for
+this which describes what we are looking for and remove the comments?
 
-Notes:
-    v12: New patch
-    
-    v13: No change
-    
-    v14: Remove empty lines in structure definitions
-    
-    v15: Use device_node_to_regmap()
-
- drivers/irqchip/Kconfig           |  11 ++
- drivers/irqchip/Makefile          |   1 +
- drivers/irqchip/irq-ingenic-tcu.c | 182 ++++++++++++++++++++++++++++++
- 3 files changed, 194 insertions(+)
- create mode 100644 drivers/irqchip/irq-ingenic-tcu.c
-
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index 80e10f4e213a..3c8308e6b3a7 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -315,6 +315,17 @@ config INGENIC_IRQ
- 	depends on MACH_INGENIC
- 	default y
- 
-+config INGENIC_TCU_IRQ
-+	bool "Ingenic JZ47xx TCU interrupt controller"
-+	default MACH_INGENIC
-+	depends on MIPS || COMPILE_TEST
-+	select MFD_SYSCON
-+	help
-+	  Support for interrupts in the Timer/Counter Unit (TCU) of the Ingenic
-+	  JZ47xx SoCs.
-+
-+	  If unsure, say N.
-+
- config RENESAS_H8300H_INTC
-         bool
- 	select IRQ_DOMAIN
-diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
-index 8d0fcec6ab23..cc7c43932f16 100644
---- a/drivers/irqchip/Makefile
-+++ b/drivers/irqchip/Makefile
-@@ -75,6 +75,7 @@ obj-$(CONFIG_RENESAS_H8300H_INTC)	+= irq-renesas-h8300h.o
- obj-$(CONFIG_RENESAS_H8S_INTC)		+= irq-renesas-h8s.o
- obj-$(CONFIG_ARCH_SA1100)		+= irq-sa11x0.o
- obj-$(CONFIG_INGENIC_IRQ)		+= irq-ingenic.o
-+obj-$(CONFIG_INGENIC_TCU_IRQ)		+= irq-ingenic-tcu.o
- obj-$(CONFIG_IMX_GPCV2)			+= irq-imx-gpcv2.o
- obj-$(CONFIG_PIC32_EVIC)		+= irq-pic32-evic.o
- obj-$(CONFIG_MSCC_OCELOT_IRQ)		+= irq-mscc-ocelot.o
-diff --git a/drivers/irqchip/irq-ingenic-tcu.c b/drivers/irqchip/irq-ingenic-tcu.c
-new file mode 100644
-index 000000000000..6d05cefe9d79
---- /dev/null
-+++ b/drivers/irqchip/irq-ingenic-tcu.c
-@@ -0,0 +1,182 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * JZ47xx SoCs TCU IRQ driver
-+ * Copyright (C) 2019 Paul Cercueil <paul@crapouillou.net>
-+ */
-+
-+#include <linux/clk.h>
-+#include <linux/interrupt.h>
-+#include <linux/irqchip.h>
-+#include <linux/irqchip/chained_irq.h>
-+#include <linux/mfd/ingenic-tcu.h>
-+#include <linux/mfd/syscon.h>
-+#include <linux/of_irq.h>
-+#include <linux/regmap.h>
-+
-+struct ingenic_tcu {
-+	struct regmap *map;
-+	struct clk *clk;
-+	struct irq_domain *domain;
-+	unsigned int nb_parent_irqs;
-+	u32 parent_irqs[3];
-+};
-+
-+static void ingenic_tcu_intc_cascade(struct irq_desc *desc)
-+{
-+	struct irq_chip *irq_chip = irq_data_get_irq_chip(&desc->irq_data);
-+	struct irq_domain *domain = irq_desc_get_handler_data(desc);
-+	struct irq_chip_generic *gc = irq_get_domain_generic_chip(domain, 0);
-+	struct regmap *map = gc->private;
-+	uint32_t irq_reg, irq_mask;
-+	unsigned int i;
-+
-+	regmap_read(map, TCU_REG_TFR, &irq_reg);
-+	regmap_read(map, TCU_REG_TMR, &irq_mask);
-+
-+	chained_irq_enter(irq_chip, desc);
-+
-+	irq_reg &= ~irq_mask;
-+
-+	for_each_set_bit(i, (unsigned long *)&irq_reg, 32)
-+		generic_handle_irq(irq_linear_revmap(domain, i));
-+
-+	chained_irq_exit(irq_chip, desc);
-+}
-+
-+static void ingenic_tcu_gc_unmask_enable_reg(struct irq_data *d)
-+{
-+	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(d);
-+	struct irq_chip_type *ct = irq_data_get_chip_type(d);
-+	struct regmap *map = gc->private;
-+	u32 mask = d->mask;
-+
-+	irq_gc_lock(gc);
-+	regmap_write(map, ct->regs.ack, mask);
-+	regmap_write(map, ct->regs.enable, mask);
-+	*ct->mask_cache |= mask;
-+	irq_gc_unlock(gc);
-+}
-+
-+static void ingenic_tcu_gc_mask_disable_reg(struct irq_data *d)
-+{
-+	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(d);
-+	struct irq_chip_type *ct = irq_data_get_chip_type(d);
-+	struct regmap *map = gc->private;
-+	u32 mask = d->mask;
-+
-+	irq_gc_lock(gc);
-+	regmap_write(map, ct->regs.disable, mask);
-+	*ct->mask_cache &= ~mask;
-+	irq_gc_unlock(gc);
-+}
-+
-+static void ingenic_tcu_gc_mask_disable_reg_and_ack(struct irq_data *d)
-+{
-+	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(d);
-+	struct irq_chip_type *ct = irq_data_get_chip_type(d);
-+	struct regmap *map = gc->private;
-+	u32 mask = d->mask;
-+
-+	irq_gc_lock(gc);
-+	regmap_write(map, ct->regs.ack, mask);
-+	regmap_write(map, ct->regs.disable, mask);
-+	irq_gc_unlock(gc);
-+}
-+
-+static int __init ingenic_tcu_irq_init(struct device_node *np,
-+				       struct device_node *parent)
-+{
-+	struct irq_chip_generic *gc;
-+	struct irq_chip_type *ct;
-+	struct ingenic_tcu *tcu;
-+	struct regmap *map;
-+	unsigned int i;
-+	int ret, irqs;
-+
-+	map = device_node_to_regmap(np);
-+	if (IS_ERR(map))
-+		return PTR_ERR(map);
-+
-+	tcu = kzalloc(sizeof(*tcu), GFP_KERNEL);
-+	if (!tcu)
-+		return -ENOMEM;
-+
-+	tcu->map = map;
-+
-+	irqs = of_property_count_elems_of_size(np, "interrupts", sizeof(u32));
-+	if (irqs < 0 || irqs > ARRAY_SIZE(tcu->parent_irqs)) {
-+		pr_crit("%s: Invalid 'interrupts' property\n", __func__);
-+		ret = -EINVAL;
-+		goto err_free_tcu;
-+	}
-+
-+	tcu->nb_parent_irqs = irqs;
-+
-+	tcu->domain = irq_domain_add_linear(np, 32, &irq_generic_chip_ops,
-+					    NULL);
-+	if (!tcu->domain) {
-+		ret = -ENOMEM;
-+		goto err_free_tcu;
-+	}
-+
-+	ret = irq_alloc_domain_generic_chips(tcu->domain, 32, 1, "TCU",
-+					     handle_level_irq, 0,
-+					     IRQ_NOPROBE | IRQ_LEVEL, 0);
-+	if (ret) {
-+		pr_crit("%s: Invalid 'interrupts' property\n", __func__);
-+		goto out_domain_remove;
-+	}
-+
-+	gc = irq_get_domain_generic_chip(tcu->domain, 0);
-+	ct = gc->chip_types;
-+
-+	gc->wake_enabled = IRQ_MSK(32);
-+	gc->private = tcu->map;
-+
-+	ct->regs.disable = TCU_REG_TMSR;
-+	ct->regs.enable = TCU_REG_TMCR;
-+	ct->regs.ack = TCU_REG_TFCR;
-+	ct->chip.irq_unmask = ingenic_tcu_gc_unmask_enable_reg;
-+	ct->chip.irq_mask = ingenic_tcu_gc_mask_disable_reg;
-+	ct->chip.irq_mask_ack = ingenic_tcu_gc_mask_disable_reg_and_ack;
-+	ct->chip.flags = IRQCHIP_MASK_ON_SUSPEND | IRQCHIP_SKIP_SET_WAKE;
-+
-+	/* Mask all IRQs by default */
-+	regmap_write(tcu->map, TCU_REG_TMSR, IRQ_MSK(32));
-+
-+	/*
-+	 * On JZ4740, timer 0 and timer 1 have their own interrupt line;
-+	 * timers 2-7 share one interrupt.
-+	 * On SoCs >= JZ4770, timer 5 has its own interrupt line;
-+	 * timers 0-4 and 6-7 share one single interrupt.
-+	 *
-+	 * To keep things simple, we just register the same handler to
-+	 * all parent interrupts. The handler will properly detect which
-+	 * channel fired the interrupt.
-+	 */
-+	for (i = 0; i < irqs; i++) {
-+		tcu->parent_irqs[i] = irq_of_parse_and_map(np, i);
-+		if (!tcu->parent_irqs[i]) {
-+			ret = -EINVAL;
-+			goto out_unmap_irqs;
-+		}
-+
-+		irq_set_chained_handler_and_data(tcu->parent_irqs[i],
-+						 ingenic_tcu_intc_cascade,
-+						 tcu->domain);
-+	}
-+
-+	return 0;
-+
-+out_unmap_irqs:
-+	for (; i > 0; i--)
-+		irq_dispose_mapping(tcu->parent_irqs[i - 1]);
-+out_domain_remove:
-+	irq_domain_remove(tcu->domain);
-+err_free_tcu:
-+	kfree(tcu);
-+	return ret;
-+}
-+IRQCHIP_DECLARE(jz4740_tcu_irq, "ingenic,jz4740-tcu", ingenic_tcu_irq_init);
-+IRQCHIP_DECLARE(jz4725b_tcu_irq, "ingenic,jz4725b-tcu", ingenic_tcu_irq_init);
-+IRQCHIP_DECLARE(jz4770_tcu_irq, "ingenic,jz4770-tcu", ingenic_tcu_irq_init);
--- 
-2.21.0.593.g511ec345e18
-
+  Luis

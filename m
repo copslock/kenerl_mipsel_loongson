@@ -2,34 +2,34 @@ Return-Path: <SRS0=IGt2=VV=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+X-Spam-Status: No, score=-6.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 136ACC76194
-	for <linux-mips@archiver.kernel.org>; Wed, 24 Jul 2019 17:16:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B74CC76186
+	for <linux-mips@archiver.kernel.org>; Wed, 24 Jul 2019 17:17:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id DE3EF2238C
-	for <linux-mips@archiver.kernel.org>; Wed, 24 Jul 2019 17:16:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5502E20840
+	for <linux-mips@archiver.kernel.org>; Wed, 24 Jul 2019 17:17:06 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="aZuhfrYf"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="nNv4CdDI"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727349AbfGXRQh (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 24 Jul 2019 13:16:37 -0400
-Received: from outils.crapouillou.net ([89.234.176.41]:49102 "EHLO
+        id S1728343AbfGXRRB (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 24 Jul 2019 13:17:01 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:49362 "EHLO
         crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726074AbfGXRQh (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 24 Jul 2019 13:16:37 -0400
+        with ESMTP id S1728175AbfGXRRA (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 24 Jul 2019 13:17:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1563988594; h=from:from:sender:reply-to:subject:subject:date:date:
+        s=mail; t=1563988615; h=from:from:sender:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OOUQ7Gb/91IJOzAO7c1vZGlH8aDWENemP7aPu1mCeQI=;
-        b=aZuhfrYf8Mp0AdD1LFDuX163ByYJrcZV3oAuSbL20EzUDGrfCHhbqw450H5J3Pp0ESJjrW
-        PHXUt7pIT4lUe21Oel+bSZlBVJBUQ+nZ+ow1xHXDl0T1F/tkmge/LLnwMlrRCzQn393jvY
-        c4x2ZUUL9IrtVnnYN/o/xph6IAHsZY0=
+        bh=/3Ah8FKXnjzRiOWf3wczuIH2HmTLx+HtvIJLBEWIgPQ=;
+        b=nNv4CdDIpER41aTP6dFPkZcunw7px4KoQ+XqesgDrN83plO/tOBEU6zdJHiRVylgxwigXO
+        DKMC4zaNj15reDjvGl6eRcUrIXDFXxpfnX32u+QTcrUbAPqAThq78hh2s8VyrmTTQYWfeh
+        xYasc+CnAWA2uZ4gc3UsH3xbIq6uZe4=
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
@@ -49,12 +49,10 @@ Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-doc@vger.kernel.org, linux-mips@vger.kernel.org,
         linux-clk@vger.kernel.org, od@zcrc.me,
         Mathieu Malaterre <malat@debian.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Artur Rojek <contact@artur-rojek.eu>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH v15 01/13] dt-bindings: ingenic: Add DT bindings for TCU clocks
-Date:   Wed, 24 Jul 2019 13:16:03 -0400
-Message-Id: <20190724171615.20774-2-paul@crapouillou.net>
+        Paul Cercueil <paul@crapouillou.net>
+Subject: [PATCH v15 04/13] mfd/syscon: Add device_node_to_regmap()
+Date:   Wed, 24 Jul 2019 13:16:06 -0400
+Message-Id: <20190724171615.20774-5-paul@crapouillou.net>
 In-Reply-To: <20190724171615.20774-1-paul@crapouillou.net>
 References: <20190724171615.20774-1-paul@crapouillou.net>
 MIME-Version: 1.0
@@ -64,55 +62,140 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-This header provides clock numbers for the ingenic,tcu
-DT binding.
+device_node_to_regmap() is exactly like syscon_node_to_regmap(), but it
+does not check that the node is compatible with "syscon", and won't
+attach the first clock it finds to the regmap.
+
+The rationale behind this, is that one device node with a standard
+compatible string "foo,bar" can be covered by multiple drivers sharing a
+regmap, or by a single driver doing all the job without a regmap, but
+these are implementation details which shouldn't reflect on the
+devicetree.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Tested-by: Mathieu Malaterre <malat@debian.org>
-Tested-by: Artur Rojek <contact@artur-rojek.eu>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Acked-by: Stephen Boyd <sboyd@kernel.org>
 ---
 
 Notes:
-    v2: Use SPDX identifier for the license
-    
-    v3/v4: No change
-    
-    v5: s/JZ47*_/TCU_/ and dropped *_CLK_LAST defines
-    
-    v6-v15: No change
+    v15: New patch
 
- include/dt-bindings/clock/ingenic,tcu.h | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
- create mode 100644 include/dt-bindings/clock/ingenic,tcu.h
+ drivers/mfd/syscon.c       | 46 +++++++++++++++++++++++++-------------
+ include/linux/mfd/syscon.h |  6 +++++
+ 2 files changed, 36 insertions(+), 16 deletions(-)
 
-diff --git a/include/dt-bindings/clock/ingenic,tcu.h b/include/dt-bindings/clock/ingenic,tcu.h
-new file mode 100644
-index 000000000000..d569650a7945
---- /dev/null
-+++ b/include/dt-bindings/clock/ingenic,tcu.h
-@@ -0,0 +1,20 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * This header provides clock numbers for the ingenic,tcu DT binding.
-+ */
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index b65e585fc8c6..660723276481 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -40,7 +40,7 @@ static const struct regmap_config syscon_regmap_config = {
+ 	.reg_stride = 4,
+ };
+ 
+-static struct syscon *of_syscon_register(struct device_node *np)
++static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
+ {
+ 	struct clk *clk;
+ 	struct syscon *syscon;
+@@ -51,9 +51,6 @@ static struct syscon *of_syscon_register(struct device_node *np)
+ 	struct regmap_config syscon_config = syscon_regmap_config;
+ 	struct resource res;
+ 
+-	if (!of_device_is_compatible(np, "syscon"))
+-		return ERR_PTR(-EINVAL);
+-
+ 	syscon = kzalloc(sizeof(*syscon), GFP_KERNEL);
+ 	if (!syscon)
+ 		return ERR_PTR(-ENOMEM);
+@@ -117,16 +114,18 @@ static struct syscon *of_syscon_register(struct device_node *np)
+ 		goto err_regmap;
+ 	}
+ 
+-	clk = of_clk_get(np, 0);
+-	if (IS_ERR(clk)) {
+-		ret = PTR_ERR(clk);
+-		/* clock is optional */
+-		if (ret != -ENOENT)
+-			goto err_clk;
+-	} else {
+-		ret = regmap_mmio_attach_clk(regmap, clk);
+-		if (ret)
+-			goto err_attach;
++	if (check_clk) {
++		clk = of_clk_get(np, 0);
++		if (IS_ERR(clk)) {
++			ret = PTR_ERR(clk);
++			/* clock is optional */
++			if (ret != -ENOENT)
++				goto err_clk;
++		} else {
++			ret = regmap_mmio_attach_clk(regmap, clk);
++			if (ret)
++				goto err_attach;
++		}
+ 	}
+ 
+ 	syscon->regmap = regmap;
+@@ -150,7 +149,8 @@ static struct syscon *of_syscon_register(struct device_node *np)
+ 	return ERR_PTR(ret);
+ }
+ 
+-struct regmap *syscon_node_to_regmap(struct device_node *np)
++static struct regmap *device_node_get_regmap(struct device_node *np,
++					     bool check_clk)
+ {
+ 	struct syscon *entry, *syscon = NULL;
+ 
+@@ -165,13 +165,27 @@ struct regmap *syscon_node_to_regmap(struct device_node *np)
+ 	spin_unlock(&syscon_list_slock);
+ 
+ 	if (!syscon)
+-		syscon = of_syscon_register(np);
++		syscon = of_syscon_register(np, check_clk);
+ 
+ 	if (IS_ERR(syscon))
+ 		return ERR_CAST(syscon);
+ 
+ 	return syscon->regmap;
+ }
 +
-+#ifndef __DT_BINDINGS_CLOCK_INGENIC_TCU_H__
-+#define __DT_BINDINGS_CLOCK_INGENIC_TCU_H__
++struct regmap *device_node_to_regmap(struct device_node *np)
++{
++	return device_node_get_regmap(np, false);
++}
++EXPORT_SYMBOL_GPL(device_node_to_regmap);
 +
-+#define TCU_CLK_TIMER0	0
-+#define TCU_CLK_TIMER1	1
-+#define TCU_CLK_TIMER2	2
-+#define TCU_CLK_TIMER3	3
-+#define TCU_CLK_TIMER4	4
-+#define TCU_CLK_TIMER5	5
-+#define TCU_CLK_TIMER6	6
-+#define TCU_CLK_TIMER7	7
-+#define TCU_CLK_WDT	8
-+#define TCU_CLK_OST	9
++struct regmap *syscon_node_to_regmap(struct device_node *np)
++{
++	if (!of_device_is_compatible(np, "syscon"))
++		return ERR_PTR(-EINVAL);
 +
-+#endif /* __DT_BINDINGS_CLOCK_INGENIC_TCU_H__ */
++	return device_node_get_regmap(np, true);
++}
+ EXPORT_SYMBOL_GPL(syscon_node_to_regmap);
+ 
+ struct regmap *syscon_regmap_lookup_by_compatible(const char *s)
+diff --git a/include/linux/mfd/syscon.h b/include/linux/mfd/syscon.h
+index 8cfda0554381..112dc66262cc 100644
+--- a/include/linux/mfd/syscon.h
++++ b/include/linux/mfd/syscon.h
+@@ -17,12 +17,18 @@
+ struct device_node;
+ 
+ #ifdef CONFIG_MFD_SYSCON
++extern struct regmap *device_node_to_regmap(struct device_node *np);
+ extern struct regmap *syscon_node_to_regmap(struct device_node *np);
+ extern struct regmap *syscon_regmap_lookup_by_compatible(const char *s);
+ extern struct regmap *syscon_regmap_lookup_by_phandle(
+ 					struct device_node *np,
+ 					const char *property);
+ #else
++static inline struct regmap *device_node_to_regmap(struct device_node *np)
++{
++	return ERR_PTR(-ENOTSUPP);
++}
++
+ static inline struct regmap *syscon_node_to_regmap(struct device_node *np)
+ {
+ 	return ERR_PTR(-ENOTSUPP);
 -- 
 2.21.0.593.g511ec345e18
 

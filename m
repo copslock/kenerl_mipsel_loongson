@@ -5,56 +5,56 @@ X-Spam-Level:
 X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 68066C76190
-	for <linux-mips@archiver.kernel.org>; Wed, 24 Jul 2019 02:24:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EADD0C41517
+	for <linux-mips@archiver.kernel.org>; Wed, 24 Jul 2019 02:24:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 3DB8C229F6
-	for <linux-mips@archiver.kernel.org>; Wed, 24 Jul 2019 02:24:29 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C2E7C229F3
+	for <linux-mips@archiver.kernel.org>; Wed, 24 Jul 2019 02:24:35 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kdnkeIs9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bXj86qDw"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728825AbfGXCYY (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 23 Jul 2019 22:24:24 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:44053 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728052AbfGXCYY (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Tue, 23 Jul 2019 22:24:24 -0400
-Received: by mail-pf1-f194.google.com with SMTP id t16so20066926pfe.11;
-        Tue, 23 Jul 2019 19:24:23 -0700 (PDT)
+        id S2387405AbfGXCYf (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 23 Jul 2019 22:24:35 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:43710 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728052AbfGXCYe (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 23 Jul 2019 22:24:34 -0400
+Received: by mail-pg1-f194.google.com with SMTP id f25so20353817pgv.10;
+        Tue, 23 Jul 2019 19:24:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=DHFA8suWUP3tpWesHwhM+PuI3SVJDTd+EXpBK0dcsfw=;
-        b=kdnkeIs9UnlW7io2ltC+Jx434Sp7jd23QovrRYNLKrNrCFZDyr8Lar08/olaNCKxYw
-         n+hb+OW1t8Y+ZfxdTGyMOSRZ5ys3tY4//A5ZPvCg5ep4Sd1zMTNKNtjzD3xJKwEQq2g5
-         Hfte9ICcF5AQXLfcBpNOQijig8veInit8HsZGklfWLEkSIkCPtLy65Y7Qr3uv5H3IzX9
-         tSCEA2C5aMqzMrVOwtakcjKYn96SmPkM1hg2pdjBMkdPs+sjOxc1z6kWhdMMq4xrvcfw
-         qnDLXAqMnqg4S5W49cY+r4FhYevM5YlHAOxH2pdwV/wTiCbBN92zvpzKyiUUgatjBVYC
-         BKdQ==
+        bh=ktwyRH04D76vd8HxrkIYTpUvu2EyjgpW6mXsZO8aRqs=;
+        b=bXj86qDwVlxcmEZwkTYO1ID3R5d/RfMpUIEFYaqTHs+QcN7ueOzN6trv1JqWDZ+wdN
+         BJzUyK9DQixKWxcXT+9wQoMP6w/mAl5I5mSh3YWlNzNM/MgP0C8s79Tua2vnO7rjDuwp
+         zajOQtKUQJb3Q8OgsrO20+UYaQ39fat8dE5h0xQ5Y12Z9U+Exa2ahKbM1ZllnZIjTvO6
+         cKJ8IorxZIdSa6SlK9R/v6tqCZ5MF5RvZ0Gqwrda88bG285jZE/JKf/awv2yv03M1PMo
+         H6cHJP671chHA4R1eYcYAxa+EA9ipAXzFDkFYoXimnfNzo+hmmRXs3foDqGhjEvbFOAw
+         H9ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=DHFA8suWUP3tpWesHwhM+PuI3SVJDTd+EXpBK0dcsfw=;
-        b=mDLev0FGCVukMDRpeNQ+M4WoOuoB3vsTtPl6RpXLUZtjEkNnaUZWH67I+KqOqyOKgv
-         et6FX9c5R7sB67hhY+9APRL86A/RlZT/v+JCTC7vXzdj7QAI5S0RdobUjoRBriOE46rT
-         65n9GOR77C4wGvOKmTM6GuFtouh/ehY76uXOLj5VVjNEYkKz971BSaaXU18YLUwKzRVQ
-         2BfUE9JooXrBnbj9CPHzNWM5rjSmVTSrzf9p92NJpVrdIvLfrQZ3WJS/zeTrTOYBKdGf
-         RbAImXiS/Hjx9+beyL1keAVA4S8rBBFSGVAHmTRUwxeCPAsivFMNfM1z+iNFf9aeBwFL
-         zGhQ==
-X-Gm-Message-State: APjAAAUDUySzfSD9E+i1JmLT0W9E8pzy3DKJdwC4AamKX1HJj+zaj99J
-        nQlPIpipgtvJZdg5Jq9vLzCOEI9/my4=
-X-Google-Smtp-Source: APXvYqyv5VGeSzUKKTyB6UP2tZYzg/oEpNsftr7kxHCCip1RDPO9NuyaCaNi89fYJoRP2+U9gPQAyA==
-X-Received: by 2002:a65:5a44:: with SMTP id z4mr79338446pgs.41.1563935063367;
-        Tue, 23 Jul 2019 19:24:23 -0700 (PDT)
+        bh=ktwyRH04D76vd8HxrkIYTpUvu2EyjgpW6mXsZO8aRqs=;
+        b=O1jdEzajiBq5bTX7RRVHzcz2vMAtQPSUE4H5sHSp4ORp1Z5QMwj0JCrOck41AntEBp
+         RvGsW3hF8PONK4fpI6rN5sReUISC9r6+txwUMIQpL5ZurahkitJiqCQyTjwKoGIFCuqN
+         /4x/X1Fp/4/YZ8VknN2b0FTlOclIKuZH1z8c08ZUe9HNNvG2vQucdjBwCo1zKYSzWpwm
+         HEF2llpqNLPCkkb/XiONRSxtc9ADOcQ1cxk0f3QM9FyXCnouzDiu64n/AsfzovKJbGCT
+         QExKvrouyRe5K6pAfAuQXCYPZMhBj9qDpSeor8invKFvdoVURtwTK9l9F/fOtilHx3HE
+         H9wg==
+X-Gm-Message-State: APjAAAWlpAsXxdfp2ZX/v/yAfgvrzG/b9pzIYL3Mdq8wj+EibQcPEGrh
+        +qL3nVOVEfVTbCR6N+1OigCOes9a16o=
+X-Google-Smtp-Source: APXvYqxLSQOIANvqYjlgJb9DQr5bEktP8PDOAkWZF4jXqbyizFuCcfn+MRUYzoYSiBURF6hiZ0XUTw==
+X-Received: by 2002:a17:90a:c391:: with SMTP id h17mr85850435pjt.131.1563935073533;
+        Tue, 23 Jul 2019 19:24:33 -0700 (PDT)
 Received: from guoguo-omen-lan.lan ([107.151.139.128])
-        by smtp.gmail.com with ESMTPSA id s185sm63468029pgs.67.2019.07.23.19.24.18
+        by smtp.gmail.com with ESMTPSA id s185sm63468029pgs.67.2019.07.23.19.24.29
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 23 Jul 2019 19:24:22 -0700 (PDT)
+        Tue, 23 Jul 2019 19:24:33 -0700 (PDT)
 From:   Chuanhong Guo <gch981213@gmail.com>
 To:     linux-clk@vger.kernel.org (open list:COMMON CLK FRAMEWORK),
         devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
@@ -72,9 +72,9 @@ Cc:     Michael Turquette <mturquette@baylibre.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Weijie Gao <hackpascal@gmail.com>, NeilBrown <neil@brown.name>,
         Chuanhong Guo <gch981213@gmail.com>
-Subject: [PATCH v2 2/6] MIPS: ralink: drop ralink_clk_init for mt7621
-Date:   Wed, 24 Jul 2019 10:23:06 +0800
-Message-Id: <20190724022310.28010-3-gch981213@gmail.com>
+Subject: [PATCH v2 4/6] dt: bindings: add mt7621-pll dt binding documentation
+Date:   Wed, 24 Jul 2019 10:23:08 +0800
+Message-Id: <20190724022310.28010-5-gch981213@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190724022310.28010-1-gch981213@gmail.com>
 References: <20190724022310.28010-1-gch981213@gmail.com>
@@ -85,78 +85,43 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-This function isn't called anywhere. just drop it.
+This commit adds device tree binding documentation for MT7621
+PLL controller.
 
 Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
 ---
+
 Change since v1:
-New patch. Split from:
-  "MIPS: ralink: fix cpu clock of mt7621 and add dt clk devices"
+drop useless syscon in compatible string
 
- arch/mips/ralink/mt7621.c | 43 ---------------------------------------
- 1 file changed, 43 deletions(-)
+ .../bindings/clock/mediatek,mt7621-pll.txt     | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt7621-pll.txt
 
-diff --git a/arch/mips/ralink/mt7621.c b/arch/mips/ralink/mt7621.c
-index 9415be0d57b8..ba39f3f3a7c7 100644
---- a/arch/mips/ralink/mt7621.c
-+++ b/arch/mips/ralink/mt7621.c
-@@ -18,11 +18,6 @@
- 
- #include "common.h"
- 
--#define SYSC_REG_SYSCFG		0x10
--#define SYSC_REG_CPLL_CLKCFG0	0x2c
--#define SYSC_REG_CUR_CLK_STS	0x44
--#define CPU_CLK_SEL		(BIT(30) | BIT(31))
--
- #define MT7621_GPIO_MODE_UART1		1
- #define MT7621_GPIO_MODE_I2C		2
- #define MT7621_GPIO_MODE_UART3_MASK	0x3
-@@ -113,44 +108,6 @@ phys_addr_t mips_cpc_default_phys_base(void)
- 	panic("Cannot detect cpc address");
- }
- 
--void __init ralink_clk_init(void)
--{
--	int cpu_fdiv = 0;
--	int cpu_ffrac = 0;
--	int fbdiv = 0;
--	u32 clk_sts, syscfg;
--	u8 clk_sel = 0, xtal_mode;
--	u32 cpu_clk;
--
--	if ((rt_sysc_r32(SYSC_REG_CPLL_CLKCFG0) & CPU_CLK_SEL) != 0)
--		clk_sel = 1;
--
--	switch (clk_sel) {
--	case 0:
--		clk_sts = rt_sysc_r32(SYSC_REG_CUR_CLK_STS);
--		cpu_fdiv = ((clk_sts >> 8) & 0x1F);
--		cpu_ffrac = (clk_sts & 0x1F);
--		cpu_clk = (500 * cpu_ffrac / cpu_fdiv) * 1000 * 1000;
--		break;
--
--	case 1:
--		fbdiv = ((rt_sysc_r32(0x648) >> 4) & 0x7F) + 1;
--		syscfg = rt_sysc_r32(SYSC_REG_SYSCFG);
--		xtal_mode = (syscfg >> 6) & 0x7;
--		if (xtal_mode >= 6) {
--			/* 25Mhz Xtal */
--			cpu_clk = 25 * fbdiv * 1000 * 1000;
--		} else if (xtal_mode >= 3) {
--			/* 40Mhz Xtal */
--			cpu_clk = 40 * fbdiv * 1000 * 1000;
--		} else {
--			/* 20Mhz Xtal */
--			cpu_clk = 20 * fbdiv * 1000 * 1000;
--		}
--		break;
--	}
--}
--
- void __init ralink_of_remap(void)
- {
- 	rt_sysc_membase = plat_of_remap_node("mtk,mt7621-sysc");
+diff --git a/Documentation/devicetree/bindings/clock/mediatek,mt7621-pll.txt b/Documentation/devicetree/bindings/clock/mediatek,mt7621-pll.txt
+new file mode 100644
+index 000000000000..7dcfbd5283e3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/clock/mediatek,mt7621-pll.txt
+@@ -0,0 +1,18 @@
++Binding for Mediatek MT7621 PLL controller
++
++The PLL controller provides the 2 main clocks of the SoC: CPU and BUS.
++
++Required Properties:
++- compatible: has to be "mediatek,mt7621-pll"
++- #clock-cells: has to be one
++
++Optional properties:
++- clock-output-names: should be "cpu", "bus"
++
++Example:
++	pll {
++		compatible = "mediatek,mt7621-pll";
++
++		#clock-cells = <1>;
++		clock-output-names = "cpu", "bus";
++	};
 -- 
 2.21.0
 

@@ -2,194 +2,281 @@ Return-Path: <SRS0=wFHa=VX=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2629BC41514
-	for <linux-mips@archiver.kernel.org>; Fri, 26 Jul 2019 11:48:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 61998C76191
+	for <linux-mips@archiver.kernel.org>; Fri, 26 Jul 2019 12:51:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 06E65229F3
-	for <linux-mips@archiver.kernel.org>; Fri, 26 Jul 2019 11:48:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 389022238C
+	for <linux-mips@archiver.kernel.org>; Fri, 26 Jul 2019 12:51:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1564145508;
+	bh=OA9vqP7ezrvfJf3dNRd2BKqJ7tmXwzuY+fP7DZujkzA=;
+	h=From:Cc:Subject:Date:In-Reply-To:References:To:List-ID:From;
+	b=S9xY+E7XcDS/RmzW6RnnOdDOBe733dO438dDT/h4vvEM8WxZb14HwK6j69xjUdxpu
+	 WmgQ2MBfqULXawWOYEYhIvos13UEkRDR989EhvTFkLyBfQ8N6s/uqlYbB4ooPXA8ia
+	 3ASRZKySqq7bt3ninjgWpYwCJrVbbmvpDEoh50y8=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726534AbfGZLsQ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 26 Jul 2019 07:48:16 -0400
-Received: from relay8-d.mail.gandi.net ([217.70.183.201]:51067 "EHLO
-        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726180AbfGZLsP (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 26 Jul 2019 07:48:15 -0400
-X-Originating-IP: 81.250.144.103
-Received: from [10.30.1.20] (lneuilly-657-1-5-103.w81-250.abo.wanadoo.fr [81.250.144.103])
-        (Authenticated sender: alex@ghiti.fr)
-        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 3CAE81BF207;
-        Fri, 26 Jul 2019 11:48:08 +0000 (UTC)
-Subject: Re: [PATCH REBASE v4 14/14] riscv: Make mmap allocation top-down by
- default
-To:     Paul Walmsley <paul.walmsley@sifive.com>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Kees Cook <keescook@chromium.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Palmer Dabbelt <palmer@sifive.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
+        id S1726736AbfGZMvq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 26 Jul 2019 08:51:46 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:40086 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726617AbfGZMvq (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 26 Jul 2019 08:51:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
+        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+        Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=bs3enu59UfvCehHYmSCxQhpe4RGM8ERe0lg1xzZ/LqI=; b=ieTWib0CK1Ju61WCoQmt/bBxc1
+        0dP7UHLysBU8IX91rS8fYyebV2tMB1JMCNRUyOZS8ysAEtMDgSgDAjsjgCXI/6CDey2tcdGnks86K
+        jUsvJGrkcuuuQnwkvLMS2XIuNAPptvI6g7SKmMzGWBcV6vQi0VfCtlpoxlZ8emigUhkx/yt+BU43V
+        zfMhD7B+lBG6x1dQBV/Cdqq/SEkqNdB7+WHb4+aD7FfuHMtfeWUrnFh1sOOUGOBFco8sumvAPqjiD
+        EO2KpXZryw4m6TT3uShqbm7LrKS4sR7fJ46vwz/OTzbIuxz8QnSnJnL/SlMx679dFgg3sBtMFR825
+        5faenEzA==;
+Received: from [179.95.31.157] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hqzhE-0006Af-L1; Fri, 26 Jul 2019 12:51:40 +0000
+Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
+        (envelope-from <mchehab@bombadil.infradead.org>)
+        id 1hqzhC-0005bc-FN; Fri, 26 Jul 2019 09:51:38 -0300
+From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
         Ralf Baechle <ralf@linux-mips.org>,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         Paul Burton <paul.burton@mips.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        James Hogan <jhogan@kernel.org>, linux-fsdevel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-mips@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
-        linux-riscv@lists.infradead.org,
-        Daniel Cashman <dcashman@google.com>,
-        Luis Chamberlain <mcgrof@kernel.org>
-References: <20190724055850.6232-1-alex@ghiti.fr>
- <20190724055850.6232-15-alex@ghiti.fr>
- <alpine.DEB.2.21.9999.1907251655310.32766@viisi.sifive.com>
-From:   Alexandre Ghiti <alex@ghiti.fr>
-Message-ID: <6b2b45a5-0ac4-db73-8f50-ab182a0cb621@ghiti.fr>
-Date:   Fri, 26 Jul 2019 13:48:08 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        James Hogan <jhogan@kernel.org>, linux-doc@vger.kernel.org,
+        linux-mips@vger.kernel.org
+Subject: [PATCH v2 21/26] docs: mips: add to the documentation body as ReST
+Date:   Fri, 26 Jul 2019 09:51:31 -0300
+Message-Id: <6829abccfc656e736893348cecfedace06eef228.1564145354.git.mchehab+samsung@kernel.org>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <cover.1564145354.git.mchehab+samsung@kernel.org>
+References: <cover.1564145354.git.mchehab+samsung@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.21.9999.1907251655310.32766@viisi.sifive.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: fr
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On 7/26/19 2:20 AM, Paul Walmsley wrote:
-> Hi Alexandre,
->
-> I have a few questions about this patch.  Sorry to be dense here ...
->
-> On Wed, 24 Jul 2019, Alexandre Ghiti wrote:
->
->> In order to avoid wasting user address space by using bottom-up mmap
->> allocation scheme, prefer top-down scheme when possible.
->>
->> Before:
->> root@qemuriscv64:~# cat /proc/self/maps
->> 00010000-00016000 r-xp 00000000 fe:00 6389       /bin/cat.coreutils
->> 00016000-00017000 r--p 00005000 fe:00 6389       /bin/cat.coreutils
->> 00017000-00018000 rw-p 00006000 fe:00 6389       /bin/cat.coreutils
->> 00018000-00039000 rw-p 00000000 00:00 0          [heap]
->> 1555556000-155556d000 r-xp 00000000 fe:00 7193   /lib/ld-2.28.so
->> 155556d000-155556e000 r--p 00016000 fe:00 7193   /lib/ld-2.28.so
->> 155556e000-155556f000 rw-p 00017000 fe:00 7193   /lib/ld-2.28.so
->> 155556f000-1555570000 rw-p 00000000 00:00 0
->> 1555570000-1555572000 r-xp 00000000 00:00 0      [vdso]
->> 1555574000-1555576000 rw-p 00000000 00:00 0
->> 1555576000-1555674000 r-xp 00000000 fe:00 7187   /lib/libc-2.28.so
->> 1555674000-1555678000 r--p 000fd000 fe:00 7187   /lib/libc-2.28.so
->> 1555678000-155567a000 rw-p 00101000 fe:00 7187   /lib/libc-2.28.so
->> 155567a000-15556a0000 rw-p 00000000 00:00 0
->> 3fffb90000-3fffbb1000 rw-p 00000000 00:00 0      [stack]
->>
->> After:
->> root@qemuriscv64:~# cat /proc/self/maps
->> 00010000-00016000 r-xp 00000000 fe:00 6389       /bin/cat.coreutils
->> 00016000-00017000 r--p 00005000 fe:00 6389       /bin/cat.coreutils
->> 00017000-00018000 rw-p 00006000 fe:00 6389       /bin/cat.coreutils
->> 2de81000-2dea2000 rw-p 00000000 00:00 0          [heap]
->> 3ff7eb6000-3ff7ed8000 rw-p 00000000 00:00 0
->> 3ff7ed8000-3ff7fd6000 r-xp 00000000 fe:00 7187   /lib/libc-2.28.so
->> 3ff7fd6000-3ff7fda000 r--p 000fd000 fe:00 7187   /lib/libc-2.28.so
->> 3ff7fda000-3ff7fdc000 rw-p 00101000 fe:00 7187   /lib/libc-2.28.so
->> 3ff7fdc000-3ff7fe2000 rw-p 00000000 00:00 0
->> 3ff7fe4000-3ff7fe6000 r-xp 00000000 00:00 0      [vdso]
->> 3ff7fe6000-3ff7ffd000 r-xp 00000000 fe:00 7193   /lib/ld-2.28.so
->> 3ff7ffd000-3ff7ffe000 r--p 00016000 fe:00 7193   /lib/ld-2.28.so
->> 3ff7ffe000-3ff7fff000 rw-p 00017000 fe:00 7193   /lib/ld-2.28.so
->> 3ff7fff000-3ff8000000 rw-p 00000000 00:00 0
->> 3fff888000-3fff8a9000 rw-p 00000000 00:00 0      [stack]
->>
->> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
->> Reviewed-by: Christoph Hellwig <hch@lst.de>
->> Reviewed-by: Kees Cook <keescook@chromium.org>
->> ---
->>   arch/riscv/Kconfig | 11 +++++++++++
->>   1 file changed, 11 insertions(+)
->>
->> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
->> index 59a4727ecd6c..6a63973873fd 100644
->> --- a/arch/riscv/Kconfig
->> +++ b/arch/riscv/Kconfig
->> @@ -54,6 +54,17 @@ config RISCV
->>   	select EDAC_SUPPORT
->>   	select ARCH_HAS_GIGANTIC_PAGE
->>   	select ARCH_WANT_HUGE_PMD_SHARE if 64BIT
->> +	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT if MMU
->> +	select HAVE_ARCH_MMAP_RND_BITS
->> +
->> +config ARCH_MMAP_RND_BITS_MIN
->> +	default 18
-> Could you help me understand the rationale behind this constant?
+Manually convert the AU1xxx_IDE.README file to ReST and add
+to a MIPS book as part of the main documentation body.
 
+Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Acked-by: Paul Burton <paul.burton@mips.com>
+---
+ Documentation/index.rst                       |  1 +
+ .../{AU1xxx_IDE.README => au1xxx_ide.rst}     | 89 +++++++++++--------
+ Documentation/mips/index.rst                  | 17 ++++
+ 3 files changed, 70 insertions(+), 37 deletions(-)
+ rename Documentation/mips/{AU1xxx_IDE.README => au1xxx_ide.rst} (67%)
+ create mode 100644 Documentation/mips/index.rst
 
-Indeed, I took that from arm64 code and I did not think enough about it: 
-that's
-great you spotted this because that's a way too large value for 32 bits 
-as it would,
-at minimum, make mmap random offset go up to 1GB (18 + 12), which is a 
-big hole for
-this small address space :)
+diff --git a/Documentation/index.rst b/Documentation/index.rst
+index de7be1c31450..1ff03833276a 100644
+--- a/Documentation/index.rst
++++ b/Documentation/index.rst
+@@ -149,6 +149,7 @@ implementation.
+    ia64/index
+    m68k/index
+    powerpc/index
++   mips/index
+    openrisc/index
+    parisc/index
+    riscv/index
+diff --git a/Documentation/mips/AU1xxx_IDE.README b/Documentation/mips/au1xxx_ide.rst
+similarity index 67%
+rename from Documentation/mips/AU1xxx_IDE.README
+rename to Documentation/mips/au1xxx_ide.rst
+index ff675a1b1422..2f9c2cff6738 100644
+--- a/Documentation/mips/AU1xxx_IDE.README
++++ b/Documentation/mips/au1xxx_ide.rst
+@@ -1,7 +1,14 @@
+-README for MIPS AU1XXX IDE driver - Released 2005-07-15
++.. include:: <isonum.txt>
++
++======================
++MIPS AU1XXX IDE driver
++======================
++
++Released 2005-07-15
++
++About
++=====
+ 
+-ABOUT
+------
+ This file describes the 'drivers/ide/au1xxx-ide.c', related files and the
+ services they provide.
+ 
+@@ -10,17 +17,17 @@ the white or black list, go to the 'ADD NEW HARD DISC TO WHITE OR BLACK LIST'
+ section.
+ 
+ 
+-LICENSE
+--------
++License
++=======
+ 
+-Copyright (c) 2003-2005 AMD, Personal Connectivity Solutions
++:Copyright: |copy| 2003-2005 AMD, Personal Connectivity Solutions
+ 
+ This program is free software; you can redistribute it and/or modify it under
+ the terms of the GNU General Public License as published by the Free Software
+ Foundation; either version 2 of the License, or (at your option) any later
+ version.
+ 
+-THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
++THIS SOFTWARE IS PROVIDED ``AS IS`` AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR
+ BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+@@ -35,31 +42,35 @@ You should have received a copy of the GNU General Public License along with
+ this program; if not, write to the Free Software Foundation, Inc.,
+ 675 Mass Ave, Cambridge, MA 02139, USA.
+ 
+-Note: for more information, please refer "AMD Alchemy Au1200/Au1550 IDE
++Note:
++      for more information, please refer "AMD Alchemy Au1200/Au1550 IDE
+       Interface and Linux Device Driver" Application Note.
+ 
+ 
+-FILES, CONFIGS AND COMPATIBILITY
+---------------------------------
++Files, Configs and Compatibility
++================================
+ 
+ Two files are introduced:
+ 
+   a) 'arch/mips/include/asm/mach-au1x00/au1xxx_ide.h'
+      contains : struct _auide_hwif
+-                 timing parameters for PIO mode 0/1/2/3/4
+-                 timing parameters for MWDMA 0/1/2
++
++                - timing parameters for PIO mode 0/1/2/3/4
++                - timing parameters for MWDMA 0/1/2
+ 
+   b) 'drivers/ide/mips/au1xxx-ide.c'
+      contains the functionality of the AU1XXX IDE driver
+ 
+ Following extra configs variables are introduced:
+ 
+-  CONFIG_BLK_DEV_IDE_AU1XXX_PIO_DBDMA    - enable the PIO+DBDMA mode
+-  CONFIG_BLK_DEV_IDE_AU1XXX_MDMA2_DBDMA  - enable the MWDMA mode
++  CONFIG_BLK_DEV_IDE_AU1XXX_PIO_DBDMA
++	- enable the PIO+DBDMA mode
++  CONFIG_BLK_DEV_IDE_AU1XXX_MDMA2_DBDMA
++	- enable the MWDMA mode
+ 
+ 
+-SUPPORTED IDE MODES
+--------------------
++Supported IDE Modes
++===================
+ 
+ The AU1XXX IDE driver supported all PIO modes - PIO mode 0/1/2/3/4 - and all
+ MWDMA modes - MWDMA 0/1/2 -. There is no support for SWDMA and UDMA mode.
+@@ -69,20 +80,21 @@ To change the PIO mode use the program hdparm with option -p, e.g.
+ -X, e.g. 'hdparm -X32 [device]' for MWDMA mode 0.
+ 
+ 
+-PERFORMANCE CONFIGURATIONS
+---------------------------
++Performance Configurations
++==========================
+ 
+-If the used system doesn't need USB support enable the following kernel configs:
++If the used system doesn't need USB support enable the following kernel
++configs::
+ 
+-CONFIG_IDE=y
+-CONFIG_BLK_DEV_IDE=y
+-CONFIG_IDE_GENERIC=y
+-CONFIG_BLK_DEV_IDEPCI=y
+-CONFIG_BLK_DEV_GENERIC=y
+-CONFIG_BLK_DEV_IDEDMA_PCI=y
+-CONFIG_BLK_DEV_IDE_AU1XXX=y
+-CONFIG_BLK_DEV_IDE_AU1XXX_MDMA2_DBDMA=y
+-CONFIG_BLK_DEV_IDEDMA=y
++    CONFIG_IDE=y
++    CONFIG_BLK_DEV_IDE=y
++    CONFIG_IDE_GENERIC=y
++    CONFIG_BLK_DEV_IDEPCI=y
++    CONFIG_BLK_DEV_GENERIC=y
++    CONFIG_BLK_DEV_IDEDMA_PCI=y
++    CONFIG_BLK_DEV_IDE_AU1XXX=y
++    CONFIG_BLK_DEV_IDE_AU1XXX_MDMA2_DBDMA=y
++    CONFIG_BLK_DEV_IDEDMA=y
+ 
+ Also define 'IDE_AU1XXX_BURSTMODE' in 'drivers/ide/mips/au1xxx-ide.c' to enable
+ the burst support on DBDMA controller.
+@@ -90,20 +102,22 @@ the burst support on DBDMA controller.
+ If the used system need the USB support enable the following kernel configs for
+ high IDE to USB throughput.
+ 
+-CONFIG_IDE_GENERIC=y
+-CONFIG_BLK_DEV_IDEPCI=y
+-CONFIG_BLK_DEV_GENERIC=y
+-CONFIG_BLK_DEV_IDEDMA_PCI=y
+-CONFIG_BLK_DEV_IDE_AU1XXX=y
+-CONFIG_BLK_DEV_IDE_AU1XXX_MDMA2_DBDMA=y
+-CONFIG_BLK_DEV_IDEDMA=y
++::
++
++    CONFIG_IDE_GENERIC=y
++    CONFIG_BLK_DEV_IDEPCI=y
++    CONFIG_BLK_DEV_GENERIC=y
++    CONFIG_BLK_DEV_IDEDMA_PCI=y
++    CONFIG_BLK_DEV_IDE_AU1XXX=y
++    CONFIG_BLK_DEV_IDE_AU1XXX_MDMA2_DBDMA=y
++    CONFIG_BLK_DEV_IDEDMA=y
+ 
+ Also undefine 'IDE_AU1XXX_BURSTMODE' in 'drivers/ide/mips/au1xxx-ide.c' to
+ disable the burst support on DBDMA controller.
+ 
+ 
+-ACKNOWLEDGMENTS
+----------------
++Acknowledgments
++===============
+ 
+ These drivers wouldn't have been done without the base of kernel 2.4.x AU1XXX
+ IDE driver from AMD.
+@@ -112,4 +126,5 @@ Additional input also from:
+ Matthias Lenk <matthias.lenk@amd.com>
+ 
+ Happy hacking!
++
+ Enrico Walther <enrico.walther@amd.com>
+diff --git a/Documentation/mips/index.rst b/Documentation/mips/index.rst
+new file mode 100644
+index 000000000000..fd9023c8a89f
+--- /dev/null
++++ b/Documentation/mips/index.rst
+@@ -0,0 +1,17 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++=================
++MIPS architecture
++=================
++
++.. toctree::
++   :maxdepth: 2
++
++   au1xxx_ide
++
++.. only::  subproject and html
++
++   Indices
++   =======
++
++   * :ref:`genindex`
+-- 
+2.21.0
 
-arm and mips propose 8 as default value for 32bits systems which is 1MB 
-offset at minimum.
-
-
->
->> +
->> +# max bits determined by the following formula:
->> +#  VA_BITS - PAGE_SHIFT - 3
-> I realize that these lines are probably copied from arch/arm64/Kconfig.
-> But the rationale behind the "- 3" is not immediately obvious.  This
-> apparently originates from commit 8f0d3aa9de57 ("arm64: mm: support
-> ARCH_MMAP_RND_BITS"). Can you provide any additional context here?
-
-
-The formula comes from commit d07e22597d1d ("mm: mmap: add new /proc tunable
-for mmap_base ASLR"), where the author states that "generally a 3-4 bits 
-less than the
-number of bits in the user-space accessible virtual address space 
-[allows to] give the greatest
-flexibility without generating an invalid mmap_base address".
-
-In practice, that limits the mmap random offset to at maximum 1/8 (for - 
-3) of the total address space.
-
-
->
->> +config ARCH_MMAP_RND_BITS_MAX
->> +	default 33 if 64BIT # SV48 based
-> The rationale here is clear for Sv48, per the above formula:
->
->     (48 - 12 - 3) = 33
->
->> +	default 18
-> However, here it is less clear to me.  For Sv39, shouldn't this be
->
->     (39 - 12 - 3) = 24
->
-> ?  And what about Sv32?
-
-
-You're right. Is there a way to distinguish between sv39 and sv48 here ?
-
-Thanks Paul,
-
-Alex
-
->   
->
-> - Paul
->
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv

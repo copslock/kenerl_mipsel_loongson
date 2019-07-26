@@ -2,28 +2,29 @@ Return-Path: <SRS0=wFHa=VX=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AF1E3C7618B
-	for <linux-mips@archiver.kernel.org>; Fri, 26 Jul 2019 16:30:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64C22C76191
+	for <linux-mips@archiver.kernel.org>; Fri, 26 Jul 2019 16:30:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 82EAF21734
-	for <linux-mips@archiver.kernel.org>; Fri, 26 Jul 2019 16:30:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 480A0217D9
+	for <linux-mips@archiver.kernel.org>; Fri, 26 Jul 2019 16:30:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728223AbfGZQaB (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 26 Jul 2019 12:30:01 -0400
-Received: from foss.arm.com ([217.140.110.172]:47074 "EHLO foss.arm.com"
+        id S1728903AbfGZQaH (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 26 Jul 2019 12:30:07 -0400
+Received: from foss.arm.com ([217.140.110.172]:47142 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727514AbfGZQaB (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 26 Jul 2019 12:30:01 -0400
+        id S1727514AbfGZQaH (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 26 Jul 2019 12:30:07 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6FBB1337;
-        Fri, 26 Jul 2019 09:30:00 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3CB9D15A2;
+        Fri, 26 Jul 2019 09:30:06 -0700 (PDT)
 Received: from e119884-lin.cambridge.arm.com (e119884-lin.cambridge.arm.com [10.1.196.72])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BDBF93F71F;
-        Fri, 26 Jul 2019 09:29:57 -0700 (PDT)
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8C6543F71F;
+        Fri, 26 Jul 2019 09:30:03 -0700 (PDT)
 From:   Vincenzo Frascino <vincenzo.frascino@arm.com>
 To:     linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
@@ -34,12 +35,13 @@ Cc:     catalin.marinas@arm.com, will.deacon@arm.com, arnd@arndb.de,
         pcc@google.com, shuah@kernel.org, 0x7f454c46@gmail.com,
         linux@rasmusvillemoes.dk, huw@codeweavers.com,
         sthotton@marvell.com, andre.przywara@arm.com, luto@kernel.org
-Subject: [PATCH 0/2] mips: vdso: Fix Makefile
-Date:   Fri, 26 Jul 2019 17:29:42 +0100
-Message-Id: <20190726162944.12149-1-vincenzo.frascino@arm.com>
+Subject: [PATCH 2/2] mips: vdso: Fix flip/flop vdso building bug
+Date:   Fri, 26 Jul 2019 17:29:44 +0100
+Message-Id: <20190726162944.12149-3-vincenzo.frascino@arm.com>
 X-Mailer: git-send-email 2.22.0
-In-Reply-To: <MWHPR2201MB1277C33D971A9C8945812CFCC1C00@MWHPR2201MB1277.namprd22.prod.outlook.com>
+In-Reply-To: <20190726162944.12149-1-vincenzo.frascino@arm.com>
 References: <MWHPR2201MB1277C33D971A9C8945812CFCC1C00@MWHPR2201MB1277.namprd22.prod.outlook.com>
+ <20190726162944.12149-1-vincenzo.frascino@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
@@ -47,28 +49,103 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Consequently to the unified vDSO transition of the MIPS architecture few
-compilation issues appeared due to:
- - A wrong source path for the configuration environment settings for
-   the O32 and N32 vDSO library generation.
- - A flip/flop vDSO building bug that would cause to rebuild the vDSO
-   library every second time.
+Running "make" on an already compiled kernel tree will rebuild the
+vdso library even if this has not been modified.
 
-This patch series addresses both the issues providing the respective
-fixes.
+$ make
+  GEN     Makefile
+  Using linux as source for kernel
+  CALL   linux/scripts/atomic/check-atomics.sh
+  CALL   linux/scripts/checksyscalls.sh
+<stdin>:1511:2: warning: #warning syscall clone3 not implemented [-Wcpp]
+  CHK     include/generated/compile.h
+  VDSO    arch/mips/vdso/vdso.so.dbg.raw
+  OBJCOPY arch/mips/vdso/vdso.so.raw
+  GENVDSO arch/mips/vdso/vdso-image.c
+  CC      arch/mips/vdso/vdso-image.o
+  AR      arch/mips/vdso/built-in.a
+  AR      arch/mips/built-in.a
+  CHK     include/generated/autoksyms.h
+  GEN     .version
+  CHK     include/generated/compile.h
+  UPD     include/generated/compile.h
+  CC      init/version.o
+  AR      init/built-in.a
+  LD      vmlinux.o
+  MODPOST vmlinux.o
+  MODINFO modules.builtin.modinfo
+  KSYM    .tmp_kallsyms1.o
+  KSYM    .tmp_kallsyms2.o
+  LD      vmlinux
+  SORTEX  vmlinux
+  SYSMAP  System.map
+  Building modules, stage 2.
+  ITS     arch/mips/boot/vmlinux.gz.its
+  OBJCOPY arch/mips/boot/vmlinux.bin
+  MODPOST 7 modules
+  GZIP    arch/mips/boot/vmlinux.bin.gz
+  ITB     arch/mips/boot/vmlinux.gz.itb
 
-This patchset is rebased on top of mips-next.
+The issue is generated by the fact that "if_changed" is called twice
+in a single target.
 
-Cc: Paul Burton <paul.burton@mips.com>
+Fix the build bug merging the two commands into a single function.
+
 Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
+---
+ arch/mips/vdso/Makefile | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-Vincenzo Frascino (2):
-  mips: vdso: Fix source path
-  mips: vdso: Fix flip/flop vdso building bug
-
- arch/mips/vdso/Makefile | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
-
+diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
+index 6b482ac52e61..69cfa0a5339e 100644
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -79,11 +79,14 @@ UBSAN_SANITIZE := n
+ # Shared build commands.
+ #
+ 
++quiet_cmd_vdsold_and_vdso_check = LD      $@
++      cmd_vdsold_and_vdso_check = $(cmd_vdsold); $(cmd_vdso_check)
++
+ quiet_cmd_vdsold = VDSO    $@
+       cmd_vdsold = $(CC) $(c_flags) $(VDSO_LDFLAGS) \
+                    -Wl,-T $(filter %.lds,$^) $(filter %.o,$^) -o $@
+ 
+-quiet_cmd_vdsoas_o_S = AS       $@
++quiet_cmd_vdsoas_o_S = AS      $@
+       cmd_vdsoas_o_S = $(CC) $(a_flags) -c -o $@ $<
+ 
+ # Strip rule for the raw .so files
+@@ -119,8 +122,7 @@ $(obj-vdso): KBUILD_AFLAGS := $(aflags-vdso) $(native-abi)
+ $(obj)/vdso.lds: KBUILD_CPPFLAGS := $(ccflags-vdso) $(native-abi)
+ 
+ $(obj)/vdso.so.dbg.raw: $(obj)/vdso.lds $(obj-vdso) FORCE
+-	$(call if_changed,vdsold)
+-	$(call if_changed,vdso_check)
++	$(call if_changed,vdsold_and_vdso_check)
+ 
+ $(obj)/vdso-image.c: $(obj)/vdso.so.dbg.raw $(obj)/vdso.so.raw \
+                      $(obj)/genvdso FORCE
+@@ -158,8 +160,7 @@ $(obj)/vdso-o32.lds: $(src)/vdso.lds.S FORCE
+ 	$(call if_changed_dep,cpp_lds_S)
+ 
+ $(obj)/vdso-o32.so.dbg.raw: $(obj)/vdso-o32.lds $(obj-vdso-o32) FORCE
+-	$(call if_changed,vdsold)
+-	$(call if_changed,vdso_check)
++	$(call if_changed,vdsold_and_vdso_check)
+ 
+ $(obj)/vdso-o32-image.c: VDSO_NAME := o32
+ $(obj)/vdso-o32-image.c: $(obj)/vdso-o32.so.dbg.raw $(obj)/vdso-o32.so.raw \
+@@ -199,8 +200,7 @@ $(obj)/vdso-n32.lds: $(src)/vdso.lds.S FORCE
+ 	$(call if_changed_dep,cpp_lds_S)
+ 
+ $(obj)/vdso-n32.so.dbg.raw: $(obj)/vdso-n32.lds $(obj-vdso-n32) FORCE
+-	$(call if_changed,vdsold)
+-	$(call if_changed,vdso_check)
++	$(call if_changed,vdsold_and_vdso_check)
+ 
+ $(obj)/vdso-n32-image.c: VDSO_NAME := n32
+ $(obj)/vdso-n32-image.c: $(obj)/vdso-n32.so.dbg.raw $(obj)/vdso-n32.so.raw \
 -- 
 2.22.0
 

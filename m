@@ -2,136 +2,113 @@ Return-Path: <SRS0=wFHa=VX=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FROM_EXCESS_BASE64,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DC1EDC76191
-	for <linux-mips@archiver.kernel.org>; Fri, 26 Jul 2019 05:15:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F18FC76190
+	for <linux-mips@archiver.kernel.org>; Fri, 26 Jul 2019 07:20:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B5DCD21951
-	for <linux-mips@archiver.kernel.org>; Fri, 26 Jul 2019 05:15:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 57E6521852
+	for <linux-mips@archiver.kernel.org>; Fri, 26 Jul 2019 07:20:01 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavecomp.com header.i=@wavecomp.com header.b="S/B2HDRZ"
+	dkim=pass (2048-bit key) header.d=vdorst.com header.i=@vdorst.com header.b="R+SjCCX3"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726099AbfGZFPq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 26 Jul 2019 01:15:46 -0400
-Received: from mail-eopbgr720115.outbound.protection.outlook.com ([40.107.72.115]:27348
-        "EHLO NAM05-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725878AbfGZFPp (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 26 Jul 2019 01:15:45 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LUb0KFMLdpKrxcCV9U7lZcPmUv7j4r9VZp10zIj/4emKuWcHgnT6SlX/8SPMNJttRNn6M5y+PIlCbqcIbM8tFYBpIpJKSS6XZD7MF0PpAss/t15UD/92qoN91n7W37/79/OaO8tNyk8v/ONXa/2kbU3j6TAKLzqRjwltdWpDqSQUu4wD6RRkxvpAeQONnYJMY3MC6698f51yZ4ypjFcDfCd/OjF79jv8WpwyNc4TawjFlQeWdpA6/octX2pCnXDBTLC+EP1SOmSIE1VZGAuyLpovOHC9LI7HlCM5/fKrwR4zWZrWtXBgoVCPvfXdwORNjUbF2Nvc5Adgq5jfv62DmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RJZ1ew/J+3opBryeqmtGqqnkd2wrHNS6eV7Yc4zoHCo=;
- b=SRexq3bdKxE2TZOZ5QTu44KBLYpZl1WiDsQPtWNWRY1re8yPGjeorm6sHU9l3t4+1yqBkKn+CpOh74HoV6NrLI4lnZokoFdo5vi5hgnUKGfHXVpjpgYmROiwbvyleyWZTyS+WCr5DixDvtXmY/EW2KcGxjD/TajSiE2Ekmk7eHfdcMCRNWxzJTzI8OITus1PIsXHaryqzAtv1mQKFsFD7bjP8vfn/bW4WOux+qwtzbuDl+J8p82k3ppmWtJOji7CBNjjxn7zWosSBcfjtjUXEfJxVPZXWi74T6CeGMciB44TmEfVZrTx0g0RtXa0VwagNhpqWFASpQJmrcI00wnw6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
- smtp.mailfrom=wavecomp.com;dmarc=pass action=none
- header.from=mips.com;dkim=pass header.d=mips.com;arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wavecomp.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RJZ1ew/J+3opBryeqmtGqqnkd2wrHNS6eV7Yc4zoHCo=;
- b=S/B2HDRZiuyJKGZIdD00DDBmc9UIL1sLRwuP21pN9RH7cwkJPbbcUJuE+rXm3anpZS3Z0oaejPoXrljOOKFro20MVZzOBMTT3AoSlXk+jS49vmG54Wb6fzOMeNfBq3c/VnBohryc4yCZjK4x+24ZqxrhHDQj83vwezZttam/Dwc=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.172.60.12) by
- MWHPR2201MB1088.namprd22.prod.outlook.com (10.174.169.150) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2094.17; Fri, 26 Jul 2019 05:15:42 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::49d3:37f8:217:c83]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::49d3:37f8:217:c83%6]) with mapi id 15.20.2094.017; Fri, 26 Jul 2019
- 05:15:42 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Vincenzo Frascino <vincenzo.frascino@arm.com>
-CC:     "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <pburton@wavecomp.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mark Salyzyn <salyzyn@android.com>,
-        Peter Collingbourne <pcc@google.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Dmitry Safonov <0x7f454c46@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Huw Davies <huw@codeweavers.com>,
-        Shijith Thotton <sthotton@marvell.com>,
-        Andre Przywara <andre.przywara@arm.com>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH v7 20/25] mips: Add clock_getres entry point
-Thread-Topic: [PATCH v7 20/25] mips: Add clock_getres entry point
-Thread-Index: AQHVKBdDlr+OWaoM6kekdIMA9IlDGabckiWA
-Date:   Fri, 26 Jul 2019 05:15:41 +0000
-Message-ID: <MWHPR2201MB1277885B5C1F41C1563B4B5AC1C00@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20190621095252.32307-21-vincenzo.frascino@arm.com>
-In-Reply-To: <20190621095252.32307-21-vincenzo.frascino@arm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR08CA0058.namprd08.prod.outlook.com
- (2603:10b6:a03:117::35) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:18::12)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [2601:646:8a00:9810:5cfa:8da3:1021:be72]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: f534b21c-ffe6-477a-f475-08d711884d6c
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:MWHPR2201MB1088;
-x-ms-traffictypediagnostic: MWHPR2201MB1088:
-x-microsoft-antispam-prvs: <MWHPR2201MB1088DB064B512A512C83D6B9C1C00@MWHPR2201MB1088.namprd22.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3173;
-x-forefront-prvs: 01106E96F6
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(39850400004)(346002)(366004)(136003)(376002)(199004)(189003)(476003)(8676002)(71200400001)(4326008)(102836004)(74316002)(7416002)(76176011)(71190400001)(316002)(305945005)(81156014)(7736002)(446003)(486006)(99286004)(4744005)(81166006)(52116002)(6506007)(6116002)(66556008)(8936002)(54906003)(11346002)(186003)(42882007)(46003)(386003)(33656002)(44832011)(68736007)(7696005)(256004)(2906002)(14454004)(6916009)(6436002)(478600001)(25786009)(66946007)(66446008)(5660300002)(64756008)(52536014)(6246003)(55016002)(66476007)(229853002)(53936002)(9686003);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1088;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: ujNqwVFCV4MUd0tyuYbZll05fVMlQg4n8pTgEU8F/LHjbizXIwaYsP+gBG5W2Cu9dXj7OVreHh13DZpNV+BL+27qYvyXw+aTML79BlCQBS9Cew/crKlbwMZtGHCcr5E4IMpWk6oXnnzbqYNFBCX1AIAzSSWVTI8+orMe4wDgRt/U8Os+Kg6RTWmBFcOAOK7B+gr9meWb1lurWZsYc/viTAW3zf3RXFIa8QYnp2AHEf44jbvmKY9lQiFExh5WB2xl74mQs2d5lqoqkY2FM0AMopMcOUG+jBr2AUepTdUxzq+XLd60dzyDs4VGsNjcYzcdMq8pemAn88PgCjyaPY7uuwQTVtY064mmmTXvQGVxmE1qYS4CUt1tsti0wivs3KGCKelasnWIDj0r4V5KIlbdXgt65HTaocUqNAx8KcuMnGo=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1725867AbfGZHT7 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 26 Jul 2019 03:19:59 -0400
+Received: from mx.0dd.nl ([5.2.79.48]:58308 "EHLO mx.0dd.nl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725864AbfGZHT7 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 26 Jul 2019 03:19:59 -0400
+Received: from mail.vdorst.com (mail.vdorst.com [IPv6:fd01::250])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx.0dd.nl (Postfix) with ESMTPS id CEE665FB2B;
+        Fri, 26 Jul 2019 09:19:56 +0200 (CEST)
+Authentication-Results: mx.0dd.nl;
+        dkim=pass (2048-bit key; secure) header.d=vdorst.com header.i=@vdorst.com header.b="R+SjCCX3";
+        dkim-atps=neutral
+Received: from www (www.vdorst.com [192.168.2.222])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.vdorst.com (Postfix) with ESMTPSA id 895E21D28756;
+        Fri, 26 Jul 2019 09:19:56 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.vdorst.com 895E21D28756
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vdorst.com;
+        s=default; t=1564125596;
+        bh=+Hr304FY5Zea1KSklbNGrmwPH40tCpigRiaIOPfi1RQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=R+SjCCX3t+stiSOsHLt+RuKxZavYZr5Nma3Z+T79/74SyqB1MfgGWveqiesV40IYS
+         ElsHum7l9RTHy7CxUKVvWANJ7AtTThK48tui/25wjevLDn1Nuhvt6DO9NzzXqhu7yr
+         Z/IKbzuLRR1V2xHdEN5sD9B48Mk2wRBF0XUAFd0+iU3UWDddaTdioFn0fq7CXEGe5N
+         pxu19y0Er8Peo1tOTfkyHsf4UtsIAPa4tkTVLUfrR+i3Bw33V+6lEFA77VkyR7aLgI
+         L+aMyTahXnv2g9eVEdraRm6nbA81YDxHIjBOgyGhzTXNXeWDyQdFyK/EiLSoj6eLH2
+         vtWCg/nad6Zyw==
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1]) by
+ www.vdorst.com (Horde Framework) with HTTPS; Fri, 26 Jul 2019 07:19:56 +0000
+Date:   Fri, 26 Jul 2019 07:19:56 +0000
+Message-ID: <20190726071956.Horde.s4rfuzovwXB-d3LnV0PLRc8@www.vdorst.com>
+From:   =?utf-8?b?UmVuw6k=?= van Dorst <opensource@vdorst.com>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     netdev@vger.kernel.org, frank-w@public-files.de,
+        sean.wang@mediatek.com, f.fainelli@gmail.com,
+        linux@armlinux.org.uk, davem@davemloft.net, matthias.bgg@gmail.com,
+        vivien.didelot@gmail.com, john@phrozen.org,
+        linux-mediatek@lists.infradead.org, linux-mips@vger.kernel.org,
+        robh+dt@kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH net-next 3/3] dt-bindings: net: ethernet: Update mt7622
+ docs and dts to reflect the new phylink API
+References: <20190724192411.20639-1-opensource@vdorst.com>
+ <20190725193123.GA32542@lunn.ch>
+In-Reply-To: <20190725193123.GA32542@lunn.ch>
+User-Agent: Horde Application Framework 5
+Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f534b21c-ffe6-477a-f475-08d711884d6c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jul 2019 05:15:41.0857
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pburton@wavecomp.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1088
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hello,
+Quoting Andrew Lunn <andrew@lunn.ch>:
 
-Vincenzo Frascino wrote:
-> The generic vDSO library provides an implementation of clock_getres()
-> that can be leveraged by each architecture.
->=20
-> Add clock_getres() entry point on mips.
->=20
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Paul Burton <paul.burton@mips.com>
-> Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
+>> +	gmac0: mac@0 {
+>> +		compatible = "mediatek,eth-mac";
+>> +		reg = <0>;
+>> +		phy-mode = "sgmii";
+>> +
+>> +		fixed-link {
+>> +			speed = <2500>;
+>> +			full-duplex;
+>> +			pause;
+>> +		};
+>> +	};
+>
+> Hi René
+>
 
-Applied to mips-next.
+Hi Andrew,
 
-Thanks,
-    Paul
+> SGMII and fixed-link is rather odd. Why do you need this combination?
 
-[ This message was auto-generated; if you believe anything is incorrect
-  then please email paul.burton@mips.com to report it. ]
+BananaPi R64 has a RTL8367S 5+2-port switch, switch interfaces with  
+the SOC by a
+(H)SGMII and/or RGMII interface. SGMII is mainly used for the LAN ports and
+RGMII for the WAN port.
+
+I mimic the SDK software which puts SGMII interface in 2.5GBit  
+fixed-link mode.
+The RTL8367S switch code also put switch mac in forge 2.5GBit mode.
+
+So this is the reason why I put a fixed-link mode here.
+
+Greats,
+
+René
+
+>       Andrew
+
+
+

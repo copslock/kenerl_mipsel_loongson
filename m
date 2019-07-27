@@ -2,58 +2,59 @@ Return-Path: <SRS0=jk8E=VY=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 561B5C7618B
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Jul 2019 17:53:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BB190C433FF
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Jul 2019 17:53:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 24BE72087C
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Jul 2019 17:53:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8FA42214C6
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Jul 2019 17:53:47 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="kEPiz8Am"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="epUPXsru"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387935AbfG0Rxa (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 27 Jul 2019 13:53:30 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:53423 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387815AbfG0Rxa (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 27 Jul 2019 13:53:30 -0400
-Received: by mail-wm1-f68.google.com with SMTP id x15so50458666wmj.3;
-        Sat, 27 Jul 2019 10:53:28 -0700 (PDT)
+        id S2388083AbfG0Rxg (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 27 Jul 2019 13:53:36 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:33323 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388066AbfG0Rxf (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 27 Jul 2019 13:53:35 -0400
+Received: by mail-wr1-f68.google.com with SMTP id n9so57654282wru.0;
+        Sat, 27 Jul 2019 10:53:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=V5Pf+L6T7LGnEPjG+nasSZ7r1P10azWA9olL/Fum4o0=;
-        b=kEPiz8AmY8MPEC1hi8xUhQLHX6PnlGuAGRJoemg+Cp+uqv1zP6b0bgpZ7benaFRIlk
-         sIRJUY8rqb7UVMOqkHrqKEwjkJtgHYI5Q/8+EYLmvlhSnYG24TosX7WNNuyA/O4nRIEz
-         0zmWqT//Mu9w+m5VKs6SAvOmTD5sYj33D8vpq6znOdaFMMKIVk6ygD1OAPCMO7TNW7hz
-         nsiH1vnquw2dVo/EZ4wmqjwe4EhTEKZJ/8wcog6NoS5VTGIu98YmwyxGLRYerHDt9EJH
-         mdal93ymuyJggbWpkBoVK6nyJoYRmN0NGquqBxTGDTkQIBiKxAx9CdV+w/xvCeJCVDcf
-         0S0A==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=1LEdOqVySjMhjvd5mrowppxBPOWjjV6JD50PPHN1vNc=;
+        b=epUPXsruD9HD7dBSvTlcQSDB+V4j9DcI0d9EabWfPXVivq26gY6J+hawpeUC0OyBrQ
+         L35AdjkJRGjA04pql3KtDaiJF+oBtTjWfMDyRRQ2jal/9Rc6NrFcwAR4e3+RAF3JA1iH
+         wCpaUZKbF8ZrWmjb0XAGmjNx1RjVrAO/4xEPZh9NKemwHkiyxcXaMTSRxkwntk2hoKmN
+         yO+q7kDNrNeHpNczheSeX4dKsnBMw432z6fWLE9r9gdq61hVk9ITDKHCFwucqM5KpxsZ
+         2dA4B/Ns7q9xzZN0uhQE8LUXpAXIFAizXFJN1BSrmzWrNEGnT1HvBDu4+loFPysopVsH
+         jrFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=V5Pf+L6T7LGnEPjG+nasSZ7r1P10azWA9olL/Fum4o0=;
-        b=ejvGJhPb/LhTI/GcPAitLNgsHg3RiNh+ukIX8a2PVJPZIU5oJGHsnYZ/NN4IfVJ5x1
-         8lkpu7joSC1EdzUUEGYtmTj/OkVFR2eFXTxb/uSzpSU0VkZ8dg7Aq3hQLx7UA8QDE9w9
-         MIY0MBSEHON4ZC3CtYOXpfVJfRj5Rc6pcQqCpX9qGdbaHNOqiNldsbw6zsi8vw/NbVyz
-         Tcqc6xLdPJ8uGJAWiB6O1DCv5Ms66KA/bXd8Ne8WJwFhLwodTulO61f9yei/fbZ1oN2G
-         UwF+r/gJbA7IAFKH8BZKJ5g+tNSQsGvHVXzUI9g6XJYFRS4ZVfaZ8VrdM3+kXRke6Pxq
-         3gDw==
-X-Gm-Message-State: APjAAAUjqIOb5p2vmTMftDIgjLjffMZXGYvMpP5qOvxBhoFSPQPNXoC2
-        IwBYVMidXY6onKA+jYTxDaA=
-X-Google-Smtp-Source: APXvYqy4wPmBjjT9qioVUplXDcHwwKWmq7M7JPXcwVbstXr6+HbrIRkzsYorpImk7CCmB5VnO+IrWA==
-X-Received: by 2002:a05:600c:1008:: with SMTP id c8mr91665431wmc.133.1564250007899;
-        Sat, 27 Jul 2019 10:53:27 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=1LEdOqVySjMhjvd5mrowppxBPOWjjV6JD50PPHN1vNc=;
+        b=M7rcpwjPfQA1k9BrOciVOMXJM3M6eRCfWuAILFINeHsCpiVE5XpXwsUdKv9/PT1nZg
+         oY+zOfgfyiqu93U5nRPHmNN0jF55uNtEyVxPzarQJPadPy8VY4/+lEKKRahwgDUX5Eko
+         1SkjUzo9yyqLiHPYzAJOHevXFAxGlRYRrSfbfj1LmFWUaeTy7G5yKhv4qUnuWDwKAyKm
+         AXquI4PW6t0XN8qIUOZhFhAOvCF3HPbJOf7F6PiZSeHWl+CI3r6HZFvKmXf7YOw0FX5m
+         LmAgdUTOc/N2WcSPx1/abcImbKPHJ3uvSXlBPX3cNjA3TrON8cRf7KJkMDkimYzTUdR0
+         n0AQ==
+X-Gm-Message-State: APjAAAVmkdMU3HdRQuUKEBHaGHmTrwgJy2HVm4ZN3mIOni9gv9sNHDdy
+        pR+9Kn7ipWmkickEd5zMTDs=
+X-Google-Smtp-Source: APXvYqyvilqEjmAO70oKRxz/7y1qkHhr6EBca/psdTkvUL24Q3TaCkBYyU3liUbRofFKb1n+V6f0vQ==
+X-Received: by 2002:a5d:6190:: with SMTP id j16mr15434262wru.49.1564250013651;
+        Sat, 27 Jul 2019 10:53:33 -0700 (PDT)
 Received: from blackbox.darklights.net (p200300F133C65C00B418D0F4A25A19EC.dip0.t-ipconnect.de. [2003:f1:33c6:5c00:b418:d0f4:a25a:19ec])
-        by smtp.googlemail.com with ESMTPSA id t1sm67705423wra.74.2019.07.27.10.53.26
+        by smtp.googlemail.com with ESMTPSA id t1sm67705423wra.74.2019.07.27.10.53.32
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sat, 27 Jul 2019 10:53:27 -0700 (PDT)
+        Sat, 27 Jul 2019 10:53:33 -0700 (PDT)
 From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 To:     tglx@linutronix.de, jason@lakedaemon.net, maz@kernel.org,
         ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
@@ -62,10 +63,12 @@ To:     tglx@linutronix.de, jason@lakedaemon.net, maz@kernel.org,
 Cc:     linux-kernel@vger.kernel.org, mark.rutland@arm.com,
         john@phrozen.org, hauke@hauke-m.de,
         Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: [PATCH 0/5] MIPS: lantiq: EBU interrupt controller and generalization
-Date:   Sat, 27 Jul 2019 19:53:10 +0200
-Message-Id: <20190727175315.28834-1-martin.blumenstingl@googlemail.com>
+Subject: [PATCH 5/5] MIPS: dts: lantiq: danube: easy50712: route the PCI_INTA IRQ through EBU
+Date:   Sat, 27 Jul 2019 19:53:15 +0200
+Message-Id: <20190727175315.28834-6-martin.blumenstingl@googlemail.com>
 X-Mailer: git-send-email 2.22.0
+In-Reply-To: <20190727175315.28834-1-martin.blumenstingl@googlemail.com>
+References: <20190727175315.28834-1-martin.blumenstingl@googlemail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
@@ -73,50 +76,38 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The relevant EBU code which is touched by this series is:
-- initialization of the EBU WRDIS register on XWAY SoCs (this was part
-  of arch/mips/lantiq/xway/sysctrl.c)
-- initialization of the global ltq_ebu_membase variable on XWAY and
-  Falcon SoCs (this was part of arch/mips/lantiq/xway/sysctrl.c and
-  arch/mips/lantiq/falcon/sysctrl.c)
-- handling the chained PCI_INTA interrupt (which was previously managed
-  by arch/mips/lantiq/irq.c)
-- configuring the PCI_INTA interrupt line (which was previously done by
-  arch/mips/pci/pci-lantiq.c)
+EBU provides an interrupt line for the PCI_INTA interrupt. Route
+easy50712's PCI interrupt to EBU so the interrupt line is configured
+correctly (using IRQ_TYPE_LEVEL_LOW, this was previously hardcoded in
+the PCI driver) and ACKed properly.
 
-Instead of having the code spread across multiple source code files
-this moves them to one "EBU" driver in arch/mips/lantiq/ebu.c utilizing
-the irqchip subsystem to implement the PCI_INTA interrupt line.
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+---
+ arch/mips/boot/dts/lantiq/easy50712.dts | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-While here this adds the dt-bindings documentation for the EBU IP block.
-
-I believe that this series should go through the MIPS tree. However, it
-would be great to have the irqchip maintainer review patch #3.
-
-
-
-Martin Blumenstingl (5):
-  dt-bindings: MIPS: lantiq: Add documentation for the External Bus Unit
-  MIPS: lantiq: use a generic "EBU" driver for Falcon and XWAY SoCs
-  MIPS: lantiq: add an irq_domain and irq_chip for EBU
-  MIPS: dts: lantiq: danube: mark the ebu0 node as interrupt-controller
-  MIPS: dts: lantiq: danube: easy50712: route the PCI_INTA IRQ through
-    EBU
-
- .../bindings/mips/lantiq/lantiq,ebu.yaml      |  53 ++++
- arch/mips/boot/dts/lantiq/danube.dtsi         |   3 +
- arch/mips/boot/dts/lantiq/easy50712.dts       |   4 +-
- .../include/asm/mach-lantiq/xway/lantiq_soc.h |   5 -
- arch/mips/lantiq/Makefile                     |   2 +-
- arch/mips/lantiq/ebu.c                        | 238 ++++++++++++++++++
- arch/mips/lantiq/falcon/sysctrl.c             |  17 +-
- arch/mips/lantiq/irq.c                        |  11 -
- arch/mips/lantiq/xway/sysctrl.c               |  21 +-
- arch/mips/pci/pci-lantiq.c                    |   4 -
- 10 files changed, 308 insertions(+), 50 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/mips/lantiq/lantiq,ebu.yaml
- create mode 100644 arch/mips/lantiq/ebu.c
-
+diff --git a/arch/mips/boot/dts/lantiq/easy50712.dts b/arch/mips/boot/dts/lantiq/easy50712.dts
+index 1ce20b7d05cb..33c26b93cfc9 100644
+--- a/arch/mips/boot/dts/lantiq/easy50712.dts
++++ b/arch/mips/boot/dts/lantiq/easy50712.dts
+@@ -1,6 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /dts-v1/;
+ 
++#include <dt-bindings/interrupt-controller/irq.h>
++
+ /include/ "danube.dtsi"
+ 
+ / {
+@@ -105,7 +107,7 @@
+ 			lantiq,bus-clock = <33333333>;
+ 			interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
+ 			interrupt-map = <
+-				0x7000 0 0 1 &icu0 29 1 // slot 14, irq 29
++				0x7000 0 0 1 &ebu0 0 IRQ_TYPE_LEVEL_LOW // slot 14
+ 			>;
+ 			gpios-reset = <&gpio 21 0>;
+ 			req-mask = <0x1>;		/* GNT1 */
 -- 
 2.22.0
 

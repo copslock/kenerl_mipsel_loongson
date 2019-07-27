@@ -2,150 +2,58 @@ Return-Path: <SRS0=jk8E=VY=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EA049C7618B
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Jul 2019 17:53:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DE42C433FF
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Jul 2019 18:35:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C263B214C6
-	for <linux-mips@archiver.kernel.org>; Sat, 27 Jul 2019 17:53:53 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="iFoZnGiG"
+	by mail.kernel.org (Postfix) with ESMTP id 7B2852075E
+	for <linux-mips@archiver.kernel.org>; Sat, 27 Jul 2019 18:35:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388016AbfG0Rxb (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 27 Jul 2019 13:53:31 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:46972 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387840AbfG0Rxb (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 27 Jul 2019 13:53:31 -0400
-Received: by mail-wr1-f67.google.com with SMTP id z1so57531510wru.13;
-        Sat, 27 Jul 2019 10:53:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=By8TP6giR4pWhilktKOTKpkB+nfEhS2+xgHNdzGt500=;
-        b=iFoZnGiGLpzpNa+K5qaoRYisA06ySjd6qu7+h7FmQs4E52ZWhwQ+AwLvWMkDq8DZUX
-         tGXliOXEcfoUhezsmSNvSjOl5p3N/HiwpWeoPy3vnKxQ5UcZyHfKl+/Gmm2+Zm7BlQ9B
-         UuGUhgUWqO92g7mBagg3VxHeg1IYgaoMK8b8zcFADU0zeIszTzWxDe4eXv5DInCL/GMd
-         RT5d8QFko2hSQutqPK6+fgwDkiKDXpKyCaXA0MyKVHLTc/Kn0SfQl9e+btLF0zuT3Qpe
-         M6I7t5na2i/bnWZBpmmP49U1J9BKCmUMA1o76/vsOq12Stq/ZtqoEJLz1/H/KsDdcsNS
-         zJbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=By8TP6giR4pWhilktKOTKpkB+nfEhS2+xgHNdzGt500=;
-        b=OVezQ11B6WbRofCW4xaIv1Jrw2qDQuOajocuVA2eDQyq7wDyYjYmVglVBTcP2FEo09
-         P8zY+zAR5ZT50h2QHBdVJsEl8FwOyroYV3t8yBKoZucrlSXgMp1E/fAqONj0UYLDIYBI
-         VkHctPFl/tjaHfOneL5uIJitVIaBsFdde3zSOUxFjQIutYiCaPCVstMISo2uXbvK/kM8
-         xSlXvoKMfGEj/fjgu7Eiqg6GW8Mhibv1E5dwBVjqmvxdTBJGn5mlas24V3NSmO2lu1zf
-         vohewPE/tlGse/QzWNe7Um3mzd4A+UKqqk3Z4lfm/GbuxdyPNOCCRXstDR9zvCsSNzUT
-         RMbQ==
-X-Gm-Message-State: APjAAAUcxEUKZqW48+SjXKXj33lW6PDdZx2MWscVjDV66ZNWfiLrmy0K
-        I59ufHszDC9HxkqaRkZDaRU=
-X-Google-Smtp-Source: APXvYqyx695l2tD/ObfBdCfZUvzSENjlzV6X/8HeuSLmnOpEJiEsJBm24UbYkLm71bT8FetwZ0sPVg==
-X-Received: by 2002:adf:c003:: with SMTP id z3mr24377452wre.243.1564250009029;
-        Sat, 27 Jul 2019 10:53:29 -0700 (PDT)
-Received: from blackbox.darklights.net (p200300F133C65C00B418D0F4A25A19EC.dip0.t-ipconnect.de. [2003:f1:33c6:5c00:b418:d0f4:a25a:19ec])
-        by smtp.googlemail.com with ESMTPSA id t1sm67705423wra.74.2019.07.27.10.53.27
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sat, 27 Jul 2019 10:53:28 -0700 (PDT)
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-To:     tglx@linutronix.de, jason@lakedaemon.net, maz@kernel.org,
+        id S2387880AbfG0Sfi (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 27 Jul 2019 14:35:38 -0400
+Received: from nbd.name ([46.4.11.11]:55988 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387841AbfG0Sfi (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 27 Jul 2019 14:35:38 -0400
+Received: from pd95fd1e9.dip0.t-ipconnect.de ([217.95.209.233] helo=[192.168.45.104])
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1hrRXa-0000Dh-HQ; Sat, 27 Jul 2019 20:35:34 +0200
+Subject: Re: [PATCH 2/5] MIPS: lantiq: use a generic "EBU" driver for Falcon
+ and XWAY SoCs
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        tglx@linutronix.de, jason@lakedaemon.net, maz@kernel.org,
         ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
         robh+dt@kernel.org, linux-mips@vger.kernel.org,
         devicetree@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, mark.rutland@arm.com,
-        john@phrozen.org, hauke@hauke-m.de,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: [PATCH 1/5] dt-bindings: MIPS: lantiq: Add documentation for the External Bus Unit
-Date:   Sat, 27 Jul 2019 19:53:11 +0200
-Message-Id: <20190727175315.28834-2-martin.blumenstingl@googlemail.com>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190727175315.28834-1-martin.blumenstingl@googlemail.com>
+        hauke@hauke-m.de
 References: <20190727175315.28834-1-martin.blumenstingl@googlemail.com>
+ <20190727175315.28834-3-martin.blumenstingl@googlemail.com>
+From:   John Crispin <john@phrozen.org>
+Message-ID: <d0ef8f73-3555-b53a-eb2b-40066827b6d9@phrozen.org>
+Date:   Sat, 27 Jul 2019 20:35:33 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
+In-Reply-To: <20190727175315.28834-3-martin.blumenstingl@googlemail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Lantiq SoCs contain a so-called External Bus Unit.
 
-It attaches PCI memory as well as NAND and NOR flash. Additioanlly it
-contains an interrupt-controller for the PCI_INTA interrupt line.
+On 27/07/2019 19:53, Martin Blumenstingl wrote:
+> + *  Copyright (C) 2011-2012 John Crispin<blogic@openwrt.org>
 
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
----
- .../bindings/mips/lantiq/lantiq,ebu.yaml      | 53 +++++++++++++++++++
- 1 file changed, 53 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/mips/lantiq/lantiq,ebu.yaml
+could you change that to john@phrozen.org please
 
-diff --git a/Documentation/devicetree/bindings/mips/lantiq/lantiq,ebu.yaml b/Documentation/devicetree/bindings/mips/lantiq/lantiq,ebu.yaml
-new file mode 100644
-index 000000000000..0b0b27d0b64b
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mips/lantiq/lantiq,ebu.yaml
-@@ -0,0 +1,53 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/mips/lantiq/lantiq,ebu.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Lantiq External Bus Unit (EBU) bindings
-+
-+maintainers:
-+  - Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-+
-+properties:
-+  compatible:
-+    enum:
-+      - lantiq,falcon-ebu
-+      - lantiq,xway-ebu
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    items:
-+      - description: The EBU module clock
-+
-+  interrupt-controller:
-+    type: boolean
-+
-+  interrupt-cells:
-+    const: 2
-+
-+  interrupts:
-+    items:
-+      - description: The EBU module interrupt line
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    memory-controller@e105300 {
-+        compatible = "lantiq,xway-ebu";
-+        reg = <0xe105300 0x100>;
-+        clocks = <&pmu 10>;
-+        interrupt-controller;
-+        #interrupt-cells = <2>;
-+        interrupt-parent = <&icu0>;
-+        interrupts = <30>;
-+    };
-+...
--- 
-2.22.0
+     John
 

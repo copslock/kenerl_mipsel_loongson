@@ -2,123 +2,152 @@ Return-Path: <SRS0=wavg=V2=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-22.4 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 968B0C76186
-	for <linux-mips@archiver.kernel.org>; Mon, 29 Jul 2019 20:16:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C612C433FF
+	for <linux-mips@archiver.kernel.org>; Mon, 29 Jul 2019 21:10:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 66725205F4
-	for <linux-mips@archiver.kernel.org>; Mon, 29 Jul 2019 20:16:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1564431389;
-	bh=VFAIIZL5hvOD4KbeAdybXfZWSYRbtUQGaVq/WFD0yK4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=J2j/jiq2K2AHI7J2jfmhMF+ey8NT9OOB7mKjxhvehWKwI8udvkVDxYA0sDl8sTAnr
-	 N73h+WfWA6iXVH8avEB8uf1uV9g4lUIChnomK5qN18X2G0PBS9TbuY4n3QsGqvW2ZU
-	 LYkGi7xxGxfbBm7hNuFXtJ7WXZln5PrzfEPnkZW0=
+	by mail.kernel.org (Postfix) with ESMTP id D500E20693
+	for <linux-mips@archiver.kernel.org>; Mon, 29 Jul 2019 21:10:47 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nR6rThRr"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729450AbfG2TYK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 29 Jul 2019 15:24:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36330 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729438AbfG2TYH (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 29 Jul 2019 15:24:07 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F1D3F21655;
-        Mon, 29 Jul 2019 19:24:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564428246;
-        bh=VFAIIZL5hvOD4KbeAdybXfZWSYRbtUQGaVq/WFD0yK4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EezLEkHFT47MYbqAphKaa4RlEs2P17kJMEaKL8kY2U9/baaHhl6jxS9qX7aVA2f8q
-         d3iw0BvYQ0hzg46KoG+87+caqRVC2AGxAX+dzw4TfrmqvsuffXKEpQFQo/OM+iJ7x9
-         WFoZYM7T/q1qnZ52tLFCLZwPtn9mZaqBCkhm+YtU=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Jo-Philipp Wich <jo@mein.io>,
-        =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>,
-        Kevin Darbyshire-Bryant <ldir@darbyshire-bryant.me.uk>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 002/293] MIPS: fix build on non-linux hosts
-Date:   Mon, 29 Jul 2019 21:18:13 +0200
-Message-Id: <20190729190820.539632976@linuxfoundation.org>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190729190820.321094988@linuxfoundation.org>
-References: <20190729190820.321094988@linuxfoundation.org>
-User-Agent: quilt/0.66
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        id S1729785AbfG2VKo (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 29 Jul 2019 17:10:44 -0400
+Received: from mail-pg1-f201.google.com ([209.85.215.201]:52070 "EHLO
+        mail-pg1-f201.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729626AbfG2VKo (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 29 Jul 2019 17:10:44 -0400
+Received: by mail-pg1-f201.google.com with SMTP id n23so27200877pgf.18
+        for <linux-mips@vger.kernel.org>; Mon, 29 Jul 2019 14:10:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=xwrp+21u5eMaNhEA/rdpeLPdIpATKFWq+XtNgIYdLsk=;
+        b=nR6rThRrSJlJJsQV5l5Vh48GpWZVzx3EORmd6Dy/ocAyzJewpwHUnPd/qA9KXAlHyn
+         TgAPWGRvM0bYvV+63TWGXmoAJg9KbMwm2o0xWUiWL5nB+PeVdG/VnzJoKr6q7FwFkoxv
+         Pfji0h7fRghn/60GhqBFvruZTa080G+fEkA+uVlztn7EBWIhJcp6aZg8P2JMvXElugLB
+         1gES93CDPeOKW2AjgRgsMtRrPl5UBy2JA9wRV/wERMQ/zQSQ3HSjsdagbuIuZlRR82cy
+         rF/oqS15CbF0l3/8ay3H5ihxI2b1x1r0IwREl7OQCGD++PjnptSwlCoAhhiVyPIzRpVa
+         mokw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=xwrp+21u5eMaNhEA/rdpeLPdIpATKFWq+XtNgIYdLsk=;
+        b=ViGpQpRMdeso4Piebj0d7cNycnIpTDe51YQ6cukXqcqJrdRuFg1PQXXIm6smdULSH9
+         bIXsv33XwBNUEClwv1nX27bh07XMuEoulUzfXoF55mjEZ725/N865ezcXnPIHpE7T1VH
+         iOv3OSW/VgWftWalVf3eeWO/i9sT12QwRgpfsXnH6yXFzHLo+XlpE/ZB56P6omMvbKiK
+         13zuTcw+ITIaNhwrU4+TZrJdan190RYPdWs4zCamTtAMgjSeW5S60/vmd+VIwu3AvDKL
+         5d09aTaOPNVbuqgBZK8fC9Jzk7q0/QIwZ2RWQdas9uwxQnXQB//k6Mvzd6AdFOJB5O2K
+         wXpg==
+X-Gm-Message-State: APjAAAVv1yRhJAOim2ZXhmyCkWd5LU559H0T/VEMxImbEunoIYMHMHaW
+        z5u7tVVFq1mtMZoPckw1JV0ORMlSJNG/Rug0OaQ=
+X-Google-Smtp-Source: APXvYqzFdbSoDGLc6KH/a/EIcx1TS86Gq7S8+4DkNtfDFUDr5oQ/sOO1VHdq0pmgMuOG+U4dpbIEEU4Efxke4f46GKw=
+X-Received: by 2002:a65:584f:: with SMTP id s15mr89215850pgr.175.1564434642782;
+ Mon, 29 Jul 2019 14:10:42 -0700 (PDT)
+Date:   Mon, 29 Jul 2019 14:10:12 -0700
+Message-Id: <20190729211014.39333-1-ndesaulniers@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.22.0.709.g102302147b-goog
+Subject: [PATCH] mips: avoid explicit UB in assignment of mips_io_port_base
+From:   Nick Desaulniers <ndesaulniers@google.com>
+To:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Eli Friedman <efriedma@quicinc.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Hassan Naveed <hnaveed@wavecomp.com>,
+        Stephen Kitt <steve@sk2.org>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.com>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-[ Upstream commit 1196364f21ffe5d1e6d83cafd6a2edb89404a3ae ]
+The code in question is modifying a variable declared const through
+pointer manipulation.  Such code is explicitly undefined behavior, and
+is the lone issue preventing malta_defconfig from booting when built
+with Clang:
 
-calc_vmlinuz_load_addr.c requires SZ_64K to be defined for alignment
-purposes.  It included "../../../../include/linux/sizes.h" to define
-that size, however "sizes.h" tries to include <linux/const.h> which
-assumes linux system headers.  These may not exist eg. the following
-error was encountered when building Linux for OpenWrt under macOS:
+If an attempt is made to modify an object defined with a const-qualified
+type through use of an lvalue with non-const-qualified type, the
+behavior is undefined.
 
-In file included from arch/mips/boot/compressed/calc_vmlinuz_load_addr.c:16:
-arch/mips/boot/compressed/../../../../include/linux/sizes.h:11:10: fatal error: 'linux/const.h' file not found
-         ^~~~~~~~~~
+LLVM is removing such assignments. A simple fix is to not declare
+variables const that you plan on modifying.  Limiting the scope would be
+a better method of preventing unwanted writes to such a variable.
 
-Change makefile to force building on local linux headers instead of
-system headers.  Also change eye-watering relative reference in include
-file spec.
+Further, the code in question mentions "compiler bugs" without any links
+to bug reports, so it is difficult to know if the issue is resolved in
+GCC. The patch was authored in 2006, which would have been GCC 4.0.3 or
+4.1.1. The minimal supported version of GCC in the Linux kernel is
+currently 4.6.
 
-Thanks to Jo-Philip Wich & Petr Štetiar for assistance in tracking this
-down & fixing.
+For what its worth, there was UB before the commit in question, it just
+added a barrier and got lucky IRT codegen. I don't think there's any
+actual compiler bugs related, just runtime bugs due to UB.
 
-Suggested-by: Jo-Philipp Wich <jo@mein.io>
-Signed-off-by: Petr Štetiar <ynezz@true.cz>
-Signed-off-by: Kevin Darbyshire-Bryant <ldir@darbyshire-bryant.me.uk>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: linux-mips@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://github.com/ClangBuiltLinux/linux/issues/610
+Fixes: 966f4406d903 ("[MIPS] Work around bad code generation for <asm/io.h>.")
+Reported-by: Nathan Chancellor <natechancellor@gmail.com>
+Debugged-by: Nathan Chancellor <natechancellor@gmail.com>
+Suggested-by: Eli Friedman <efriedma@quicinc.com>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
 ---
- arch/mips/boot/compressed/Makefile                 | 2 ++
- arch/mips/boot/compressed/calc_vmlinuz_load_addr.c | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/io.h | 14 ++------------
+ arch/mips/kernel/setup.c   |  2 +-
+ 2 files changed, 3 insertions(+), 13 deletions(-)
 
-diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-index adce180f3ee4..331b9e0a8072 100644
---- a/arch/mips/boot/compressed/Makefile
-+++ b/arch/mips/boot/compressed/Makefile
-@@ -75,6 +75,8 @@ OBJCOPYFLAGS_piggy.o := --add-section=.image=$(obj)/vmlinux.bin.z \
- $(obj)/piggy.o: $(obj)/dummy.o $(obj)/vmlinux.bin.z FORCE
- 	$(call if_changed,objcopy)
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index 97a280640daf..d58ff2229738 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -63,21 +63,11 @@
+  * instruction, so the lower 16 bits must be zero.  Should be true on
+  * on any sane architecture; generic code does not use this assumption.
+  */
+-extern const unsigned long mips_io_port_base;
++extern unsigned long mips_io_port_base;
  
-+HOSTCFLAGS_calc_vmlinuz_load_addr.o += $(LINUXINCLUDE)
-+
- # Calculate the load address of the compressed kernel image
- hostprogs-y := calc_vmlinuz_load_addr
- 
-diff --git a/arch/mips/boot/compressed/calc_vmlinuz_load_addr.c b/arch/mips/boot/compressed/calc_vmlinuz_load_addr.c
-index 542c3ede9722..d14f75ec8273 100644
---- a/arch/mips/boot/compressed/calc_vmlinuz_load_addr.c
-+++ b/arch/mips/boot/compressed/calc_vmlinuz_load_addr.c
-@@ -13,7 +13,7 @@
- #include <stdint.h>
- #include <stdio.h>
- #include <stdlib.h>
--#include "../../../../include/linux/sizes.h"
-+#include <linux/sizes.h>
- 
- int main(int argc, char *argv[])
+-/*
+- * Gcc will generate code to load the value of mips_io_port_base after each
+- * function call which may be fairly wasteful in some cases.  So we don't
+- * play quite by the book.  We tell gcc mips_io_port_base is a long variable
+- * which solves the code generation issue.  Now we need to violate the
+- * aliasing rules a little to make initialization possible and finally we
+- * will need the barrier() to fight side effects of the aliasing chat.
+- * This trickery will eventually collapse under gcc's optimizer.  Oh well.
+- */
+ static inline void set_io_port_base(unsigned long base)
  {
+-	* (unsigned long *) &mips_io_port_base = base;
+-	barrier();
++	mips_io_port_base = base;
+ }
+ 
+ /*
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index ab349d2381c3..675223a66d0c 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -76,7 +76,7 @@ static char __initdata builtin_cmdline[COMMAND_LINE_SIZE] = CONFIG_CMDLINE;
+  * mips_io_port_base is the begin of the address space to which x86 style
+  * I/O ports are mapped.
+  */
+-const unsigned long mips_io_port_base = -1;
++unsigned long mips_io_port_base = -1;
+ EXPORT_SYMBOL(mips_io_port_base);
+ 
+ static struct resource code_resource = { .name = "Kernel code", };
 -- 
-2.20.1
-
-
+2.22.0.709.g102302147b-goog
 

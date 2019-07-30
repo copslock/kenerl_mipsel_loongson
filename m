@@ -2,137 +2,147 @@ Return-Path: <SRS0=ZHUC=V3=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CF193C433FF
-	for <linux-mips@archiver.kernel.org>; Tue, 30 Jul 2019 17:44:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3270BC433FF
+	for <linux-mips@archiver.kernel.org>; Tue, 30 Jul 2019 18:03:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id A8B7021849
-	for <linux-mips@archiver.kernel.org>; Tue, 30 Jul 2019 17:44:35 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavecomp.com header.i=@wavecomp.com header.b="kBcohFEJ"
+	by mail.kernel.org (Postfix) with ESMTP id 10BB0208E3
+	for <linux-mips@archiver.kernel.org>; Tue, 30 Jul 2019 18:03:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731495AbfG3Rnz (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 30 Jul 2019 13:43:55 -0400
-Received: from mail-eopbgr760093.outbound.protection.outlook.com ([40.107.76.93]:7663
-        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731481AbfG3Rnw (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 30 Jul 2019 13:43:52 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lYSooRtr6KF+flS7mhRw1vNnmEDXFpMMB+JPAZtN1ZwS2BX5xPjVMTZCzfDQheK0iFdj5R2I3LtDVA+QEjFTFw6FrNWwV41rQohl4uRXVkQ21y72ZVw0TGcaKaShQ8udGmfnqne01ndLhSwZS1f4dBFin2BM5tKUspY0+voLMbkIsJm0vfbimHmM20g5Kg9A2tkHxTLA6DpchaFKDYrM2Uh06mUykwwDnX7jpcEm7OaWJn3O2rb116Wb7NTt6ESePiyOWc8Jl0Nl0/fL6bvHrayZ5fzRE0R7CaPWo/MDMIopBrCwEfgZuDKtuyF7gedwKpoUmUUP5CumjpOZ8IopBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TiwYG3TY3kxRFNJZh12NBzqhG4GKm0Mdj1GWDyD0oag=;
- b=mxiLh90Q58BCKv5mWiMO4SsfqeHgaFarj1ROeRsPvXxR0wOubrjThp8P5gbltphmHTviLPLCB+OYou9ixoEjOVHPMOtP5YGqeKTgThO5CeQwfofmnB5ZihmzzHJsgo+chys3EZyO74lvEcQNlKzZqR/ADg3gq7fWy7IvWBt/BvUe28dIWgshkNh/kvzBmq4chlDqJF/mHsf6l/75NhaaPF4Pom4J9W41rTlEmUOxH2vfaBE/hXbobXFSzG5E5FQqE1jSofufghgfjRXIEptPGcGlA5e+PWKOtF2aImJkj/wYFfheuWSgrj/L5Yy0SNIArYFq2HACvRmwRbu5+ifLZw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
- smtp.mailfrom=wavecomp.com;dmarc=pass action=none
- header.from=mips.com;dkim=pass header.d=mips.com;arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wavecomp.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TiwYG3TY3kxRFNJZh12NBzqhG4GKm0Mdj1GWDyD0oag=;
- b=kBcohFEJ4A9LgpoUkM/c/bSplLktc8OrRQ8ZLKoEb6JA5qwH2LtUTbKHLhBip9gciQg+UpCOQA7EeLc9+CafEArmfLHLbcwXr8E3bkLtrxPLRXv3cPafmYswqLjStabpBAWhkf7JuwrWLqyfDzDw6b9hpXxxnWJelZQsJ3agvTM=
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.172.60.12) by
- MWHPR2201MB1199.namprd22.prod.outlook.com (10.174.169.162) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2115.10; Tue, 30 Jul 2019 17:43:47 +0000
-Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::105a:1595:b6ef:cbdf]) by MWHPR2201MB1277.namprd22.prod.outlook.com
- ([fe80::105a:1595:b6ef:cbdf%4]) with mapi id 15.20.2115.005; Tue, 30 Jul 2019
- 17:43:47 +0000
-From:   Paul Burton <paul.burton@mips.com>
-To:     Paul Cercueil <paul@crapouillou.net>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <pburton@wavecomp.com>,
-        James Hogan <jhogan@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Sebastian Reichel <sre@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, "od@zcrc.me" <od@zcrc.me>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Artur Rojek <contact@artur-rojek.eu>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH 03/11] MIPS: configs: LB60: update defconfig
-Thread-Topic: [PATCH 03/11] MIPS: configs: LB60: update defconfig
-Thread-Index: AQHVRv5XudYChLMNHUqcnu9Ai4NHkg==
-Date:   Tue, 30 Jul 2019 17:43:47 +0000
-Message-ID: <MWHPR2201MB1277A4C6D97106748D1459CEC1DC0@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20190725220215.460-4-paul@crapouillou.net>
-In-Reply-To: <20190725220215.460-4-paul@crapouillou.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR11CA0092.namprd11.prod.outlook.com
- (2603:10b6:a03:f4::33) To MWHPR2201MB1277.namprd22.prod.outlook.com
- (2603:10b6:301:18::12)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pburton@wavecomp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [12.94.197.246]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: d063b250-7264-4a9e-0a7d-08d715157960
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:MWHPR2201MB1199;
-x-ms-traffictypediagnostic: MWHPR2201MB1199:
-x-microsoft-antispam-prvs: <MWHPR2201MB1199EA5E9E95659DF2388F16C1DC0@MWHPR2201MB1199.namprd22.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:4502;
-x-forefront-prvs: 0114FF88F6
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(39850400004)(376002)(346002)(136003)(396003)(366004)(199004)(189003)(76176011)(54906003)(15650500001)(4326008)(8936002)(68736007)(14454004)(81156014)(66066001)(99286004)(6916009)(81166006)(7416002)(52116002)(7696005)(71200400001)(71190400001)(316002)(8676002)(256004)(14444005)(7736002)(2906002)(186003)(6246003)(305945005)(42882007)(478600001)(64756008)(66476007)(66556008)(66446008)(6436002)(6506007)(386003)(66946007)(53936002)(26005)(102836004)(6116002)(74316002)(25786009)(4744005)(3846002)(55016002)(229853002)(52536014)(476003)(44832011)(33656002)(9686003)(486006)(5660300002)(11346002)(446003);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1199;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: wavecomp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: hsjecgSx7ohi78vq+/o9dtOi6zhBeWgwWSlzxR0vkhN2emtny7LaJgTnl2qZI1KI7fKp96aLqGf8s9d1/wshoeoJ00HvHy9d9y90newVZcxciPdVFRmVEfSvMjtEBRV8igmEO8Ao1RXM8dLoYKAbMKtVdN+B25elLm9uj6pa7UgbLJ8SEmqJfoZfkJI3PpQRvKBweO377NJcgBkmpS5x8l0dQs5yecxa28/p0ZJb5toS6DETI8tlzMOn06YYgtllqIUuUqshi94t9jP7nHvVhYrY6Iyg9QG80PbNxC4kXO+/TLEgyayyh4lub8rEcQrvOu4pjTbJWKRYvupVQuJMc52YTYvRKqBBGXp672L8tTctoZnfgUbkDHXePigfVhfEbK6fmHaSSp448JndjrQ/thRoRsxhAG/BWHMylvMWvOs=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S2387725AbfG3SDF (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 30 Jul 2019 14:03:05 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:48030 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387722AbfG3SDF (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Tue, 30 Jul 2019 14:03:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1564509783; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Xx9v2bvdhkwqBeJF1UPfxb804gp20xzTw1fS+vRh8dQ=;
+        b=gQug1WvVy6t6iHG5FWnzCIrJFs1D2WI0sR9kTMAiotBbnsjN+3Re1/1OLwdW7vZNWHlLAI
+        kk8eaMt+FNAFQWdYThZzKvnkL+BSDf4jr2BJE39/YyQWN9vvs9i1Ku3CQbEXZw+XSpj7p6
+        a0pcPgJUI3usTor5MYhBYkyv13uXlls=
+Date:   Tue, 30 Jul 2019 14:02:47 -0400
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH] MIPS: Ingenic: Fix bugs when detecting X1000's
+ parameters.
+To:     Zhou Yanjie <zhouyanjie@zoho.com>
+Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org,
+        malat@debian.org, chenhc@lemote.com, tglx@linutronix.de,
+        allison@lohutok.net, syq@debian.org, jiaxun.yang@flygoat.com
+Message-Id: <1564509767.15799.0@crapouillou.net>
+In-Reply-To: <1564498510-3751-2-git-send-email-zhouyanjie@zoho.com>
+References: <1564498510-3751-1-git-send-email-zhouyanjie@zoho.com>
+        <1564498510-3751-2-git-send-email-zhouyanjie@zoho.com>
 MIME-Version: 1.0
-X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d063b250-7264-4a9e-0a7d-08d715157960
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jul 2019 17:43:47.3730
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pburton@wavecomp.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1199
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hello,
+Hi Zhou,
 
-Paul Cercueil wrote:
-> Update the defconfig to select the new drivers instead of the old ones.
+
+
+Le mar. 30 juil. 2019 =E0 10:55, Zhou Yanjie <zhouyanjie@zoho.com> a=20
+=E9crit :
+> 1.fix bugs when detecting L2 cache sets value.
+> 2.fix bugs when detecting L2 cache ways value.
+> 3.fix bugs when calculate bogoMips and loops_per_jiffy.
 >=20
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> Tested-by: Artur Rojek <contact@artur-rojek.eu>
+> Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
+> ---
+>  arch/mips/kernel/cpu-probe.c |  7 ++++++-
+>  arch/mips/mm/sc-mips.c       | 18 +++++++++++++++---
+>  2 files changed, 21 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/arch/mips/kernel/cpu-probe.c=20
+> b/arch/mips/kernel/cpu-probe.c
+> index eb527a1..a914435 100644
+> --- a/arch/mips/kernel/cpu-probe.c
+> +++ b/arch/mips/kernel/cpu-probe.c
+> @@ -1960,11 +1960,16 @@ static inline void cpu_probe_ingenic(struct=20
+> cpuinfo_mips *c, unsigned int cpu)
+>  	c->options &=3D ~MIPS_CPU_COUNTER;
+>  	BUG_ON(!__builtin_constant_p(cpu_has_counter) || cpu_has_counter);
+>  	switch (c->processor_id & PRID_IMP_MASK) {
+> -	case PRID_IMP_XBURST:
+> +	case PRID_IMP_XBURST: {
+> +		unsigned int config7;
+>  		c->cputype =3D CPU_XBURST;
+>  		c->writecombine =3D _CACHE_UNCACHED_ACCELERATED;
+>  		__cpu_name[cpu] =3D "Ingenic XBurst";
+> +		config7 =3D read_c0_config7();
+> +		config7 |=3D (1 << 4);
+> +		write_c0_config7(config7);
 
-Applied to mips-next.
+If you add __BUILD_SET_C0(config7) in arch/mips/include/asm/mipsregs.h
+(search for this macro) then you can call directly=20
+set_c0_config7(BIT(4)).
 
-Thanks,
-    Paul
+It's preferred to use the BIT(x) macro instead of the (1 << x)=20
+construct.
 
-[ This message was auto-generated; if you believe anything is incorrect
-  then please email paul.burton@mips.com to report it. ]
+Finally, what does that bit do? I can't find it any documentation about
+it. Please add a comment describing what it does.
+
+
+>  		break;
+> +	}
+>  	default:
+>  		panic("Unknown Ingenic Processor ID!");
+>  		break;
+> diff --git a/arch/mips/mm/sc-mips.c b/arch/mips/mm/sc-mips.c
+> index 9385ddb..ed953d4 100644
+> --- a/arch/mips/mm/sc-mips.c
+> +++ b/arch/mips/mm/sc-mips.c
+> @@ -215,6 +215,14 @@ static inline int __init mips_sc_probe(void)
+>  	else
+>  		return 0;
+>=20
+> +	/*
+> +	 * According to config2 it would be 512-sets, but that is=20
+> contradicted
+> +	 * by all documentation.
+> +	 */
+> +	if (current_cpu_type() =3D=3D CPU_XBURST &&
+> +				mips_machtype =3D=3D MACH_INGENIC_X1000)
+> +		c->scache.sets =3D 256;
+> +
+>  	tmp =3D (config2 >> 0) & 0x0f;
+>  	if (tmp <=3D 7)
+>  		c->scache.ways =3D tmp + 1;
+> @@ -225,9 +233,13 @@ static inline int __init mips_sc_probe(void)
+>  	 * According to config2 it would be 5-ways, but that is contradicted
+>  	 * by all documentation.
+>  	 */
+> -	if (current_cpu_type() =3D=3D CPU_XBURST &&
+> -				mips_machtype =3D=3D MACH_INGENIC_JZ4770)
+> -		c->scache.ways =3D 4;
+> +	if (current_cpu_type() =3D=3D CPU_XBURST) {
+> +		switch (mips_machtype) {
+> +		case MACH_INGENIC_JZ4770:
+> +		case MACH_INGENIC_X1000:
+> +			c->scache.ways =3D 4;
+> +		}
+> +	}
+>=20
+>  	c->scache.waysize =3D c->scache.sets * c->scache.linesz;
+>  	c->scache.waybit =3D __ffs(c->scache.waysize);
+> --
+> 2.7.4
+>=20
+>=20
+
+=
+

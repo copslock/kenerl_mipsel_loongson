@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B218C433FF
-	for <linux-mips@archiver.kernel.org>; Fri,  2 Aug 2019 09:30:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9182DC433FF
+	for <linux-mips@archiver.kernel.org>; Fri,  2 Aug 2019 10:04:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 124E6217D6
-	for <linux-mips@archiver.kernel.org>; Fri,  2 Aug 2019 09:30:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6AF022067D
+	for <linux-mips@archiver.kernel.org>; Fri,  2 Aug 2019 10:04:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1564738203;
-	bh=hyHtEEnf36iw8vWSqaGWyCQTiEXS0hvNLj9GkU4cGNw=;
+	s=default; t=1564740256;
+	bh=71BcrPLlabkDfKXrdoo89ZjZ8+xNHNaqDBG2JLysBp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=unWqgrnMPgyOqm5jS62YAqdHLcgJumUhTwxtXjAP7uqo/50m7fwEnEDWluUQGBCLp
-	 I/f2Kg8ORAD/yY8cZ1aHqRmDpPKvjNOmC/IEZMRNzTapo0e/5OkLfj/PbBGsRePav9
-	 kt8Er0mL8O6CE4Qt2sFNr1Oy2iD5DWQeX9r4099I=
+	b=fB+VpO8HgTwuh4Py03fEjZmkbcMktwMtB0XqpciyrwLSK6g+lmynftGJudTr2jmne
+	 IiptE8OrhVjIyqvMxj9xl61dG5u8reeuYgSyb89gLZ8vxNEHuG9yczqTN7P6nVkehM
+	 IQyMkpMhoiIBtTEr3JBh/6TNvc7AAtZDStejIgt0=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388958AbfHBJaB (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 2 Aug 2019 05:30:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55320 "EHLO mail.kernel.org"
+        id S2391722AbfHBJkc (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 2 Aug 2019 05:40:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41560 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726716AbfHBJaB (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 2 Aug 2019 05:30:01 -0400
+        id S2391718AbfHBJkb (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 2 Aug 2019 05:40:31 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8579121783;
-        Fri,  2 Aug 2019 09:30:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3C11B206A2;
+        Fri,  2 Aug 2019 09:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564738201;
-        bh=hyHtEEnf36iw8vWSqaGWyCQTiEXS0hvNLj9GkU4cGNw=;
+        s=default; t=1564738830;
+        bh=71BcrPLlabkDfKXrdoo89ZjZ8+xNHNaqDBG2JLysBp0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mqYEcH7OUQyYVGSiFBICor2vDEonL9PnVBCaq0Izyycafb4WPSabIDDNfd7dOlBy4
-         MrCREbdTDv6Fgr0tRPzpplnwZapm39d6tSL4Tfy16i9G5+rREoYxVpsnM0X/hdAWwA
-         rJecUigiZhYzGRfDscLY8jZHdxjQ1nR+iuEnSkVg=
+        b=n8buXa6sHNSmv81rlR2Xwgc2vqiN46J5R3hZlkZKxHTo08QrDPNoOQo1bNwUlB2UG
+         mhsxWz6A/htO8cLbvfSkwDkxVO/sGK7Qi6IhEIvirlQxCcdydp0MMvIWPFiHHVzx5x
+         EkteZvGKepdNOFiz4dQJMPz3tCARqzCrZxnGUR2s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Kevin Darbyshire-Bryant <ldir@darbyshire-bryant.me.uk>,
         Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.4 002/158] MIPS: fix build on non-linux hosts
-Date:   Fri,  2 Aug 2019 11:27:03 +0200
-Message-Id: <20190802092204.138268259@linuxfoundation.org>
+Subject: [PATCH 4.9 002/223] MIPS: fix build on non-linux hosts
+Date:   Fri,  2 Aug 2019 11:33:47 +0200
+Message-Id: <20190802092238.838846545@linuxfoundation.org>
 X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190802092203.671944552@linuxfoundation.org>
-References: <20190802092203.671944552@linuxfoundation.org>
+In-Reply-To: <20190802092238.692035242@linuxfoundation.org>
+References: <20190802092238.692035242@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -92,10 +92,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-index d5bdee115f22..d4918a2bca1b 100644
+index 90aca95fe314..ad31c76c7a29 100644
 --- a/arch/mips/boot/compressed/Makefile
 +++ b/arch/mips/boot/compressed/Makefile
-@@ -66,6 +66,8 @@ OBJCOPYFLAGS_piggy.o := --add-section=.image=$(obj)/vmlinux.bin.z \
+@@ -75,6 +75,8 @@ OBJCOPYFLAGS_piggy.o := --add-section=.image=$(obj)/vmlinux.bin.z \
  $(obj)/piggy.o: $(obj)/dummy.o $(obj)/vmlinux.bin.z FORCE
  	$(call if_changed,objcopy)
  

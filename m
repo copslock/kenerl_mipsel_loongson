@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48FFFC433FF
-	for <linux-mips@archiver.kernel.org>; Fri,  9 Aug 2019 10:32:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 50144C31E40
+	for <linux-mips@archiver.kernel.org>; Fri,  9 Aug 2019 10:33:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 23B51208C3
-	for <linux-mips@archiver.kernel.org>; Fri,  9 Aug 2019 10:32:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2151E21743
+	for <linux-mips@archiver.kernel.org>; Fri,  9 Aug 2019 10:33:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406115AbfHIKcp (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 9 Aug 2019 06:32:45 -0400
-Received: from mx2.suse.de ([195.135.220.15]:41570 "EHLO mx1.suse.de"
+        id S2406492AbfHIKdC (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 9 Aug 2019 06:33:02 -0400
+Received: from mx2.suse.de ([195.135.220.15]:41870 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2405723AbfHIKcp (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 9 Aug 2019 06:32:45 -0400
+        id S2406477AbfHIKcy (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 9 Aug 2019 06:32:54 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id DA51BAFF0;
-        Fri,  9 Aug 2019 10:32:42 +0000 (UTC)
+        by mx1.suse.de (Postfix) with ESMTP id 78980B04F;
+        Fri,  9 Aug 2019 10:32:51 +0000 (UTC)
 From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
@@ -38,9 +38,9 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
         linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
         netdev@vger.kernel.org, linux-rtc@vger.kernel.org,
         linux-serial@vger.kernel.org
-Subject: [PATCH v4 1/9] w1: add 1-wire master driver for IP block found in SGI ASICs
-Date:   Fri,  9 Aug 2019 12:32:23 +0200
-Message-Id: <20190809103235.16338-2-tbogendoerfer@suse.de>
+Subject: [PATCH v4 9/9] Input: add IOC3 serio driver
+Date:   Fri,  9 Aug 2019 12:32:31 +0200
+Message-Id: <20190809103235.16338-10-tbogendoerfer@suse.de>
 X-Mailer: git-send-email 2.13.7
 In-Reply-To: <20190809103235.16338-1-tbogendoerfer@suse.de>
 References: <20190809103235.16338-1-tbogendoerfer@suse.de>
@@ -49,223 +49,219 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Starting with SGI Origin machines nearly every new SGI ASIC contains
-an 1-Wire master. They are used for attaching One-Wire prom devices,
-which contain information about part numbers, revision numbers,
-serial number etc. and MAC addresses for ethernet interfaces.
-This patch adds a master driver to support this IP block.
-It also adds an extra field dev_id to struct w1_bus_master, which
-could be in used in slave drivers for creating unique device names.
+This patch adds a platform driver for supporting keyboard and mouse
+interface of SGI IOC3 chips.
 
 Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 ---
- drivers/w1/masters/Kconfig           |   9 +++
- drivers/w1/masters/Makefile          |   1 +
- drivers/w1/masters/sgi_w1.c          | 130 +++++++++++++++++++++++++++++++++++
- include/linux/platform_data/sgi-w1.h |  15 ++++
- include/linux/w1.h                   |   2 +
- 5 files changed, 157 insertions(+)
- create mode 100644 drivers/w1/masters/sgi_w1.c
- create mode 100644 include/linux/platform_data/sgi-w1.h
+ drivers/input/serio/Kconfig   |  10 +++
+ drivers/input/serio/Makefile  |   1 +
+ drivers/input/serio/ioc3kbd.c | 163 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 174 insertions(+)
+ create mode 100644 drivers/input/serio/ioc3kbd.c
 
-diff --git a/drivers/w1/masters/Kconfig b/drivers/w1/masters/Kconfig
-index 7ae260577901..24b9a8e05f64 100644
---- a/drivers/w1/masters/Kconfig
-+++ b/drivers/w1/masters/Kconfig
-@@ -65,5 +65,14 @@ config HDQ_MASTER_OMAP
- 	  Say Y here if you want support for the 1-wire or HDQ Interface
- 	  on an OMAP processor.
+diff --git a/drivers/input/serio/Kconfig b/drivers/input/serio/Kconfig
+index f3e18f8ef9ca..373a1646019e 100644
+--- a/drivers/input/serio/Kconfig
++++ b/drivers/input/serio/Kconfig
+@@ -165,6 +165,16 @@ config SERIO_MACEPS2
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called maceps2.
  
-+config W1_MASTER_SGI
-+	tristate "SGI ASIC driver"
++config SERIO_SGI_IOC3
++	tristate "SGI IOC3 PS/2 controller"
++	depends on SGI_MFD_IOC3
 +	help
-+	  Say Y here if you want support for your 1-wire devices using
-+	  SGI ASIC 1-Wire interface
++	  Say Y here if you have an SGI Onyx2, SGI Octane or IOC3 PCI card
++	  and you want to attach and use a keyboard, mouse, or both.
 +
-+	  This support is also available as a module.  If so, the module
-+	  will be called sgi_w1.
++	  To compile this driver as a module, choose M here: the
++	  module will be called ioc3kbd.
 +
- endmenu
- 
-diff --git a/drivers/w1/masters/Makefile b/drivers/w1/masters/Makefile
-index 18954cae4256..dae629b7ab49 100644
---- a/drivers/w1/masters/Makefile
-+++ b/drivers/w1/masters/Makefile
-@@ -11,3 +11,4 @@ obj-$(CONFIG_W1_MASTER_MXC)		+= mxc_w1.o
- obj-$(CONFIG_W1_MASTER_DS1WM)		+= ds1wm.o
- obj-$(CONFIG_W1_MASTER_GPIO)		+= w1-gpio.o
- obj-$(CONFIG_HDQ_MASTER_OMAP)		+= omap_hdq.o
-+obj-$(CONFIG_W1_MASTER_SGI)		+= sgi_w1.o
-diff --git a/drivers/w1/masters/sgi_w1.c b/drivers/w1/masters/sgi_w1.c
+ config SERIO_LIBPS2
+ 	tristate "PS/2 driver library"
+ 	depends on SERIO_I8042 || SERIO_I8042=n
+diff --git a/drivers/input/serio/Makefile b/drivers/input/serio/Makefile
+index 67950a5ccb3f..6d97bad7b844 100644
+--- a/drivers/input/serio/Makefile
++++ b/drivers/input/serio/Makefile
+@@ -20,6 +20,7 @@ obj-$(CONFIG_HIL_MLC)		+= hp_sdc_mlc.o hil_mlc.o
+ obj-$(CONFIG_SERIO_PCIPS2)	+= pcips2.o
+ obj-$(CONFIG_SERIO_PS2MULT)	+= ps2mult.o
+ obj-$(CONFIG_SERIO_MACEPS2)	+= maceps2.o
++obj-$(CONFIG_SERIO_SGI_IOC3)	+= ioc3kbd.o
+ obj-$(CONFIG_SERIO_LIBPS2)	+= libps2.o
+ obj-$(CONFIG_SERIO_RAW)		+= serio_raw.o
+ obj-$(CONFIG_SERIO_AMS_DELTA)	+= ams_delta_serio.o
+diff --git a/drivers/input/serio/ioc3kbd.c b/drivers/input/serio/ioc3kbd.c
 new file mode 100644
-index 000000000000..1b2d96b945be
+index 000000000000..6840e3c23fed
 --- /dev/null
-+++ b/drivers/w1/masters/sgi_w1.c
-@@ -0,0 +1,130 @@
++++ b/drivers/input/serio/ioc3kbd.c
+@@ -0,0 +1,163 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * sgi_w1.c - w1 master driver for one wire support in SGI ASICs
++ * SGI IOC3 PS/2 controller driver for linux
++ *
++ * Copyright (C) 2019 Thomas Bogendoerfer <tbogendoerfer@suse.de>
++ *
++ * Based on code Copyright (C) 2005 Stanislaw Skowronek <skylark@unaligned.org>
++ *               Copyright (C) 2009 Johannes Dickgreber <tanzy@gmx.de>
 + */
 +
-+#include <linux/clk.h>
 +#include <linux/delay.h>
++#include <linux/init.h>
 +#include <linux/io.h>
-+#include <linux/jiffies.h>
++#include <linux/serio.h>
 +#include <linux/module.h>
-+#include <linux/mod_devicetable.h>
 +#include <linux/platform_device.h>
-+#include <linux/platform_data/sgi-w1.h>
 +
-+#include <linux/w1.h>
++#include <asm/sn/ioc3.h>
 +
-+#define MCR_RD_DATA	BIT(0)
-+#define MCR_DONE	BIT(1)
-+
-+#define MCR_PACK(pulse, sample) (((pulse) << 10) | ((sample) << 2))
-+
-+struct sgi_w1_device {
-+	u32 __iomem *mcr;
-+	struct w1_bus_master bus_master;
-+	char dev_id[64];
++struct ioc3kbd_data {
++	struct ioc3_serioregs __iomem *regs;
++	struct serio *kbd, *aux;
++	int irq;
 +};
 +
-+static u8 sgi_w1_wait(u32 __iomem *mcr)
++static int ioc3kbd_write(struct serio *dev, u8 val)
 +{
-+	u32 mcr_val;
++	struct ioc3kbd_data *d = dev->port_data;
++	unsigned long timeout = 0;
++	u32 mask;
 +
-+	do {
-+		mcr_val = readl(mcr);
-+	} while (!(mcr_val & MCR_DONE));
-+
-+	return (mcr_val & MCR_RD_DATA) ? 1 : 0;
-+}
-+
-+/*
-+ * this is the low level routine to
-+ * reset the device on the One Wire interface
-+ * on the hardware
-+ */
-+static u8 sgi_w1_reset_bus(void *data)
-+{
-+	struct sgi_w1_device *dev = data;
-+	u8 ret;
-+
-+	writel(MCR_PACK(520, 65), dev->mcr);
-+	ret = sgi_w1_wait(dev->mcr);
-+	udelay(500); /* recovery time */
-+	return ret;
-+}
-+
-+/*
-+ * this is the low level routine to read/write a bit on the One Wire
-+ * interface on the hardware. It does write 0 if parameter bit is set
-+ * to 0, otherwise a write 1/read.
-+ */
-+static u8 sgi_w1_touch_bit(void *data, u8 bit)
-+{
-+	struct sgi_w1_device *dev = data;
-+	u8 ret;
-+
-+	if (bit)
-+		writel(MCR_PACK(6, 13), dev->mcr);
-+	else
-+		writel(MCR_PACK(80, 30), dev->mcr);
-+
-+	ret = sgi_w1_wait(dev->mcr);
-+	if (bit)
-+		udelay(100); /* recovery */
-+	return ret;
-+}
-+
-+static int sgi_w1_probe(struct platform_device *pdev)
-+{
-+	struct sgi_w1_device *sdev;
-+	struct sgi_w1_platform_data *pdata;
-+	struct resource *res;
-+
-+	sdev = devm_kzalloc(&pdev->dev, sizeof(struct sgi_w1_device),
-+			    GFP_KERNEL);
-+	if (!sdev)
-+		return -ENOMEM;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	sdev->mcr = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(sdev->mcr))
-+		return PTR_ERR(sdev->mcr);
-+
-+	sdev->bus_master.data = sdev;
-+	sdev->bus_master.reset_bus = sgi_w1_reset_bus;
-+	sdev->bus_master.touch_bit = sgi_w1_touch_bit;
-+
-+	pdata = dev_get_platdata(&pdev->dev);
-+	if (pdata) {
-+		strlcpy(sdev->dev_id, pdata->dev_id, sizeof(sdev->dev_id));
-+		sdev->bus_master.dev_id = sdev->dev_id;
++	mask = (dev == d->aux) ? KM_CSR_M_WRT_PEND : KM_CSR_K_WRT_PEND;
++	while ((readl(&d->regs->km_csr) & mask) && (timeout < 1000)) {
++		udelay(100);
++		timeout++;
 +	}
 +
-+	platform_set_drvdata(pdev, sdev);
++	if (timeout >= 1000)
++		return -ETIMEDOUT;
 +
-+	return w1_add_master_device(&sdev->bus_master);
-+}
-+
-+/*
-+ * disassociate the w1 device from the driver
-+ */
-+static int sgi_w1_remove(struct platform_device *pdev)
-+{
-+	struct sgi_w1_device *sdev = platform_get_drvdata(pdev);
-+
-+	w1_remove_master_device(&sdev->bus_master);
++	writel(val, dev == d->aux ? &d->regs->m_wd : &d->regs->k_wd);
 +
 +	return 0;
 +}
 +
-+static struct platform_driver sgi_w1_driver = {
++static irqreturn_t ioc3kbd_intr(int itq, void *dev_id)
++{
++	struct ioc3kbd_data *d = dev_id;
++	u32 data_k, data_m;
++
++	data_k = readl(&d->regs->k_rd);
++	data_m = readl(&d->regs->m_rd);
++
++	if (data_k & KM_RD_VALID_0)
++		serio_interrupt(d->kbd, (data_k >> KM_RD_DATA_0_SHIFT) & 0xff,
++				0);
++	if (data_k & KM_RD_VALID_1)
++		serio_interrupt(d->kbd, (data_k >> KM_RD_DATA_1_SHIFT) & 0xff,
++				0);
++	if (data_k & KM_RD_VALID_2)
++		serio_interrupt(d->kbd, (data_k >> KM_RD_DATA_2_SHIFT) & 0xff,
++				0);
++	if (data_m & KM_RD_VALID_0)
++		serio_interrupt(d->aux, (data_m >> KM_RD_DATA_0_SHIFT) & 0xff,
++				0);
++	if (data_m & KM_RD_VALID_1)
++		serio_interrupt(d->aux, (data_m >> KM_RD_DATA_1_SHIFT) & 0xff,
++				0);
++	if (data_m & KM_RD_VALID_2)
++		serio_interrupt(d->aux, (data_m >> KM_RD_DATA_2_SHIFT) & 0xff,
++				0);
++
++	return 0;
++}
++
++static int ioc3kbd_probe(struct platform_device *pdev)
++{
++	struct ioc3_serioregs __iomem *regs;
++	struct device *dev = &pdev->dev;
++	struct ioc3kbd_data *d;
++	struct serio *sk, *sa;
++	int irq, ret;
++
++	regs = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(regs))
++		return PTR_ERR(regs);
++
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0)
++		return -ENXIO;
++
++	d = devm_kzalloc(&pdev->dev, sizeof(*d), GFP_KERNEL);
++	if (!d)
++		return -ENOMEM;
++
++	sk = kzalloc(sizeof(*sk), GFP_KERNEL);
++	if (!sk)
++		return -ENOMEM;
++
++	sa = kzalloc(sizeof(*sa), GFP_KERNEL);
++	if (!sa) {
++		kfree(sk);
++		return -ENOMEM;
++	}
++
++	sk->id.type = SERIO_8042;
++	sk->write = ioc3kbd_write;
++	snprintf(sk->name, sizeof(sk->name), "IOC3 keyboard %d", pdev->id);
++	snprintf(sk->phys, sizeof(sk->phys), "ioc3/serio%dkbd", pdev->id);
++	sk->port_data = d;
++	sk->dev.parent = &pdev->dev;
++
++	sa->id.type = SERIO_8042;
++	sa->write = ioc3kbd_write;
++	snprintf(sa->name, sizeof(sa->name), "IOC3 auxiliary %d", pdev->id);
++	snprintf(sa->phys, sizeof(sa->phys), "ioc3/serio%daux", pdev->id);
++	sa->port_data = d;
++	sa->dev.parent = dev;
++
++	d->regs = regs;
++	d->kbd = sk;
++	d->aux = sa;
++	d->irq = irq;
++
++	platform_set_drvdata(pdev, d);
++	serio_register_port(d->kbd);
++	serio_register_port(d->aux);
++
++	ret = devm_request_irq(&pdev->dev, irq, ioc3kbd_intr, IRQF_SHARED,
++			       "ioc3-kbd", d);
++	if (ret) {
++		dev_err(&pdev->dev, "could not request IRQ %d\n", irq);
++		serio_unregister_port(d->kbd);
++		serio_unregister_port(d->aux);
++		kfree(sk);
++		kfree(sa);
++		return ret;
++	}
++	return 0;
++}
++
++static int ioc3kbd_remove(struct platform_device *pdev)
++{
++	struct ioc3kbd_data *d = platform_get_drvdata(pdev);
++
++	devm_free_irq(&pdev->dev, d->irq, d);
++	serio_unregister_port(d->kbd);
++	serio_unregister_port(d->aux);
++	return 0;
++}
++
++static struct platform_driver ioc3kbd_driver = {
++	.probe          = ioc3kbd_probe,
++	.remove         = ioc3kbd_remove,
 +	.driver = {
-+		.name = "sgi_w1",
++		.name = "ioc3-kbd",
 +	},
-+	.probe = sgi_w1_probe,
-+	.remove = sgi_w1_remove,
 +};
-+module_platform_driver(sgi_w1_driver);
++module_platform_driver(ioc3kbd_driver);
 +
++MODULE_AUTHOR("Thomas Bogendoerfer <tbogendoerfer@suse.de>");
++MODULE_DESCRIPTION("SGI IOC3 serio driver");
 +MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Thomas Bogendoerfer");
-+MODULE_DESCRIPTION("Driver for One-Wire IP in SGI ASICs");
-diff --git a/include/linux/platform_data/sgi-w1.h b/include/linux/platform_data/sgi-w1.h
-new file mode 100644
-index 000000000000..fc6b92e0b942
---- /dev/null
-+++ b/include/linux/platform_data/sgi-w1.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * SGI One-Wire (W1) IP
-+ */
-+
-+#ifndef PLATFORM_DATA_SGI_W1_H
-+#define PLATFORM_DATA_SGI_W1_H
-+
-+#include <asm/sn/types.h>
-+
-+struct sgi_w1_platform_data {
-+	char dev_id[64];
-+};
-+
-+#endif /* PLATFORM_DATA_SGI_W1_H */
-diff --git a/include/linux/w1.h b/include/linux/w1.h
-index e0b5156f78fd..89843e9f634c 100644
---- a/include/linux/w1.h
-+++ b/include/linux/w1.h
-@@ -150,6 +150,8 @@ struct w1_bus_master {
- 
- 	void		(*search)(void *, struct w1_master *,
- 		u8, w1_slave_found_callback);
-+
-+	char		*dev_id;
- };
- 
- /**
 -- 
 2.13.7
 

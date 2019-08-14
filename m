@@ -7,50 +7,50 @@ X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4B3BC32750
-	for <linux-mips@archiver.kernel.org>; Wed, 14 Aug 2019 02:29:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78734C433FF
+	for <linux-mips@archiver.kernel.org>; Wed, 14 Aug 2019 02:33:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id AED1420679
-	for <linux-mips@archiver.kernel.org>; Wed, 14 Aug 2019 02:29:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4F48720842
+	for <linux-mips@archiver.kernel.org>; Wed, 14 Aug 2019 02:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1565749784;
-	bh=fDEtZsFIYm5HYRGuh/FkCw7ClI9UfM2kYm/fzPXNZ8w=;
+	s=default; t=1565749987;
+	bh=+G6YI7uCiWl5NzsZjlF0cb+BjDlIwDypveGYVOUdif8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=00mC+QEy+rW4Xj7kfKGvHYdIFxcUL9CvtHLP5lZ8b3/rR6sLI6MXYzax/TNwOGYIh
-	 5alLWFfzg8A8Z/VxnkngpFefz5VmqdzjAPNiF+VVeDxlUsznQKiup1ijn/u8Zmg025
-	 AwAAu8u4HkyOQ/qXaw7VMJzDdN8ty2+o2rYBTBTE=
+	b=Qriw7OatbbfxKC1LDcwXt7KYYnj1fM6HoC/Fk3Wl6518GfrTVkt3TMSeGjVRAdBm0
+	 Lx/pwC/xW8NKU+QcE2viF2oPh9wcKKMKsqHiLaW624D+c509BzVEnWgj6wQLB2F4td
+	 FK5G1CgnKGId5489SkI4uQHcAJ0h0livdPMYz6BU=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729835AbfHNCX2 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 13 Aug 2019 22:23:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52498 "EHLO mail.kernel.org"
+        id S1728865AbfHNCP7 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 13 Aug 2019 22:15:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47510 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729811AbfHNCX1 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 13 Aug 2019 22:23:27 -0400
+        id S1726007AbfHNCP7 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 13 Aug 2019 22:15:59 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3E9B520842;
-        Wed, 14 Aug 2019 02:23:26 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 543BE20842;
+        Wed, 14 Aug 2019 02:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1565749407;
-        bh=fDEtZsFIYm5HYRGuh/FkCw7ClI9UfM2kYm/fzPXNZ8w=;
+        s=default; t=1565748958;
+        bh=+G6YI7uCiWl5NzsZjlF0cb+BjDlIwDypveGYVOUdif8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N3zL7pns6GbW7Aj2bAo0I7Ilzt1v+6BzSmDFzCbSpOTW5koEIOUS7KZ7FCqLjiUhg
-         6LDv/7X+FeTbG2KhvcQjU+2isez5/1LmZdw3apL3rc7UWNFKS9mWdbEL2eLNtcZBVA
-         spG5jGICQW2Ouo7gj1rXL1MjaO3ED40xQRVQxh30=
+        b=EhrYYbphQhZXS/KiENKi+GFMBJzNRfap4P5AyRmxs78FJBM90BU4fo+nNv+AHMnn6
+         4WbfH2L/wfohtUKgv3j8siUGLLoJnGaKGutr5N1hb7IcoleFv+uiw78ED6oZkGfVGr
+         TiZl9mmXjl4eqSab4biQ0B95rBovLyKHzxZYubio=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+Cc:     Vladimir Kondratiev <vladimir.kondratiev@linux.intel.com>,
         Paul Burton <paul.burton@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.9 02/33] MIPS: kernel: only use i8253 clocksource with periodic clockevent
-Date:   Tue, 13 Aug 2019 22:22:52 -0400
-Message-Id: <20190814022323.17111-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 05/68] mips: fix cacheinfo
+Date:   Tue, 13 Aug 2019 22:14:43 -0400
+Message-Id: <20190814021548.16001-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190814022323.17111-1-sashal@kernel.org>
-References: <20190814022323.17111-1-sashal@kernel.org>
+In-Reply-To: <20190814021548.16001-1-sashal@kernel.org>
+References: <20190814021548.16001-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -60,14 +60,24 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+From: Vladimir Kondratiev <vladimir.kondratiev@linux.intel.com>
 
-[ Upstream commit a07e3324538a989b7cdbf2c679be6a7f9df2544f ]
+[ Upstream commit b8bea8a5e5d942e62203416ab41edecaed4fda02 ]
 
-i8253 clocksource needs a free running timer. This could only
-be used, if i8253 clockevent is set up as periodic.
+Because CONFIG_OF defined for MIPS, cacheinfo attempts to fill information
+from DT, ignoring data filled by architecture routine. This leads to error
+reported
 
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+ cacheinfo: Unable to detect cache hierarchy for CPU 0
+
+Way to fix this provided in
+commit fac51482577d ("drivers: base: cacheinfo: fix x86 with
+ CONFIG_OF enabled")
+
+Utilize same mechanism to report that cacheinfo set by architecture
+specific function
+
+Signed-off-by: Vladimir Kondratiev <vladimir.kondratiev@linux.intel.com>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: James Hogan <jhogan@kernel.org>
@@ -75,23 +85,22 @@ Cc: linux-mips@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/i8253.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/kernel/cacheinfo.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/kernel/i8253.c b/arch/mips/kernel/i8253.c
-index c5bc344fc745c..73039746ae364 100644
---- a/arch/mips/kernel/i8253.c
-+++ b/arch/mips/kernel/i8253.c
-@@ -31,7 +31,8 @@ void __init setup_pit_timer(void)
+diff --git a/arch/mips/kernel/cacheinfo.c b/arch/mips/kernel/cacheinfo.c
+index 97d5239ca47ba..428ef21892039 100644
+--- a/arch/mips/kernel/cacheinfo.c
++++ b/arch/mips/kernel/cacheinfo.c
+@@ -80,6 +80,8 @@ static int __populate_cache_leaves(unsigned int cpu)
+ 	if (c->tcache.waysize)
+ 		populate_cache(tcache, this_leaf, 3, CACHE_TYPE_UNIFIED);
  
- static int __init init_pit_clocksource(void)
- {
--	if (num_possible_cpus() > 1) /* PIT does not scale! */
-+	if (num_possible_cpus() > 1 || /* PIT does not scale! */
-+	    !clockevent_state_periodic(&i8253_clockevent))
- 		return 0;
++	this_cpu_ci->cpu_map_populated = true;
++
+ 	return 0;
+ }
  
- 	return clocksource_i8253_init();
 -- 
 2.20.1
 

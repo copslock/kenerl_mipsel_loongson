@@ -7,37 +7,37 @@ X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09C4DC433FF
-	for <linux-mips@archiver.kernel.org>; Wed, 14 Aug 2019 02:22:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C859C41514
+	for <linux-mips@archiver.kernel.org>; Wed, 14 Aug 2019 02:25:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id CA23820842
-	for <linux-mips@archiver.kernel.org>; Wed, 14 Aug 2019 02:22:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5C01A20874
+	for <linux-mips@archiver.kernel.org>; Wed, 14 Aug 2019 02:25:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1565749367;
-	bh=sr48XOpd2ZgZRUgSrCbJ4u4y78XwJNBMgy3NiW0Ews0=;
+	s=default; t=1565749557;
+	bh=fDEtZsFIYm5HYRGuh/FkCw7ClI9UfM2kYm/fzPXNZ8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=TnemB0NFssVUq1iiH2BciWds2gO8BIe5hyw3ZH0YQie4OF3k5ZuoKG7pZtRGWpC7j
-	 XKQAuKtOT6HzCUqtl5IkrLMRfU1aNrtDHj5yFIO9wpKyOuXUuFEhJsNzxg5n7CMHxc
-	 lN7bm05OpOf3mMbOQ02qhBztQvnwmmeQ17ezvslo=
+	b=0ETyeHuYU8Wfj7eNvJK/NAsQhrLPYJS62JN58n8+nY4BhKg6cEz/miMfvN/UU2ZmQ
+	 If3LGu4H53qZorvPHyTPHLnyo2NXgW3+/kdIVvICLG9DoCr5kdTnsetaiArjfDdpfR
+	 JKDWh9xArVWdEpJtJy4m72chhda2+9E6rb0zA7iQ=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729451AbfHNCSk (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 13 Aug 2019 22:18:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49592 "EHLO mail.kernel.org"
+        id S1729680AbfHNCZ4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 13 Aug 2019 22:25:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54052 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727502AbfHNCSk (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 13 Aug 2019 22:18:40 -0400
+        id S1728775AbfHNCZz (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 13 Aug 2019 22:25:55 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 078222084D;
-        Wed, 14 Aug 2019 02:18:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D908820679;
+        Wed, 14 Aug 2019 02:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1565749119;
-        bh=sr48XOpd2ZgZRUgSrCbJ4u4y78XwJNBMgy3NiW0Ews0=;
+        s=default; t=1565749554;
+        bh=fDEtZsFIYm5HYRGuh/FkCw7ClI9UfM2kYm/fzPXNZ8w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q5HEOA75DhVqYcSalS0MOyGGAB6KXZMYBaAqhY/QpnwWch3ct5WKR6x+Ou9aDRsO0
-         9GZ8HBnGkHRtmhcKl+IoxGE5S/a/8rC2/VSA21lIoBIkc/QFw3p8P1NRpZ0KnUyvt2
-         XKQzxJZ59vG3cXjFHhSror+Qsg3jhpMfSx09Lntg=
+        b=CLZjCJgrkDpGj8gmcDu77MTiwuY3ooFmsHSnIh2vjigKBPzqJxKGSc1hdTGvzrfx0
+         IwfGDMclcxpTuj4LWbgXSBOHw8ByNFwn1ZVpTIN6YFdHzTkfaFT7OPxl/UBtncEnK+
+         HdtMJoE4fr3jOBwW/Uh4LBoWeYYaVwXIlj8VrbL4=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Thomas Bogendoerfer <tbogendoerfer@suse.de>,
@@ -45,12 +45,12 @@ Cc:     Thomas Bogendoerfer <tbogendoerfer@suse.de>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 03/44] MIPS: kernel: only use i8253 clocksource with periodic clockevent
-Date:   Tue, 13 Aug 2019 22:17:52 -0400
-Message-Id: <20190814021834.16662-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 02/28] MIPS: kernel: only use i8253 clocksource with periodic clockevent
+Date:   Tue, 13 Aug 2019 22:25:24 -0400
+Message-Id: <20190814022550.17463-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190814021834.16662-1-sashal@kernel.org>
-References: <20190814021834.16662-1-sashal@kernel.org>
+In-Reply-To: <20190814022550.17463-1-sashal@kernel.org>
+References: <20190814022550.17463-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -79,10 +79,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/arch/mips/kernel/i8253.c b/arch/mips/kernel/i8253.c
-index 5f209f111e59e..df7ddd246eaac 100644
+index c5bc344fc745c..73039746ae364 100644
 --- a/arch/mips/kernel/i8253.c
 +++ b/arch/mips/kernel/i8253.c
-@@ -32,7 +32,8 @@ void __init setup_pit_timer(void)
+@@ -31,7 +31,8 @@ void __init setup_pit_timer(void)
  
  static int __init init_pit_clocksource(void)
  {

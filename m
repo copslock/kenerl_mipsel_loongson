@@ -2,272 +2,175 @@ Return-Path: <SRS0=C2k9=WP=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-8.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D472C3A5A1
-	for <linux-mips@archiver.kernel.org>; Mon, 19 Aug 2019 16:34:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5360BC3A5A0
+	for <linux-mips@archiver.kernel.org>; Mon, 19 Aug 2019 20:57:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 33BD122CEA
-	for <linux-mips@archiver.kernel.org>; Mon, 19 Aug 2019 16:34:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1AD812087E
+	for <linux-mips@archiver.kernel.org>; Mon, 19 Aug 2019 20:57:47 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=wavecomp.com header.i=@wavecomp.com header.b="vQ/3pUFl"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727801AbfHSQcE (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 19 Aug 2019 12:32:04 -0400
-Received: from mx2.suse.de ([195.135.220.15]:55232 "EHLO mx1.suse.de"
+        id S1728494AbfHSU5q (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 19 Aug 2019 16:57:46 -0400
+Received: from mail-eopbgr810109.outbound.protection.outlook.com ([40.107.81.109]:32719
+        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727483AbfHSQcE (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 19 Aug 2019 12:32:04 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 310D4B052;
-        Mon, 19 Aug 2019 16:32:01 +0000 (UTC)
-From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
-To:     Jonathan Corbet <corbet@lwn.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        Evgeniy Polyakov <zbr@ioremap.net>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-input@vger.kernel.org, netdev@vger.kernel.org,
-        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: [PATCH v5 01/17] w1: add 1-wire master driver for IP block found in SGI ASICs
-Date:   Mon, 19 Aug 2019 18:31:24 +0200
-Message-Id: <20190819163144.3478-2-tbogendoerfer@suse.de>
-X-Mailer: git-send-email 2.13.7
-In-Reply-To: <20190819163144.3478-1-tbogendoerfer@suse.de>
-References: <20190819163144.3478-1-tbogendoerfer@suse.de>
+        id S1727769AbfHSU5q (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 19 Aug 2019 16:57:46 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bGz4W9u+/50ifh/XazO3SsJDsdYXcV0ub1dmfkoaZkrmCZumDMfyTWWiT/rCAG9y2Ohhe/b19HWRKD8YyEzcSdyWFw4M2/k5sk2VvuM1QuSOW4TqhYV8CJSRuQqd0u5WabkghdQSYHQRyAKD5J6/98ZsbeYbOa8mUgI9lRcnEC43zxXgp6PaKgtfer7rHRtzIlaecvBDcl2SGL4ijfD2324+8jz5ch+OV/2qn9TILMjwtwcUPQTKFItYqPqGFvwgDPPNZcGDhmxKzqJlq/+4lXxGOAibOaSm/MplXnTI35ax6Kl3y6diRe0luZe8/XeJ8ut26/rkH+rM4mzdg2NYdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sQlemvDaibl3TmaUoytPX70nix/LzsjtaZ1/LsbuUDQ=;
+ b=F77d5PqBjjR3NragXVyVzF+8IkCwFqeHS39abnfMgapxqGRsW9ukpD9zzSEVUDMQ/jvJ8vtbwTapkx8jmMyooGsjxmyJ6feHFSCHU4uyyYGB2TuhSSrPr2+1UDkRWA+BFtV2bXItHCx641szKLf8rx1CgmYnMcvH9JIdiURutWM9ff9gTPnYBiVbM4x0My2mjjRWGh8Z5MBvyc+59MRB0n/ebVvDytQWcjhq7QegUhj8ZAqF4n5V2GVJMgo1Ew9oAoY5GxvNq4v6FveJxHGWet+WCpK1Igjfc636zVP6GO+f66TXXxn2dPV25V8G0Qy8fjwKPNs5Zgn60y7DjItg4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wavecomp.com; dmarc=pass action=none header.from=mips.com;
+ dkim=pass header.d=mips.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wavecomp.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sQlemvDaibl3TmaUoytPX70nix/LzsjtaZ1/LsbuUDQ=;
+ b=vQ/3pUFl5pl4EUYYaAjWg0jq9iLtomWR7q2NzSLd8KleB3fGL4Kf68+gNkERCR82HHTgHcJ3jmVtdMwBtxwKYn3CRheLwhUqHgXa2RA7zB/l6Vqrg1soikbidi4Hc0Eqd6Q3wYn9MPQsHUlsA7C2DQENfza+mdqBZZVqVoiJd3o=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.172.60.12) by
+ MWHPR2201MB1214.namprd22.prod.outlook.com (10.174.161.147) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2178.18; Mon, 19 Aug 2019 20:57:30 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::f566:bf1f:dcd:862c]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::f566:bf1f:dcd:862c%10]) with mapi id 15.20.2178.018; Mon, 19 Aug 2019
+ 20:57:30 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Christoph Hellwig <hch@lst.de>
+CC:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guan Xuetao <gxt@pku.edu.cn>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        "linux-snps-arc@lists.infradead.org" 
+        <linux-snps-arc@lists.infradead.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "nios2-dev@lists.rocketboards.org" <nios2-dev@lists.rocketboards.org>,
+        "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>
+Subject: Re: [PATCH 04/26] mips: remove ioremap_cachable
+Thread-Topic: [PATCH 04/26] mips: remove ioremap_cachable
+Thread-Index: AQHVVtC3NrUy1/60K0Ou3aE6SqmWcg==
+Date:   Mon, 19 Aug 2019 20:57:30 +0000
+Message-ID: <20190819205722.4eir2edy6qgtgarl@pburton-laptop>
+References: <20190817073253.27819-1-hch@lst.de>
+ <20190817073253.27819-5-hch@lst.de>
+In-Reply-To: <20190817073253.27819-5-hch@lst.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: LO2P123CA0023.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:a6::35) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:18::12)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [2a02:c7f:5e65:9900:8519:dc48:d16b:70fc]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 9c641ce4-c757-4855-8ea6-08d724e7d94d
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:MWHPR2201MB1214;
+x-ms-traffictypediagnostic: MWHPR2201MB1214:
+x-microsoft-antispam-prvs: <MWHPR2201MB1214CEE95E7DDEFA250FDB2FC1A80@MWHPR2201MB1214.namprd22.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6108;
+x-forefront-prvs: 0134AD334F
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(136003)(376002)(346002)(39830400003)(366004)(396003)(199004)(189003)(71200400001)(8936002)(71190400001)(5660300002)(486006)(1076003)(8676002)(44832011)(6246003)(76176011)(81156014)(81166006)(476003)(256004)(66946007)(42882007)(446003)(14454004)(64756008)(66446008)(66556008)(478600001)(7736002)(305945005)(4326008)(386003)(25786009)(6506007)(11346002)(186003)(46003)(316002)(102836004)(66476007)(33716001)(54906003)(58126008)(6436002)(229853002)(6916009)(53936002)(7416002)(52116002)(6512007)(9686003)(6486002)(99286004)(2906002)(6116002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1214;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: dV5mX8Pkr7io2t7Y4ptazUid5uXLcd1UBG1s8OB1iX7EfIpmwYRnxosRjB4LPEuf2aK6uYDRQyp3dJs9e92YsCag7SS46KiQIJbIs+xQf+X8AorBt+ClHaEVCD7ZJaKLLsK3BIu7HFM1fPLPFZYo9THzyC9l4isY5g+3SOqRd/PbHXxUZ2uSgAoDnFmA680Ikl/P2i1gv3Pq8U/+3zr5m9Se1heQNHNW9W+IpGDnSPoGZOheeQ1j1UyNjGTZ4d/ErxRt/oTakJHM26tn5F/e3EyR6w/SfiyXxgkxjzOiIVN/b0Qwc0Q4NwrF6c3sEnhjWrphN8eeZ8tYGK+3E8XLhe+j80tJ3Xkjkkm9LpWxh8NtiS6ZHs+RZNPPFMYIRwC+tWYw1I0HPisjb3DBeEEY9hu4JK07d0TBFPfz0jEA40s=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <F7A01E6E65132543B693A9F6442F8662@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c641ce4-c757-4855-8ea6-08d724e7d94d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Aug 2019 20:57:30.3016
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: qJQF+IhT4z5pqGUgbfafaPiHTxqFNEqH6R6Z4I+k8rb9DobUqivCvM1ix+ODt4H/DJNJU2Hcxxg3SjfiBemtkw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1214
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Starting with SGI Origin machines nearly every new SGI ASIC contains
-an 1-Wire master. They are used for attaching One-Wire prom devices,
-which contain information about part numbers, revision numbers,
-serial number etc. and MAC addresses for ethernet interfaces.
-This patch adds a master driver to support this IP block.
-It also adds an extra field dev_id to struct w1_bus_master, which
-could be in used in slave drivers for creating unique device names.
+Hi Christoph,
 
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
----
- drivers/w1/masters/Kconfig           |   9 +++
- drivers/w1/masters/Makefile          |   1 +
- drivers/w1/masters/sgi_w1.c          | 130 +++++++++++++++++++++++++++++++++++
- include/linux/platform_data/sgi-w1.h |  15 ++++
- include/linux/w1.h                   |   2 +
- 5 files changed, 157 insertions(+)
- create mode 100644 drivers/w1/masters/sgi_w1.c
- create mode 100644 include/linux/platform_data/sgi-w1.h
+On Sat, Aug 17, 2019 at 09:32:31AM +0200, Christoph Hellwig wrote:
+> Just define ioremap_cache directly.
+>=20
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-diff --git a/drivers/w1/masters/Kconfig b/drivers/w1/masters/Kconfig
-index 7ae260577901..24b9a8e05f64 100644
---- a/drivers/w1/masters/Kconfig
-+++ b/drivers/w1/masters/Kconfig
-@@ -65,5 +65,14 @@ config HDQ_MASTER_OMAP
- 	  Say Y here if you want support for the 1-wire or HDQ Interface
- 	  on an OMAP processor.
- 
-+config W1_MASTER_SGI
-+	tristate "SGI ASIC driver"
-+	help
-+	  Say Y here if you want support for your 1-wire devices using
-+	  SGI ASIC 1-Wire interface
-+
-+	  This support is also available as a module.  If so, the module
-+	  will be called sgi_w1.
-+
- endmenu
- 
-diff --git a/drivers/w1/masters/Makefile b/drivers/w1/masters/Makefile
-index 18954cae4256..dae629b7ab49 100644
---- a/drivers/w1/masters/Makefile
-+++ b/drivers/w1/masters/Makefile
-@@ -11,3 +11,4 @@ obj-$(CONFIG_W1_MASTER_MXC)		+= mxc_w1.o
- obj-$(CONFIG_W1_MASTER_DS1WM)		+= ds1wm.o
- obj-$(CONFIG_W1_MASTER_GPIO)		+= w1-gpio.o
- obj-$(CONFIG_HDQ_MASTER_OMAP)		+= omap_hdq.o
-+obj-$(CONFIG_W1_MASTER_SGI)		+= sgi_w1.o
-diff --git a/drivers/w1/masters/sgi_w1.c b/drivers/w1/masters/sgi_w1.c
-new file mode 100644
-index 000000000000..1b2d96b945be
---- /dev/null
-+++ b/drivers/w1/masters/sgi_w1.c
-@@ -0,0 +1,130 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * sgi_w1.c - w1 master driver for one wire support in SGI ASICs
-+ */
-+
-+#include <linux/clk.h>
-+#include <linux/delay.h>
-+#include <linux/io.h>
-+#include <linux/jiffies.h>
-+#include <linux/module.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/platform_device.h>
-+#include <linux/platform_data/sgi-w1.h>
-+
-+#include <linux/w1.h>
-+
-+#define MCR_RD_DATA	BIT(0)
-+#define MCR_DONE	BIT(1)
-+
-+#define MCR_PACK(pulse, sample) (((pulse) << 10) | ((sample) << 2))
-+
-+struct sgi_w1_device {
-+	u32 __iomem *mcr;
-+	struct w1_bus_master bus_master;
-+	char dev_id[64];
-+};
-+
-+static u8 sgi_w1_wait(u32 __iomem *mcr)
-+{
-+	u32 mcr_val;
-+
-+	do {
-+		mcr_val = readl(mcr);
-+	} while (!(mcr_val & MCR_DONE));
-+
-+	return (mcr_val & MCR_RD_DATA) ? 1 : 0;
-+}
-+
-+/*
-+ * this is the low level routine to
-+ * reset the device on the One Wire interface
-+ * on the hardware
-+ */
-+static u8 sgi_w1_reset_bus(void *data)
-+{
-+	struct sgi_w1_device *dev = data;
-+	u8 ret;
-+
-+	writel(MCR_PACK(520, 65), dev->mcr);
-+	ret = sgi_w1_wait(dev->mcr);
-+	udelay(500); /* recovery time */
-+	return ret;
-+}
-+
-+/*
-+ * this is the low level routine to read/write a bit on the One Wire
-+ * interface on the hardware. It does write 0 if parameter bit is set
-+ * to 0, otherwise a write 1/read.
-+ */
-+static u8 sgi_w1_touch_bit(void *data, u8 bit)
-+{
-+	struct sgi_w1_device *dev = data;
-+	u8 ret;
-+
-+	if (bit)
-+		writel(MCR_PACK(6, 13), dev->mcr);
-+	else
-+		writel(MCR_PACK(80, 30), dev->mcr);
-+
-+	ret = sgi_w1_wait(dev->mcr);
-+	if (bit)
-+		udelay(100); /* recovery */
-+	return ret;
-+}
-+
-+static int sgi_w1_probe(struct platform_device *pdev)
-+{
-+	struct sgi_w1_device *sdev;
-+	struct sgi_w1_platform_data *pdata;
-+	struct resource *res;
-+
-+	sdev = devm_kzalloc(&pdev->dev, sizeof(struct sgi_w1_device),
-+			    GFP_KERNEL);
-+	if (!sdev)
-+		return -ENOMEM;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	sdev->mcr = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(sdev->mcr))
-+		return PTR_ERR(sdev->mcr);
-+
-+	sdev->bus_master.data = sdev;
-+	sdev->bus_master.reset_bus = sgi_w1_reset_bus;
-+	sdev->bus_master.touch_bit = sgi_w1_touch_bit;
-+
-+	pdata = dev_get_platdata(&pdev->dev);
-+	if (pdata) {
-+		strlcpy(sdev->dev_id, pdata->dev_id, sizeof(sdev->dev_id));
-+		sdev->bus_master.dev_id = sdev->dev_id;
-+	}
-+
-+	platform_set_drvdata(pdev, sdev);
-+
-+	return w1_add_master_device(&sdev->bus_master);
-+}
-+
-+/*
-+ * disassociate the w1 device from the driver
-+ */
-+static int sgi_w1_remove(struct platform_device *pdev)
-+{
-+	struct sgi_w1_device *sdev = platform_get_drvdata(pdev);
-+
-+	w1_remove_master_device(&sdev->bus_master);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver sgi_w1_driver = {
-+	.driver = {
-+		.name = "sgi_w1",
-+	},
-+	.probe = sgi_w1_probe,
-+	.remove = sgi_w1_remove,
-+};
-+module_platform_driver(sgi_w1_driver);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Thomas Bogendoerfer");
-+MODULE_DESCRIPTION("Driver for One-Wire IP in SGI ASICs");
-diff --git a/include/linux/platform_data/sgi-w1.h b/include/linux/platform_data/sgi-w1.h
-new file mode 100644
-index 000000000000..fc6b92e0b942
---- /dev/null
-+++ b/include/linux/platform_data/sgi-w1.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * SGI One-Wire (W1) IP
-+ */
-+
-+#ifndef PLATFORM_DATA_SGI_W1_H
-+#define PLATFORM_DATA_SGI_W1_H
-+
-+#include <asm/sn/types.h>
-+
-+struct sgi_w1_platform_data {
-+	char dev_id[64];
-+};
-+
-+#endif /* PLATFORM_DATA_SGI_W1_H */
-diff --git a/include/linux/w1.h b/include/linux/w1.h
-index e0b5156f78fd..89843e9f634c 100644
---- a/include/linux/w1.h
-+++ b/include/linux/w1.h
-@@ -150,6 +150,8 @@ struct w1_bus_master {
- 
- 	void		(*search)(void *, struct w1_master *,
- 		u8, w1_slave_found_callback);
-+
-+	char		*dev_id;
- };
- 
- /**
--- 
-2.13.7
+Acked-by: Paul Burton <paul.burton@mips.com>
 
+Thanks,
+    Paul
+
+> ---
+>  arch/mips/include/asm/io.h | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+> index 97a280640daf..c02db986ddf5 100644
+> --- a/arch/mips/include/asm/io.h
+> +++ b/arch/mips/include/asm/io.h
+> @@ -262,11 +262,11 @@ static inline void __iomem *ioremap_prot(phys_addr_=
+t offset,
+>  #define ioremap_uc ioremap_nocache
+> =20
+>  /*
+> - * ioremap_cachable -	map bus memory into CPU space
+> + * ioremap_cache -	map bus memory into CPU space
+>   * @offset:	    bus address of the memory
+>   * @size:	    size of the resource to map
+>   *
+> - * ioremap_nocache performs a platform specific sequence of operations t=
+o
+> + * ioremap_cache performs a platform specific sequence of operations to
+>   * make bus memory CPU accessible via the readb/readw/readl/writeb/
+>   * writew/writel functions and the other mmio helpers. The returned
+>   * address is not guaranteed to be usable directly as a virtual
+> @@ -276,9 +276,8 @@ static inline void __iomem *ioremap_prot(phys_addr_t =
+offset,
+>   * the CPU.  Also enables full write-combining.	 Useful for some
+>   * memory-like regions on I/O busses.
+>   */
+> -#define ioremap_cachable(offset, size)					\
+> +#define ioremap_cache(offset, size)					\
+>  	__ioremap_mode((offset), (size), _page_cachable_default)
+> -#define ioremap_cache ioremap_cachable
+> =20
+>  /*
+>   * ioremap_wc     -   map bus memory into CPU space
+> --=20
+> 2.20.1
+>=20

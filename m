@@ -2,25 +2,26 @@ Return-Path: <SRS0=C2k9=WP=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ECBADC3A5A1
-	for <linux-mips@archiver.kernel.org>; Mon, 19 Aug 2019 16:34:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 848DEC3A5A4
+	for <linux-mips@archiver.kernel.org>; Mon, 19 Aug 2019 16:34:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id CD12922CEB
-	for <linux-mips@archiver.kernel.org>; Mon, 19 Aug 2019 16:34:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 65B2A22CEA
+	for <linux-mips@archiver.kernel.org>; Mon, 19 Aug 2019 16:34:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727870AbfHSQcE (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        id S1727858AbfHSQcE (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
         Mon, 19 Aug 2019 12:32:04 -0400
-Received: from mx2.suse.de ([195.135.220.15]:55208 "EHLO mx1.suse.de"
+Received: from mx2.suse.de ([195.135.220.15]:55270 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726879AbfHSQcE (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        id S1727524AbfHSQcE (ORCPT <rfc822;linux-mips@vger.kernel.org>);
         Mon, 19 Aug 2019 12:32:04 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 310AAAFAE;
+        by mx1.suse.de (Postfix) with ESMTP id 8D471B0B6;
         Mon, 19 Aug 2019 16:32:01 +0000 (UTC)
 From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
 To:     Jonathan Corbet <corbet@lwn.net>,
@@ -39,116 +40,357 @@ To:     Jonathan Corbet <corbet@lwn.net>,
         linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
         linux-input@vger.kernel.org, netdev@vger.kernel.org,
         linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: [PATCH v5 00/17] Use MFD framework for SGI IOC3 drivers
-Date:   Mon, 19 Aug 2019 18:31:23 +0200
-Message-Id: <20190819163144.3478-1-tbogendoerfer@suse.de>
+Subject: [PATCH v5 02/17] w1: add DS2501, DS2502, DS2505 EPROM device driver
+Date:   Mon, 19 Aug 2019 18:31:25 +0200
+Message-Id: <20190819163144.3478-3-tbogendoerfer@suse.de>
 X-Mailer: git-send-email 2.13.7
+In-Reply-To: <20190819163144.3478-1-tbogendoerfer@suse.de>
+References: <20190819163144.3478-1-tbogendoerfer@suse.de>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-GI IOC3 ASIC includes support for ethernet, PS2 keyboard/mouse,
-NIC (number in a can), GPIO and a byte  bus. By attaching a
-SuperIO chip to it, it also supports serial lines and a parallel
-port. The chip is used on a variety of SGI systems with different
-configurations. This patchset moves code out of the network driver,
-which doesn't belong there, into its new place a MFD driver and
-specific platform drivers for the different subfunctions.
+Add a 1-Wire slave driver to support DS250x EPROM deivces. This
+slave driver attaches the devices to the NVMEM subsystem for
+an easy in-kernel usage.
 
-Changes in v5:
- - requested by Jakub I've splitted ioc3 ethernet driver changes into
-   more steps to make the transition more visible; on the way there 
-   I've "checkpatched" the driver and reduced code reorderings
- - dropped all uint16_t and uint32_t
- - added nvmem API extension to the documenation file
- - changed to use request_irq/free_irq in serio driver
- - removed wrong kfree() in serio error path
-
-Changes in v4:
- - added w1 drivers to the series after merge in 5.3 failed because
-   of no response from maintainer and other parts of this series
-   won't work without that drivers
- - moved ip30 systemboard support to the ip30 series, which will
-   deal with rtc oddity Lee found
- - converted to use devm_platform_ioremap_resource
- - use PLATFORM_DEVID_AUTO for serial, ethernet and serio in mfd driver
- - fixed reverse christmas order in ioc3-eth.c
- - formating issue found by Lee
- - re-worked irq request/free in serio driver to avoid crashes during
-   probe/remove
-
-Changes in v3:
- - use 1-wire subsystem for handling proms
- - pci-xtalk driver uses prom information to create PCI subsystem
-   ids for use in MFD driver
- - changed MFD driver to only use static declared mfd_cells
- - added IP30 system board setup to MFD driver
- - mac address is now read from ioc3-eth driver with nvmem framework
-
-Changes in v2:
- - fixed issue in ioc3kbd.c reported by Dmitry Torokhov
- - merged IP27 RTC removal and 8250 serial driver addition into
-   main MFD patch to keep patches bisectable
-
-Thomas Bogendoerfer (17):
-  w1: add 1-wire master driver for IP block found in SGI ASICs
-  w1: add DS2501, DS2502, DS2505 EPROM device driver
-  nvmem: core: add nvmem_device_find
-  MIPS: PCI: refactor ioc3 special handling
-  MIPS: PCI: use information from 1-wire PROM for IOC3 detection
-  MIPS: SGI-IP27: remove ioc3 ethernet init
-  MIPS: SGI-IP27: restructure ioc3 register access
-  net: sgi: ioc3-eth: remove checkpatch errors/warning
-  net: sgi: ioc3-eth: use defines for constants dealing with desc rings
-  net: sgi: ioc3-eth: rework skb rx handling
-  net: sgi: ioc3-eth: no need to stop queue set_multicast_list
-  net: sgi: ioc3-eth: use dma-direct for dma allocations
-  net: sgi: ioc3-eth: use csum_fold
-  net: sgi: ioc3-eth: Fix IPG settings
-  mfd: ioc3: Add driver for SGI IOC3 chip
-  MIPS: SGI-IP27: fix readb/writeb addressing
-  Input: add IOC3 serio driver
-
- Documentation/driver-api/nvmem.rst            |    2 +
- arch/mips/include/asm/mach-ip27/mangle-port.h |    4 +-
- arch/mips/include/asm/pci/bridge.h            |    1 +
- arch/mips/include/asm/sn/ioc3.h               |  364 +++----
- arch/mips/pci/pci-xtalk-bridge.c              |  296 ++++--
- arch/mips/sgi-ip27/ip27-console.c             |    5 +-
- arch/mips/sgi-ip27/ip27-init.c                |   13 -
- arch/mips/sgi-ip27/ip27-timer.c               |   20 -
- arch/mips/sgi-ip27/ip27-xtalk.c               |   38 +-
- drivers/input/serio/Kconfig                   |   10 +
- drivers/input/serio/Makefile                  |    1 +
- drivers/input/serio/ioc3kbd.c                 |  160 +++
- drivers/mfd/Kconfig                           |   13 +
- drivers/mfd/Makefile                          |    1 +
- drivers/mfd/ioc3.c                            |  586 +++++++++++
- drivers/net/ethernet/sgi/Kconfig              |    4 +-
- drivers/net/ethernet/sgi/ioc3-eth.c           | 1405 +++++++++----------------
- drivers/nvmem/core.c                          |   62 +-
- drivers/rtc/rtc-m48t35.c                      |   11 +
- drivers/tty/serial/8250/8250_ioc3.c           |   98 ++
- drivers/tty/serial/8250/Kconfig               |   11 +
- drivers/tty/serial/8250/Makefile              |    1 +
- drivers/w1/masters/Kconfig                    |    9 +
- drivers/w1/masters/Makefile                   |    1 +
- drivers/w1/masters/sgi_w1.c                   |  130 +++
- drivers/w1/slaves/Kconfig                     |    6 +
- drivers/w1/slaves/Makefile                    |    1 +
- drivers/w1/slaves/w1_ds250x.c                 |  293 ++++++
- include/linux/nvmem-consumer.h                |    9 +
- include/linux/platform_data/sgi-w1.h          |   15 +
- include/linux/w1.h                            |    2 +
- 31 files changed, 2266 insertions(+), 1306 deletions(-)
- create mode 100644 drivers/input/serio/ioc3kbd.c
- create mode 100644 drivers/mfd/ioc3.c
- create mode 100644 drivers/tty/serial/8250/8250_ioc3.c
- create mode 100644 drivers/w1/masters/sgi_w1.c
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+---
+ drivers/w1/slaves/Kconfig     |   6 +
+ drivers/w1/slaves/Makefile    |   1 +
+ drivers/w1/slaves/w1_ds250x.c | 293 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 300 insertions(+)
  create mode 100644 drivers/w1/slaves/w1_ds250x.c
- create mode 100644 include/linux/platform_data/sgi-w1.h
 
+diff --git a/drivers/w1/slaves/Kconfig b/drivers/w1/slaves/Kconfig
+index 37aaad26b373..ebed495b9e69 100644
+--- a/drivers/w1/slaves/Kconfig
++++ b/drivers/w1/slaves/Kconfig
+@@ -101,6 +101,12 @@ config W1_SLAVE_DS2438
+ 	  Say Y here if you want to use a 1-wire
+ 	  DS2438 Smart Battery Monitor device support
+ 
++config W1_SLAVE_DS250X
++	tristate "512b/1kb/16kb EPROM family support"
++	help
++	  Say Y here if you want to use a 1-wire
++	  512b/1kb/16kb EPROM family device (DS250x).
++
+ config W1_SLAVE_DS2780
+ 	tristate "Dallas 2780 battery monitor chip"
+ 	help
+diff --git a/drivers/w1/slaves/Makefile b/drivers/w1/slaves/Makefile
+index eab29f151413..8e9655eaa478 100644
+--- a/drivers/w1/slaves/Makefile
++++ b/drivers/w1/slaves/Makefile
+@@ -14,6 +14,7 @@ obj-$(CONFIG_W1_SLAVE_DS2431)	+= w1_ds2431.o
+ obj-$(CONFIG_W1_SLAVE_DS2805)	+= w1_ds2805.o
+ obj-$(CONFIG_W1_SLAVE_DS2433)	+= w1_ds2433.o
+ obj-$(CONFIG_W1_SLAVE_DS2438)	+= w1_ds2438.o
++obj-$(CONFIG_W1_SLAVE_DS250X)	+= w1_ds250x.o
+ obj-$(CONFIG_W1_SLAVE_DS2780)	+= w1_ds2780.o
+ obj-$(CONFIG_W1_SLAVE_DS2781)	+= w1_ds2781.o
+ obj-$(CONFIG_W1_SLAVE_DS28E04)	+= w1_ds28e04.o
+diff --git a/drivers/w1/slaves/w1_ds250x.c b/drivers/w1/slaves/w1_ds250x.c
+new file mode 100644
+index 000000000000..78da3774bbbe
+--- /dev/null
++++ b/drivers/w1/slaves/w1_ds250x.c
+@@ -0,0 +1,293 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * w1_ds250x.c - w1 family 09/0b/89/91 (DS250x) driver
++ */
++
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/moduleparam.h>
++#include <linux/device.h>
++#include <linux/types.h>
++#include <linux/delay.h>
++#include <linux/slab.h>
++#include <linux/crc16.h>
++
++#include <linux/w1.h>
++#include <linux/nvmem-provider.h>
++
++#define W1_DS2501_UNW_FAMILY    0x91
++#define W1_DS2501_SIZE          64
++
++#define W1_DS2502_FAMILY        0x09
++#define W1_DS2502_UNW_FAMILY    0x89
++#define W1_DS2502_SIZE          128
++
++#define W1_DS2505_FAMILY	0x0b
++#define W1_DS2505_SIZE		2048
++
++#define W1_PAGE_SIZE		32
++
++#define W1_EXT_READ_MEMORY	0xA5
++#define W1_READ_DATA_CRC        0xC3
++
++#define OFF2PG(off)	((off) / W1_PAGE_SIZE)
++
++#define CRC16_INIT		0
++#define CRC16_VALID		0xb001
++
++struct w1_eprom_data {
++	size_t size;
++	int (*read)(struct w1_slave *sl, int pageno);
++	u8 eprom[W1_DS2505_SIZE];
++	DECLARE_BITMAP(page_present, W1_DS2505_SIZE / W1_PAGE_SIZE);
++	char nvmem_name[64];
++};
++
++static int w1_ds2502_read_page(struct w1_slave *sl, int pageno)
++{
++	struct w1_eprom_data *data = sl->family_data;
++	int pgoff = pageno * W1_PAGE_SIZE;
++	int ret = -EIO;
++	u8 buf[3];
++	u8 crc8;
++
++	if (test_bit(pageno, data->page_present))
++		return 0; /* page already present */
++
++	mutex_lock(&sl->master->bus_mutex);
++
++	if (w1_reset_select_slave(sl))
++		goto err;
++
++	buf[0] = W1_READ_DATA_CRC;
++	buf[1] = pgoff & 0xff;
++	buf[2] = pgoff >> 8;
++	w1_write_block(sl->master, buf, 3);
++
++	crc8 = w1_read_8(sl->master);
++	if (w1_calc_crc8(buf, 3) != crc8)
++		goto err;
++
++	w1_read_block(sl->master, &data->eprom[pgoff], W1_PAGE_SIZE);
++
++	crc8 = w1_read_8(sl->master);
++	if (w1_calc_crc8(&data->eprom[pgoff], W1_PAGE_SIZE) != crc8)
++		goto err;
++
++	set_bit(pageno, data->page_present); /* mark page present */
++	ret = 0;
++err:
++	mutex_unlock(&sl->master->bus_mutex);
++	return ret;
++}
++
++static int w1_ds2505_read_page(struct w1_slave *sl, int pageno)
++{
++	struct w1_eprom_data *data = sl->family_data;
++	int redir_retries = 16;
++	int pgoff, epoff;
++	int ret = -EIO;
++	u8 buf[6];
++	u8 redir;
++	u16 crc;
++
++	if (test_bit(pageno, data->page_present))
++		return 0; /* page already present */
++
++	epoff = pgoff = pageno * W1_PAGE_SIZE;
++	mutex_lock(&sl->master->bus_mutex);
++
++retry:
++	if (w1_reset_select_slave(sl))
++		goto err;
++
++	buf[0] = W1_EXT_READ_MEMORY;
++	buf[1] = pgoff & 0xff;
++	buf[2] = pgoff >> 8;
++	w1_write_block(sl->master, buf, 3);
++	w1_read_block(sl->master, buf + 3, 3); /* redir, crc16 */
++	redir = buf[3];
++	crc = crc16(CRC16_INIT, buf, 6);
++
++	if (crc != CRC16_VALID)
++		goto err;
++
++
++	if (redir != 0xff) {
++		redir_retries--;
++		if (redir_retries < 0)
++			goto err;
++
++		pgoff = (redir ^ 0xff) * W1_PAGE_SIZE;
++		goto retry;
++	}
++
++	w1_read_block(sl->master, &data->eprom[epoff], W1_PAGE_SIZE);
++	w1_read_block(sl->master, buf, 2); /* crc16 */
++	crc = crc16(CRC16_INIT, &data->eprom[epoff], W1_PAGE_SIZE);
++	crc = crc16(crc, buf, 2);
++
++	if (crc != CRC16_VALID)
++		goto err;
++
++	set_bit(pageno, data->page_present);
++	ret = 0;
++err:
++	mutex_unlock(&sl->master->bus_mutex);
++	return ret;
++}
++
++static int w1_nvmem_read(void *priv, unsigned int off, void *buf, size_t count)
++{
++	struct w1_slave *sl = priv;
++	struct w1_eprom_data *data = sl->family_data;
++	size_t eprom_size = data->size;
++	int ret;
++	int i;
++
++	if (off > eprom_size)
++		return -EINVAL;
++
++	if ((off + count) > eprom_size)
++		count = eprom_size - off;
++
++	i = OFF2PG(off);
++	do {
++		ret = data->read(sl, i++);
++		if (ret < 0)
++			return ret;
++	} while (i < OFF2PG(off + count));
++
++	memcpy(buf, &data->eprom[off], count);
++	return 0;
++}
++
++static int w1_eprom_add_slave(struct w1_slave *sl)
++{
++	struct w1_eprom_data *data;
++	struct nvmem_device *nvmem;
++	struct nvmem_config nvmem_cfg = {
++		.dev = &sl->dev,
++		.reg_read = w1_nvmem_read,
++		.type = NVMEM_TYPE_OTP,
++		.read_only = true,
++		.word_size = 1,
++		.priv = sl,
++		.id = -1
++	};
++
++	data = devm_kzalloc(&sl->dev, sizeof(struct w1_eprom_data), GFP_KERNEL);
++	if (!data)
++		return -ENOMEM;
++
++	sl->family_data = data;
++	switch (sl->family->fid) {
++	case W1_DS2501_UNW_FAMILY:
++		data->size = W1_DS2501_SIZE;
++		data->read = w1_ds2502_read_page;
++		break;
++	case W1_DS2502_FAMILY:
++	case W1_DS2502_UNW_FAMILY:
++		data->size = W1_DS2502_SIZE;
++		data->read = w1_ds2502_read_page;
++		break;
++	case W1_DS2505_FAMILY:
++		data->size = W1_DS2505_SIZE;
++		data->read = w1_ds2505_read_page;
++		break;
++	}
++
++	if (sl->master->bus_master->dev_id)
++		snprintf(data->nvmem_name, sizeof(data->nvmem_name),
++			 "%s-%02x-%012llx",
++			 sl->master->bus_master->dev_id, sl->reg_num.family,
++			 (unsigned long long)sl->reg_num.id);
++	else
++		snprintf(data->nvmem_name, sizeof(data->nvmem_name),
++			 "%02x-%012llx",
++			 sl->reg_num.family,
++			 (unsigned long long)sl->reg_num.id);
++
++	nvmem_cfg.name = data->nvmem_name;
++	nvmem_cfg.size = data->size;
++
++	nvmem = devm_nvmem_register(&sl->dev, &nvmem_cfg);
++	if (IS_ERR(nvmem))
++		return PTR_ERR(nvmem);
++
++	return 0;
++}
++
++static struct w1_family_ops w1_eprom_fops = {
++	.add_slave	= w1_eprom_add_slave,
++};
++
++static struct w1_family w1_family_09 = {
++	.fid = W1_DS2502_FAMILY,
++	.fops = &w1_eprom_fops,
++};
++
++static struct w1_family w1_family_0b = {
++	.fid = W1_DS2505_FAMILY,
++	.fops = &w1_eprom_fops,
++};
++
++static struct w1_family w1_family_89 = {
++	.fid = W1_DS2502_UNW_FAMILY,
++	.fops = &w1_eprom_fops,
++};
++
++static struct w1_family w1_family_91 = {
++	.fid = W1_DS2501_UNW_FAMILY,
++	.fops = &w1_eprom_fops,
++};
++
++static int __init w1_ds250x_init(void)
++{
++	int err;
++
++	err = w1_register_family(&w1_family_09);
++	if (err)
++		return err;
++
++	err = w1_register_family(&w1_family_0b);
++	if (err)
++		goto err_0b;
++
++	err = w1_register_family(&w1_family_89);
++	if (err)
++		goto err_89;
++
++	err = w1_register_family(&w1_family_91);
++	if (err)
++		goto err_91;
++
++	return 0;
++
++err_91:
++	w1_unregister_family(&w1_family_89);
++err_89:
++	w1_unregister_family(&w1_family_0b);
++err_0b:
++	w1_unregister_family(&w1_family_09);
++	return err;
++}
++
++static void __exit w1_ds250x_exit(void)
++{
++	w1_unregister_family(&w1_family_09);
++	w1_unregister_family(&w1_family_0b);
++	w1_unregister_family(&w1_family_89);
++	w1_unregister_family(&w1_family_91);
++}
++
++module_init(w1_ds250x_init);
++module_exit(w1_ds250x_exit);
++
++MODULE_AUTHOR("Thomas Bogendoerfer <tbogendoerfe@suse.de>");
++MODULE_DESCRIPTION("w1 family driver for DS250x Add Only Memory");
++MODULE_LICENSE("GPL");
++MODULE_ALIAS("w1-family-" __stringify(W1_DS2502_FAMILY));
++MODULE_ALIAS("w1-family-" __stringify(W1_DS2505_FAMILY));
++MODULE_ALIAS("w1-family-" __stringify(W1_DS2501_UNW_FAMILY));
++MODULE_ALIAS("w1-family-" __stringify(W1_DS2502_UNW_FAMILY));
 -- 
 2.13.7
 

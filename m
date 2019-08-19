@@ -7,22 +7,22 @@ X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 62D14C3A5A0
-	for <linux-mips@archiver.kernel.org>; Mon, 19 Aug 2019 16:33:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 18B83C3A5A1
+	for <linux-mips@archiver.kernel.org>; Mon, 19 Aug 2019 16:33:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 2BBB122CEA
+	by mail.kernel.org (Postfix) with ESMTP id D8BA522CEA
 	for <linux-mips@archiver.kernel.org>; Mon, 19 Aug 2019 16:33:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727973AbfHSQdK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 19 Aug 2019 12:33:10 -0400
-Received: from mx2.suse.de ([195.135.220.15]:55542 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727957AbfHSQcH (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        id S1728012AbfHSQcH (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
         Mon, 19 Aug 2019 12:32:07 -0400
+Received: from mx2.suse.de ([195.135.220.15]:55432 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727893AbfHSQcG (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 19 Aug 2019 12:32:06 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 1D557B620;
-        Mon, 19 Aug 2019 16:32:05 +0000 (UTC)
+        by mx1.suse.de (Postfix) with ESMTP id D10D7B128;
+        Mon, 19 Aug 2019 16:32:02 +0000 (UTC)
 From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
 To:     Jonathan Corbet <corbet@lwn.net>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -40,9 +40,9 @@ To:     Jonathan Corbet <corbet@lwn.net>,
         linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
         linux-input@vger.kernel.org, netdev@vger.kernel.org,
         linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: [PATCH v5 12/17] net: sgi: ioc3-eth: use dma-direct for dma allocations
-Date:   Mon, 19 Aug 2019 18:31:35 +0200
-Message-Id: <20190819163144.3478-13-tbogendoerfer@suse.de>
+Subject: [PATCH v5 05/17] MIPS: PCI: use information from 1-wire PROM for IOC3 detection
+Date:   Mon, 19 Aug 2019 18:31:28 +0200
+Message-Id: <20190819163144.3478-6-tbogendoerfer@suse.de>
 X-Mailer: git-send-email 2.13.7
 In-Reply-To: <20190819163144.3478-1-tbogendoerfer@suse.de>
 References: <20190819163144.3478-1-tbogendoerfer@suse.de>
@@ -51,288 +51,333 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Replace the homegrown DMA memory allocation, which only works on
-SGI-IP27 machines, with the generic dma allocations.
+IOC3 chips in SGI system are conntected to a bridge ASIC, which has
+a 1-wire prom attached with part number information. This changeset
+uses this information to create PCI subsystem information, which
+the MFD driver uses for further platform device setup.
 
 Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 ---
- drivers/net/ethernet/sgi/ioc3-eth.c | 107 ++++++++++++++++++++++++++----------
- 1 file changed, 77 insertions(+), 30 deletions(-)
+ arch/mips/include/asm/pci/bridge.h |   1 +
+ arch/mips/include/asm/sn/ioc3.h    |   9 +++
+ arch/mips/pci/pci-xtalk-bridge.c   | 135 ++++++++++++++++++++++++++++++++++++-
+ arch/mips/sgi-ip27/ip27-xtalk.c    |  38 +++++++++--
+ 4 files changed, 175 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/sgi/ioc3-eth.c b/drivers/net/ethernet/sgi/ioc3-eth.c
-index 7f85a3bfef14..647e3926bd71 100644
---- a/drivers/net/ethernet/sgi/ioc3-eth.c
-+++ b/drivers/net/ethernet/sgi/ioc3-eth.c
-@@ -38,7 +38,6 @@
- #include <linux/ip.h>
- #include <linux/tcp.h>
- #include <linux/udp.h>
--#include <linux/dma-mapping.h>
- #include <linux/gfp.h>
+diff --git a/arch/mips/include/asm/pci/bridge.h b/arch/mips/include/asm/pci/bridge.h
+index a92cd30b48c9..3bc630ff9ad4 100644
+--- a/arch/mips/include/asm/pci/bridge.h
++++ b/arch/mips/include/asm/pci/bridge.h
+@@ -807,6 +807,7 @@ struct bridge_controller {
+ 	unsigned long		intr_addr;
+ 	struct irq_domain	*domain;
+ 	unsigned int		pci_int[8];
++	u32			ioc3_sid[8];
+ 	nasid_t			nasid;
+ };
  
- #ifdef CONFIG_SERIAL_8250
-@@ -51,6 +50,8 @@
- #include <linux/etherdevice.h>
- #include <linux/ethtool.h>
- #include <linux/skbuff.h>
-+#include <linux/dma-direct.h>
+diff --git a/arch/mips/include/asm/sn/ioc3.h b/arch/mips/include/asm/sn/ioc3.h
+index 25c8dccab51f..5022b0ab2074 100644
+--- a/arch/mips/include/asm/sn/ioc3.h
++++ b/arch/mips/include/asm/sn/ioc3.h
+@@ -661,4 +661,13 @@ typedef enum ioc3_subdevs_e {
+ #define IOC3_INTA_SUBDEVS	IOC3_SDB_ETHER
+ #define IOC3_INTB_SUBDEVS	(IOC3_SDB_GENERIC|IOC3_SDB_KBMS|IOC3_SDB_SERIAL|IOC3_SDB_ECPP|IOC3_SDB_RT)
+ 
++/* subsystem IDs supplied by card detection in pci-xtalk-bridge */
++#define	IOC3_SUBSYS_IP27_BASEIO6G	0xc300
++#define	IOC3_SUBSYS_IP27_MIO		0xc301
++#define	IOC3_SUBSYS_IP27_BASEIO		0xc302
++#define	IOC3_SUBSYS_IP29_SYSBOARD	0xc303
++#define	IOC3_SUBSYS_IP30_SYSBOARD	0xc304
++#define	IOC3_SUBSYS_MENET		0xc305
++#define	IOC3_SUBSYS_MENET4		0xc306
 +
- #include <net/ip.h>
+ #endif /* _IOC3_H */
+diff --git a/arch/mips/pci/pci-xtalk-bridge.c b/arch/mips/pci/pci-xtalk-bridge.c
+index 7b4d40354ee7..dcf6117a17c3 100644
+--- a/arch/mips/pci/pci-xtalk-bridge.c
++++ b/arch/mips/pci/pci-xtalk-bridge.c
+@@ -11,16 +11,22 @@
+ #include <linux/dma-direct.h>
+ #include <linux/platform_device.h>
+ #include <linux/platform_data/xtalk-bridge.h>
++#include <linux/nvmem-consumer.h>
++#include <linux/crc16.h>
  
- #include <asm/byteorder.h>
-@@ -66,10 +67,12 @@
- #define RX_BUFFS		64
- #define RX_RING_ENTRIES		512		/* fixed in hardware */
- #define RX_RING_MASK		(RX_RING_ENTRIES - 1)
-+#define RX_RING_SIZE		(RX_RING_ENTRIES * sizeof(u64))
+ #include <asm/pci/bridge.h>
+ #include <asm/paccess.h>
+ #include <asm/sn/irq_alloc.h>
++#include <asm/sn/ioc3.h>
++
++#define CRC16_INIT	0
++#define CRC16_VALID	0xb001
  
- /* 128 TX buffers (not tunable) */
- #define TX_RING_ENTRIES		128
- #define TX_RING_MASK		(TX_RING_ENTRIES - 1)
-+#define TX_RING_SIZE		(TX_RING_ENTRIES * sizeof(struct ioc3_etxd))
- 
- /* BEWARE: The IOC3 documentation documents the size of rx buffers as
-  * 1644 while it's actually 1664.  This one was nasty to track down...
-@@ -84,9 +87,12 @@
- struct ioc3_private {
- 	struct ioc3_ethregs *regs;
- 	struct ioc3 *all_regs;
-+	struct device *dma_dev;
- 	u32 *ssram;
- 	unsigned long *rxr;		/* pointer to receiver ring */
- 	struct ioc3_etxd *txr;
-+	dma_addr_t rxr_dma;
-+	dma_addr_t txr_dma;
- 	struct sk_buff *rx_skbs[RX_RING_ENTRIES];
- 	struct sk_buff *tx_skbs[TX_RING_ENTRIES];
- 	int rx_ci;			/* RX consumer index */
-@@ -116,18 +122,22 @@ static void ioc3_init(struct net_device *dev);
- static const char ioc3_str[] = "IOC3 Ethernet";
- static const struct ethtool_ops ioc3_ethtool_ops;
- 
--static inline unsigned long ioc3_map(void *ptr, unsigned long vdev)
-+#ifdef CONFIG_PCI_XTALK_BRIDGE
-+static inline unsigned long ioc3_map(dma_addr_t addr, unsigned long attr)
+ /*
+  * Most of the IOC3 PCI config register aren't present
+  * we emulate what is needed for a normal PCI enumeration
+  */
+-static int ioc3_cfg_rd(void *addr, int where, int size, u32 *value)
++static int ioc3_cfg_rd(void *addr, int where, int size, u32 *value, u32 sid)
  {
--#ifdef CONFIG_SGI_IP27
--	vdev <<= 57;   /* Shift to PCI64_ATTR_VIRTUAL */
-+	return (addr & ~PCI64_ATTR_BAR) | attr;
-+}
+ 	u32 cf, shift, mask;
  
--	return vdev | (0xaUL << PCI64_ATTR_TARG_SHFT) | PCI64_ATTR_PREF |
--	       ((unsigned long)ptr & TO_PHYS_MASK);
-+#define ERBAR_VAL	(ERBAR_BARRIER_BIT << ERBAR_RXBARR_SHIFT)
- #else
--	return virt_to_bus(ptr);
--#endif
-+static inline unsigned long ioc3_map(dma_addr_t addr, unsigned long attr)
-+{
-+	return addr;
- }
- 
-+#define ERBAR_VAL	0
-+#endif
-+
- #define IOC3_SIZE 0x100000
- 
- static inline u32 mcr_pack(u32 pulse, u32 sample)
-@@ -494,6 +504,7 @@ static inline void ioc3_rx(struct net_device *dev)
- 	int rx_entry, n_entry, len;
- 	struct ioc3_erxbuf *rxb;
- 	unsigned long *rxr;
-+	dma_addr_t d;
- 	u32 w0, err;
- 
- 	rxr = ip->rxr;		/* Ring base */
-@@ -550,7 +561,9 @@ static inline void ioc3_rx(struct net_device *dev)
- 			dev->stats.rx_frame_errors++;
- next:
- 		ip->rx_skbs[n_entry] = new_skb;
--		rxr[n_entry] = cpu_to_be64(ioc3_map(rxb, 1));
-+		d = dma_map_single(ip->dma_dev, rxb, RX_BUF_SIZE,
-+				   DMA_FROM_DEVICE);
-+		rxr[n_entry] = cpu_to_be64(ioc3_map(d, PCI64_ATTR_BAR));
- 		rxb->w0 = 0;				/* Clear valid flag */
- 		n_entry = (n_entry + 1) & RX_RING_MASK;	/* Update erpir */
- 
-@@ -754,6 +767,26 @@ static inline void ioc3_clean_rx_ring(struct ioc3_private *ip)
+@@ -30,6 +36,9 @@ static int ioc3_cfg_rd(void *addr, int where, int size, u32 *value)
+ 		if (get_dbe(cf, (u32 *)addr))
+ 			return PCIBIOS_DEVICE_NOT_FOUND;
+ 		break;
++	case 0x2c:
++		cf = sid;
++		break;
+ 	case 0x3c:
+ 		/* emulate sane interrupt pin value */
+ 		cf = 0x00000100;
+@@ -111,7 +120,8 @@ static int pci_conf0_read_config(struct pci_bus *bus, unsigned int devfn,
+ 	 */
+ 	if (cf == (PCI_VENDOR_ID_SGI | (PCI_DEVICE_ID_SGI_IOC3 << 16))) {
+ 		addr = &bridge->b_type0_cfg_dev[slot].f[fn].l[where >> 2];
+-		return ioc3_cfg_rd(addr, where, size, value);
++		return ioc3_cfg_rd(addr, where, size, value,
++				   bc->ioc3_sid[slot]);
  	}
+ 
+ 	addr = &bridge->b_type0_cfg_dev[slot].f[fn].c[where ^ (4 - size)];
+@@ -149,7 +159,8 @@ static int pci_conf1_read_config(struct pci_bus *bus, unsigned int devfn,
+ 	 */
+ 	if (cf == (PCI_VENDOR_ID_SGI | (PCI_DEVICE_ID_SGI_IOC3 << 16))) {
+ 		addr = &bridge->b_type1_cfg.c[(fn << 8) | (where & ~3)];
+-		return ioc3_cfg_rd(addr, where, size, value);
++		return ioc3_cfg_rd(addr, where, size, value,
++				   bc->ioc3_sid[slot]);
+ 	}
+ 
+ 	addr = &bridge->b_type1_cfg.c[(fn << 8) | (where ^ (4 - size))];
+@@ -426,6 +437,117 @@ static int bridge_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
+ 	return irq;
  }
  
-+static inline void ioc3_tx_unmap(struct ioc3_private *ip, int entry)
-+{
-+	struct ioc3_etxd *desc;
-+	u32 cmd, bufcnt, len;
++#define IOC3_SID(sid)	(PCI_VENDOR_ID_SGI << 16 | (sid))
 +
-+	desc = &ip->txr[entry];
-+	cmd = be32_to_cpu(desc->cmd);
-+	bufcnt = be32_to_cpu(desc->bufcnt);
-+	if (cmd & ETXD_B1V) {
-+		len = (bufcnt & ETXD_B1CNT_MASK) >> ETXD_B1CNT_SHIFT;
-+		dma_unmap_single(ip->dma_dev, be64_to_cpu(desc->p1),
-+				 len, DMA_TO_DEVICE);
-+	}
-+	if (cmd & ETXD_B2V) {
-+		len = (bufcnt & ETXD_B2CNT_MASK) >> ETXD_B2CNT_SHIFT;
-+		dma_unmap_single(ip->dma_dev, be64_to_cpu(desc->p2),
-+				 len, DMA_TO_DEVICE);
-+	}
++static void bridge_setup_ip27_baseio6g(struct bridge_controller *bc)
++{
++	bc->ioc3_sid[2] = IOC3_SID(IOC3_SUBSYS_IP27_BASEIO6G);
++	bc->ioc3_sid[6] = IOC3_SID(IOC3_SUBSYS_IP27_MIO);
 +}
 +
- static inline void ioc3_clean_tx_ring(struct ioc3_private *ip)
- {
- 	struct sk_buff *skb;
-@@ -762,6 +795,7 @@ static inline void ioc3_clean_tx_ring(struct ioc3_private *ip)
- 	for (i = 0; i < TX_RING_ENTRIES; i++) {
- 		skb = ip->tx_skbs[i];
- 		if (skb) {
-+			ioc3_tx_unmap(ip, i);
- 			ip->tx_skbs[i] = NULL;
- 			dev_kfree_skb_any(skb);
- 		}
-@@ -778,7 +812,8 @@ static void ioc3_free_rings(struct ioc3_private *ip)
- 
- 	if (ip->txr) {
- 		ioc3_clean_tx_ring(ip);
--		free_pages((unsigned long)ip->txr, 2);
-+		dma_direct_free_pages(ip->dma_dev, TX_RING_SIZE, ip->txr,
-+				      ip->txr_dma, 0);
- 		ip->txr = NULL;
- 	}
- 
-@@ -788,12 +823,17 @@ static void ioc3_free_rings(struct ioc3_private *ip)
- 
- 		while (n_entry != rx_entry) {
- 			skb = ip->rx_skbs[n_entry];
--			if (skb)
-+			if (skb) {
-+				dma_unmap_single(ip->dma_dev,
-+						 be64_to_cpu(ip->rxr[n_entry]),
-+						 RX_BUF_SIZE, DMA_FROM_DEVICE);
- 				dev_kfree_skb_any(skb);
-+			}
- 
- 			n_entry = (n_entry + 1) & RX_RING_MASK;
- 		}
--		free_page((unsigned long)ip->rxr);
-+		dma_direct_free_pages(ip->dma_dev, RX_RING_SIZE, ip->rxr,
-+				      ip->rxr_dma, 0);
- 		ip->rxr = NULL;
- 	}
- }
-@@ -801,16 +841,19 @@ static void ioc3_free_rings(struct ioc3_private *ip)
- static void ioc3_alloc_rings(struct net_device *dev)
- {
- 	struct ioc3_private *ip = netdev_priv(dev);
--	struct ioc3_erxbuf *rxb;
- 	unsigned long *rxr;
-+	dma_addr_t rxb;
- 	int i;
- 
- 	if (!ip->rxr) {
- 		/* Allocate and initialize rx ring.  4kb = 512 entries  */
--		ip->rxr = (unsigned long *)get_zeroed_page(GFP_ATOMIC);
-+		ip->rxr = dma_direct_alloc_pages(ip->dma_dev, RX_RING_SIZE,
-+						 &ip->rxr_dma, GFP_ATOMIC, 0);
- 		rxr = ip->rxr;
--		if (!rxr)
-+		if (!rxr) {
- 			pr_err("%s: get_zeroed_page() failed!\n", __func__);
-+			return;
++static void bridge_setup_ip27_baseio(struct bridge_controller *bc)
++{
++	bc->ioc3_sid[2] = IOC3_SID(IOC3_SUBSYS_IP27_BASEIO);
++}
++
++static void bridge_setup_ip29_baseio(struct bridge_controller *bc)
++{
++	bc->ioc3_sid[2] = IOC3_SID(IOC3_SUBSYS_IP29_SYSBOARD);
++}
++
++static void bridge_setup_ip30_sysboard(struct bridge_controller *bc)
++{
++	bc->ioc3_sid[2] = IOC3_SID(IOC3_SUBSYS_IP30_SYSBOARD);
++}
++
++static void bridge_setup_menet(struct bridge_controller *bc)
++{
++	bc->ioc3_sid[0] = IOC3_SID(IOC3_SUBSYS_MENET);
++	bc->ioc3_sid[1] = IOC3_SID(IOC3_SUBSYS_MENET);
++	bc->ioc3_sid[2] = IOC3_SID(IOC3_SUBSYS_MENET);
++	bc->ioc3_sid[3] = IOC3_SID(IOC3_SUBSYS_MENET4);
++}
++
++#define BRIDGE_BOARD_SETUP(_partno, _setup)	\
++	{ .match = _partno, .setup = _setup }
++
++static const struct {
++	char *match;
++	void (*setup)(struct bridge_controller *bc);
++} bridge_ioc3_devid[] = {
++	BRIDGE_BOARD_SETUP("030-0734-", bridge_setup_ip27_baseio6g),
++	BRIDGE_BOARD_SETUP("030-0880-", bridge_setup_ip27_baseio6g),
++	BRIDGE_BOARD_SETUP("030-1023-", bridge_setup_ip27_baseio),
++	BRIDGE_BOARD_SETUP("030-1124-", bridge_setup_ip27_baseio),
++	BRIDGE_BOARD_SETUP("030-1025-", bridge_setup_ip29_baseio),
++	BRIDGE_BOARD_SETUP("030-1244-", bridge_setup_ip29_baseio),
++	BRIDGE_BOARD_SETUP("030-1389-", bridge_setup_ip29_baseio),
++	BRIDGE_BOARD_SETUP("030-0887-", bridge_setup_ip30_sysboard),
++	BRIDGE_BOARD_SETUP("030-1467-", bridge_setup_ip30_sysboard),
++	BRIDGE_BOARD_SETUP("030-0873-", bridge_setup_menet),
++};
++
++static void bridge_setup_board(struct bridge_controller *bc, char *partnum)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(bridge_ioc3_devid); i++)
++		if (!strncmp(partnum, bridge_ioc3_devid[i].match,
++			     strlen(bridge_ioc3_devid[i].match))) {
++			bridge_ioc3_devid[i].setup(bc);
 +		}
- 
- 		/* Now the rx buffers.  The RX ring may be larger but
- 		 * we only allocate 16 buffers for now.  Need to tune
-@@ -828,8 +871,9 @@ static void ioc3_alloc_rings(struct net_device *dev)
- 
- 			ip->rx_skbs[i] = skb;
- 
--			rxb = (struct ioc3_erxbuf *)skb->data;
--			rxr[i] = cpu_to_be64(ioc3_map(rxb, 1));
-+			rxb = dma_map_single(ip->dma_dev, skb->data,
-+					     RX_BUF_SIZE, DMA_BIDIRECTIONAL);
-+			rxr[i] = cpu_to_be64(ioc3_map(rxb, PCI64_ATTR_BAR));
- 			skb_reserve(skb, RX_OFFSET);
- 		}
- 		ip->rx_ci = 0;
-@@ -838,7 +882,9 @@ static void ioc3_alloc_rings(struct net_device *dev)
- 
- 	if (!ip->txr) {
- 		/* Allocate and initialize tx rings.  16kb = 128 bufs.  */
--		ip->txr = (struct ioc3_etxd *)__get_free_pages(GFP_KERNEL, 2);
-+		ip->txr = dma_direct_alloc_pages(ip->dma_dev, TX_RING_SIZE,
-+						 &ip->txr_dma,
-+						 GFP_KERNEL | __GFP_ZERO, 0);
- 		if (!ip->txr)
- 			pr_err("%s: __get_free_pages() failed!\n", __func__);
- 		ip->tx_pi = 0;
-@@ -859,13 +905,13 @@ static void ioc3_init_rings(struct net_device *dev)
- 	ioc3_clean_tx_ring(ip);
- 
- 	/* Now the rx ring base, consume & produce registers.  */
--	ring = ioc3_map(ip->rxr, 0);
-+	ring = ioc3_map(ip->rxr_dma, PCI64_ATTR_PREC);
- 	writel(ring >> 32, &regs->erbr_h);
- 	writel(ring & 0xffffffff, &regs->erbr_l);
- 	writel(ip->rx_ci << 3, &regs->ercir);
- 	writel((ip->rx_pi << 3) | ERPIR_ARM, &regs->erpir);
- 
--	ring = ioc3_map(ip->txr, 0);
-+	ring = ioc3_map(ip->txr_dma, PCI64_ATTR_PREC);
- 
- 	ip->txqlen = 0;					/* nothing queued  */
- 
-@@ -915,13 +961,7 @@ static void ioc3_init(struct net_device *dev)
- 	readl(&regs->emcr);
- 
- 	/* Misc registers  */
--#ifdef CONFIG_SGI_IP27
--	/* Barrier on last store */
--	writel(PCI64_ATTR_BAR >> 32, &regs->erbar);
--#else
--	/* Let PCI API get it right */
--	writel(0, &regs->erbar);
--#endif
-+	writel(ERBAR_VAL, &regs->erbar);
- 	readl(&regs->etcdc);			/* Clear on read */
- 	writel(15, &regs->ercsr);		/* RX low watermark  */
- 	writel(0, &regs->ertr);			/* Interrupt immediately */
-@@ -1187,6 +1227,7 @@ static int ioc3_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	ip = netdev_priv(dev);
- 	ip->dev = dev;
-+	ip->dma_dev = &pdev->dev;
- 
- 	dev->irq = pdev->irq;
- 
-@@ -1386,18 +1427,24 @@ static netdev_tx_t ioc3_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 		unsigned long b2 = (data | 0x3fffUL) + 1UL;
- 		unsigned long s1 = b2 - data;
- 		unsigned long s2 = data + len - b2;
-+		dma_addr_t d;
- 
- 		desc->cmd    = cpu_to_be32(len | ETXD_INTWHENDONE |
- 					   ETXD_B1V | ETXD_B2V | w0);
- 		desc->bufcnt = cpu_to_be32((s1 << ETXD_B1CNT_SHIFT) |
- 					   (s2 << ETXD_B2CNT_SHIFT));
--		desc->p1     = cpu_to_be64(ioc3_map(skb->data, 1));
--		desc->p2     = cpu_to_be64(ioc3_map((void *)b2, 1));
-+		d = dma_map_single(ip->dma_dev, skb->data, s1, DMA_TO_DEVICE);
-+		desc->p1     = cpu_to_be64(ioc3_map(d, PCI64_ATTR_PREF));
-+		d = dma_map_single(ip->dma_dev, (void *)b2, s1, DMA_TO_DEVICE);
-+		desc->p2     = cpu_to_be64(ioc3_map(d, PCI64_ATTR_PREF));
- 	} else {
-+		dma_addr_t d;
++}
 +
- 		/* Normal sized packet that doesn't cross a page boundary. */
- 		desc->cmd = cpu_to_be32(len | ETXD_INTWHENDONE | ETXD_B1V | w0);
- 		desc->bufcnt = cpu_to_be32(len << ETXD_B1CNT_SHIFT);
--		desc->p1     = cpu_to_be64(ioc3_map(skb->data, 1));
-+		d = dma_map_single(ip->dma_dev, skb->data, len, DMA_TO_DEVICE);
-+		desc->p1     = cpu_to_be64(ioc3_map(d, PCI64_ATTR_PREF));
++static int bridge_nvmem_match(struct device *dev, const void *data)
++{
++	const char *name = dev_name(dev);
++	const char *prefix = data;
++
++	if (strlen(name) < strlen(prefix))
++		return 0;
++
++	return memcmp(prefix, dev_name(dev), strlen(prefix)) == 0;
++}
++
++static int bridge_get_partnum(u64 baddr, char *partnum)
++{
++	struct nvmem_device *nvmem;
++	char prefix[24];
++	u8 prom[64];
++	int i, j;
++	int ret;
++
++	snprintf(prefix, sizeof(prefix), "bridge-%012llx-0b-", baddr);
++
++	nvmem = nvmem_device_find(prefix, bridge_nvmem_match);
++	if (IS_ERR(nvmem))
++		return PTR_ERR(nvmem);
++
++	ret = nvmem_device_read(nvmem, 0, 64, prom);
++	nvmem_device_put(nvmem);
++
++	if (ret != 64)
++		return ret;
++
++	if (crc16(CRC16_INIT, prom, 32) != CRC16_VALID ||
++	    crc16(CRC16_INIT, prom + 32, 32) != CRC16_VALID)
++		return -EINVAL;
++
++	/* Assemble part number */
++	j = 0;
++	for (i = 0; i < 19; i++)
++		if (prom[i + 11] != ' ')
++			partnum[j++] = prom[i + 11];
++
++	for (i = 0; i < 6; i++)
++		if (prom[i + 32] != ' ')
++			partnum[j++] = prom[i + 32];
++
++	partnum[j] = 0;
++
++	return 0;
++}
++
+ static int bridge_probe(struct platform_device *pdev)
+ {
+ 	struct xtalk_bridge_platform_data *bd = dev_get_platdata(&pdev->dev);
+@@ -434,9 +556,14 @@ static int bridge_probe(struct platform_device *pdev)
+ 	struct pci_host_bridge *host;
+ 	struct irq_domain *domain, *parent;
+ 	struct fwnode_handle *fn;
++	char partnum[26];
+ 	int slot;
+ 	int err;
+ 
++	/* get part number from one wire prom */
++	if (bridge_get_partnum(virt_to_phys((void *)bd->bridge_addr), partnum))
++		return -EPROBE_DEFER; /* not available yet */
++
+ 	parent = irq_get_default_host();
+ 	if (!parent)
+ 		return -ENODEV;
+@@ -517,6 +644,8 @@ static int bridge_probe(struct platform_device *pdev)
+ 	}
+ 	bridge_read(bc, b_wid_tflush);	  /* wait until Bridge PIO complete */
+ 
++	bridge_setup_board(bc, partnum);
++
+ 	host->dev.parent = dev;
+ 	host->sysdata = bc;
+ 	host->busnr = 0;
+diff --git a/arch/mips/sgi-ip27/ip27-xtalk.c b/arch/mips/sgi-ip27/ip27-xtalk.c
+index 4a1f0b0c29e2..9b7524362a11 100644
+--- a/arch/mips/sgi-ip27/ip27-xtalk.c
++++ b/arch/mips/sgi-ip27/ip27-xtalk.c
+@@ -10,6 +10,7 @@
+ #include <linux/kernel.h>
+ #include <linux/smp.h>
+ #include <linux/platform_device.h>
++#include <linux/platform_data/sgi-w1.h>
+ #include <linux/platform_data/xtalk-bridge.h>
+ #include <asm/sn/addrs.h>
+ #include <asm/sn/types.h>
+@@ -26,9 +27,35 @@
+ static void bridge_platform_create(nasid_t nasid, int widget, int masterwid)
+ {
+ 	struct xtalk_bridge_platform_data *bd;
++	struct sgi_w1_platform_data *wd;
+ 	struct platform_device *pdev;
++	struct resource w1_res;
+ 	unsigned long offset;
+ 
++	offset = NODE_OFFSET(nasid);
++
++	wd = kzalloc(sizeof(*wd), GFP_KERNEL);
++	if (!wd)
++		goto no_mem;
++
++	snprintf(wd->dev_id, sizeof(wd->dev_id), "bridge-%012lx",
++		 offset + (widget << SWIN_SIZE_BITS));
++
++	memset(&w1_res, 0, sizeof(w1_res));
++	w1_res.start = offset + (widget << SWIN_SIZE_BITS) +
++				offsetof(struct bridge_regs, b_nic);
++	w1_res.end = w1_res.start + 3;
++	w1_res.flags = IORESOURCE_MEM;
++
++	pdev = platform_device_alloc("sgi_w1", PLATFORM_DEVID_AUTO);
++	if (!pdev) {
++		kfree(wd);
++		goto no_mem;
++	}
++	platform_device_add_resources(pdev, &w1_res, 1);
++	platform_device_add_data(pdev, wd, sizeof(*wd));
++	platform_device_add(pdev);
++
+ 	bd = kzalloc(sizeof(*bd), GFP_KERNEL);
+ 	if (!bd)
+ 		goto no_mem;
+@@ -38,7 +65,6 @@ static void bridge_platform_create(nasid_t nasid, int widget, int masterwid)
+ 		goto no_mem;
  	}
  
- 	mb(); /* make sure all descriptor changes are visible */
+-	offset = NODE_OFFSET(nasid);
+ 
+ 	bd->bridge_addr = RAW_NODE_SWIN_BASE(nasid, widget);
+ 	bd->intr_addr	= BIT_ULL(47) + 0x01800000 + PI_INT_PEND_MOD;
+@@ -46,14 +72,14 @@ static void bridge_platform_create(nasid_t nasid, int widget, int masterwid)
+ 	bd->masterwid	= masterwid;
+ 
+ 	bd->mem.name	= "Bridge PCI MEM";
+-	bd->mem.start	= offset + (widget << SWIN_SIZE_BITS);
+-	bd->mem.end	= bd->mem.start + SWIN_SIZE - 1;
++	bd->mem.start	= offset + (widget << SWIN_SIZE_BITS) + BRIDGE_DEVIO0;
++	bd->mem.end	= offset + (widget << SWIN_SIZE_BITS) + SWIN_SIZE - 1;
+ 	bd->mem.flags	= IORESOURCE_MEM;
+ 	bd->mem_offset	= offset;
+ 
+ 	bd->io.name	= "Bridge PCI IO";
+-	bd->io.start	= offset + (widget << SWIN_SIZE_BITS);
+-	bd->io.end	= bd->io.start + SWIN_SIZE - 1;
++	bd->io.start	= offset + (widget << SWIN_SIZE_BITS) + BRIDGE_DEVIO0;
++	bd->io.end	= offset + (widget << SWIN_SIZE_BITS) + SWIN_SIZE - 1;
+ 	bd->io.flags	= IORESOURCE_IO;
+ 	bd->io_offset	= offset;
+ 
+@@ -81,6 +107,8 @@ static int probe_one_port(nasid_t nasid, int widget, int masterwid)
+ 		bridge_platform_create(nasid, widget, masterwid);
+ 		break;
+ 	default:
++		pr_info("xtalk:n%d/%d unknown widget (0x%x)\n",
++			nasid, widget, partnum);
+ 		break;
+ 	}
+ 
 -- 
 2.13.7
 

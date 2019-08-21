@@ -2,320 +2,105 @@ Return-Path: <SRS0=RuEK=WR=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 65A60C3A5A0
-	for <linux-mips@archiver.kernel.org>; Wed, 21 Aug 2019 14:46:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2C0FC3A59E
+	for <linux-mips@archiver.kernel.org>; Wed, 21 Aug 2019 20:38:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 36F3520679
-	for <linux-mips@archiver.kernel.org>; Wed, 21 Aug 2019 14:46:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 74BF22332A
+	for <linux-mips@archiver.kernel.org>; Wed, 21 Aug 2019 20:38:09 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=vdorst.com header.i=@vdorst.com header.b="TvPUKkFL"
+	dkim=pass (2048-bit key) header.d=netronome-com.20150623.gappssmtp.com header.i=@netronome-com.20150623.gappssmtp.com header.b="NGNASHAt"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729234AbfHUOp6 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 21 Aug 2019 10:45:58 -0400
-Received: from mx.0dd.nl ([5.2.79.48]:54174 "EHLO mx.0dd.nl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729564AbfHUOp5 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 21 Aug 2019 10:45:57 -0400
-Received: from mail.vdorst.com (mail.vdorst.com [IPv6:fd01::250])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx.0dd.nl (Postfix) with ESMTPS id D68315FD0D;
-        Wed, 21 Aug 2019 16:45:55 +0200 (CEST)
-Authentication-Results: mx.0dd.nl;
-        dkim=pass (2048-bit key) header.d=vdorst.com header.i=@vdorst.com header.b="TvPUKkFL";
-        dkim-atps=neutral
-Received: from pc-rene.vdorst.com (pc-rene.vdorst.com [192.168.2.125])
-        by mail.vdorst.com (Postfix) with ESMTPA id 996881D8290F;
-        Wed, 21 Aug 2019 16:45:55 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.vdorst.com 996881D8290F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vdorst.com;
-        s=default; t=1566398755;
-        bh=rQQjaVJu6F0+ngomi26cD5hFUcxFi6/NsMWrdUzjt0g=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TvPUKkFLvcKRdpgl2L2y2E8l3DFHIi3J0OuN2i+zyYPl1GbYoMiI0DUo9DdupLl2J
-         0lxT0p/RrCZ76CF5GZdBBdhX1fhw9UL6MH/LrAPgJ1+qfZI6Jn5jXTwiOJsHczmbYu
-         vnOC4NZsU/btekmtLkemRqebGWFKQ9mYgxn9vwgIAM8027C7txsbDWy+sdy6dm76zV
-         9JlbOMpLe4vlPSMyRohufh90RqhXmA5DCiSJHI7gWCrTHWYfqCcjK3W2qumd8KJSOV
-         UiJK2fER5n9YTdx+tdx4Fz6Rgwbqo/GIH3Sf0AuEnWvE54wDLPC3/6TZO4ip6T9wdb
-         j++wRr2LV03Kg==
-From:   =?UTF-8?q?Ren=C3=A9=20van=20Dorst?= <opensource@vdorst.com>
-To:     Sean Wang <sean.wang@mediatek.com>, Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Matthias Brugger <matthias.bgg@gmail.com>
-Cc:     netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        John Crispin <john@phrozen.org>, linux-mips@vger.kernel.org,
-        Frank Wunderlich <frank-w@public-files.de>,
-        =?UTF-8?q?Ren=C3=A9=20van=20Dorst?= <opensource@vdorst.com>,
-        devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>
-Subject: [PATCH net-next v2 2/3] dt-bindings: net: dsa: mt7530: Add support for port 5
-Date:   Wed, 21 Aug 2019 16:45:46 +0200
-Message-Id: <20190821144547.15113-3-opensource@vdorst.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190821144547.15113-1-opensource@vdorst.com>
-References: <20190821144547.15113-1-opensource@vdorst.com>
+        id S1730282AbfHUUiG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 21 Aug 2019 16:38:06 -0400
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:33086 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727959AbfHUUiG (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 21 Aug 2019 16:38:06 -0400
+Received: by mail-qt1-f193.google.com with SMTP id v38so4799841qtb.0
+        for <linux-mips@vger.kernel.org>; Wed, 21 Aug 2019 13:38:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=netronome-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :organization:mime-version:content-transfer-encoding;
+        bh=KBkBS4T8hAWzkfNP3gQHnK1bQ8RpJnciYJrpqq3rMf8=;
+        b=NGNASHAt0aPooyP8CTgYOtb0t3kgtdGLqJ/VHFyFTEdgiE7gvblv2PrEwXcwoLyfxI
+         ccDsl3wj3dinhEivqLgnXhnjdMvz9SYxIr9fpo4xGRV7gSPqHBr6rxbt2u8iEjVZdgpw
+         7AE+NjJy/4oGhxrVjvzRnstX2xG3qMkv8QBUgrw6BgXzyLRd9Q1gQlOhegN3181ZOKWQ
+         hisqrpXmlhJPtYveRNEhyFqUIVvw2jXBRTKqiPYR1tNoVElMJ3Vgs77iGpC9g9m12/JU
+         /PQ7v6S2UdmdJ+RxLBjBRRYTkQgr4jOXbD0hugqQzNfBaj2Xn77PLl4Vddgkb4PP6FlG
+         yMBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:organization:mime-version:content-transfer-encoding;
+        bh=KBkBS4T8hAWzkfNP3gQHnK1bQ8RpJnciYJrpqq3rMf8=;
+        b=tWZQTUvAc+seCui90+9N1UMNV4F9Z7vfZfpsyJ4cGsgZ2ur6nZA2D8VI6JFY2IhWAU
+         gTsCaVD3uZd8T2qgzy6x04I/j0MUd4Y8N6aN5tgQG7pB72Sn1PY0TY1ugjrXd8563BNl
+         ibpoZ3pnmOrbl5oLWot9+FBWIeB5zjGHi+ZbHUOC23nPIyYWOvCvNIg/Wat6qwpBfhOR
+         rgTtAd/Ncsg+i8TAU4KvBb6am2O6DyN+f0ZtfHiF9bMqogg8Dtkb3WhUhABoEeaTmLzM
+         Hx9xZAHzM9D81+ui7XSTuBBOtEtWE1G11sVqn3Su0lBn00FFUiw7jWwb4HqSkUS64QOh
+         uA2Q==
+X-Gm-Message-State: APjAAAUPNxtx7pAnsj2aGNoTBCzhOJB+BGC8m6fZcfgV8feFwrdj5/Sk
+        ZwB//SKX7E4hE0T0Y7jVK4ky5g==
+X-Google-Smtp-Source: APXvYqwe9lERHFY9Jt1Z7JNSvqvEYMbh8DR6XD7zaGMsKCtoXCi/P5AunlMu5Ut2t+UrTpcRunsngQ==
+X-Received: by 2002:ac8:739a:: with SMTP id t26mr33575094qtp.65.1566419884839;
+        Wed, 21 Aug 2019 13:38:04 -0700 (PDT)
+Received: from cakuba.netronome.com ([66.60.152.14])
+        by smtp.gmail.com with ESMTPSA id e15sm9805954qtr.51.2019.08.21.13.38.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Aug 2019 13:38:04 -0700 (PDT)
+Date:   Wed, 21 Aug 2019 13:37:57 -0700
+From:   Jakub Kicinski <jakub.kicinski@netronome.com>
+To:     Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>,
+        Evgeniy Polyakov <zbr@ioremap.net>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-input@vger.kernel.org, netdev@vger.kernel.org,
+        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
+        Jesper Dangaard Brouer <brouer@redhat.com>
+Subject: Re: [PATCH v5 10/17] net: sgi: ioc3-eth: rework skb rx handling
+Message-ID: <20190821133757.4fb5253c@cakuba.netronome.com>
+In-Reply-To: <20190821162847.479c9967d4dc8026fe65fa0e@suse.de>
+References: <20190819163144.3478-1-tbogendoerfer@suse.de>
+        <20190819163144.3478-11-tbogendoerfer@suse.de>
+        <20190819165522.451f2ea2@cakuba.netronome.com>
+        <20190821162847.479c9967d4dc8026fe65fa0e@suse.de>
+Organization: Netronome Systems, Ltd.
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-MT7530 port 5 has many modes/configurations.
-Update the documentation how to use port 5.
+On Wed, 21 Aug 2019 16:28:47 +0200, Thomas Bogendoerfer wrote:
+> > This looks like a DMA engine alignment requirement, more than an
+> > optimization.  
+> 
+> that true, there are two constraints for the rx buffers, start must be aligned
+> to 128 bytes and a buffer must not cross a 16kbyte boundary. I was already
+> thinking of allocating pages and chop them up. Is there a Linux API available,
+> which could help for implementing this ?
+> 
+> I'll probably drop this patch or only change the skb_put stuff plus RX_BUF_SIZE
+> define.
 
-Signed-off-by: René van Dorst <opensource@vdorst.com>
-Cc: devicetree@vger.kernel.org
-Cc: Rob Herring <robh@kernel.org>
-v1->v2:
-* Adding extra note about RGMII2 and gpio use.
-rfc->v1:
-* No change
----
- .../devicetree/bindings/net/dsa/mt7530.txt    | 218 ++++++++++++++++++
- 1 file changed, 218 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/net/dsa/mt7530.txt b/Documentation/devicetree/bindings/net/dsa/mt7530.txt
-index 47aa205ee0bd..43993aae3f9c 100644
---- a/Documentation/devicetree/bindings/net/dsa/mt7530.txt
-+++ b/Documentation/devicetree/bindings/net/dsa/mt7530.txt
-@@ -35,6 +35,42 @@ Required properties for the child nodes within ports container:
- - phy-mode: String, must be either "trgmii" or "rgmii" for port labeled
- 	 "cpu".
- 
-+Port 5 of the switch is muxed between:
-+1. GMAC5: GMAC5 can interface with another external MAC or PHY.
-+2. PHY of port 0 or port 4: PHY interfaces with an external MAC like 2nd GMAC
-+   of the SOC. Used in many setups where port 0/4 becomes the WAN port.
-+   Note: On a MT7621 SOC with integrated switch: 2nd GMAC can only connected to
-+	 GMAC5 when the gpios for RGMII2 (GPIO 22-33) are not used and not
-+	 connected to external component!
-+
-+Port 5 modes/configurations:
-+1. Port 5 is disabled and isolated: An external phy can interface to the 2nd
-+   GMAC of the SOC.
-+   In the case of a build-in MT7530 switch, port 5 shares the RGMII bus with 2nd
-+   GMAC and an optional external phy. Mind the GPIO/pinctl settings of the SOC!
-+2. Port 5 is muxed to PHY of port 0/4: Port 0/4 interfaces with 2nd GMAC.
-+   It is a simple MAC to PHY interface, port 5 needs to be setup for xMII mode
-+   and RGMII delay.
-+3. Port 5 is muxed to GMAC5 and can interface to an external phy.
-+   Port 5 becomes an extra switch port.
-+   Only works on platform where external phy TX<->RX lines are swapped.
-+   Like in the Ubiquiti ER-X-SFP.
-+4. Port 5 is muxed to GMAC5 and interfaces with the 2nd GAMC as 2nd CPU port.
-+   Currently a 2nd CPU port is not supported by DSA code.
-+
-+Depending on how the external PHY is wired:
-+1. normal: The PHY can only connect to 2nd GMAC but not to the switch
-+2. swapped: RGMII TX, RX are swapped; external phy interface with the switch as
-+   a ethernet port. But can't interface to the 2nd GMAC.
-+
-+Based on the DT the port 5 mode is configured.
-+
-+Driver tries to lookup the phy-handle of the 2nd GMAC of the master device.
-+When phy-handle matches PHY of port 0 or 4 then port 5 set-up as mode 2.
-+phy-mode must be set, see also example 2 below!
-+ * mt7621: phy-mode = "rgmii-txid";
-+ * mt7623: phy-mode = "rgmii";
-+
- See Documentation/devicetree/bindings/net/dsa/dsa.txt for a list of additional
- required, optional properties and how the integrated switch subnodes must
- be specified.
-@@ -94,3 +130,185 @@ Example:
- 			};
- 		};
- 	};
-+
-+Example 2: MT7621: Port 4 is WAN port: 2nd GMAC -> Port 5 -> PHY port 4.
-+
-+&eth {
-+	status = "okay";
-+
-+	gmac0: mac@0 {
-+		compatible = "mediatek,eth-mac";
-+		reg = <0>;
-+		phy-mode = "rgmii";
-+
-+		fixed-link {
-+			speed = <1000>;
-+			full-duplex;
-+			pause;
-+		};
-+	};
-+
-+	gmac1: mac@1 {
-+		compatible = "mediatek,eth-mac";
-+		reg = <1>;
-+		phy-mode = "rgmii-txid";
-+		phy-handle = <&phy4>;
-+	};
-+
-+	mdio: mdio-bus {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		/* Internal phy */
-+		phy4: ethernet-phy@4 {
-+			reg = <4>;
-+		};
-+
-+		mt7530: switch@1f {
-+			compatible = "mediatek,mt7621";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0x1f>;
-+			pinctrl-names = "default";
-+			mediatek,mcm;
-+
-+			resets = <&rstctrl 2>;
-+			reset-names = "mcm";
-+
-+			ports {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				port@0 {
-+					reg = <0>;
-+					label = "lan0";
-+				};
-+
-+				port@1 {
-+					reg = <1>;
-+					label = "lan1";
-+				};
-+
-+				port@2 {
-+					reg = <2>;
-+					label = "lan2";
-+				};
-+
-+				port@3 {
-+					reg = <3>;
-+					label = "lan3";
-+				};
-+
-+/* Commented out. Port 4 is handled by 2nd GMAC.
-+				port@4 {
-+					reg = <4>;
-+					label = "lan4";
-+				};
-+*/
-+
-+				cpu_port0: port@6 {
-+					reg = <6>;
-+					label = "cpu";
-+					ethernet = <&gmac0>;
-+					phy-mode = "rgmii";
-+
-+					fixed-link {
-+						speed = <1000>;
-+						full-duplex;
-+						pause;
-+					};
-+				};
-+			};
-+		};
-+	};
-+};
-+
-+Example 3: MT7621: Port 5 is connected to external PHY: Port 5 -> external PHY.
-+
-+&eth {
-+	status = "okay";
-+
-+	gmac0: mac@0 {
-+		compatible = "mediatek,eth-mac";
-+		reg = <0>;
-+		phy-mode = "rgmii";
-+
-+		fixed-link {
-+			speed = <1000>;
-+			full-duplex;
-+			pause;
-+		};
-+	};
-+
-+	mdio: mdio-bus {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		/* External phy */
-+		ephy5: ethernet-phy@7 {
-+			reg = <7>;
-+		};
-+
-+		mt7530: switch@1f {
-+			compatible = "mediatek,mt7621";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0x1f>;
-+			pinctrl-names = "default";
-+			mediatek,mcm;
-+
-+			resets = <&rstctrl 2>;
-+			reset-names = "mcm";
-+
-+			ports {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				port@0 {
-+					reg = <0>;
-+					label = "lan0";
-+				};
-+
-+				port@1 {
-+					reg = <1>;
-+					label = "lan1";
-+				};
-+
-+				port@2 {
-+					reg = <2>;
-+					label = "lan2";
-+				};
-+
-+				port@3 {
-+					reg = <3>;
-+					label = "lan3";
-+				};
-+
-+				port@4 {
-+					reg = <4>;
-+					label = "lan4";
-+				};
-+
-+				port@5 {
-+					reg = <5>;
-+					label = "lan5";
-+					phy-mode = "rgmii";
-+					phy-handle = <&ephy5>;
-+				};
-+
-+				cpu_port0: port@6 {
-+					reg = <6>;
-+					label = "cpu";
-+					ethernet = <&gmac0>;
-+					phy-mode = "rgmii";
-+
-+					fixed-link {
-+						speed = <1000>;
-+						full-duplex;
-+						pause;
-+					};
-+				};
-+			};
-+		};
-+	};
-+};
--- 
-2.20.1
-
+Sounds a little like frag allocator (napi_alloc_frag()/
+netdev_alloc_frag()), but I'm not sure you'd have sufficient control
+to skip over the 16k boundary.. Perhaps others have better suggestions.

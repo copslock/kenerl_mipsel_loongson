@@ -2,46 +2,47 @@ Return-Path: <SRS0=Xg03=WT=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 194C4C3A5A3
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45FE3C3A5A4
 	for <linux-mips@archiver.kernel.org>; Fri, 23 Aug 2019 13:45:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B6FFA22CE3
-	for <linux-mips@archiver.kernel.org>; Fri, 23 Aug 2019 13:45:43 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1C81222CEC
+	for <linux-mips@archiver.kernel.org>; Fri, 23 Aug 2019 13:45:44 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=vdorst.com header.i=@vdorst.com header.b="VphKtHb6"
+	dkim=pass (2048-bit key) header.d=vdorst.com header.i=@vdorst.com header.b="EY4Xa6Zx"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731976AbfHWNpm (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 23 Aug 2019 09:45:42 -0400
-Received: from mx.0dd.nl ([5.2.79.48]:33102 "EHLO mx.0dd.nl"
+        id S2405722AbfHWNpn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 23 Aug 2019 09:45:43 -0400
+Received: from mx.0dd.nl ([5.2.79.48]:33148 "EHLO mx.0dd.nl"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405716AbfHWNpm (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        id S2405718AbfHWNpm (ORCPT <rfc822;linux-mips@vger.kernel.org>);
         Fri, 23 Aug 2019 09:45:42 -0400
 Received: from mail.vdorst.com (mail.vdorst.com [IPv6:fd01::250])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx.0dd.nl (Postfix) with ESMTPS id AA80F5FA7B;
-        Fri, 23 Aug 2019 15:45:39 +0200 (CEST)
+        by mx.0dd.nl (Postfix) with ESMTPS id 25EB15FCC8;
+        Fri, 23 Aug 2019 15:45:40 +0200 (CEST)
 Authentication-Results: mx.0dd.nl;
-        dkim=pass (2048-bit key; secure) header.d=vdorst.com header.i=@vdorst.com header.b="VphKtHb6";
+        dkim=pass (2048-bit key; secure) header.d=vdorst.com header.i=@vdorst.com header.b="EY4Xa6Zx";
         dkim-atps=neutral
 Received: from pc-rene.vdorst.com (pc-rene.vdorst.com [192.168.2.125])
-        by mail.vdorst.com (Postfix) with ESMTPA id 6DD951D89681;
+        by mail.vdorst.com (Postfix) with ESMTPA id CD8441D89685;
         Fri, 23 Aug 2019 15:45:39 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.vdorst.com 6DD951D89681
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.vdorst.com CD8441D89685
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vdorst.com;
         s=default; t=1566567939;
-        bh=4DXT2J8mfFRCiwxSqy0mkdAE2qhxEDwsE+v9BSRv9mo=;
-        h=From:To:Cc:Subject:Date:From;
-        b=VphKtHb6a42eRPTzPTxmHYEDVRgcxRQVC/UGv7HMIqdMhJNRa0YhE0DdufZxZXWr9
-         6mNhvtcx23q2xZH35r4DFHDRuoEAOP62k2vFBE0sx+tlzT6XV6dk9s77a57krT6ONk
-         JDXw+9lPhGJR8tJDKztkexhSlH0MP0Kd1W7zEBRYJMkI8SZka+IO4iCDn4akory5qJ
-         8ui8zWa/x2ozqxrTgtZnyzHwl/kRTBxpIalSuSW3B2UwngipsfpubRaOysC8CH2vFY
-         XiRJtIJuxCwaf6ZbR+pjPOaW4Fr8//fBFqpBArHPm8+cdlzRdSVoRJGZVTrF4sFEZN
-         +OV+M5caJdarw==
+        bh=DbKuoSAKFSLRPIztOePMDQ+HKeuunIjJ+mpUlEuQplM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=EY4Xa6ZxKSBhF7UYvKWaV55UYgMkYPzAahjDdjLlo28I3GRPX95ctk5Nny1mUtq6b
+         ToHYPJO2+PmtRd8VYSoUfr3o/SEE/1Eu5iL7erCPTsL14T6UA3x5N4xG8WmUEQsvdK
+         0Y+BmO0R3f+lvU7kASYLvO1F5Z2uBwnQt+kgef3y331HdpgQfDlDAyTE3508Qed81k
+         ZK/9uu5xjXzGtCELeIg9oGtoGjSE4KTQRq2/OtvXARndBYdAHc0POeBjcBek5cBq2+
+         k24+YS/3JIlwaIooysWxmrmPIs8bJSY0fYMwb/B4dgCz2SlPvhndsFgdWsgcg8bSoJ
+         uNO4L4Bj09u9Q==
 From:   =?UTF-8?q?Ren=C3=A9=20van=20Dorst?= <opensource@vdorst.com>
 To:     John Crispin <john@phrozen.org>,
         Sean Wang <sean.wang@mediatek.com>,
@@ -54,10 +55,12 @@ Cc:     netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Frank Wunderlich <frank-w@public-files.de>,
         Stefan Roese <sr@denx.de>,
         =?UTF-8?q?Ren=C3=A9=20van=20Dorst?= <opensource@vdorst.com>
-Subject: [PATCH net-next v3 0/3] net: ethernet: mediatek: convert to PHYLINK
-Date:   Fri, 23 Aug 2019 15:45:13 +0200
-Message-Id: <20190823134516.27559-1-opensource@vdorst.com>
+Subject: [PATCH net-next v3 3/3] dt-bindings: net: ethernet: Update mt7622 docs and dts to reflect the new phylink API
+Date:   Fri, 23 Aug 2019 15:45:16 +0200
+Message-Id: <20190823134516.27559-4-opensource@vdorst.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190823134516.27559-1-opensource@vdorst.com>
+References: <20190823134516.27559-1-opensource@vdorst.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -66,32 +69,94 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-These patches converts mediatek driver to PHYLINK API.
+This patch the removes the recently added mediatek,physpeed property.
+Use the fixed-link property speed = <2500> to set the phy in 2.5Gbit.
+See mt7622-bananapi-bpi-r64.dts for a working example.
 
+Signed-off-by: René van Dorst <opensource@vdorst.com>
+--
 v2->v3:
-* Phylink improvements and clean-ups after review
+* no change
 v1->v2:
-* Rebase for mt76x8 changes
-* Phylink improvements and clean-ups after review
-* SGMII port doesn't support 2.5Gbit in SGMII mode only in BASE-X mode.
-  Refactor the code.
+* SGMII port only support BASE-X at 2.5Gbit.
+---
+ .../arm/mediatek/mediatek,sgmiisys.txt        |  2 --
+ .../dts/mediatek/mt7622-bananapi-bpi-r64.dts  | 28 +++++++++++++------
+ arch/arm64/boot/dts/mediatek/mt7622.dtsi      |  1 -
+ 3 files changed, 19 insertions(+), 12 deletions(-)
 
-René van Dorst (3):
-  net: ethernet: mediatek: Add basic PHYLINK support
-  net: ethernet: mediatek: Re-add support SGMII
-  dt-bindings: net: ethernet: Update mt7622 docs and dts to reflect the
-    new phylink API
-
- .../arm/mediatek/mediatek,sgmiisys.txt        |   2 -
- .../dts/mediatek/mt7622-bananapi-bpi-r64.dts  |  28 +-
- arch/arm64/boot/dts/mediatek/mt7622.dtsi      |   1 -
- drivers/net/ethernet/mediatek/Kconfig         |   2 +-
- drivers/net/ethernet/mediatek/mtk_eth_path.c  |  75 +--
- drivers/net/ethernet/mediatek/mtk_eth_soc.c   | 529 ++++++++++++------
- drivers/net/ethernet/mediatek/mtk_eth_soc.h   |  68 ++-
- drivers/net/ethernet/mediatek/mtk_sgmii.c     |  65 ++-
- 8 files changed, 477 insertions(+), 293 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/arm/mediatek/mediatek,sgmiisys.txt b/Documentation/devicetree/bindings/arm/mediatek/mediatek,sgmiisys.txt
+index f5518f26a914..30cb645c0e54 100644
+--- a/Documentation/devicetree/bindings/arm/mediatek/mediatek,sgmiisys.txt
++++ b/Documentation/devicetree/bindings/arm/mediatek/mediatek,sgmiisys.txt
+@@ -9,8 +9,6 @@ Required Properties:
+ 	- "mediatek,mt7622-sgmiisys", "syscon"
+ 	- "mediatek,mt7629-sgmiisys", "syscon"
+ - #clock-cells: Must be 1
+-- mediatek,physpeed: Should be one of "auto", "1000" or "2500" to match up
+-		     the capability of the target PHY.
+ 
+ The SGMIISYS controller uses the common clk binding from
+ Documentation/devicetree/bindings/clock/clock-bindings.txt
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
+index 710c5c3d87d3..83e10591e0e5 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
++++ b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
+@@ -115,24 +115,34 @@
+ };
+ 
+ &eth {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&eth_pins>;
+ 	status = "okay";
++	gmac0: mac@0 {
++		compatible = "mediatek,eth-mac";
++		reg = <0>;
++		phy-mode = "2500base-x";
++
++		fixed-link {
++			speed = <2500>;
++			full-duplex;
++			pause;
++		};
++	};
+ 
+ 	gmac1: mac@1 {
+ 		compatible = "mediatek,eth-mac";
+ 		reg = <1>;
+-		phy-handle = <&phy5>;
++		phy-mode = "rgmii";
++
++		fixed-link {
++			speed = <1000>;
++			full-duplex;
++			pause;
++		};
+ 	};
+ 
+-	mdio-bus {
++	mdio: mdio-bus {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+-
+-		phy5: ethernet-phy@5 {
+-			reg = <5>;
+-			phy-mode = "sgmii";
+-		};
+ 	};
+ };
+ 
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+index d1e13d340e26..dac51e98204c 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+@@ -931,6 +931,5 @@
+ 			     "syscon";
+ 		reg = <0 0x1b128000 0 0x3000>;
+ 		#clock-cells = <1>;
+-		mediatek,physpeed = "2500";
+ 	};
+ };
 -- 
 2.20.1
 

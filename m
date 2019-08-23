@@ -2,80 +2,96 @@ Return-Path: <SRS0=Xg03=WT=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A3C6C3A5A4
-	for <linux-mips@archiver.kernel.org>; Fri, 23 Aug 2019 12:27:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 194C4C3A5A3
+	for <linux-mips@archiver.kernel.org>; Fri, 23 Aug 2019 13:45:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 0924321848
-	for <linux-mips@archiver.kernel.org>; Fri, 23 Aug 2019 12:27:36 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B6FFA22CE3
+	for <linux-mips@archiver.kernel.org>; Fri, 23 Aug 2019 13:45:43 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=vdorst.com header.i=@vdorst.com header.b="VphKtHb6"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389235AbfHWM1f (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 23 Aug 2019 08:27:35 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35317 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725886AbfHWM1f (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 23 Aug 2019 08:27:35 -0400
-Received: from [5.158.153.52] (helo=nanos.tec.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1i18f9-00020a-7l; Fri, 23 Aug 2019 14:27:27 +0200
-Date:   Fri, 23 Aug 2019 14:27:26 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
-cc:     Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Chris Clayton <chris2553@googlemail.com>,
-        LKML <linux-kernel@vger.kernel.org>, linux-arch@vger.kernel.org,
-        shuah@kernel.org, sthotton@marvell.com, andre.przywara@arm.com,
-        arnd@arndb.de, salyzyn@android.com, huw@codeweavers.com,
-        catalin.marinas@arm.com, daniel.lezcano@linaro.org,
-        will.deacon@arm.com, linux-mips@vger.kernel.org,
-        ralf@linux-mips.org, 0x7f454c46@gmail.com, paul.burton@mips.com,
-        linux-kselftest@vger.kernel.org, linux@rasmusvillemoes.dk,
-        pcc@google.com, linux-arm-kernel@lists.infradead.org
-Subject: Re: Regression in 5.3-rc1 and later
-In-Reply-To: <20190823105121.GA13294@shell.armlinux.org.uk>
-Message-ID: <alpine.DEB.2.21.1908231426080.1896@nanos.tec.linutronix.de>
-References: <faaa3843-09a6-1a21-3448-072eeed1ea00@googlemail.com> <20190823103654.GX13294@shell.armlinux.org.uk> <8ab59d01-348e-9ac1-2944-5e98acd9b1f8@arm.com> <20190823105121.GA13294@shell.armlinux.org.uk>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        id S1731976AbfHWNpm (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 23 Aug 2019 09:45:42 -0400
+Received: from mx.0dd.nl ([5.2.79.48]:33102 "EHLO mx.0dd.nl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2405716AbfHWNpm (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 23 Aug 2019 09:45:42 -0400
+Received: from mail.vdorst.com (mail.vdorst.com [IPv6:fd01::250])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx.0dd.nl (Postfix) with ESMTPS id AA80F5FA7B;
+        Fri, 23 Aug 2019 15:45:39 +0200 (CEST)
+Authentication-Results: mx.0dd.nl;
+        dkim=pass (2048-bit key; secure) header.d=vdorst.com header.i=@vdorst.com header.b="VphKtHb6";
+        dkim-atps=neutral
+Received: from pc-rene.vdorst.com (pc-rene.vdorst.com [192.168.2.125])
+        by mail.vdorst.com (Postfix) with ESMTPA id 6DD951D89681;
+        Fri, 23 Aug 2019 15:45:39 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.vdorst.com 6DD951D89681
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vdorst.com;
+        s=default; t=1566567939;
+        bh=4DXT2J8mfFRCiwxSqy0mkdAE2qhxEDwsE+v9BSRv9mo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=VphKtHb6a42eRPTzPTxmHYEDVRgcxRQVC/UGv7HMIqdMhJNRa0YhE0DdufZxZXWr9
+         6mNhvtcx23q2xZH35r4DFHDRuoEAOP62k2vFBE0sx+tlzT6XV6dk9s77a57krT6ONk
+         JDXw+9lPhGJR8tJDKztkexhSlH0MP0Kd1W7zEBRYJMkI8SZka+IO4iCDn4akory5qJ
+         8ui8zWa/x2ozqxrTgtZnyzHwl/kRTBxpIalSuSW3B2UwngipsfpubRaOysC8CH2vFY
+         XiRJtIJuxCwaf6ZbR+pjPOaW4Fr8//fBFqpBArHPm8+cdlzRdSVoRJGZVTrF4sFEZN
+         +OV+M5caJdarw==
+From:   =?UTF-8?q?Ren=C3=A9=20van=20Dorst?= <opensource@vdorst.com>
+To:     John Crispin <john@phrozen.org>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Nelson Chang <nelson.chang@mediatek.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>
+Cc:     netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-mips@vger.kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        Frank Wunderlich <frank-w@public-files.de>,
+        Stefan Roese <sr@denx.de>,
+        =?UTF-8?q?Ren=C3=A9=20van=20Dorst?= <opensource@vdorst.com>
+Subject: [PATCH net-next v3 0/3] net: ethernet: mediatek: convert to PHYLINK
+Date:   Fri, 23 Aug 2019 15:45:13 +0200
+Message-Id: <20190823134516.27559-1-opensource@vdorst.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Fri, 23 Aug 2019, Russell King - ARM Linux admin wrote:
+These patches converts mediatek driver to PHYLINK API.
 
-> On Fri, Aug 23, 2019 at 11:43:32AM +0100, Vincenzo Frascino wrote:
-> > Hi Russell,
-> > 
-> > On 8/23/19 11:36 AM, Russell King - ARM Linux admin wrote:
-> > > Hi,
-> > > 
-> > > To everyone on the long Cc list...
-> > > 
-> > > What's happening with this?  I was about to merge the patches for 32-bit
-> > > ARM, which I don't want to do if doing so will cause this regression on
-> > > 32-bit ARM as well.
-> > > 
-> > 
-> > The regression is sorted as of yesterday, a new patch is going through tip:
-> > timers/urgent and will be part of the next -rc.
-> > 
-> > If you want to merge them there should be nothing blocking.
-> 
-> I don't have access to the tip tree.
+v2->v3:
+* Phylink improvements and clean-ups after review
+v1->v2:
+* Rebase for mt76x8 changes
+* Phylink improvements and clean-ups after review
+* SGMII port doesn't support 2.5Gbit in SGMII mode only in BASE-X mode.
+  Refactor the code.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git timers/urgent
- 
-> I'll wait a kernel release cycle instead.
+René van Dorst (3):
+  net: ethernet: mediatek: Add basic PHYLINK support
+  net: ethernet: mediatek: Re-add support SGMII
+  dt-bindings: net: ethernet: Update mt7622 docs and dts to reflect the
+    new phylink API
 
-It's going to be part of -rc6. I'll send the pull request to Linus tomorrow.
+ .../arm/mediatek/mediatek,sgmiisys.txt        |   2 -
+ .../dts/mediatek/mt7622-bananapi-bpi-r64.dts  |  28 +-
+ arch/arm64/boot/dts/mediatek/mt7622.dtsi      |   1 -
+ drivers/net/ethernet/mediatek/Kconfig         |   2 +-
+ drivers/net/ethernet/mediatek/mtk_eth_path.c  |  75 +--
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c   | 529 ++++++++++++------
+ drivers/net/ethernet/mediatek/mtk_eth_soc.h   |  68 ++-
+ drivers/net/ethernet/mediatek/mtk_sgmii.c     |  65 ++-
+ 8 files changed, 477 insertions(+), 293 deletions(-)
 
-Thanks,
+-- 
+2.20.1
 
-	tglx

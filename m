@@ -2,84 +2,141 @@ Return-Path: <SRS0=HX4U=WW=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.6 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.4 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F906C3A59F
-	for <linux-mips@archiver.kernel.org>; Mon, 26 Aug 2019 13:26:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 50699C3A59F
+	for <linux-mips@archiver.kernel.org>; Mon, 26 Aug 2019 17:31:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 506B92189D
-	for <linux-mips@archiver.kernel.org>; Mon, 26 Aug 2019 13:26:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2050D206E0
+	for <linux-mips@archiver.kernel.org>; Mon, 26 Aug 2019 17:31:23 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="XGZ8Ip9Y"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W1ThBxZ2"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731931AbfHZN0l (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 26 Aug 2019 09:26:41 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:35416 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727462AbfHZN0Y (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 26 Aug 2019 09:26:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
-        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=5slocbe6PQWQPCbfPHRmFcXbh8p3/1KOX8/V8eA6Q9A=; b=XGZ8Ip9YgNINJECHJz0EpvB1OO
-        CF0tQSOdOtGd+DlsLVKePoRsKKw8FibPJ1GlcbQ4XTTfhPO14UOWq97tGqa/l2CGe6NuhQxCMNLDs
-        4vboyzj7WGVlx0j1m3Ksze8YFKF9g+V9R4D67nO5t6hALNJdFIUN7R+PnWyKgdPpvTVZOY1TnL4yd
-        UX8Qh9dJ9hPasEWYLaIRCa83VRw3J9HlPmy/Kf3Oq1alueewLRA95vRaGiI98W/Rm/KPfB3VppqpL
-        oN6lVApHwK/Uq0yJZ5tPUGBT/oYSNXTG3lRwIGc3hmVn5jRIW7CV14ISsbAT5tf6WoaE/OnyClLlj
-        J4aN/qcQ==;
-Received: from clnet-p19-102.ikbnet.co.at ([83.175.77.102] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1i2F0U-0007uY-Cm; Mon, 26 Aug 2019 13:26:02 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     iommu@lists.linux-foundation.org
-Cc:     Guan Xuetao <gxt@pku.edu.cn>, Shawn Anastasio <shawn@anastas.io>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/6] arm-nommu: remove the unused pgprot_dmacoherent define
-Date:   Mon, 26 Aug 2019 15:25:49 +0200
-Message-Id: <20190826132553.4116-3-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190826132553.4116-1-hch@lst.de>
-References: <20190826132553.4116-1-hch@lst.de>
+        id S1728490AbfHZRbW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 26 Aug 2019 13:31:22 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:39922 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728007AbfHZRbW (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 26 Aug 2019 13:31:22 -0400
+Received: by mail-pg1-f194.google.com with SMTP id u17so11003159pgi.6
+        for <linux-mips@vger.kernel.org>; Mon, 26 Aug 2019 10:31:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Q3xiFZ2HkA5ScIJ98h57XT9QNlYTEuEKJ22ZvSjaM40=;
+        b=W1ThBxZ2ULnw8wV8rQg1L3El9s0wK00VOmaEsGsImpIPXIn1KF9TIXouDdGAS2494U
+         Ln5MsCmf2BCNQBcec2cm0FE4g1R00CGWTiOtLL0C0guajRLNy+eQMRUsPPsYGktFx+4D
+         Yi2HGK7OSwFlwQm2QgQgkWFuW/YkbY7FAEScriQ1rUoziDQLATISbN/yFTOEHO/56cgr
+         AjQoOboGivycl+rixm0sW0HJ4JCqplkDYsx2rs+D99X/qO9K0Ck9PVGglRw4XGNyyxAx
+         zhzYaGIUCbm0qV19s7h/T3wdg10yB5I2p8Dh+6VXBUOQS/AzUhZovRKOHBAV5k9UjPAk
+         aydA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Q3xiFZ2HkA5ScIJ98h57XT9QNlYTEuEKJ22ZvSjaM40=;
+        b=fDs/SAxeHUjiUJyfMu0VCaI5/Oj1u0fHM+HDZWz/M97HXnz3mQ+slptIyUvc7ie9uq
+         CDywfPmNXmh1fD6mywPmaJWtli+58hDp8pRcjusRDB4SrW2GbWn/QYTwWcz2Z16cuaCW
+         J0BIzfFfDbdwSnERyGaYxeZZ2GjKXrH6yazt9MOlUDeMn1XKpwfrMz7RjGugsAZ0L4Vx
+         MP3len9GBa4nHTjyXcqEarsSRJGJv4+qtoUQH32anhQ+DY/U/5XCh+FYw2LlTdUkBSbN
+         Zgnw5rOQSlPsplc2tiYNA7svTLGB2tl9Mk+wC9uMzV30VO9QvSdwMZAsY8GRHmCSU3r8
+         cT4A==
+X-Gm-Message-State: APjAAAVdc8mtLdse3kxUNvpDaXduSZPZy+2ocii7nOHjGTcKLRansD37
+        2jU3C5Rpca1bLumrI/vOl9KhCEfzQqZ1FSqEDrwFDA==
+X-Google-Smtp-Source: APXvYqwVHgxJShCK/u78N3hHrJbEGajACMI2eyaTo9bILVYml2dMPRUPYBd4Hp9yNcVXJCNqVnOQd2UZpp0sc0R6gpk=
+X-Received: by 2002:a63:60a:: with SMTP id 10mr17262703pgg.381.1566840680814;
+ Mon, 26 Aug 2019 10:31:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+References: <20190729211014.39333-1-ndesaulniers@google.com>
+ <alpine.LFD.2.21.1907292302451.16059@eddie.linux-mips.org>
+ <CAKwvOd==SCBrj=cZ7Ax5F87+-bPMS9AtGSxp+NWp_+yDCg4R-A@mail.gmail.com>
+ <CAKwvOdkXLhEuLiQ_ukE75zEg=Sw5-4BLHHCFqcZ0oyTEX3pWTQ@mail.gmail.com>
+ <CAKwvOdmGax-WgXeKEnTq8+Xe0+Z5d2k4_Ad1vw0uOiO2NJ0bkg@mail.gmail.com> <20190824141213.svzmdr3pxdaqssuj@pburton-laptop>
+In-Reply-To: <20190824141213.svzmdr3pxdaqssuj@pburton-laptop>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Mon, 26 Aug 2019 10:31:09 -0700
+Message-ID: <CAKwvOdmWS0_5haTdS67Sh0YjrUwfVOhLCwEXCO7vj6X1gXmCqQ@mail.gmail.com>
+Subject: Re: [PATCH] mips: avoid explicit UB in assignment of mips_io_port_base
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Eli Friedman <efriedma@quicinc.com>,
+        Hassan Naveed <hnaveed@wavecomp.com>,
+        Stephen Kitt <steve@sk2.org>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.com>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        "regehr@cs.utah.edu" <regehr@cs.utah.edu>,
+        Philip Reames <listmail@philipreames.com>,
+        Alexander Potapenko <glider@google.com>,
+        Alistair Delva <adelva@google.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/arm/include/asm/pgtable-nommu.h | 1 -
- 1 file changed, 1 deletion(-)
+On Sat, Aug 24, 2019 at 7:12 AM Paul Burton <paul.burton@mips.com> wrote:
+>
+> Hi Nick,
+>
+> On Fri, Aug 23, 2019 at 10:16:04AM -0700, Nick Desaulniers wrote:
+> > On Tue, Aug 20, 2019 at 10:15 AM Nick Desaulniers
+> > <ndesaulniers@google.com> wrote:
+> > > Hi Paul,
+> > > Bumping this thread; we'd really like to be able to boot test another
+> > > ISA in our CI.  This lone patch is affecting our ability to boot.  Can
+> > > you please pick it up?
+> > > https://lore.kernel.org/lkml/20190729211014.39333-1-ndesaulniers@google.com/
+> >
+> > Hi Paul,
+> > Following up with this link that explains the undefined behavior issue more:
+> > https://wiki.sei.cmu.edu/confluence/display/c/EXP05-C.+Do+not+cast+away+a+const+qualification
+> > Please reconsider accepting this patch.
+>
+> Sorry, it's been a crazy few months & I'm currently away awaiting my
+> father's funeral so I'm working through a backlog & catching up on
+> things.
 
-diff --git a/arch/arm/include/asm/pgtable-nommu.h b/arch/arm/include/asm/pgtable-nommu.h
-index 0b1f6799a32e..d0de24f06724 100644
---- a/arch/arm/include/asm/pgtable-nommu.h
-+++ b/arch/arm/include/asm/pgtable-nommu.h
-@@ -62,7 +62,6 @@ typedef pte_t *pte_addr_t;
-  */
- #define pgprot_noncached(prot)	(prot)
- #define pgprot_writecombine(prot) (prot)
--#define pgprot_dmacoherent(prot) (prot)
- #define pgprot_device(prot)	(prot)
- 
- 
+That's an extremely tough hand to be dealt.  Got it myself a week
+before I turned 20.  Technically, (spoiler) everyone is eventually
+dealt it; not that that or really anything else can ever truly provide
+solace despite the common refrain "time heals all wounds" (Narrator:
+it doesn't).  Depending on where you are in life it can really really
+destabilize things.  I wrote this blog post
+(https://nickdesaulniers.github.io/blog/2013/04/29/the-persistence-of-memory/)
+that I'm not too proud of at a time I now realize that I was still
+kind of a state of shock (even years later).  I also found it very
+difficult to accept advice from others who didn't share the experience
+of losing a parent.
+
+No one would fault you for asking your co-maintainers to handle more
+maintainer responsibilities for a while.  I hope you can find a friend
+to commiserate with over beers.  I owe you one.
+
+>
+> It will be a shame to lose the optimization opportunities const offers
+> us, but it is an ugly hack & so I'm OK with applying this. It's likely
+> to affect older machines more than newer ones (which tend to use less or
+> no I/O port access) so I'm not too worried about the impact, but if we
+> find it matters we can always try the fixmap approach I suggested
+> previously.
+>
+> Thanks,
+>     Paul
+
+
+
 -- 
-2.20.1
-
+Thanks,
+~Nick Desaulniers

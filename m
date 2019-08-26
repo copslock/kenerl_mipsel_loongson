@@ -7,35 +7,35 @@ X-Spam-Status: No, score=-9.6 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E83CEC3A5A4
-	for <linux-mips@archiver.kernel.org>; Mon, 26 Aug 2019 13:26:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80EF2C3A59F
+	for <linux-mips@archiver.kernel.org>; Mon, 26 Aug 2019 13:26:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B099D2053B
-	for <linux-mips@archiver.kernel.org>; Mon, 26 Aug 2019 13:26:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4A5882053B
+	for <linux-mips@archiver.kernel.org>; Mon, 26 Aug 2019 13:26:41 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="fMe7aSwV"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="HMtxX467"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732383AbfHZN0Z (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 26 Aug 2019 09:26:25 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:35474 "EHLO
+        id S1732366AbfHZN0Y (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 26 Aug 2019 09:26:24 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:35252 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732377AbfHZN0Y (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 26 Aug 2019 09:26:24 -0400
+        with ESMTP id S1732333AbfHZN0V (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 26 Aug 2019 09:26:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
         MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
         :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
         :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=B1hiIfQ+IMMoK0UwnaPA+7E8zI516MBjiIdUjTMmRXQ=; b=fMe7aSwVdVuFHzkDJPu42O11Zj
-        TBtavI5OasUn5QBVUMb/kxVtMA/fmVJ0XUXCosf6ZhZBvj9PLbh+knag2U84iwvNjKO7zSSmKh25Q
-        9DJ9sB+wbdfzSJQslXxnxmtv5GBMgpHMskVXsYV0SD9r5oVagLXN1bRpY82B66HbPrOWY3bw1q6Fi
-        ahkWOi9xKrGYlpi4WiJfOPgiP0qnRIeJTE7tvjbbon20xoE0TPB7iq4flXYOFsu8o+j3x47eOuc6d
-        5JCNtNJBohtl83en+5OEK9KPqmnI314j42yxDaBvRji6FH/um/PtUNU0CvcUCXcmdIVtVF9XceAra
-        cz66i6fA==;
+        bh=djaGEic6NaBK09gi+fCrcAouUdZlbuVe4m8rrYkWAaA=; b=HMtxX467OYOhWWY59hNqdCMA59
+        gBLtoxsICumbABL0PkrTfLs57pmpCm1VMYgZnKuHh757K4MyGbm931kFbDFzoFZKPcFIegLSdSCJr
+        vGva46cHn6bzhhlLr5LwX5AIp4RO172m7u8WMbrh+K4dTVffkNPCavoPAm0rY20AODNFZ9o4bXT6E
+        ropSp2LGyGWHegp/NYLJVb0FN2pft3w1ly3Qryx3ZCErgDBrt6jxwxHjt3+6XNgbymi1n5aGtPJcV
+        nl6WGpD2LnDY9Cplyu988MXSDmj6HGKbpu5QHvXI7tGsgEOyJ8CMV7nnxk/YL5jz/uBArPnCv/Krr
+        vD+FRrBA==;
 Received: from clnet-p19-102.ikbnet.co.at ([83.175.77.102] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1i2F0e-0007xw-57; Mon, 26 Aug 2019 13:26:12 +0000
+        id 1i2F0R-0007uO-IH; Mon, 26 Aug 2019 13:26:00 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     iommu@lists.linux-foundation.org
 Cc:     Guan Xuetao <gxt@pku.edu.cn>, Shawn Anastasio <shawn@anastas.io>,
@@ -48,11 +48,10 @@ Cc:     Guan Xuetao <gxt@pku.edu.cn>, Shawn Anastasio <shawn@anastas.io>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
-        linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 5/6] arm64: document the choice of page attributes for pgprot_dmacoherent
-Date:   Mon, 26 Aug 2019 15:25:52 +0200
-Message-Id: <20190826132553.4116-6-hch@lst.de>
+        linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/6] unicore32: remove the unused pgprot_dmacoherent define
+Date:   Mon, 26 Aug 2019 15:25:48 +0200
+Message-Id: <20190826132553.4116-2-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190826132553.4116-1-hch@lst.de>
 References: <20190826132553.4116-1-hch@lst.de>
@@ -64,34 +63,24 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Based on an email from Will Deacon.
-
 Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Will Deacon <will@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
 ---
- arch/arm64/include/asm/pgtable.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/unicore32/include/asm/pgtable.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 6700371227d1..fd40fb05eb51 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -435,6 +435,14 @@ static inline pmd_t pmd_mkdevmap(pmd_t pmd)
- 	__pgprot_modify(prot, PTE_ATTRINDX_MASK, PTE_ATTRINDX(MT_NORMAL_NC) | PTE_PXN | PTE_UXN)
- #define pgprot_device(prot) \
- 	__pgprot_modify(prot, PTE_ATTRINDX_MASK, PTE_ATTRINDX(MT_DEVICE_nGnRE) | PTE_PXN | PTE_UXN)
-+/*
-+ * DMA allocations for non-coherent devices use what the Arm architecture calls
-+ * "Normal non-cacheable" memory, which permits speculation, unaligned accesses
-+ * and merging of writes.  This is different from "Device-nGnR[nE]" memory which
-+ * is intended for MMIO and thus forbids speculation, preserves access size,
-+ * requires strict alignment and can also force write responses to come from the
-+ * endpoint.
-+ */
- #define pgprot_dmacoherent(prot) \
- 	__pgprot_modify(prot, PTE_ATTRINDX_MASK, \
- 			PTE_ATTRINDX(MT_NORMAL_NC) | PTE_PXN | PTE_UXN)
+diff --git a/arch/unicore32/include/asm/pgtable.h b/arch/unicore32/include/asm/pgtable.h
+index 9492aa304f03..126e961a8cb0 100644
+--- a/arch/unicore32/include/asm/pgtable.h
++++ b/arch/unicore32/include/asm/pgtable.h
+@@ -198,8 +198,6 @@ static inline pte_t pte_mkspecial(pte_t pte) { return pte; }
+ 	__pgprot(pgprot_val(prot) & ~PTE_CACHEABLE)
+ #define pgprot_writecombine(prot)	\
+ 	__pgprot(pgprot_val(prot) & ~PTE_CACHEABLE)
+-#define pgprot_dmacoherent(prot)	\
+-	__pgprot(pgprot_val(prot) & ~PTE_CACHEABLE)
+ 
+ #define pmd_none(pmd)		(!pmd_val(pmd))
+ #define pmd_present(pmd)	(pmd_val(pmd) & PMD_PRESENT)
 -- 
 2.20.1
 

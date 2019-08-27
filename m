@@ -7,37 +7,37 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EC0AC3A5A7
-	for <linux-mips@archiver.kernel.org>; Tue, 27 Aug 2019 08:11:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E381C3A5A3
+	for <linux-mips@archiver.kernel.org>; Tue, 27 Aug 2019 08:15:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E0E57217F5
-	for <linux-mips@archiver.kernel.org>; Tue, 27 Aug 2019 08:11:27 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DFCFB2173E
+	for <linux-mips@archiver.kernel.org>; Tue, 27 Aug 2019 08:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1566893488;
-	bh=vRZy479767kYTIzX9SBMWkovtJFmbdfeRbCf0+4l3c0=;
+	s=default; t=1566893754;
+	bh=hSXiHTaIGZAtakKjmWxzWPqo1JJ9IeJSuT3tMk0Qho4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=HWmFxChTvxvlygeU3aKAwDDmCNB9EOr9c3sDirf78CTs/NOa3keY7FvfhN7+OxhpL
-	 IpIcyDUcu+TU2s2w0GhKVooduKCkdArjzvOFdLgpnfQozIGLkx1zMGr/45QdixjskG
-	 Dd1I5tWYxGE+CX8tAhAnqmyf9Y+myBh9uFgRtbdc=
+	b=p7waXXurszVj74NucZEASVVKacYc47I24ts8bIxIuDoJHKa2JYXdhaNE4N72uHAM1
+	 Dfx5bBe9F545E3T36T3ChzkqKc41lSXYXv4N4k4GNF3mkWOn7x+7+cebMY2tX4nD2Q
+	 OURjQQRo/DC4bv3T9dDivZVyw1b8exgJrOMoezgg=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730546AbfH0IBK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 27 Aug 2019 04:01:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56936 "EHLO mail.kernel.org"
+        id S1730171AbfH0Hyu (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 27 Aug 2019 03:54:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46518 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731189AbfH0IBJ (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 27 Aug 2019 04:01:09 -0400
+        id S1730164AbfH0Hyu (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 27 Aug 2019 03:54:50 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3C7FD2186A;
-        Tue, 27 Aug 2019 08:01:08 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9754D206BA;
+        Tue, 27 Aug 2019 07:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1566892868;
-        bh=vRZy479767kYTIzX9SBMWkovtJFmbdfeRbCf0+4l3c0=;
+        s=default; t=1566892489;
+        bh=hSXiHTaIGZAtakKjmWxzWPqo1JJ9IeJSuT3tMk0Qho4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=11H/nDAmZPSsWv6bjEyBo94KxIXC5oShvg0gyrHjf6GrtFs483izqsVEaazlmv94t
-         N1AZpdjGyl3mfd4TSGZ0ikc44vI/dzkAdeI4zllbACIvvUzsWqmJClc5UvN8sxyF1g
-         a/sLcFwkKsVPbC7l7x4Opu5LWz3bpGACi7EKE2K8=
+        b=0hy4mk58PicfsKxdibXUIqz6+xqrjAFI/qz0jUdXlwhu3mnrJKqR7AMU6zWApv3Os
+         Op3l6dU3BVBJMHbv1amw/faMlKc0gPbwRSzjpC5QNTp6bDOPAYb05Wo0bLBNlBZTpp
+         z2qdU80MATW2Jak5riL37AxfQArJtpMxWar1VGcM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.2 015/162] mips: fix cacheinfo
-Date:   Tue, 27 Aug 2019 09:49:03 +0200
-Message-Id: <20190827072738.866866739@linuxfoundation.org>
+Subject: [PATCH 4.19 03/98] mips: fix cacheinfo
+Date:   Tue, 27 Aug 2019 09:49:42 +0200
+Message-Id: <20190827072718.323552414@linuxfoundation.org>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20190827072738.093683223@linuxfoundation.org>
-References: <20190827072738.093683223@linuxfoundation.org>
+In-Reply-To: <20190827072718.142728620@linuxfoundation.org>
+References: <20190827072718.142728620@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -89,10 +89,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/arch/mips/kernel/cacheinfo.c b/arch/mips/kernel/cacheinfo.c
-index e0dd66881da68..f777e44653d57 100644
+index 97d5239ca47ba..428ef21892039 100644
 --- a/arch/mips/kernel/cacheinfo.c
 +++ b/arch/mips/kernel/cacheinfo.c
-@@ -69,6 +69,8 @@ static int __populate_cache_leaves(unsigned int cpu)
+@@ -80,6 +80,8 @@ static int __populate_cache_leaves(unsigned int cpu)
  	if (c->tcache.waysize)
  		populate_cache(tcache, this_leaf, 3, CACHE_TYPE_UNIFIED);
  

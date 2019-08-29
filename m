@@ -4,24 +4,25 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18AB8C3A59F
-	for <linux-mips@archiver.kernel.org>; Thu, 29 Aug 2019 15:50:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 788AEC3A59F
+	for <linux-mips@archiver.kernel.org>; Thu, 29 Aug 2019 15:51:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E95252166E
-	for <linux-mips@archiver.kernel.org>; Thu, 29 Aug 2019 15:50:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 56B7B233FF
+	for <linux-mips@archiver.kernel.org>; Thu, 29 Aug 2019 15:51:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728178AbfH2Pue (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 29 Aug 2019 11:50:34 -0400
-Received: from mx2.suse.de ([195.135.220.15]:60820 "EHLO mx1.suse.de"
+        id S1728324AbfH2Pui (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 29 Aug 2019 11:50:38 -0400
+Received: from mx2.suse.de ([195.135.220.15]:32962 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727207AbfH2Pue (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 29 Aug 2019 11:50:34 -0400
+        id S1728306AbfH2Pui (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 29 Aug 2019 11:50:38 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 27E81AFB2;
-        Thu, 29 Aug 2019 15:50:33 +0000 (UTC)
+        by mx1.suse.de (Postfix) with ESMTP id 14997AF79;
+        Thu, 29 Aug 2019 15:50:37 +0000 (UTC)
 From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
@@ -29,9 +30,9 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
         "David S. Miller" <davem@davemloft.net>,
         linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
         netdev@vger.kernel.org
-Subject: [PATCH v2 net-next 01/15] MIPS: SGI-IP27: remove ioc3 ethernet init
-Date:   Thu, 29 Aug 2019 17:49:59 +0200
-Message-Id: <20190829155014.9229-2-tbogendoerfer@suse.de>
+Subject: [PATCH v2 net-next 15/15] net: sgi: ioc3-eth: no need to stop queue set_multicast_list
+Date:   Thu, 29 Aug 2019 17:50:13 +0200
+Message-Id: <20190829155014.9229-16-tbogendoerfer@suse.de>
 X-Mailer: git-send-email 2.13.7
 In-Reply-To: <20190829155014.9229-1-tbogendoerfer@suse.de>
 References: <20190829155014.9229-1-tbogendoerfer@suse.de>
@@ -40,45 +41,36 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Removed not needed disabling of ethernet interrupts in IP27 platform code.
+netif_stop_queue()/netif_wake_qeue() aren't needed for changing
+multicast filters.
 
-Acked-by: Paul Burton <paul.burton@mips.com>
 Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 ---
- arch/mips/sgi-ip27/ip27-init.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ drivers/net/ethernet/sgi/ioc3-eth.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/mips/sgi-ip27/ip27-init.c b/arch/mips/sgi-ip27/ip27-init.c
-index 066b33f50bcc..59d5375c9021 100644
---- a/arch/mips/sgi-ip27/ip27-init.c
-+++ b/arch/mips/sgi-ip27/ip27-init.c
-@@ -130,17 +130,6 @@ cnodeid_t get_compact_nodeid(void)
- 	return NASID_TO_COMPACT_NODEID(get_nasid());
+diff --git a/drivers/net/ethernet/sgi/ioc3-eth.c b/drivers/net/ethernet/sgi/ioc3-eth.c
+index d2b6659adba6..3f6dffd0351e 100644
+--- a/drivers/net/ethernet/sgi/ioc3-eth.c
++++ b/drivers/net/ethernet/sgi/ioc3-eth.c
+@@ -1630,8 +1630,6 @@ static void ioc3_set_multicast_list(struct net_device *dev)
+ 	struct netdev_hw_addr *ha;
+ 	u64 ehar = 0;
+ 
+-	netif_stop_queue(dev);				/* Lock out others. */
+-
+ 	spin_lock_irq(&ip->ioc3_lock);
+ 
+ 	if (dev->flags & IFF_PROMISC) {			/* Set promiscuous.  */
+@@ -1663,8 +1661,6 @@ static void ioc3_set_multicast_list(struct net_device *dev)
+ 	}
+ 
+ 	spin_unlock_irq(&ip->ioc3_lock);
+-
+-	netif_wake_queue(dev);			/* Let us get going again. */
  }
  
--static inline void ioc3_eth_init(void)
--{
--	struct ioc3 *ioc3;
--	nasid_t nid;
--
--	nid = get_nasid();
--	ioc3 = (struct ioc3 *) KL_CONFIG_CH_CONS_INFO(nid)->memory_base;
--
--	ioc3->eier = 0;
--}
--
- extern void ip27_reboot_setup(void);
- 
- void __init plat_mem_setup(void)
-@@ -182,8 +171,6 @@ void __init plat_mem_setup(void)
- 		panic("Kernel compiled for N mode.");
- #endif
- 
--	ioc3_eth_init();
--
- 	ioport_resource.start = 0;
- 	ioport_resource.end = ~0UL;
- 	set_io_port_base(IO_BASE);
+ module_pci_driver(ioc3_driver);
 -- 
 2.13.7
 

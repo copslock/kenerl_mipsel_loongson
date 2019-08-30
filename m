@@ -7,36 +7,36 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 21C62C3A5A3
-	for <linux-mips@archiver.kernel.org>; Fri, 30 Aug 2019 04:27:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 83BEEC3A5A3
+	for <linux-mips@archiver.kernel.org>; Fri, 30 Aug 2019 04:33:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E16262341B
-	for <linux-mips@archiver.kernel.org>; Fri, 30 Aug 2019 04:27:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4B701215EA
+	for <linux-mips@archiver.kernel.org>; Fri, 30 Aug 2019 04:33:01 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="oHRiTfPQ"
+	dkim=pass (1024-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="HfERE2Im"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727023AbfH3E1x (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 30 Aug 2019 00:27:53 -0400
-Received: from forward103p.mail.yandex.net ([77.88.28.106]:40595 "EHLO
-        forward103p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726090AbfH3E1x (ORCPT
+        id S1726144AbfH3EdB (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 30 Aug 2019 00:33:01 -0400
+Received: from forward101p.mail.yandex.net ([77.88.28.101]:59209 "EHLO
+        forward101p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725819AbfH3EdA (ORCPT
         <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 30 Aug 2019 00:27:53 -0400
-Received: from mxback8o.mail.yandex.net (mxback8o.mail.yandex.net [IPv6:2a02:6b8:0:1a2d::22])
-        by forward103p.mail.yandex.net (Yandex) with ESMTP id E7F5318C0E9E;
-        Fri, 30 Aug 2019 07:27:48 +0300 (MSK)
-Received: from smtp4o.mail.yandex.net (smtp4o.mail.yandex.net [2a02:6b8:0:1a2d::28])
-        by mxback8o.mail.yandex.net (nwsmtp/Yandex) with ESMTP id RIxjjpkRAh-RmsmRf6L;
-        Fri, 30 Aug 2019 07:27:48 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1567139268;
+        Fri, 30 Aug 2019 00:33:00 -0400
+Received: from mxback11g.mail.yandex.net (mxback11g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:90])
+        by forward101p.mail.yandex.net (Yandex) with ESMTP id 7FD383280711;
+        Fri, 30 Aug 2019 07:32:56 +0300 (MSK)
+Received: from smtp1p.mail.yandex.net (smtp1p.mail.yandex.net [2a02:6b8:0:1472:2741:0:8b6:6])
+        by mxback11g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id ed7UcnEzyq-WuC8gcCF;
+        Fri, 30 Aug 2019 07:32:56 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1567139576;
         bh=VD9k6EC93VnKj/3YVMc7QTVJI+Lj0puUJgN+sd5hBPM=;
-        h=In-Reply-To:Subject:To:From:Cc:References:Date:Message-Id;
-        b=oHRiTfPQvlpN9rsAvt54byqExEQqsvzjnFxtvzvZOwXJYxJ7/7isFeCyS+W8TXmeb
-         N/tyXDlwNQS8W1eLyYJQRdTCM5HFz+/MJDzfGgDN5+IolGmZrtdHT4g2tc9kF/K8Ev
-         5czEle95liyXYIOrinz4Fy+G/kxiYcvV3EQTSE3c=
-Authentication-Results: mxback8o.mail.yandex.net; dkim=pass header.i=@flygoat.com
-Received: by smtp4o.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id 77UXTEcPDw-RdT0QfP1;
-        Fri, 30 Aug 2019 07:27:46 +0300
+        h=Subject:To:From:Cc:Date:Message-Id;
+        b=HfERE2Im2NgUtA1292WFPq/OzdAsL6ntfOSFHEhGOJhK8IJdAISVOFgTlDaqVnRE3
+         l/UQMoKGBY3Xn+rCEOFZ0vwYO68uYzqZj6bJXhOYHzY9kYwZeRNDpBgAsszjsmm7my
+         6Y6d9M+VXLIPD00GIlE3I+pepqAZt1+Od2pCs2as=
+Authentication-Results: mxback11g.mail.yandex.net; dkim=pass header.i=@flygoat.com
+Received: by smtp1p.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id vFuwVxmDwr-WlDGm3mn;
+        Fri, 30 Aug 2019 07:32:54 +0300
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
         (Client certificate not present)
 From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
@@ -46,11 +46,9 @@ Cc:     chenhc@lemote.com, paul.burton@mips.com, tglx@linutronix.de,
         robh+dt@kernel.org, mark.rutland@arm.co,
         devicetree@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>
 Subject: [PATCH v1 06/18] dt-bindings: interrupt-controller: Add Loongson-3 IOINTC
-Date:   Fri, 30 Aug 2019 12:25:56 +0800
-Message-Id: <20190830042608.19569-7-jiaxun.yang@flygoat.com>
+Date:   Fri, 30 Aug 2019 12:32:20 +0800
+Message-Id: <20190830043232.20191-1-jiaxun.yang@flygoat.com>
 X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190830042608.19569-1-jiaxun.yang@flygoat.com>
-References: <20190830042608.19569-1-jiaxun.yang@flygoat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org

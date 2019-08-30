@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CE8FCC3A5A6
-	for <linux-mips@archiver.kernel.org>; Fri, 30 Aug 2019 09:26:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C413C3A5A7
+	for <linux-mips@archiver.kernel.org>; Fri, 30 Aug 2019 09:26:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id A846821726
-	for <linux-mips@archiver.kernel.org>; Fri, 30 Aug 2019 09:26:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 65A7823427
+	for <linux-mips@archiver.kernel.org>; Fri, 30 Aug 2019 09:26:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728288AbfH3J0A (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 30 Aug 2019 05:26:00 -0400
-Received: from mx2.suse.de ([195.135.220.15]:41778 "EHLO mx1.suse.de"
+        id S1728415AbfH3J0S (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 30 Aug 2019 05:26:18 -0400
+Received: from mx2.suse.de ([195.135.220.15]:41818 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728236AbfH3JZ7 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        id S1728255AbfH3JZ7 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
         Fri, 30 Aug 2019 05:25:59 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id BB163B0B6;
-        Fri, 30 Aug 2019 09:25:57 +0000 (UTC)
+        by mx1.suse.de (Postfix) with ESMTP id 748DCB0F2;
+        Fri, 30 Aug 2019 09:25:58 +0000 (UTC)
 From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
@@ -29,9 +29,9 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
         "David S. Miller" <davem@davemloft.net>,
         linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
         netdev@vger.kernel.org
-Subject: [PATCH v3 net-next 13/15] net: sgi: ioc3-eth: Fix IPG settings
-Date:   Fri, 30 Aug 2019 11:25:36 +0200
-Message-Id: <20190830092539.24550-14-tbogendoerfer@suse.de>
+Subject: [PATCH v3 net-next 15/15] net: sgi: ioc3-eth: no need to stop queue set_multicast_list
+Date:   Fri, 30 Aug 2019 11:25:38 +0200
+Message-Id: <20190830092539.24550-16-tbogendoerfer@suse.de>
 X-Mailer: git-send-email 2.13.7
 In-Reply-To: <20190830092539.24550-1-tbogendoerfer@suse.de>
 References: <20190830092539.24550-1-tbogendoerfer@suse.de>
@@ -40,29 +40,36 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The half/full duplex settings for inter packet gap counters/timer were
-reversed.
+netif_stop_queue()/netif_wake_qeue() aren't needed for changing
+multicast filters.
 
 Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 ---
- drivers/net/ethernet/sgi/ioc3-eth.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/sgi/ioc3-eth.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/drivers/net/ethernet/sgi/ioc3-eth.c b/drivers/net/ethernet/sgi/ioc3-eth.c
-index 05f4b598114c..971986433d4c 100644
+index 963ed0f9787c..deb636d653f3 100644
 --- a/drivers/net/ethernet/sgi/ioc3-eth.c
 +++ b/drivers/net/ethernet/sgi/ioc3-eth.c
-@@ -79,8 +79,8 @@
- #define RX_OFFSET		(sizeof(struct ioc3_erxbuf) + NET_IP_ALIGN)
- #define RX_BUF_SIZE		(13 * IOC3_DMA_XFER_LEN)
+@@ -1627,8 +1627,6 @@ static void ioc3_set_multicast_list(struct net_device *dev)
+ 	struct netdev_hw_addr *ha;
+ 	u64 ehar = 0;
  
--#define ETCSR_FD   ((17 << ETCSR_IPGR2_SHIFT) | (11 << ETCSR_IPGR1_SHIFT) | 21)
--#define ETCSR_HD   ((21 << ETCSR_IPGR2_SHIFT) | (21 << ETCSR_IPGR1_SHIFT) | 21)
-+#define ETCSR_FD   ((21 << ETCSR_IPGR2_SHIFT) | (21 << ETCSR_IPGR1_SHIFT) | 21)
-+#define ETCSR_HD   ((17 << ETCSR_IPGR2_SHIFT) | (11 << ETCSR_IPGR1_SHIFT) | 21)
+-	netif_stop_queue(dev);				/* Lock out others. */
+-
+ 	spin_lock_irq(&ip->ioc3_lock);
  
- /* Private per NIC data of the driver.  */
- struct ioc3_private {
+ 	if (dev->flags & IFF_PROMISC) {			/* Set promiscuous.  */
+@@ -1660,8 +1658,6 @@ static void ioc3_set_multicast_list(struct net_device *dev)
+ 	}
+ 
+ 	spin_unlock_irq(&ip->ioc3_lock);
+-
+-	netif_wake_queue(dev);			/* Let us get going again. */
+ }
+ 
+ module_pci_driver(ioc3_driver);
 -- 
 2.13.7
 

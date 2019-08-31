@@ -1,113 +1,119 @@
-Return-Path: <SRS0=WyAB=W2=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=Nkoz=W3=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DF977C3A5A4
-	for <linux-mips@archiver.kernel.org>; Fri, 30 Aug 2019 21:45:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B6B2C3A59F
+	for <linux-mips@archiver.kernel.org>; Sat, 31 Aug 2019 06:00:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B130A2342E
-	for <linux-mips@archiver.kernel.org>; Fri, 30 Aug 2019 21:45:21 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ey9XQvoj"
+	by mail.kernel.org (Postfix) with ESMTP id 09CC823697
+	for <linux-mips@archiver.kernel.org>; Sat, 31 Aug 2019 06:00:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728194AbfH3VpQ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 30 Aug 2019 17:45:16 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:41888 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728143AbfH3VpQ (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 30 Aug 2019 17:45:16 -0400
-Received: by mail-pl1-f195.google.com with SMTP id m9so3930569pls.8;
-        Fri, 30 Aug 2019 14:45:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=CyAnPYKlnqoE6HYrk4XrrLs/lfWC1furlwMXZwIbdJM=;
-        b=Ey9XQvoj8H/Rnwv8NzD/KreDQNAtk/Y1mAfNtWWSPWRvpRHkSG3qzrkTUiyqzLyy8y
-         FhYeM7nvgl239YS8plycKvLT74pvzlcX8njCo82d73vUDrqGOQIz8oARAkP7UKilrwM5
-         NDqVYaJdxQw5YtmBNy2VGaqetGKnvddyuLZTFzzrXm1WRH2hh5P7VzQIaPjNRzRh/cM8
-         +iOgz2nm0iGcnxDUVyloWrKJlS93KDGv8twzcGSeFsCL8uqXFf9uQEZtHNVy3yjgG/aD
-         DEMAEjrPTZxgLBaKb3rpS25bBzOjAWuXx/Z+kiRAvu2tepHCjzQrK3HOb0q7by4MMmYW
-         wmeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=CyAnPYKlnqoE6HYrk4XrrLs/lfWC1furlwMXZwIbdJM=;
-        b=EIOO/dpI+2pUY4aPFL8ZvpQPyrNVpIj6HE8Cdu5W0ZRr3evJH+4Wcp4LtYcT1T/V8D
-         wMyHsWm1eSyvdxDmeYzjFZPLEv1+J29G5ldl+mx8F6xKG6etI1QKO2KxM0oVE41nRNeP
-         QobTKQ+ZNZRregfPzseXgLrriY+wK+IMfefZr8EcdZy2gPAX6iYLci/PCwFyLofl2Hqf
-         0kJs/VvNA38d3qR3b3YQz09KsPvspGGedvbJm5CShNdmiT1Y4YBzq3oA5tFVUWKBxmN6
-         HF6WzibRQRHI5DUWOtgCfbiakI9RFSYAq3YtohDMnkquqOPQxgJMSkQvOBQE166LwScl
-         b0HA==
-X-Gm-Message-State: APjAAAUI1QI8ePr7mY+ERjQxKNIzcol2ok3K8624tlRNypLxNJobmsiy
-        JDaxLfrJn4w8oTC31xZvHHoLCd8cqRQ=
-X-Google-Smtp-Source: APXvYqzQSc6jNbxZKUcovD9FZLciwfGuo7Kt2wn5aZSHSDm6zSKrBIeIlpBZCEWXRcfFUHXs7Afe6Q==
-X-Received: by 2002:a17:902:9b8f:: with SMTP id y15mr18714988plp.194.1567201515169;
-        Fri, 30 Aug 2019 14:45:15 -0700 (PDT)
-Received: from localhost (g75.222-224-160.ppp.wakwak.ne.jp. [222.224.160.75])
-        by smtp.gmail.com with ESMTPSA id q69sm5777108pjb.0.2019.08.30.14.45.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Aug 2019 14:45:14 -0700 (PDT)
-Date:   Sat, 31 Aug 2019 06:45:12 +0900
-From:   Stafford Horne <shorne@gmail.com>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-mtd@lists.infradead.org, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 05/26] openrisc: map as uncached in ioremap
-Message-ID: <20190830214512.GX24874@lianli.shorne-pla.net>
-References: <20190817073253.27819-1-hch@lst.de>
- <20190817073253.27819-6-hch@lst.de>
- <20190823135539.GC24874@lianli.shorne-pla.net>
- <20190830160705.GF26887@lst.de>
+        id S1725981AbfHaGAq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 31 Aug 2019 02:00:46 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:49298 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725899AbfHaGAq (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 31 Aug 2019 02:00:46 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id CCA8FFE050212F500B61;
+        Sat, 31 Aug 2019 14:00:41 +0800 (CST)
+Received: from localhost.localdomain (10.67.212.75) by
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.439.0; Sat, 31 Aug 2019 14:00:34 +0800
+From:   Yunsheng Lin <linyunsheng@huawei.com>
+To:     <catalin.marinas@arm.com>, <will@kernel.org>, <mingo@redhat.com>,
+        <bp@alien8.de>, <rth@twiddle.net>, <ink@jurassic.park.msu.ru>,
+        <mattst88@gmail.com>, <benh@kernel.crashing.org>,
+        <paulus@samba.org>, <mpe@ellerman.id.au>,
+        <heiko.carstens@de.ibm.com>, <gor@linux.ibm.com>,
+        <borntraeger@de.ibm.com>, <ysato@users.sourceforge.jp>,
+        <dalias@libc.org>, <davem@davemloft.net>, <ralf@linux-mips.org>,
+        <paul.burton@mips.com>, <jhogan@kernel.org>,
+        <jiaxun.yang@flygoat.com>, <chenhc@lemote.com>
+CC:     <akpm@linux-foundation.org>, <rppt@linux.ibm.com>,
+        <anshuman.khandual@arm.com>, <tglx@linutronix.de>, <cai@lca.pw>,
+        <robin.murphy@arm.com>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <hpa@zytor.com>, <x86@kernel.org>,
+        <dave.hansen@linux.intel.com>, <luto@kernel.org>,
+        <peterz@infradead.org>, <len.brown@intel.com>, <axboe@kernel.dk>,
+        <dledford@redhat.com>, <jeffrey.t.kirsher@intel.com>,
+        <linux-alpha@vger.kernel.org>, <nfont@linux.vnet.ibm.com>,
+        <naveen.n.rao@linux.vnet.ibm.com>, <mwb@linux.vnet.ibm.com>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
+        <linux-sh@vger.kernel.org>, <sparclinux@vger.kernel.org>,
+        <tbogendoerfer@suse.de>, <linux-mips@vger.kernel.org>,
+        <linuxarm@huawei.com>
+Subject: [PATCH v2 2/9] x86: numa: check the node id consistently for x86
+Date:   Sat, 31 Aug 2019 13:58:16 +0800
+Message-ID: <1567231103-13237-3-git-send-email-linyunsheng@huawei.com>
+X-Mailer: git-send-email 2.8.1
+In-Reply-To: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
+References: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190830160705.GF26887@lst.de>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Type: text/plain
+X-Originating-IP: [10.67.212.75]
+X-CFilter-Loop: Reflected
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Fri, Aug 30, 2019 at 06:07:05PM +0200, Christoph Hellwig wrote:
-> On Fri, Aug 23, 2019 at 10:55:39PM +0900, Stafford Horne wrote:
-> > On Sat, Aug 17, 2019 at 09:32:32AM +0200, Christoph Hellwig wrote:
-> > > Openrisc is the only architecture not mapping ioremap as uncached,
-> > > which has been the default since the Linux 2.6.x days.  Switch it
-> > > over to implement uncached semantics by default.
-> > > 
-> > > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> > > ---
-> > >  arch/openrisc/include/asm/io.h      | 20 +++-----------------
-> > >  arch/openrisc/include/asm/pgtable.h |  2 +-
-> > >  arch/openrisc/mm/ioremap.c          |  8 ++++----
-> > >  3 files changed, 8 insertions(+), 22 deletions(-)
-> > 
-> > Acked-by: Stafford Horne <shorne@gmail.com>
-> 
-> Can you send this one to Linus for 5.4?  That would help with the
-> possibility to remove ioremap_nocache after that.
+According to Section 6.2.14 from ACPI spec 6.3 [1], the setting
+of proximity domain is optional, as below:
 
-Sure, I will pick this up.
+This optional object is used to describe proximity domain
+associations within a machine. _PXM evaluates to an integer
+that identifies a device as belonging to a Proximity Domain
+defined in the System Resource Affinity Table (SRAT).
 
--Stafford
+This patch checks node id with the below case before returning
+node_to_cpumask_map[node]:
+1. if node_id >= nr_node_ids, return cpu_none_mask
+2. if node_id < 0, return cpu_online_mask
+3. if node_to_cpumask_map[node_id] is NULL, return cpu_online_mask
+
+[1] https://uefi.org/sites/default/files/resources/ACPI_6_3_final_Jan30.pdf
+
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+---
+ arch/x86/include/asm/topology.h | 6 ++++++
+ arch/x86/mm/numa.c              | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
+index 4b14d23..f36e9c8 100644
+--- a/arch/x86/include/asm/topology.h
++++ b/arch/x86/include/asm/topology.h
+@@ -69,6 +69,12 @@ extern const struct cpumask *cpumask_of_node(int node);
+ /* Returns a pointer to the cpumask of CPUs on Node 'node'. */
+ static inline const struct cpumask *cpumask_of_node(int node)
+ {
++	if (node >= nr_node_ids)
++		return cpu_none_mask;
++
++	if (node < 0 || !node_to_cpumask_map[node])
++		return cpu_online_mask;
++
+ 	return node_to_cpumask_map[node];
+ }
+ #endif
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index e6dad60..5e393d2 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -868,7 +868,7 @@ const struct cpumask *cpumask_of_node(int node)
+ 		dump_stack();
+ 		return cpu_none_mask;
+ 	}
+-	if (node_to_cpumask_map[node] == NULL) {
++	if (node < 0 || !node_to_cpumask_map[node]) {
+ 		printk(KERN_WARNING
+ 			"cpumask_of_node(%d): no node_to_cpumask_map!\n",
+ 			node);
+-- 
+2.8.1
+

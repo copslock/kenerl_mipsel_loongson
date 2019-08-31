@@ -6,24 +6,24 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B6B2C3A59F
-	for <linux-mips@archiver.kernel.org>; Sat, 31 Aug 2019 06:00:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 097E9C3A59F
+	for <linux-mips@archiver.kernel.org>; Sat, 31 Aug 2019 06:00:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 09CC823697
-	for <linux-mips@archiver.kernel.org>; Sat, 31 Aug 2019 06:00:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D73C623774
+	for <linux-mips@archiver.kernel.org>; Sat, 31 Aug 2019 06:00:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725981AbfHaGAq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 31 Aug 2019 02:00:46 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:49298 "EHLO huawei.com"
+        id S1726602AbfHaGAv (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 31 Aug 2019 02:00:51 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:6153 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725899AbfHaGAq (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sat, 31 Aug 2019 02:00:46 -0400
+        id S1726589AbfHaGAv (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 31 Aug 2019 02:00:51 -0400
 Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id CCA8FFE050212F500B61;
-        Sat, 31 Aug 2019 14:00:41 +0800 (CST)
+        by Forcepoint Email with ESMTP id D2F67685E98158F20FC1;
+        Sat, 31 Aug 2019 14:00:46 +0800 (CST)
 Received: from localhost.localdomain (10.67.212.75) by
  DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.439.0; Sat, 31 Aug 2019 14:00:34 +0800
+ 14.3.439.0; Sat, 31 Aug 2019 14:00:36 +0800
 From:   Yunsheng Lin <linyunsheng@huawei.com>
 To:     <catalin.marinas@arm.com>, <will@kernel.org>, <mingo@redhat.com>,
         <bp@alien8.de>, <rth@twiddle.net>, <ink@jurassic.park.msu.ru>,
@@ -47,9 +47,9 @@ CC:     <akpm@linux-foundation.org>, <rppt@linux.ibm.com>,
         <linux-sh@vger.kernel.org>, <sparclinux@vger.kernel.org>,
         <tbogendoerfer@suse.de>, <linux-mips@vger.kernel.org>,
         <linuxarm@huawei.com>
-Subject: [PATCH v2 2/9] x86: numa: check the node id consistently for x86
-Date:   Sat, 31 Aug 2019 13:58:16 +0800
-Message-ID: <1567231103-13237-3-git-send-email-linyunsheng@huawei.com>
+Subject: [PATCH v2 6/9] sh: numa: check the node id consistently for sh
+Date:   Sat, 31 Aug 2019 13:58:20 +0800
+Message-ID: <1567231103-13237-7-git-send-email-linyunsheng@huawei.com>
 X-Mailer: git-send-email 2.8.1
 In-Reply-To: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
 References: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
@@ -70,8 +70,9 @@ associations within a machine. _PXM evaluates to an integer
 that identifies a device as belonging to a Proximity Domain
 defined in the System Resource Affinity Table (SRAT).
 
-This patch checks node id with the below case before returning
-node_to_cpumask_map[node]:
+It seems sh does not have real numa support or uncompleted
+numa support, this patch still checks node id with the below
+case to ensure future support is consistent:
 1. if node_id >= nr_node_ids, return cpu_none_mask
 2. if node_id < 0, return cpu_online_mask
 3. if node_to_cpumask_map[node_id] is NULL, return cpu_online_mask
@@ -80,40 +81,34 @@ node_to_cpumask_map[node]:
 
 Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
 ---
- arch/x86/include/asm/topology.h | 6 ++++++
- arch/x86/mm/numa.c              | 2 +-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ arch/sh/include/asm/topology.h | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
-index 4b14d23..f36e9c8 100644
---- a/arch/x86/include/asm/topology.h
-+++ b/arch/x86/include/asm/topology.h
-@@ -69,6 +69,12 @@ extern const struct cpumask *cpumask_of_node(int node);
- /* Returns a pointer to the cpumask of CPUs on Node 'node'. */
- static inline const struct cpumask *cpumask_of_node(int node)
- {
+diff --git a/arch/sh/include/asm/topology.h b/arch/sh/include/asm/topology.h
+index 1db470e..e71e0a0 100644
+--- a/arch/sh/include/asm/topology.h
++++ b/arch/sh/include/asm/topology.h
+@@ -6,7 +6,19 @@
+ 
+ #define cpu_to_node(cpu)	((void)(cpu),0)
+ 
+-#define cpumask_of_node(node)	((void)node, cpu_online_mask)
++static inline const struct cpumask *cpumask_of_node(int node)
++{
 +	if (node >= nr_node_ids)
 +		return cpu_none_mask;
 +
 +	if (node < 0 || !node_to_cpumask_map[node])
 +		return cpu_online_mask;
 +
- 	return node_to_cpumask_map[node];
- }
- #endif
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index e6dad60..5e393d2 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -868,7 +868,7 @@ const struct cpumask *cpumask_of_node(int node)
- 		dump_stack();
- 		return cpu_none_mask;
- 	}
--	if (node_to_cpumask_map[node] == NULL) {
-+	if (node < 0 || !node_to_cpumask_map[node]) {
- 		printk(KERN_WARNING
- 			"cpumask_of_node(%d): no node_to_cpumask_map!\n",
- 			node);
++	/* Should return actual mask based on node_to_cpumask_map
++	 * if sh arch supports real numa node.
++	 */
++	return cpu_online_mask;
++}
+ 
+ #define pcibus_to_node(bus)	((void)(bus), -1)
+ #define cpumask_of_pcibus(bus)	(pcibus_to_node(bus) == -1 ? \
 -- 
 2.8.1
 

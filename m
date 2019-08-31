@@ -7,24 +7,24 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D109AC3A59F
-	for <linux-mips@archiver.kernel.org>; Sat, 31 Aug 2019 06:01:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75702C3A5A1
+	for <linux-mips@archiver.kernel.org>; Sat, 31 Aug 2019 06:01:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id AE70D23784
-	for <linux-mips@archiver.kernel.org>; Sat, 31 Aug 2019 06:01:22 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5294623784
+	for <linux-mips@archiver.kernel.org>; Sat, 31 Aug 2019 06:01:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726600AbfHaGA4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 31 Aug 2019 02:00:56 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:6155 "EHLO huawei.com"
+        id S1726750AbfHaGAw (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 31 Aug 2019 02:00:52 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:6154 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726679AbfHaGAx (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sat, 31 Aug 2019 02:00:53 -0400
+        id S1726600AbfHaGAw (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 31 Aug 2019 02:00:52 -0400
 Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 01665F323856A90C7C6B;
-        Sat, 31 Aug 2019 14:00:47 +0800 (CST)
+        by Forcepoint Email with ESMTP id E452DCD9497C019D9C9D;
+        Sat, 31 Aug 2019 14:00:46 +0800 (CST)
 Received: from localhost.localdomain (10.67.212.75) by
  DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.439.0; Sat, 31 Aug 2019 14:00:37 +0800
+ 14.3.439.0; Sat, 31 Aug 2019 14:00:36 +0800
 From:   Yunsheng Lin <linyunsheng@huawei.com>
 To:     <catalin.marinas@arm.com>, <will@kernel.org>, <mingo@redhat.com>,
         <bp@alien8.de>, <rth@twiddle.net>, <ink@jurassic.park.msu.ru>,
@@ -48,9 +48,9 @@ CC:     <akpm@linux-foundation.org>, <rppt@linux.ibm.com>,
         <linux-sh@vger.kernel.org>, <sparclinux@vger.kernel.org>,
         <tbogendoerfer@suse.de>, <linux-mips@vger.kernel.org>,
         <linuxarm@huawei.com>
-Subject: [PATCH v2 9/9] mips: numa: check the node id consistently for mips loongson64
-Date:   Sat, 31 Aug 2019 13:58:23 +0800
-Message-ID: <1567231103-13237-10-git-send-email-linyunsheng@huawei.com>
+Subject: [PATCH v2 8/9] mips: numa: check the node id consistently for mips ip27
+Date:   Sat, 31 Aug 2019 13:58:22 +0800
+Message-ID: <1567231103-13237-9-git-send-email-linyunsheng@huawei.com>
 X-Mailer: git-send-email 2.8.1
 In-Reply-To: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
 References: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
@@ -71,10 +71,10 @@ associations within a machine. _PXM evaluates to an integer
 that identifies a device as belonging to a Proximity Domain
 defined in the System Resource Affinity Table (SRAT).
 
-Since mips loongson64 uses __node_data instead of
-node_to_cpumask_map, this patch checks node id with the below
-case before returning &__node_data[node]->cpumask:
-1. if node_id >= MAX_NUMNODES, return cpu_none_mask
+Since mips ip27 uses hub_data instead of node_to_cpumask_map,
+this patch checks node id with the below case before returning
+&hub_data(node)->h_cpus:
+1. if node_id >= MAX_COMPACT_NODES, return cpu_none_mask
 2. if node_id < 0, return cpu_online_mask
 3. if hub_data(node) is NULL, return cpu_online_mask
 
@@ -82,32 +82,35 @@ case before returning &__node_data[node]->cpumask:
 
 Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
 ---
- arch/mips/include/asm/mach-loongson64/topology.h | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/mach-ip27/topology.h | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-loongson64/topology.h b/arch/mips/include/asm/mach-loongson64/topology.h
-index 7ff819a..b19b983 100644
---- a/arch/mips/include/asm/mach-loongson64/topology.h
-+++ b/arch/mips/include/asm/mach-loongson64/topology.h
-@@ -5,7 +5,17 @@
- #ifdef CONFIG_NUMA
+diff --git a/arch/mips/include/asm/mach-ip27/topology.h b/arch/mips/include/asm/mach-ip27/topology.h
+index 965f079..914a55a 100644
+--- a/arch/mips/include/asm/mach-ip27/topology.h
++++ b/arch/mips/include/asm/mach-ip27/topology.h
+@@ -15,9 +15,18 @@ struct cpuinfo_ip27 {
+ extern struct cpuinfo_ip27 sn_cpu_info[NR_CPUS];
  
- #define cpu_to_node(cpu)	(cpu_logical_map(cpu) >> 2)
--#define cpumask_of_node(node)	(&__node_data[(node)]->cpumask)
+ #define cpu_to_node(cpu)	(sn_cpu_info[(cpu)].p_nodeid)
+-#define cpumask_of_node(node)	((node) == -1 ?				\
+-				 cpu_all_mask :				\
+-				 &hub_data(node)->h_cpus)
 +
 +static inline const struct cpumask *cpumask_of_node(int node)
 +{
-+	if (node >= MAX_NUMNODES)
++	if (node >= MAX_COMPACT_NODES)
 +		return cpu_none_mask;
 +
-+	if (node < 0 || !__node_data[node])
++	if (node < 0 || !hub_data(node))
 +		return cpu_online_mask;
 +
-+	return &__node_data[node]->cpumask;
++	return &hub_data(node)->h_cpus;
 +}
- 
++
  struct pci_bus;
  extern int pcibus_to_node(struct pci_bus *);
+ 
 -- 
 2.8.1
 

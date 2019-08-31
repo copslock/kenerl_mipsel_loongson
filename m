@@ -7,24 +7,24 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 41F38C3A59F
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E4CBC3A5A6
 	for <linux-mips@archiver.kernel.org>; Sat, 31 Aug 2019 06:01:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 1CBD723789
-	for <linux-mips@archiver.kernel.org>; Sat, 31 Aug 2019 06:01:14 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3D61523784
+	for <linux-mips@archiver.kernel.org>; Sat, 31 Aug 2019 06:01:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728244AbfHaGBK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 31 Aug 2019 02:01:10 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:49226 "EHLO huawei.com"
+        id S1727615AbfHaGA7 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 31 Aug 2019 02:00:59 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:6152 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725903AbfHaGBA (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sat, 31 Aug 2019 02:01:00 -0400
+        id S1726963AbfHaGA6 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 31 Aug 2019 02:00:58 -0400
 Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id B8999A0606B4FD5A4803;
-        Sat, 31 Aug 2019 14:00:41 +0800 (CST)
+        by Forcepoint Email with ESMTP id BFEA57A68E9CC99D4C43;
+        Sat, 31 Aug 2019 14:00:46 +0800 (CST)
 Received: from localhost.localdomain (10.67.212.75) by
  DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.439.0; Sat, 31 Aug 2019 14:00:35 +0800
+ 14.3.439.0; Sat, 31 Aug 2019 14:00:36 +0800
 From:   Yunsheng Lin <linyunsheng@huawei.com>
 To:     <catalin.marinas@arm.com>, <will@kernel.org>, <mingo@redhat.com>,
         <bp@alien8.de>, <rth@twiddle.net>, <ink@jurassic.park.msu.ru>,
@@ -48,9 +48,9 @@ CC:     <akpm@linux-foundation.org>, <rppt@linux.ibm.com>,
         <linux-sh@vger.kernel.org>, <sparclinux@vger.kernel.org>,
         <tbogendoerfer@suse.de>, <linux-mips@vger.kernel.org>,
         <linuxarm@huawei.com>
-Subject: [PATCH v2 5/9] s390: numa: check the node id consistently for s390
-Date:   Sat, 31 Aug 2019 13:58:19 +0800
-Message-ID: <1567231103-13237-6-git-send-email-linyunsheng@huawei.com>
+Subject: [PATCH v2 7/9] sparc64: numa: check the node id consistently for sparc64
+Date:   Sat, 31 Aug 2019 13:58:21 +0800
+Message-ID: <1567231103-13237-8-git-send-email-linyunsheng@huawei.com>
 X-Mailer: git-send-email 2.8.1
 In-Reply-To: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
 References: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
@@ -72,40 +72,46 @@ that identifies a device as belonging to a Proximity Domain
 defined in the System Resource Affinity Table (SRAT).
 
 This patch checks node id with the below case before returning
-node_to_cpumask_map[node]:
+&numa_cpumask_lookup_table[node]:
 1. if node_id >= nr_node_ids, return cpu_none_mask
 2. if node_id < 0, return cpu_online_mask
-3. if node_to_cpumask_map[node_id] is NULL, return cpu_online_mask
+3. Since numa_cpumask_lookup_table is not a pointer, a comment
+   is added to indicate that
 
 [1] https://uefi.org/sites/default/files/resources/ACPI_6_3_final_Jan30.pdf
 
 Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
 ---
-Note node_to_cpumask_map[node] is already a pointer, so
-returning &node_to_cpumask_map[node] does not seem to
-be correct, if this is problem, maybe clean it up in another
-patch.
----
- arch/s390/include/asm/topology.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/sparc/include/asm/topology_64.h | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/arch/s390/include/asm/topology.h b/arch/s390/include/asm/topology.h
-index cca406f..75340ca 100644
---- a/arch/s390/include/asm/topology.h
-+++ b/arch/s390/include/asm/topology.h
-@@ -78,6 +78,12 @@ static inline int cpu_to_node(int cpu)
- #define cpumask_of_node cpumask_of_node
- static inline const struct cpumask *cpumask_of_node(int node)
- {
-+	if (node >= nr_node_ids)
-+		return cpu_none_mask;
-+
-+	if (node < 0 || !node_to_cpumask_map[node])
-+		return cpu_online_mask;
-+
- 	return &node_to_cpumask_map[node];
+diff --git a/arch/sparc/include/asm/topology_64.h b/arch/sparc/include/asm/topology_64.h
+index 34c628a..66a7917 100644
+--- a/arch/sparc/include/asm/topology_64.h
++++ b/arch/sparc/include/asm/topology_64.h
+@@ -11,9 +11,19 @@ static inline int cpu_to_node(int cpu)
+ 	return numa_cpu_lookup_table[cpu];
  }
  
+-#define cpumask_of_node(node) ((node) == -1 ?				\
+-			       cpu_all_mask :				\
+-			       &numa_cpumask_lookup_table[node])
++static inline const struct cpumask *cpumask_of_node(int node)
++{
++	if (node >= MAX_NUMNODES)
++		return cpu_none_mask;
++
++	/* numa_cpumask_lookup_table[node] is not a pointer, so
++	 * no need to check for NULL here.
++	 */
++	if (node < 0)
++		return cpu_online_mask;
++
++	return &numa_cpumask_lookup_table[node];
++}
+ 
+ struct pci_bus;
+ #ifdef CONFIG_PCI
 -- 
 2.8.1
 

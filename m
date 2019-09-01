@@ -6,35 +6,35 @@ X-Spam-Status: No, score=-8.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6855BC3A5A4
-	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:48:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BF8C1C3A5A4
+	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:48:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 45EBA20828
-	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:48:27 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9B65320828
+	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:48:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729180AbfIAPs1 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 1 Sep 2019 11:48:27 -0400
-Received: from pio-pvt-msa2.bahnhof.se ([79.136.2.41]:57538 "EHLO
-        pio-pvt-msa2.bahnhof.se" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729151AbfIAPs1 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sun, 1 Sep 2019 11:48:27 -0400
+        id S1729182AbfIAPse (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 1 Sep 2019 11:48:34 -0400
+Received: from pio-pvt-msa1.bahnhof.se ([79.136.2.40]:56720 "EHLO
+        pio-pvt-msa1.bahnhof.se" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729181AbfIAPse (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sun, 1 Sep 2019 11:48:34 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTP id 52EA640386
-        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:39:03 +0200 (CEST)
+        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 1C6FC3F73E
+        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:48:32 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-Received: from pio-pvt-msa2.bahnhof.se ([127.0.0.1])
-        by localhost (pio-pvt-msa2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id UiPntJFwqv29 for <linux-mips@vger.kernel.org>;
-        Sun,  1 Sep 2019 17:39:02 +0200 (CEST)
+Received: from pio-pvt-msa1.bahnhof.se ([127.0.0.1])
+        by localhost (pio-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id DNj_EkfpVSnS for <linux-mips@vger.kernel.org>;
+        Sun,  1 Sep 2019 17:48:31 +0200 (CEST)
 Received: from localhost (h-41-252.A163.priv.bahnhof.se [46.59.41.252])
         (Authenticated sender: mb547485)
-        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTPA id 6A5FC4036B
-        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:39:02 +0200 (CEST)
-Date:   Sun, 1 Sep 2019 17:39:02 +0200
+        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id 6AF9D3F708
+        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:48:31 +0200 (CEST)
+Date:   Sun, 1 Sep 2019 17:48:31 +0200
 From:   Fredrik Noring <noring@nocrew.org>
 To:     linux-mips@vger.kernel.org
-Subject: [PATCH 007/120] MIPS: R5900: Add the SYNC.P instruction
-Message-ID: <829485da9abba9367b953c7d5756356a58e8a638.1567326213.git.noring@nocrew.org>
+Subject: [PATCH 031/120] MIPS: PS2: SCMD: System command support
+Message-ID: <f5e5a0d92314d695c09c091a25217f7b710c55ca.1567326213.git.noring@nocrew.org>
 References: <cover.1567326213.git.noring@nocrew.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -46,73 +46,250 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The SYNC.P instruction is a pipeline barrier. All instructions prior to
-the barrier are completed before the instructions following the barrier
-are fetched[1].
-
-However, the barrier operation doesn't wait for any prior instructions
-to retire, for example multiply, divide, multicycle COP1 operations or
-a pending load issued before the barrier operation.
-
-References:
-
-[1] "TX System RISC TX79 Core Architecture" manual, revision 2.0,
-    Toshiba Corporation, p. A-125, https://wiki.qemu.org/File:C790.pdf
-
 Signed-off-by: Fredrik Noring <noring@nocrew.org>
 ---
- arch/mips/include/asm/uasm.h | 1 +
- arch/mips/mm/uasm-mips.c     | 1 +
- arch/mips/mm/uasm.c          | 5 +++--
- 3 files changed, 5 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/mach-ps2/scmd.h |  33 +++++
+ arch/mips/ps2/Makefile                |   1 +
+ arch/mips/ps2/scmd.c                  | 180 ++++++++++++++++++++++++++
+ 3 files changed, 214 insertions(+)
+ create mode 100644 arch/mips/include/asm/mach-ps2/scmd.h
+ create mode 100644 arch/mips/ps2/scmd.c
 
-diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
-index f7effca791a5..71ddf155ef85 100644
---- a/arch/mips/include/asm/uasm.h
-+++ b/arch/mips/include/asm/uasm.h
-@@ -171,6 +171,7 @@ Ip_u3u2u1(_srlv);
- Ip_u3u1u2(_subu);
- Ip_u2s3u1(_sw);
- Ip_u1(_sync);
-+Ip_0(_syncp);
- Ip_u1(_syscall);
- Ip_0(_tlbp);
- Ip_0(_tlbr);
-diff --git a/arch/mips/mm/uasm-mips.c b/arch/mips/mm/uasm-mips.c
-index 7154a1d99aad..725c6fe1e317 100644
---- a/arch/mips/mm/uasm-mips.c
-+++ b/arch/mips/mm/uasm-mips.c
-@@ -191,6 +191,7 @@ static const struct insn insn_table[insn_invalid] = {
- 	[insn_subu]	= {M(spec_op, 0, 0, 0, 0, subu_op),	RS | RT | RD},
- 	[insn_sw]	= {M(sw_op, 0, 0, 0, 0, 0),  RS | RT | SIMM},
- 	[insn_sync]	= {M(spec_op, 0, 0, 0, 0, sync_op), RE},
-+	[insn_syncp]	= {M(spec_op, 0, 0, 0, 0x10, sync_op), 0},
- 	[insn_syscall]	= {M(spec_op, 0, 0, 0, 0, syscall_op), SCIMM},
- 	[insn_tlbp]	= {M(cop0_op, cop_op, 0, 0, 0, tlbp_op),  0},
- 	[insn_tlbr]	= {M(cop0_op, cop_op, 0, 0, 0, tlbr_op),  0},
-diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
-index c56f129c9a4b..32c7a5827ba8 100644
---- a/arch/mips/mm/uasm.c
-+++ b/arch/mips/mm/uasm.c
-@@ -64,8 +64,8 @@ enum opcode {
- 	insn_scd, insn_seleqz, insn_selnez, insn_sd, insn_sh, insn_sll,
- 	insn_sllv, insn_slt, insn_slti, insn_sltiu, insn_sltu, insn_sra,
- 	insn_srav, insn_srl, insn_srlv, insn_subu, insn_sw, insn_sync,
--	insn_syscall, insn_tlbp, insn_tlbr, insn_tlbwi, insn_tlbwr, insn_wait,
--	insn_wsbh, insn_xor, insn_xori, insn_yield,
-+	insn_syncp, insn_syscall, insn_tlbp, insn_tlbr, insn_tlbwi, insn_tlbwr,
-+	insn_wait, insn_wsbh, insn_xor, insn_xori, insn_yield,
- 	insn_invalid /* insn_invalid must be last */
- };
- 
-@@ -369,6 +369,7 @@ I_u2u1u3(_rotr)
- I_u3u1u2(_subu)
- I_u2s3u1(_sw)
- I_u1(_sync)
-+I_0(_syncp)
- I_0(_tlbp)
- I_0(_tlbr)
- I_0(_tlbwi)
+diff --git a/arch/mips/include/asm/mach-ps2/scmd.h b/arch/mips/include/asm/mach-ps2/scmd.h
+new file mode 100644
+index 000000000000..b2b98dbaec9b
+--- /dev/null
++++ b/arch/mips/include/asm/mach-ps2/scmd.h
+@@ -0,0 +1,33 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * PlayStation 2 system commands
++ *
++ * Copyright (C) 2019 Fredrik Noring
++ */
++
++#ifndef __ASM_MACH_PS2_SCMD_H
++#define __ASM_MACH_PS2_SCMD_H
++
++#include <linux/types.h>
++
++#define SCMD_COMMAND	0x1f402016
++#define SCMD_STATUS	0x1f402017
++#define SCMD_SEND	0x1f402017
++#define SCMD_RECV	0x1f402018
++
++#define SCMD_STATUS_EMPTY	0x40	/* Data is unavailable */
++#define SCMD_STATUS_BUSY	0x80	/* Command is processing */
++
++/**
++ * enum scmd_cmd - system commands
++ * @scmd_cmd_power_off: power off the system
++ */
++enum scmd_cmd {
++	scmd_cmd_power_off = 15,
++};
++
++int scmd(enum scmd_cmd cmd,
++	const void *send, size_t send_size,
++	void *recv, size_t recv_size);
++
++#endif /* __ASM_MACH_PS2_SCMD_H */
+diff --git a/arch/mips/ps2/Makefile b/arch/mips/ps2/Makefile
+index 2015870f9fe7..d90d3e06387f 100644
+--- a/arch/mips/ps2/Makefile
++++ b/arch/mips/ps2/Makefile
+@@ -2,4 +2,5 @@ obj-y		+= dmac-irq.o
+ obj-y		+= intc-irq.o
+ obj-y		+= irq.o
+ obj-y		+= memory.o
++obj-y		+= scmd.o
+ obj-y		+= time.o
+diff --git a/arch/mips/ps2/scmd.c b/arch/mips/ps2/scmd.c
+new file mode 100644
+index 000000000000..0516766ffdba
+--- /dev/null
++++ b/arch/mips/ps2/scmd.c
+@@ -0,0 +1,180 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * PlayStation 2 system commands
++ *
++ * Copyright (C) 2019 Fredrik Noring
++ */
++
++#include <linux/build_bug.h>
++#include <linux/delay.h>
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/mutex.h>
++#include <linux/sched.h>
++#include <linux/sched/signal.h>
++
++#include <asm/mach-ps2/scmd.h>
++
++/**
++ * completed - poll for condition to happen, or timeout
++ * @condition: function to poll for condition
++ *
++ * Return: %true if condition happened, else %false on timeout
++ */
++static bool completed(bool (*condition)(void))
++{
++	const unsigned long timeout = jiffies + 5*HZ;
++
++	do {
++		if (condition())
++			return true;
++
++		msleep(1);
++	} while (time_is_after_jiffies(timeout));
++
++	return false;
++}
++
++/**
++ * scmd_status - read system command status register
++ *
++ * Return: system command status register value
++ */
++static u8 scmd_status(void)
++{
++	return inb(SCMD_STATUS);
++}
++
++/**
++ * scmd_write - write system command data
++ * @data: pointer to data to write
++ * @size: number of bytes to write
++ */
++static void scmd_write(const u8 *data, size_t size)
++{
++	size_t i;
++
++	for (i = 0; i < size; i++)
++		outb(data[i], SCMD_SEND);
++}
++
++/**
++ * scmd_ready - can the system receive a command or has finished processing?
++ *
++ * Return: %true if the system is ready to receive a command, or has finished
++ * 	processing a previous command, otherwise %false
++ */
++static bool scmd_ready(void)
++{
++	return (scmd_status() & SCMD_STATUS_BUSY) == 0;
++}
++
++/**
++ * scmd_wait - wait for the system command to become ready
++ *
++ * Return: %true if the system command is ready, else %false on timeout
++ */
++static bool scmd_wait(void)
++{
++	return completed(scmd_ready);
++}
++
++/**
++ * scmd_data - is command data available to be read from the system?
++ *
++ * Return: %true if system data is readable, else %false
++ */
++static bool scmd_data(void)
++{
++	return (scmd_status() & SCMD_STATUS_EMPTY) == 0;
++}
++
++/**
++ * scmd_flush - read and discard all available command data from the system
++ *
++ * Return: %true if something was read, else %false
++ */
++static bool scmd_flush(void)
++{
++	bool flushed;
++
++	for (flushed = false; scmd_data(); flushed = true)
++		inb(SCMD_RECV);
++
++	return flushed;
++}
++
++/**
++ * scmd_read - read command data from the system
++ * @data: pointer to data to read
++ * @size: maximum number of bytes to read
++ *
++ * Return: actual number of bytes read
++ */
++static size_t scmd_read(u8 *data, size_t size)
++{
++	size_t r;
++
++	for (r = 0; r < size && scmd_data(); r++)
++		data[r] = inb(SCMD_RECV);
++
++	return r;
++}
++
++/**
++ * scmd - general system command function
++ * @cmd: system command
++ * @send: pointer to command data to send
++ * @send_size: size in bytes of command data to send
++ * @recv: pointer to command data to receive
++ * @recv_size: exact size in bytes of command data to receive
++ *
++ * Context: sleep
++ * Return: 0 on success, else a negative error number
++ */
++int scmd(enum scmd_cmd cmd,
++	const void *send, size_t send_size,
++	void *recv, size_t recv_size)
++{
++	static DEFINE_MUTEX(scmd_lock);
++	int err = 0;
++	size_t r;
++
++	mutex_lock(&scmd_lock);
++
++	if (!scmd_ready()) {
++		pr_warn("%s: Unexpectedly busy preceding command %d\n",
++			__func__, cmd);
++
++		if (!scmd_wait()) {
++			err = -EBUSY;
++			goto out_err;
++		}
++	}
++	if (scmd_flush())
++		pr_warn("%s: Unexpected data preceding command %d\n",
++			__func__, cmd);
++
++	scmd_write(send, send_size);
++	outb(cmd, SCMD_COMMAND);
++
++	if (!scmd_wait()) {
++		err = -EIO;
++		goto out_err;
++	}
++	r = scmd_read(recv, recv_size);
++	if (r == recv_size && scmd_flush())
++		pr_warn("%s: Unexpected data following command %d\n",
++			__func__, cmd);
++	if (r != recv_size)
++		err = -EIO;
++
++out_err:
++	mutex_unlock(&scmd_lock);
++	return err;
++}
++EXPORT_SYMBOL_GPL(scmd);
++
++MODULE_DESCRIPTION("PlayStation 2 system commands");
++MODULE_AUTHOR("Fredrik Noring");
++MODULE_LICENSE("GPL");
 -- 
 2.21.0
 

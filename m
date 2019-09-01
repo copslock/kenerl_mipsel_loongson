@@ -6,35 +6,37 @@ X-Spam-Status: No, score=-8.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CFF9CC3A5A4
-	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:47:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DF6CC3A5A4
+	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:48:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id ABCF421897
-	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:47:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0E1B7206BB
+	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:48:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729157AbfIAPrx (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 1 Sep 2019 11:47:53 -0400
-Received: from pio-pvt-msa3.bahnhof.se ([79.136.2.42]:41480 "EHLO
-        pio-pvt-msa3.bahnhof.se" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729151AbfIAPrx (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sun, 1 Sep 2019 11:47:53 -0400
+        id S1729158AbfIAPsF (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 1 Sep 2019 11:48:05 -0400
+Received: from ste-pvt-msa1.bahnhof.se ([213.80.101.70]:39451 "EHLO
+        ste-pvt-msa1.bahnhof.se" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729151AbfIAPsF (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sun, 1 Sep 2019 11:48:05 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTP id 71A713F65F
-        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:47:51 +0200 (CEST)
+        by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTP id D3A4A3F797;
+        Sun,  1 Sep 2019 17:38:26 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-Received: from pio-pvt-msa3.bahnhof.se ([127.0.0.1])
-        by localhost (pio-pvt-msa3.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id rrtjtLf0dTRh for <linux-mips@vger.kernel.org>;
-        Sun,  1 Sep 2019 17:47:50 +0200 (CEST)
+Received: from ste-pvt-msa1.bahnhof.se ([127.0.0.1])
+        by localhost (ste-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id LxdvdqJ1fkop; Sun,  1 Sep 2019 17:38:26 +0200 (CEST)
 Received: from localhost (h-41-252.A163.priv.bahnhof.se [46.59.41.252])
         (Authenticated sender: mb547485)
-        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTPA id C33A73F615
-        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:47:50 +0200 (CEST)
-Date:   Sun, 1 Sep 2019 17:47:50 +0200
+        by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id C84293F6D0;
+        Sun,  1 Sep 2019 17:38:25 +0200 (CEST)
+Date:   Sun, 1 Sep 2019 17:38:25 +0200
 From:   Fredrik Noring <noring@nocrew.org>
-To:     linux-mips@vger.kernel.org
-Subject: [PATCH 028/120] MIPS: PS2: DMAC: Define tag structures
-Message-ID: <060f4aecc76fcbdb8a938241ec645bbb82862533.1567326213.git.noring@nocrew.org>
+To:     Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
+Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        =?utf-8?Q?J=C3=BCrgen?= Urban <JuergenUrban@gmx.de>
+Subject: [PATCH 005/120] MIPS: R5900: Reset the funnel shift amount (SA)
+ register in RESTORE_SOME
+Message-ID: <5ea4fddbb423d86cbf9894690fd221a121636c3a.1567326213.git.noring@nocrew.org>
 References: <cover.1567326213.git.noring@nocrew.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -46,94 +48,39 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The DMA tag is used in chain mode to control the destination and source
-memory addresses, transfer size, etc. There are two types of tag: source
-chain tag and destination chain tag[1].
+The shift amount (SA) register is a 64-bit special register storing the
+funnel shift amount[1]. It is used by the QFSRV (quadword funnel shift
+right variable) 256-bit multimedia instruction. This is a provisional
+measure until the SA register is saved/restored properly.
+
+The R5900 specific MTSAB (move byte count to shift amount register)
+instruction is used to reset the SA register.
 
 References:
 
-[1] "EE User's Manual", version 6.0, Sony Computer Entertainment Inc.,
-    pp. 58-61.
+[1] "TX System RISC TX79 Core Architecture" manual, revision 2.0,
+    Toshiba Corporation, p. B-161, https://wiki.qemu.org/File:C790.pdf
 
 Signed-off-by: Fredrik Noring <noring@nocrew.org>
 ---
- arch/mips/include/asm/mach-ps2/dmac.h | 65 +++++++++++++++++++++++++++
- 1 file changed, 65 insertions(+)
+The shift amount (SA) register ought to be saved and restored properly too,
+along with the 128-bit GPRs, I think.
+---
+ arch/mips/include/asm/stackframe.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/include/asm/mach-ps2/dmac.h b/arch/mips/include/asm/mach-ps2/dmac.h
-index 30a0f72eeab3..fb4c52ad9ad5 100644
---- a/arch/mips/include/asm/mach-ps2/dmac.h
-+++ b/arch/mips/include/asm/mach-ps2/dmac.h
-@@ -186,4 +186,69 @@
- #define DMAC_ENABLER	0x1000f520	/* Acquisition of DMA suspend status */
- #define DMAC_ENABLEW	0x1000f590	/* DMA suspend control */
- 
-+enum dma_tag_reg {		/* Data start address:	Next tag address: */
-+	dma_tag_id_refe = 0,	/* ADDR			(none) */
-+	dma_tag_id_cnts = 0,	/* ADDR			(none) */
-+	dma_tag_id_cnt,		/* next to tag		next to transfer data */
-+	dma_tag_id_next,	/* next to tag		ADDR */
-+	dma_tag_id_ref,		/* ADDR			next to tag */
-+	dma_tag_id_refs,	/* ADDR			next to tag */
-+	dma_tag_id_call,	/* next to tag		ADDR */
-+	dma_tag_id_ret,		/* next to tag		Dn_ASR */
-+	dma_tag_id_end		/* next to tag		(none) */
-+};
-+
-+/**
-+ * enum dma_tag_spr - memory or scratch-pad RAM
-+ * @dma_tag_spr_memory: select memory
-+ * @dma_tag_spr_scratchpad: select scratch-pad RAM
-+ */
-+enum dma_tag_spr {
-+	dma_tag_spr_memory,
-+	dma_tag_spr_scratchpad
-+};
-+
-+/**
-+ * struct dma_tag - DMA tag
-+ * @qwc: 128-bit quadword count
-+ * @pce: priority control enable
-+ * @id: &enum dma_tag_reg tag identifier
-+ * @irq: interrupt request
-+ * @addr: address with lower 4 bits zero
-+ * @spr: &enum dma_tag_spr memory or scratch-pad RAM
-+ *
-+ * The DMA tag must be aligned with 16 byte boundaries.
-+ */
-+struct dma_tag {
-+	u64 qwc : 16;
-+	u64 : 10;
-+	u64 pce : 2;
-+	u64 id : 3;
-+	u64 irq : 1;
-+	u64 addr : 31;
-+	u64 spr : 1;
-+
-+	u64 : 64;
-+} __attribute__((aligned(16)));
-+
-+/**
-+ * struct iop_dma_tag - I/O processor (IOP) DMA tag
-+ * @addr: IOP address
-+ * @int_0: assert IOP interupt on completion
-+ * @ert: FIXME
-+ * @wc: 32-bit word count
-+ *
-+ * The IOP DMA tag must be aligned with 16 byte boundaries.
-+ */
-+struct iop_dma_tag {
-+	u32 addr : 24;
-+	u32 : 6;
-+	u32 int_0 : 1;
-+	u32 ert : 1;
-+
-+	u32 wc;
-+
-+	u64 : 64;
-+} __attribute__((aligned(16)));
-+
- #endif /* __ASM_MACH_PS2_DMAC_H */
+diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
+index aaed9b522220..2fbead2e86d1 100644
+--- a/arch/mips/include/asm/stackframe.h
++++ b/arch/mips/include/asm/stackframe.h
+@@ -394,6 +394,7 @@
+ 		pcpyld	$29, $0, $29
+ 		pcpyld	$30, $0, $30
+ 		pcpyld	$31, $0, $31
++		mtsab	$0, 0 /* Reset the funnel shift (SA) register. */
+ 		.set	pop
+ 		.endm
+ #else
 -- 
 2.21.0
 

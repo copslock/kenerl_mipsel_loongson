@@ -6,36 +6,36 @@ X-Spam-Status: No, score=-8.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC108C3A5A8
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CBFE9C3A5A7
 	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:48:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8CD0F23429
+	by mail.kernel.org (Postfix) with ESMTP id ADB51233A2
 	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:48:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729159AbfIAPsW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        id S1728763AbfIAPsW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
         Sun, 1 Sep 2019 11:48:22 -0400
-Received: from pio-pvt-msa2.bahnhof.se ([79.136.2.41]:57478 "EHLO
+Received: from pio-pvt-msa2.bahnhof.se ([79.136.2.41]:57482 "EHLO
         pio-pvt-msa2.bahnhof.se" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728763AbfIAPsW (ORCPT
+        with ESMTP id S1729172AbfIAPsW (ORCPT
         <rfc822;linux-mips@vger.kernel.org>); Sun, 1 Sep 2019 11:48:22 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTP id EB2774041C
-        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:41:10 +0200 (CEST)
+        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTP id 7DDBC40408
+        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:40:56 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at bahnhof.se
 Received: from pio-pvt-msa2.bahnhof.se ([127.0.0.1])
         by localhost (pio-pvt-msa2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id WdbLCjR3cars for <linux-mips@vger.kernel.org>;
-        Sun,  1 Sep 2019 17:41:10 +0200 (CEST)
+        with ESMTP id yOALxI-TnqKW for <linux-mips@vger.kernel.org>;
+        Sun,  1 Sep 2019 17:40:55 +0200 (CEST)
 Received: from localhost (h-41-252.A163.priv.bahnhof.se [46.59.41.252])
         (Authenticated sender: mb547485)
-        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTPA id 0A94C4040E
-        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:41:09 +0200 (CEST)
-Date:   Sun, 1 Sep 2019 17:41:09 +0200
+        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTPA id 8CE0F403B7
+        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:40:55 +0200 (CEST)
+Date:   Sun, 1 Sep 2019 17:40:55 +0200
 From:   Fredrik Noring <noring@nocrew.org>
 To:     linux-mips@vger.kernel.org
-Subject: [PATCH 014/120] MIPS: R5900: Install final length of TLB refill
- handler rather than 256 bytes
-Message-ID: <3eb0ba899a344ff9e83f1c5495010e7b1ee474f0.1567326213.git.noring@nocrew.org>
+Subject: [PATCH 013/120] MIPS: R5900: Avoid pipeline hazard with the TLBR
+ instruction
+Message-ID: <815e58a51f40c56ea8b02bc39f9ed5f1639a69ee.1567326213.git.noring@nocrew.org>
 References: <cover.1567326213.git.noring@nocrew.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -47,61 +47,77 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The R5900 TLB refill handler is limited to 128 bytes, corresponding
-to 32 instructions.
-
-Installing a 256 byte TLB refill handler for the R5900 at address
-0x80000000 overwrites the performance counter handler at address
-0x80000080, according to the TX79 manual[1]:
-
-        Table 5-2. Exception Vectors for Level 1 exceptions
-
-             Exceptions      |      Vector Address
-                             |   BEV = 0  |   BEV = 1
-        ---------------------+------------+-----------
-        TLB Refill (EXL = 0) | 0x80000000 | 0xBFC00200
-        TLB Refill (EXL = 1) | 0x80000180 | 0xBFC00380
-        Interrupt            | 0x80000200 | 0xBFC00400
-        Others               | 0x80000180 | 0xBFC00380
-        ---------------------+------------+-----------
-
-        Table 5-3. Exception Vectors for Level 2 exceptions
-
-             Exceptions      |      Vector Address
-                             |   DEV = 0  |   DEV = 1
-        ---------------------+------------+-----------
-        Reset, NMI           | 0xBFC00000 | 0xBFC00000
-        Performance Counter  | 0x80000080 | 0xBFC00280
-        Debug, SIO           | 0x80000100 | 0xBFC00300
-        ---------------------+------------+-----------
+On the R5900, the TLBR instruction must be immediately followed by an
+ERET or a SYNC.P instruction[1].
 
 References:
 
 [1] "TX System RISC TX79 Core Architecture" manual, revision 2.0,
-    Toshiba Corporation, p. 5-7, https://wiki.qemu.org/File:C790.pdf
+    Toshiba Corporation, p. C-38, https://wiki.qemu.org/File:C790.pdf
 
 Signed-off-by: Fredrik Noring <noring@nocrew.org>
 ---
- arch/mips/mm/tlbex.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/mipsregs.h |  4 ++++
+ arch/mips/mm/tlbex.c             | 24 ++++++++++++++++++++++++
+ 2 files changed, 28 insertions(+)
 
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index 2aa947b3d0d1..ec22406c800f 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -2728,6 +2728,10 @@ static inline void tlb_read(void)
+ 
+ 	__asm__ __volatile__(
+ 		".set noreorder\n\t"
++#ifdef CONFIG_CPU_R5900
++		/* instruction must not be at the end of a page. */
++		".align 8\n\t"
++#endif
+ 		"tlbr\n\t"
+ #ifdef CONFIG_CPU_R5900
+ 		"sync.p\n\t"
 diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 1caa0214d57a..d356953509e6 100644
+index 89ff0eae5397..1caa0214d57a 100644
 --- a/arch/mips/mm/tlbex.c
 +++ b/arch/mips/mm/tlbex.c
-@@ -1502,9 +1502,9 @@ static void build_r4000_tlb_refill_handler(void)
- 	pr_debug("Wrote TLB refill handler (%u instructions).\n",
- 		 final_len);
+@@ -2185,6 +2185,18 @@ static void build_r4000_tlb_load_handler(void)
  
--	memcpy((void *)ebase, final_handler, 0x100);
--	local_flush_icache_range(ebase, ebase + 0x100);
--	dump_handler("r4000_tlb_refill", (u32 *)ebase, (u32 *)(ebase + 0x100));
-+	memcpy((void *)ebase, final_handler, 4 * final_len);
-+	local_flush_icache_range(ebase, ebase + 4 * final_len);
-+	dump_handler("r4000_tlb_refill", (u32 *)ebase, (u32 *)(ebase + 4 * final_len));
- }
+ 		uasm_i_tlbr(&p);
  
- static void setup_pw(void)
++#ifdef CONFIG_CPU_R5900
++		/*
++		 * On the R5900, the TLBR instruction must be immediately
++		 * followed by an ERET or a SYNC.P instruction.
++		 */
++		uasm_i_syncp(&p);
++		uasm_i_nop(&p);
++		uasm_i_nop(&p);
++		uasm_i_nop(&p);
++		uasm_i_nop(&p);
++#endif
++
+ 		switch (current_cpu_type()) {
+ 		default:
+ 			if (cpu_has_mips_r2_exec_hazard) {
+@@ -2260,6 +2272,18 @@ static void build_r4000_tlb_load_handler(void)
+ 
+ 		uasm_i_tlbr(&p);
+ 
++#ifdef CONFIG_CPU_R5900
++		/*
++		 * On the R5900, the TLBR instruction must be immediately
++		 * followed by an ERET or a SYNC.P instruction.
++		 */
++		uasm_i_syncp(&p);
++		uasm_i_nop(&p);
++		uasm_i_nop(&p);
++		uasm_i_nop(&p);
++		uasm_i_nop(&p);
++#endif
++
+ 		switch (current_cpu_type()) {
+ 		default:
+ 			if (cpu_has_mips_r2_exec_hazard) {
 -- 
 2.21.0
 

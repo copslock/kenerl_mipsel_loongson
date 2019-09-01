@@ -6,35 +6,36 @@ X-Spam-Status: No, score=-8.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C903C3A5A4
-	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:50:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CDD6C3A5A8
+	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:51:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id EC48720828
-	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:50:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6408C23429
+	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:51:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726552AbfIAPum (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 1 Sep 2019 11:50:42 -0400
-Received: from pio-pvt-msa2.bahnhof.se ([79.136.2.41]:57800 "EHLO
-        pio-pvt-msa2.bahnhof.se" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726260AbfIAPum (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sun, 1 Sep 2019 11:50:42 -0400
+        id S1728753AbfIAPvL (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 1 Sep 2019 11:51:11 -0400
+Received: from pio-pvt-msa3.bahnhof.se ([79.136.2.42]:41792 "EHLO
+        pio-pvt-msa3.bahnhof.se" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726260AbfIAPvK (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sun, 1 Sep 2019 11:51:10 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTP id 37E20402D7
-        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:50:41 +0200 (CEST)
+        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTP id 1B13F3F6B8
+        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:41:42 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-Received: from pio-pvt-msa2.bahnhof.se ([127.0.0.1])
-        by localhost (pio-pvt-msa2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 3ia7rdVHrTBq for <linux-mips@vger.kernel.org>;
-        Sun,  1 Sep 2019 17:50:40 +0200 (CEST)
+Received: from pio-pvt-msa3.bahnhof.se ([127.0.0.1])
+        by localhost (pio-pvt-msa3.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id BysIxn_d_7g7 for <linux-mips@vger.kernel.org>;
+        Sun,  1 Sep 2019 17:41:41 +0200 (CEST)
 Received: from localhost (h-41-252.A163.priv.bahnhof.se [46.59.41.252])
         (Authenticated sender: mb547485)
-        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTPA id 85C8C3FBF6
-        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:50:40 +0200 (CEST)
-Date:   Sun, 1 Sep 2019 17:50:40 +0200
+        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTPA id 7C8AB3F69D
+        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:41:41 +0200 (CEST)
+Date:   Sun, 1 Sep 2019 17:41:41 +0200
 From:   Fredrik Noring <noring@nocrew.org>
 To:     linux-mips@vger.kernel.org
-Subject: [PATCH 040/120] MIPS: PS2: ROM: Read and decode the ROMVER file
-Message-ID: <01d431fa1e7c4b03bb95d5a7016677958a09abd3.1567326213.git.noring@nocrew.org>
+Subject: [PATCH 016/120] MIPS: R5900: The ERET instruction has issues with
+ delay slot and CACHE
+Message-ID: <3a2945e9ac2b70c6f6b14100bf8c805d3ef51ce0.1567326213.git.noring@nocrew.org>
 References: <cover.1567326213.git.noring@nocrew.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -46,109 +47,50 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The ROMVER file contains information on the ROM version, the machine
-region, the machine type (CEX for retail, DEX for debug, or TOOL) and
-the date the ROM was created.
-
 Signed-off-by: Fredrik Noring <noring@nocrew.org>
 ---
- arch/mips/include/asm/mach-ps2/rom.h | 30 ++++++++++++++++++++++++++++
- arch/mips/ps2/rom.c                  | 28 ++++++++++++++++++++++++++
- 2 files changed, 58 insertions(+)
+The Linux 2.6 port to the PlayStation 2 has this remark. I don't know
+where it comes from.
+---
+ arch/mips/mm/tlbex.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/arch/mips/include/asm/mach-ps2/rom.h b/arch/mips/include/asm/mach-ps2/rom.h
-index 4cc3fcffaa59..42e520f32f65 100644
---- a/arch/mips/include/asm/mach-ps2/rom.h
-+++ b/arch/mips/include/asm/mach-ps2/rom.h
-@@ -123,6 +123,36 @@ ssize_t rom_read_file(const struct rom_dir dir,
- struct rom_extinfo rom_read_extinfo(const char *name,
- 	const void *buffer, size_t size);
- 
-+/**
-+ * struct rom_ver - ROM version
-+ * @number: ROM version number
-+ * @region: ROM region with ``'J'`` for Japan, ``'E'`` for Europe,
-+ * 	``'C'`` for China, and ``'A'`` or ``'H'`` for the USA
-+ * @type: ROM type with ``'C'`` for retail (CEX), ``'D'`` for debug (DEX),
-+ * 	and `'T'`` for TOOL, or ``'-'`` for undefined
-+ * @date: date ROM was created
-+ * @date.year: year ROM was created
-+ * @date.month: month ROM was created
-+ * @date.day: day ROM was created
-+ *
-+ * Note that the Namco System 246 arcade systems are TOOL types as well.
-+ *
-+ * A ROM version is considered to be invalid if @number is zero, in which
-+ * case all members are zero except @region and @type that are ``'-'``.
-+ */
-+struct rom_ver {
-+	int number;
-+	char region;
-+	char type;
-+	struct {
-+		int year;
-+		int month;
-+		int day;
-+	} date;
-+};
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 1bd134b6f033..9d5864b20e9f 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -1383,6 +1383,16 @@ static void build_r4000_tlb_refill_handler(void)
+ 		uasm_l_leave(&l, p);
+ 		uasm_i_eret(&p); /* return from trap */
+ 	}
 +
-+struct rom_ver rom_version(void);
++#ifdef CONFIG_CPU_R5900
++	/* There should be nothing which can be interpreted as cache instruction. */
++	uasm_i_nop(&p);
++	uasm_i_nop(&p);
++	uasm_i_nop(&p);
++	uasm_i_nop(&p);
++	uasm_i_nop(&p);
++#endif
 +
- bool rom_empty_dir(const struct rom_dir dir);
+ #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
+ 	uasm_l_tlb_huge_update(&l, p);
+ 	if (htlb_info.need_reload_pte)
+@@ -2129,6 +2139,14 @@ build_r4000_tlbchange_handler_tail(u32 **p, struct uasm_label **l,
+ 	uasm_l_leave(l, *p);
+ 	build_restore_work_registers(p);
+ 	uasm_i_eret(p); /* return from trap */
++#ifdef CONFIG_CPU_R5900
++	/* There should be nothing which can be interpreted as cache instruction. */
++	uasm_i_nop(p);
++	uasm_i_nop(p);
++	uasm_i_nop(p);
++	uasm_i_nop(p);
++	uasm_i_nop(p);
++#endif
  
- bool rom_terminating_file(const struct rom_file file);
-diff --git a/arch/mips/ps2/rom.c b/arch/mips/ps2/rom.c
-index a510832e26d7..32ae8ec839c4 100644
---- a/arch/mips/ps2/rom.c
-+++ b/arch/mips/ps2/rom.c
-@@ -362,6 +362,27 @@ struct rom_extinfo rom_read_extinfo(const char *name,
- }
- EXPORT_SYMBOL_GPL(rom_read_extinfo);
- 
-+/**
-+ * rom_version - read the ROMVER file in ROM0
-+ *
-+ * Context: any
-+ * Return: ROM version; or, if reading failed, all members zeroed except
-+ *      @region and @type that are set to ``'-'``
-+ */
-+struct rom_ver rom_version(void)
-+{
-+	struct rom_ver v = { };
-+	char buffer[20] = { };
-+	ssize_t r = rom_read_file(rom0_dir, "ROMVER",
-+		buffer, sizeof(buffer) - 1, 0);
-+
-+	return r > 0 && sscanf(buffer, "%4x%c%c%4d%2d%2d",
-+				&v.number, &v.region, &v.type,
-+				&v.date.year, &v.date.month, &v.date.day) == 6 ?
-+		v : (struct rom_ver) { .region = '-', .type = '-' };
-+}
-+EXPORT_SYMBOL_GPL(rom_version);
-+
- /**
-  * find_reset_string - find the offset to the ``"RESET"`` string, if it exists
-  * @rom: ROM to search in
-@@ -629,12 +650,19 @@ static struct rom_dir __init rom_dir_init(const char *name,
- 
- static int __init ps2_rom_init(void)
- {
-+	struct rom_ver v;
-+
- 	BUILD_BUG_ON(sizeof(struct rom_dir_entry) != 16);
- 	BUILD_BUG_ON(sizeof(struct rom_extinfo_entry) != 4);
- 
- 	rom0_dir = rom_dir_init("rom0", ROM0_BASE, ROM0_SIZE);
- 	rom1_dir = rom_dir_init("rom1", ROM1_BASE, ROM1_SIZE);
- 
-+	v = rom_version();
-+	pr_info("rom0: Version %04x %c %c %04d-%02d-%02d\n",
-+		v.number, v.region, v.type,
-+		v.date.year, v.date.month, v.date.day);
-+
- 	return 0;
- }
- arch_initcall(ps2_rom_init);
+ #ifdef CONFIG_64BIT
+ 	build_get_pgd_vmalloc64(p, l, r, tmp, ptr, not_refill);
 -- 
 2.21.0
 

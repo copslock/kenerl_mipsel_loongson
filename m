@@ -6,36 +6,35 @@ X-Spam-Status: No, score=-8.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CBFE9C3A5A7
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EE513C41514
 	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:48:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id ADB51233A2
+	by mail.kernel.org (Postfix) with ESMTP id CE61D20828
 	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:48:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728763AbfIAPsW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        id S1729172AbfIAPsW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
         Sun, 1 Sep 2019 11:48:22 -0400
-Received: from pio-pvt-msa2.bahnhof.se ([79.136.2.41]:57482 "EHLO
+Received: from pio-pvt-msa2.bahnhof.se ([79.136.2.41]:57476 "EHLO
         pio-pvt-msa2.bahnhof.se" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729172AbfIAPsW (ORCPT
+        with ESMTP id S1729151AbfIAPsW (ORCPT
         <rfc822;linux-mips@vger.kernel.org>); Sun, 1 Sep 2019 11:48:22 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTP id 7DDBC40408
-        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:40:56 +0200 (CEST)
+        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTP id 10373402D7
+        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:38:46 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at bahnhof.se
 Received: from pio-pvt-msa2.bahnhof.se ([127.0.0.1])
         by localhost (pio-pvt-msa2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id yOALxI-TnqKW for <linux-mips@vger.kernel.org>;
-        Sun,  1 Sep 2019 17:40:55 +0200 (CEST)
+        with ESMTP id 9DN2j69RFKgk for <linux-mips@vger.kernel.org>;
+        Sun,  1 Sep 2019 17:38:45 +0200 (CEST)
 Received: from localhost (h-41-252.A163.priv.bahnhof.se [46.59.41.252])
         (Authenticated sender: mb547485)
-        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTPA id 8CE0F403B7
-        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:40:55 +0200 (CEST)
-Date:   Sun, 1 Sep 2019 17:40:55 +0200
+        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTPA id 41CE63FBF6
+        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:38:45 +0200 (CEST)
+Date:   Sun, 1 Sep 2019 17:38:44 +0200
 From:   Fredrik Noring <noring@nocrew.org>
 To:     linux-mips@vger.kernel.org
-Subject: [PATCH 013/120] MIPS: R5900: Avoid pipeline hazard with the TLBR
- instruction
-Message-ID: <815e58a51f40c56ea8b02bc39f9ed5f1639a69ee.1567326213.git.noring@nocrew.org>
+Subject: [PATCH 006/120] MIPS: R5900: Workaround for the short loop bug
+Message-ID: <d59a6bef6541d35d4460b966c0fe651aac507730.1567326213.git.noring@nocrew.org>
 References: <cover.1567326213.git.noring@nocrew.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -47,77 +46,173 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On the R5900, the TLBR instruction must be immediately followed by an
-ERET or a SYNC.P instruction[1].
+The short loop bug under certain conditions causes loops to execute
+only once or twice. The Gnu assembler (GAS) has the following note
+about it:
 
-References:
+    On the R5900 short loops need to be fixed by inserting a NOP in the
+    branch delay slot.
 
-[1] "TX System RISC TX79 Core Architecture" manual, revision 2.0,
-    Toshiba Corporation, p. C-38, https://wiki.qemu.org/File:C790.pdf
+    The short loop bug under certain conditions causes loops to execute
+    only once or twice. We must ensure that the assembler never
+    generates loops that satisfy all of the following conditions:
+
+    - a loop consists of less than or equal to six instructions
+      (including the branch delay slot);
+    - a loop contains only one conditional branch instruction at the
+      end of the loop;
+    - a loop does not contain any other branch or jump instructions;
+    - a branch delay slot of the loop is not NOP (EE 2.9 or later).
+
+    We need to do this because of a hardware bug in the R5900 chip.
+
+GAS handles the short loop bug in most cases. However, GAS is unable
+to adjust machine code having the noreorder directive, as used by the
+kernel on several occasions.
+
+The short loop bug also affects user space code, which is why generic
+MIPS code cannot execute unadjusted on the R5900. The GAS and GCC option
+-mfix-r5900 is recommended for such cases.
 
 Signed-off-by: Fredrik Noring <noring@nocrew.org>
 ---
- arch/mips/include/asm/mipsregs.h |  4 ++++
- arch/mips/mm/tlbex.c             | 24 ++++++++++++++++++++++++
- 2 files changed, 28 insertions(+)
+ arch/mips/boot/compressed/head.S |  7 +++---
+ arch/mips/include/asm/asmmacro.h | 41 ++++++++++++++++++++++++++++++++
+ arch/mips/include/asm/string.h   |  3 +++
+ arch/mips/lib/delay.c            |  7 +++---
+ arch/mips/lib/memset.S           |  2 ++
+ 5 files changed, 52 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 2aa947b3d0d1..ec22406c800f 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -2728,6 +2728,10 @@ static inline void tlb_read(void)
+diff --git a/arch/mips/boot/compressed/head.S b/arch/mips/boot/compressed/head.S
+index 409cb483a9ff..e3dc831e2616 100644
+--- a/arch/mips/boot/compressed/head.S
++++ b/arch/mips/boot/compressed/head.S
+@@ -15,7 +15,6 @@
+ #include <asm/asm.h>
+ #include <asm/regdef.h>
  
- 	__asm__ __volatile__(
- 		".set noreorder\n\t"
+-	.set noreorder
+ 	.cprestore
+ 	LEAF(start)
+ start:
+@@ -26,11 +25,11 @@ start:
+ 	move	s3, a3
+ 
+ 	/* Clear BSS */
+-	PTR_LA	a0, _edata
++	PTR_LA	a0, _edata - 4
+ 	PTR_LA	a2, _end
+-1:	sw	zero, 0(a0)
++1:	addiu	a0, a0, 4
++	sw	zero, 0(a0)
+ 	bne	a2, a0, 1b
+-	 addiu	a0, a0, 4
+ 
+ 	PTR_LA	a0, (.heap)	     /* heap address */
+ 	PTR_LA	sp, (.stack + 8192)  /* stack address */
+diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
+index feb069cbf44e..aa58474c739f 100644
+--- a/arch/mips/include/asm/asmmacro.h
++++ b/arch/mips/include/asm/asmmacro.h
+@@ -654,4 +654,45 @@
+ 	.set	pop
+ 	.endm
+ 
 +#ifdef CONFIG_CPU_R5900
-+		/* instruction must not be at the end of a page. */
-+		".align 8\n\t"
-+#endif
- 		"tlbr\n\t"
- #ifdef CONFIG_CPU_R5900
- 		"sync.p\n\t"
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 89ff0eae5397..1caa0214d57a 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -2185,6 +2185,18 @@ static void build_r4000_tlb_load_handler(void)
- 
- 		uasm_i_tlbr(&p);
- 
-+#ifdef CONFIG_CPU_R5900
-+		/*
-+		 * On the R5900, the TLBR instruction must be immediately
-+		 * followed by an ERET or a SYNC.P instruction.
-+		 */
-+		uasm_i_syncp(&p);
-+		uasm_i_nop(&p);
-+		uasm_i_nop(&p);
-+		uasm_i_nop(&p);
-+		uasm_i_nop(&p);
++/*
++ * Workaround for the R5900 short loop bug
++ *
++ * The short loop bug under certain conditions causes loops to execute only
++ * once or twice. The Gnu assembler (GAS) has the following note about it:
++ *
++ *     On the R5900 short loops need to be fixed by inserting a NOP in the
++ *     branch delay slot.
++ *
++ *     The short loop bug under certain conditions causes loops to execute
++ *     only once or twice. We must ensure that the assembler never
++ *     generates loops that satisfy all of the following conditions:
++ *
++ *     - a loop consists of less than or equal to six instructions
++ *       (including the branch delay slot);
++ *     - a loop contains only one conditional branch instruction at the
++ *       end of the loop;
++ *     - a loop does not contain any other branch or jump instructions;
++ *     - a branch delay slot of the loop is not NOP (EE 2.9 or later).
++ *
++ *     We need to do this because of a hardware bug in the R5900 chip.
++ *
++ * GAS handles the short loop bug in most cases. However, GAS is unable to
++ * adjust machine code having the noreorder directive, as used by the kernel
++ * on several occasions. The short_loop_war macro defined here can be used
++ * to insert necessary NOPs by placing it just before the jump instruction.
++ */
++	.macro	short_loop_war loop_target
++	.set	instruction_count,2 + (. - \loop_target) / 4
++	.ifgt	7 - instruction_count
++	.rept	7 - instruction_count
++	nop
++	.endr
++	.endif
++	.endm
++#else
++	.macro	short_loop_war loop_target
++	.endm
 +#endif
 +
- 		switch (current_cpu_type()) {
- 		default:
- 			if (cpu_has_mips_r2_exec_hazard) {
-@@ -2260,6 +2272,18 @@ static void build_r4000_tlb_load_handler(void)
+ #endif /* _ASM_ASMMACRO_H */
+diff --git a/arch/mips/include/asm/string.h b/arch/mips/include/asm/string.h
+index 29030cb398ee..35c9dc3815f4 100644
+--- a/arch/mips/include/asm/string.h
++++ b/arch/mips/include/asm/string.h
+@@ -10,6 +10,9 @@
+ #ifndef _ASM_STRING_H
+ #define _ASM_STRING_H
  
- 		uasm_i_tlbr(&p);
- 
-+#ifdef CONFIG_CPU_R5900
-+		/*
-+		 * On the R5900, the TLBR instruction must be immediately
-+		 * followed by an ERET or a SYNC.P instruction.
-+		 */
-+		uasm_i_syncp(&p);
-+		uasm_i_nop(&p);
-+		uasm_i_nop(&p);
-+		uasm_i_nop(&p);
-+		uasm_i_nop(&p);
++#if defined(CONFIG_CPU_R5900)
++#define IN_STRING_C
 +#endif
-+
- 		switch (current_cpu_type()) {
- 		default:
- 			if (cpu_has_mips_r2_exec_hazard) {
+ 
+ /*
+  * Most of the inline functions are rather naive implementations so I just
+diff --git a/arch/mips/lib/delay.c b/arch/mips/lib/delay.c
+index 68c495ed71e3..0b370b831708 100644
+--- a/arch/mips/lib/delay.c
++++ b/arch/mips/lib/delay.c
+@@ -27,11 +27,10 @@
+ void __delay(unsigned long loops)
+ {
+ 	__asm__ __volatile__ (
+-	"	.set	noreorder				\n"
+ 	"	.align	3					\n"
+-	"1:	bnez	%0, 1b					\n"
+-	"	 " __stringify(LONG_SUBU) "	%0, %1		\n"
+-	"	.set	reorder					\n"
++	"	" __stringify(LONG_ADDU) "	%0, %1		\n"
++	"1:	" __stringify(LONG_SUBU) "	%0, %1		\n"
++	"	bnez	%0, 1b					\n"
+ 	: "=r" (loops)
+ 	: GCC_DADDI_IMM_ASM() (1), "0" (loops));
+ }
+diff --git a/arch/mips/lib/memset.S b/arch/mips/lib/memset.S
+index 418611ef13cf..70db395159f1 100644
+--- a/arch/mips/lib/memset.S
++++ b/arch/mips/lib/memset.S
+@@ -9,6 +9,7 @@
+  * Copyright (C) 2011, 2012 MIPS Technologies, Inc.
+  */
+ #include <asm/asm.h>
++#include <asm/asmmacro.h>
+ #include <asm/asm-offsets.h>
+ #include <asm/export.h>
+ #include <asm/regdef.h>
+@@ -222,6 +223,7 @@
+ 1:	PTR_ADDIU	a0, 1			/* fill bytewise */
+ 	R10KCBARRIER(0(ra))
+ 	.set		noreorder
++	short_loop_war(1b)
+ 	bne		t1, a0, 1b
+ 	 EX(sb, a1, -1(a0), .Lsmall_fixup\@)
+ 	.set		reorder
 -- 
 2.21.0
 

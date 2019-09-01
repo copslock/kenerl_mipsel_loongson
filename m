@@ -2,41 +2,40 @@ Return-Path: <SRS0=OeKb=W4=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.3 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-8.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
+	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C523C3A5A4
-	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:52:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 13D82C3A5A4
+	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:52:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6A24E233A2
-	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:52:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D0F57233A2
+	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:52:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726727AbfIAPwA (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 1 Sep 2019 11:52:00 -0400
-Received: from pio-pvt-msa1.bahnhof.se ([79.136.2.40]:56982 "EHLO
+        id S1728644AbfIAPwm (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 1 Sep 2019 11:52:42 -0400
+Received: from pio-pvt-msa1.bahnhof.se ([79.136.2.40]:57010 "EHLO
         pio-pvt-msa1.bahnhof.se" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728676AbfIAPwA (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sun, 1 Sep 2019 11:52:00 -0400
+        with ESMTP id S1728616AbfIAPwm (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sun, 1 Sep 2019 11:52:42 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 4774B402B7;
-        Sun,  1 Sep 2019 17:42:54 +0200 (CEST)
+        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 945B53F73E
+        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:52:40 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at bahnhof.se
 Received: from pio-pvt-msa1.bahnhof.se ([127.0.0.1])
         by localhost (pio-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id FRuh80TaW6ln; Sun,  1 Sep 2019 17:42:52 +0200 (CEST)
+        with ESMTP id FIlQnHnI_MeK for <linux-mips@vger.kernel.org>;
+        Sun,  1 Sep 2019 17:52:39 +0200 (CEST)
 Received: from localhost (h-41-252.A163.priv.bahnhof.se [46.59.41.252])
         (Authenticated sender: mb547485)
-        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id D75C43F909;
-        Sun,  1 Sep 2019 17:42:52 +0200 (CEST)
-Date:   Sun, 1 Sep 2019 17:42:52 +0200
+        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id E798D3F708
+        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:52:39 +0200 (CEST)
+Date:   Sun, 1 Sep 2019 17:52:39 +0200
 From:   Fredrik Noring <noring@nocrew.org>
-To:     Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
-Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        =?utf-8?Q?J=C3=BCrgen?= Urban <JuergenUrban@gmx.de>
-Subject: [PATCH 019/120] MIPS: R5900: Use SYNC.L for data cache and SYNC.P
- for instruction cache
-Message-ID: <4908071c89e101af477fefb28cdd1ba69ffb63d1.1567326213.git.noring@nocrew.org>
+To:     linux-mips@vger.kernel.org
+Subject: [PATCH 041/120] MIPS: PS2: ROM: Resolve the name for the type in the
+ ROMVER file
+Message-ID: <6a096d0e6a7532194907863bc0286059fddb7bef.1567326213.git.noring@nocrew.org>
 References: <cover.1567326213.git.noring@nocrew.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -48,471 +47,75 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Toshiba TX79 manual programming notes[1]:
-
-    For all CACHE sub-operations which operate on the instruction cache
-    the following programming restrictions have to be followed:
-
-    1. A sequence of CACHE instructions has to be directly preceded and
-       followed by a SYNC.P instruction.
-    2. Each individual FILL sub-operation has to be followed by a SYNC.L
-       instruction.
-
-    For all CACHE sub-operations which operate on the data cache the
-    following programming restrictions have to be followed:
-
-    1. A sequence of CACHE instructions have to be directly preceded and
-       followed by a SYNC.L instruction.
-    2. Each of the three WRITEBACK sub-operations have to be
-       individually followed by a SYNC.L instruction.
-
-    For all CACHE sub-operations which operate on the BTAC the following
-    programming restrictions have to be followed:
-
-    1. A sequence of CACHE instructions have to be directly preceded and
-       followed by a SYNC.P instruction.
-
-References:
-
-[1] "TX System RISC TX79 Core Architecture" manual, revision 2.0,
-    Toshiba Corporation, p. C-13, https://wiki.qemu.org/File:C790.pdf
+'C' indicates CEX for retail, 'D' indicates DEX for debug, and 'T'
+indicates a TOOL machine.
 
 Signed-off-by: Fredrik Noring <noring@nocrew.org>
 ---
-This is perhaps the most complex change for the R5900. The code comes from
-the Linux 2.6 port to the PlayStation 2.
----
- arch/mips/include/asm/r4kcache.h | 239 ++++++++++++++++++++++++-------
- arch/mips/mm/c-r4k.c             |   8 +-
- 2 files changed, 189 insertions(+), 58 deletions(-)
+ arch/mips/include/asm/mach-ps2/rom.h |  4 ++++
+ arch/mips/ps2/rom.c                  | 20 ++++++++++++++++++--
+ 2 files changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4kcache.h
-index e00087db9d74..da9f55f36fcf 100644
---- a/arch/mips/include/asm/r4kcache.h
-+++ b/arch/mips/include/asm/r4kcache.h
-@@ -44,7 +44,7 @@ extern void (*r4k_blast_icache)(void);
- #define INDEX_BASE	CKSEG0
- #endif
+diff --git a/arch/mips/include/asm/mach-ps2/rom.h b/arch/mips/include/asm/mach-ps2/rom.h
+index 42e520f32f65..0b0e7c4162f5 100644
+--- a/arch/mips/include/asm/mach-ps2/rom.h
++++ b/arch/mips/include/asm/mach-ps2/rom.h
+@@ -135,6 +135,8 @@ struct rom_extinfo rom_read_extinfo(const char *name,
+  * @date.month: month ROM was created
+  * @date.day: day ROM was created
+  *
++ * The @type name can be resolved with rom_type_name().
++ *
+  * Note that the Namco System 246 arcade systems are TOOL types as well.
+  *
+  * A ROM version is considered to be invalid if @number is zero, in which
+@@ -153,6 +155,8 @@ struct rom_ver {
  
--#define cache_op(op,addr)						\
-+#define cache_op_s(op,addr)						\
- 	__asm__ __volatile__(						\
- 	"	.set	push					\n"	\
- 	"	.set	noreorder				\n"	\
-@@ -53,56 +53,85 @@ extern void (*r4k_blast_icache)(void);
- 	"	.set	pop					\n"	\
- 	:								\
- 	: "i" (op), "R" (*(unsigned char *)(addr)))
-+#ifdef CONFIG_CPU_R5900
-+#define cache_op_d(op,addr)						\
-+	__asm__ __volatile__(						\
-+	"	.set	push					\n"	\
-+	"	.set	noreorder				\n"	\
-+	"	.set	mips3\n\t				\n"	\
-+	"	sync.l						\n"	\
-+	"	cache	%0, %1					\n"	\
-+	"	sync.l						\n"	\
-+	"	.set	pop					\n"	\
-+	:								\
-+	: "i" (op), "R" (*(unsigned char *)(addr)))
-+#define cache_op_i(op,addr)						\
-+	__asm__ __volatile__(						\
-+	"	.set	push					\n"	\
-+	"	.set	noreorder				\n"	\
-+	"	.set	mips3\n\t				\n"	\
-+	"	sync.p						\n"	\
-+	"	cache	%0, %1					\n"	\
-+	"	sync.p						\n"	\
-+	"	.set	pop					\n"	\
-+	:								\
-+	: "i" (op), "R" (*(unsigned char *)(addr)))
-+#else
-+#define cache_op_d cache_op_s
-+#define cache_op_i cache_op_s
-+#define cache_op cache_op_s
-+#endif
-+#define cache_op_t cache_op_s
+ struct rom_ver rom_version(void);
  
- static inline void flush_icache_line_indexed(unsigned long addr)
- {
--	cache_op(Index_Invalidate_I, addr);
-+	cache_op_i(Index_Invalidate_I, addr);
- }
- 
- static inline void flush_dcache_line_indexed(unsigned long addr)
- {
--	cache_op(Index_Writeback_Inv_D, addr);
-+	cache_op_d(Index_Writeback_Inv_D, addr);
- }
- 
- static inline void flush_scache_line_indexed(unsigned long addr)
- {
--	cache_op(Index_Writeback_Inv_SD, addr);
-+	cache_op_s(Index_Writeback_Inv_SD, addr);
- }
- 
- static inline void flush_icache_line(unsigned long addr)
- {
- 	switch (boot_cpu_type()) {
- 	case CPU_LOONGSON2:
--		cache_op(Hit_Invalidate_I_Loongson2, addr);
-+		cache_op_i(Hit_Invalidate_I_Loongson2, addr);
- 		break;
- 
- 	default:
--		cache_op(Hit_Invalidate_I, addr);
-+		cache_op_i(Hit_Invalidate_I, addr);
- 		break;
- 	}
- }
- 
- static inline void flush_dcache_line(unsigned long addr)
- {
--	cache_op(Hit_Writeback_Inv_D, addr);
-+	cache_op_d(Hit_Writeback_Inv_D, addr);
- }
- 
- static inline void invalidate_dcache_line(unsigned long addr)
- {
--	cache_op(Hit_Invalidate_D, addr);
-+	cache_op_d(Hit_Invalidate_D, addr);
- }
- 
- static inline void invalidate_scache_line(unsigned long addr)
- {
--	cache_op(Hit_Invalidate_SD, addr);
-+	cache_op_s(Hit_Invalidate_SD, addr);
- }
- 
- static inline void flush_scache_line(unsigned long addr)
- {
--	cache_op(Hit_Writeback_Inv_SD, addr);
-+	cache_op_s(Hit_Writeback_Inv_SD, addr);
- }
- 
--#define protected_cache_op(op,addr)				\
-+#define protected_cache_op_s(op,addr)				\
- ({								\
- 	int __err = 0;						\
- 	__asm__ __volatile__(					\
-@@ -124,6 +153,49 @@ static inline void flush_scache_line(unsigned long addr)
- 	__err;							\
- })
- 
-+#ifdef CONFIG_CPU_R5900
-+#define protected_cache_op_d(op,addr)				\
-+({								\
-+	int __err = 0;						\
-+	__asm__ __volatile__(					\
-+	"	.set	push			\n"		\
-+	"	.set	noreorder		\n"		\
-+	"	.set	mips3			\n"		\
-+	"	sync.l				\n"		\
-+	"1:	cache	%0, (%1)		\n"		\
-+	"	sync.l				\n"		\
-+	"2:	.set	pop			\n"		\
-+	"	.section __ex_table,\"a\"	\n"		\
-+	"	"STR(PTR)" 1b, 2b		\n"		\
-+	"	.previous"					\
-+	:							\
-+	: "i" (op), "r" (addr));				\
-+	__err;							\
-+})
++const char *rom_type_name(char type);
 +
-+#define protected_cache_op_i(op,addr)				\
-+({								\
-+	int __err = 0;						\
-+	__asm__ __volatile__(					\
-+	"	.set	push			\n"		\
-+	"	.set	noreorder		\n"		\
-+	"	.set	mips3			\n"		\
-+	"	sync.p				\n"		\
-+	"1:	cache	%0, (%1)		\n"		\
-+	"	sync.p				\n"		\
-+	"2:	.set	pop			\n"		\
-+	"	.section __ex_table,\"a\"	\n"		\
-+	"	"STR(PTR)" 1b, 2b		\n"		\
-+	"	.previous"					\
-+	:							\
-+	: "i" (op), "r" (addr));				\
-+	__err;							\
-+})
-+#else
-+#define protected_cache_op_i protected_cache_op_s
-+#define protected_cache_op_d protected_cache_op_s
-+#define protected_cache_op protected_cache_op_s
-+#endif
+ bool rom_empty_dir(const struct rom_dir dir);
  
- #define protected_cachee_op(op,addr)				\
- ({								\
-@@ -155,13 +227,13 @@ static inline int protected_flush_icache_line(unsigned long addr)
- {
- 	switch (boot_cpu_type()) {
- 	case CPU_LOONGSON2:
--		return protected_cache_op(Hit_Invalidate_I_Loongson2, addr);
-+		return protected_cache_op_i(Hit_Invalidate_I_Loongson2, addr);
- 
- 	default:
- #ifdef CONFIG_EVA
--		return protected_cachee_op(Hit_Invalidate_I, addr);
-+		return protected_cachee_op_i(Hit_Invalidate_I, addr);
- #else
--		return protected_cache_op(Hit_Invalidate_I, addr);
-+		return protected_cache_op_i(Hit_Invalidate_I, addr);
- #endif
- 	}
+ bool rom_terminating_file(const struct rom_file file);
+diff --git a/arch/mips/ps2/rom.c b/arch/mips/ps2/rom.c
+index 32ae8ec839c4..9adea705cbca 100644
+--- a/arch/mips/ps2/rom.c
++++ b/arch/mips/ps2/rom.c
+@@ -383,6 +383,22 @@ struct rom_ver rom_version(void)
  }
-@@ -175,18 +247,18 @@ static inline int protected_flush_icache_line(unsigned long addr)
- static inline int protected_writeback_dcache_line(unsigned long addr)
- {
- #ifdef CONFIG_EVA
--	return protected_cachee_op(Hit_Writeback_Inv_D, addr);
-+	return protected_cachee_op_d(Hit_Writeback_Inv_D, addr);
- #else
--	return protected_cache_op(Hit_Writeback_Inv_D, addr);
-+	return protected_cache_op_d(Hit_Writeback_Inv_D, addr);
- #endif
- }
+ EXPORT_SYMBOL_GPL(rom_version);
  
- static inline int protected_writeback_scache_line(unsigned long addr)
- {
- #ifdef CONFIG_EVA
--	return protected_cachee_op(Hit_Writeback_Inv_SD, addr);
-+	return protected_cachee_op_s(Hit_Writeback_Inv_SD, addr);
- #else
--	return protected_cache_op(Hit_Writeback_Inv_SD, addr);
-+	return protected_cache_op_s(Hit_Writeback_Inv_SD, addr);
- #endif
- }
- 
-@@ -195,7 +267,7 @@ static inline int protected_writeback_scache_line(unsigned long addr)
-  */
- static inline void invalidate_tcache_page(unsigned long addr)
- {
--	cache_op(Page_Invalidate_T, addr);
-+	cache_op_t(Page_Invalidate_T, addr);
- }
- 
- #ifndef CONFIG_CPU_MIPSR6
-@@ -276,6 +348,65 @@ static inline void invalidate_tcache_page(unsigned long addr)
- 		:							\
- 		: "r" (base),						\
- 		  "i" (op));
-+#ifdef CONFIG_CPU_R5900
-+#define cache64_unroll32_d(base,op)					\
-+	__asm__ __volatile__(						\
-+	"	.set push					\n"	\
-+	"	.set noreorder					\n"	\
-+	"	.set mips3					\n"	\
-+	"	sync.l						\n"	\
-+	"	cache %1, 0x000(%0); sync.l; cache %1, 0x040(%0); sync.l	\n"	\
-+	"	cache %1, 0x080(%0); sync.l; cache %1, 0x0c0(%0); sync.l	\n"	\
-+	"	cache %1, 0x100(%0); sync.l; cache %1, 0x140(%0); sync.l	\n"	\
-+	"	cache %1, 0x180(%0); sync.l; cache %1, 0x1c0(%0); sync.l	\n"	\
-+	"	cache %1, 0x200(%0); sync.l; cache %1, 0x240(%0); sync.l	\n"	\
-+	"	cache %1, 0x280(%0); sync.l; cache %1, 0x2c0(%0); sync.l	\n"	\
-+	"	cache %1, 0x300(%0); sync.l; cache %1, 0x340(%0); sync.l	\n"	\
-+	"	cache %1, 0x380(%0); sync.l; cache %1, 0x3c0(%0); sync.l	\n"	\
-+	"	cache %1, 0x400(%0); sync.l; cache %1, 0x440(%0); sync.l	\n"	\
-+	"	cache %1, 0x480(%0); sync.l; cache %1, 0x4c0(%0); sync.l	\n"	\
-+	"	cache %1, 0x500(%0); sync.l; cache %1, 0x540(%0); sync.l	\n"	\
-+	"	cache %1, 0x580(%0); sync.l; cache %1, 0x5c0(%0); sync.l	\n"	\
-+	"	cache %1, 0x600(%0); sync.l; cache %1, 0x640(%0); sync.l	\n"	\
-+	"	cache %1, 0x680(%0); sync.l; cache %1, 0x6c0(%0); sync.l	\n"	\
-+	"	cache %1, 0x700(%0); sync.l; cache %1, 0x740(%0); sync.l	\n"	\
-+	"	cache %1, 0x780(%0); sync.l; cache %1, 0x7c0(%0); sync.l	\n"	\
-+	"	.set pop					\n"	\
-+		:							\
-+		: "r" (base),						\
-+		  "i" (op));
++/**
++ * rom_type_name - name for the ROM type character in the ROMVER file in ROM0
++ * @type: &rom_ver.type type character.
++ *
++ * Context: any
++ * Return: ROM type name, ``"-"`` if undefined or ``"?"`` if unrecognised
++ */
++const char *rom_type_name(char type)
++{
++	return type == 'C' ? "CEX" :
++	       type == 'D' ? "DEX" :
++	       type == 'T' ? "TOOL" :
++	       type == '-' ? "-" : "?";
++}
++EXPORT_SYMBOL_GPL(rom_type_name);
 +
-+#define cache64_unroll32_i(base,op)					\
-+	__asm__ __volatile__(						\
-+	"	.set push					\n"	\
-+	"	.set noreorder					\n"	\
-+	"	.set mips3					\n"	\
-+	"	sync.p						\n"	\
-+	"	cache %1, 0x000(%0); cache %1, 0x040(%0)	\n"	\
-+	"	cache %1, 0x080(%0); cache %1, 0x0c0(%0)	\n"	\
-+	"	cache %1, 0x100(%0); cache %1, 0x140(%0)	\n"	\
-+	"	cache %1, 0x180(%0); cache %1, 0x1c0(%0)	\n"	\
-+	"	cache %1, 0x200(%0); cache %1, 0x240(%0)	\n"	\
-+	"	cache %1, 0x280(%0); cache %1, 0x2c0(%0)	\n"	\
-+	"	cache %1, 0x300(%0); cache %1, 0x340(%0)	\n"	\
-+	"	cache %1, 0x380(%0); cache %1, 0x3c0(%0)	\n"	\
-+	"	cache %1, 0x400(%0); cache %1, 0x440(%0)	\n"	\
-+	"	cache %1, 0x480(%0); cache %1, 0x4c0(%0)	\n"	\
-+	"	cache %1, 0x500(%0); cache %1, 0x540(%0)	\n"	\
-+	"	cache %1, 0x580(%0); cache %1, 0x5c0(%0)	\n"	\
-+	"	cache %1, 0x600(%0); cache %1, 0x640(%0)	\n"	\
-+	"	cache %1, 0x680(%0); cache %1, 0x6c0(%0)	\n"	\
-+	"	cache %1, 0x700(%0); cache %1, 0x740(%0)	\n"	\
-+	"	cache %1, 0x780(%0); cache %1, 0x7c0(%0)	\n"	\
-+	"	sync.p						\n"	\
-+	"	.set pop					\n"	\
-+		:							\
-+		: "r" (base),						\
-+		  "i" (op));
-+#else
-+#define cache64_unroll32_i cache64_unroll32
-+#define cache64_unroll32_d cache64_unroll32
-+#endif
+ /**
+  * find_reset_string - find the offset to the ``"RESET"`` string, if it exists
+  * @rom: ROM to search in
+@@ -659,8 +675,8 @@ static int __init ps2_rom_init(void)
+ 	rom1_dir = rom_dir_init("rom1", ROM1_BASE, ROM1_SIZE);
  
- #define cache128_unroll32(base,op)					\
- 	__asm__ __volatile__(						\
-@@ -532,7 +663,7 @@ static inline void invalidate_tcache_page(unsigned long addr)
- 		  "i" (op));
+ 	v = rom_version();
+-	pr_info("rom0: Version %04x %c %c %04d-%02d-%02d\n",
+-		v.number, v.region, v.type,
++	pr_info("rom0: Version %04x %c %s %04d-%02d-%02d\n",
++		v.number, v.region, rom_type_name(v.type),
+ 		v.date.year, v.date.month, v.date.day);
  
- /* build blast_xxx, blast_xxx_page, blast_xxx_page_indexed */
--#define __BUILD_BLAST_CACHE(pfx, desc, indexop, hitop, lsize, extra)	\
-+#define __BUILD_BLAST_CACHE(fn_pfx, pfx, desc, indexop, hitop, lsize, extra)	\
- static inline void extra##blast_##pfx##cache##lsize(void)		\
- {									\
- 	unsigned long start = INDEX_BASE;				\
-@@ -544,7 +675,7 @@ static inline void extra##blast_##pfx##cache##lsize(void)		\
- 									\
- 	for (ws = 0; ws < ws_end; ws += ws_inc)				\
- 		for (addr = start; addr < end; addr += lsize * 32)	\
--			cache##lsize##_unroll32(addr|ws, indexop);	\
-+			cache##lsize##_unroll32##fn_pfx(addr|ws, indexop);	\
- }									\
- 									\
- static inline void extra##blast_##pfx##cache##lsize##_page(unsigned long page) \
-@@ -553,7 +684,7 @@ static inline void extra##blast_##pfx##cache##lsize##_page(unsigned long page) \
- 	unsigned long end = page + PAGE_SIZE;				\
- 									\
- 	do {								\
--		cache##lsize##_unroll32(start, hitop);			\
-+		cache##lsize##_unroll32##fn_pfx(start, hitop);			\
- 		start += lsize * 32;					\
- 	} while (start < end);						\
- }									\
-@@ -570,29 +701,29 @@ static inline void extra##blast_##pfx##cache##lsize##_page_indexed(unsigned long
- 									\
- 	for (ws = 0; ws < ws_end; ws += ws_inc)				\
- 		for (addr = start; addr < end; addr += lsize * 32)	\
--			cache##lsize##_unroll32(addr|ws, indexop);	\
-+			cache##lsize##_unroll32##fn_pfx(addr|ws, indexop);	\
- }
- 
--__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 16, )
--__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 16, )
--__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16, )
--__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 32, )
--__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 32, )
--__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I_Loongson2, 32, loongson2_)
--__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 32, )
--__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 64, )
--__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 64, )
--__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 64, )
--__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 128, )
--__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 128, )
--__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 128, )
--
--__BUILD_BLAST_CACHE(inv_d, dcache, Index_Writeback_Inv_D, Hit_Invalidate_D, 16, )
--__BUILD_BLAST_CACHE(inv_d, dcache, Index_Writeback_Inv_D, Hit_Invalidate_D, 32, )
--__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 16, )
--__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 32, )
--__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 64, )
--__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 128, )
-+__BUILD_BLAST_CACHE(, d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 16, )
-+__BUILD_BLAST_CACHE(, i, icache, Index_Invalidate_I, Hit_Invalidate_I, 16, )
-+__BUILD_BLAST_CACHE(, s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16, )
-+__BUILD_BLAST_CACHE(, d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 32, )
-+__BUILD_BLAST_CACHE(, i, icache, Index_Invalidate_I, Hit_Invalidate_I, 32, )
-+__BUILD_BLAST_CACHE(, i, icache, Index_Invalidate_I, Hit_Invalidate_I_Loongson2, 32, loongson2_)
-+__BUILD_BLAST_CACHE(, s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 32, )
-+__BUILD_BLAST_CACHE(_d, d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 64, )
-+__BUILD_BLAST_CACHE(_i, i, icache, Index_Invalidate_I, Hit_Invalidate_I, 64, )
-+__BUILD_BLAST_CACHE(, s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 64, )
-+__BUILD_BLAST_CACHE(, d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 128, )
-+__BUILD_BLAST_CACHE(, i, icache, Index_Invalidate_I, Hit_Invalidate_I, 128, )
-+__BUILD_BLAST_CACHE(, s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 128, )
-+
-+__BUILD_BLAST_CACHE(, inv_d, dcache, Index_Writeback_Inv_D, Hit_Invalidate_D, 16, )
-+__BUILD_BLAST_CACHE(, inv_d, dcache, Index_Writeback_Inv_D, Hit_Invalidate_D, 32, )
-+__BUILD_BLAST_CACHE(, inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 16, )
-+__BUILD_BLAST_CACHE(, inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 32, )
-+__BUILD_BLAST_CACHE(, inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 64, )
-+__BUILD_BLAST_CACHE(, inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 128, )
- 
- #define __BUILD_BLAST_USER_CACHE(pfx, desc, indexop, hitop, lsize) \
- static inline void blast_##pfx##cache##lsize##_user_page(unsigned long page) \
-@@ -617,7 +748,7 @@ __BUILD_BLAST_USER_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D,
- __BUILD_BLAST_USER_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 64)
- 
- /* build blast_xxx_range, protected_blast_xxx_range */
--#define __BUILD_BLAST_CACHE_RANGE(pfx, desc, hitop, prot, extra)	\
-+#define __BUILD_BLAST_CACHE_RANGE(fn_pfx, pfx, desc, hitop, prot, extra)	\
- static inline void prot##extra##blast_##pfx##cache##_range(unsigned long start, \
- 						    unsigned long end)	\
- {									\
-@@ -626,7 +757,7 @@ static inline void prot##extra##blast_##pfx##cache##_range(unsigned long start,
- 	unsigned long aend = (end - 1) & ~(lsize - 1);			\
- 									\
- 	while (1) {							\
--		prot##cache_op(hitop, addr);				\
-+		prot##cache_op##fn_pfx(hitop, addr);			\
- 		if (addr == aend)					\
- 			break;						\
- 		addr += lsize;						\
-@@ -635,8 +766,8 @@ static inline void prot##extra##blast_##pfx##cache##_range(unsigned long start,
- 
- #ifndef CONFIG_EVA
- 
--__BUILD_BLAST_CACHE_RANGE(d, dcache, Hit_Writeback_Inv_D, protected_, )
--__BUILD_BLAST_CACHE_RANGE(i, icache, Hit_Invalidate_I, protected_, )
-+__BUILD_BLAST_CACHE_RANGE(_d, d, dcache, Hit_Writeback_Inv_D, protected_, )
-+__BUILD_BLAST_CACHE_RANGE(_i, i, icache, Hit_Invalidate_I, protected_, )
- 
- #else
- 
-@@ -670,15 +801,15 @@ __BUILD_PROT_BLAST_CACHE_RANGE(d, dcache, Hit_Writeback_Inv_D)
- __BUILD_PROT_BLAST_CACHE_RANGE(i, icache, Hit_Invalidate_I)
- 
- #endif
--__BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_Inv_SD, protected_, )
--__BUILD_BLAST_CACHE_RANGE(i, icache, Hit_Invalidate_I_Loongson2, \
-+__BUILD_BLAST_CACHE_RANGE(_s, s, scache, Hit_Writeback_Inv_SD, protected_, )
-+__BUILD_BLAST_CACHE_RANGE(_i, i, icache, Hit_Invalidate_I_Loongson2, \
- 	protected_, loongson2_)
--__BUILD_BLAST_CACHE_RANGE(d, dcache, Hit_Writeback_Inv_D, , )
--__BUILD_BLAST_CACHE_RANGE(i, icache, Hit_Invalidate_I, , )
--__BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_Inv_SD, , )
-+__BUILD_BLAST_CACHE_RANGE(_d, d, dcache, Hit_Writeback_Inv_D, , )
-+__BUILD_BLAST_CACHE_RANGE(_i, i, icache, Hit_Invalidate_I, , )
-+__BUILD_BLAST_CACHE_RANGE(_s, s, scache, Hit_Writeback_Inv_SD, , )
- /* blast_inv_dcache_range */
--__BUILD_BLAST_CACHE_RANGE(inv_d, dcache, Hit_Invalidate_D, , )
--__BUILD_BLAST_CACHE_RANGE(inv_s, scache, Hit_Invalidate_SD, , )
-+__BUILD_BLAST_CACHE_RANGE(_d, inv_d, dcache, Hit_Invalidate_D, , )
-+__BUILD_BLAST_CACHE_RANGE(_d, inv_s, scache, Hit_Invalidate_SD, , )
- 
- /* Currently, this is very specific to Loongson-3 */
- #define __BUILD_BLAST_CACHE_NODE(pfx, desc, indexop, hitop, lsize)	\
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 4f2cecbec722..ae79a78f3002 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1557,14 +1557,14 @@ static int probe_scache(void)
- 	write_c0_taglo(0);
- 	write_c0_taghi(0);
- 	__asm__ __volatile__("nop; nop; nop; nop;"); /* avoid the hazard */
--	cache_op(Index_Store_Tag_I, begin);
--	cache_op(Index_Store_Tag_D, begin);
--	cache_op(Index_Store_Tag_SD, begin);
-+	cache_op_i(Index_Store_Tag_I, begin);
-+	cache_op_d(Index_Store_Tag_D, begin);
-+	cache_op_s(Index_Store_Tag_SD, begin);
- 
- 	/* Now search for the wrap around point. */
- 	pow2 = (128 * 1024);
- 	for (addr = begin + (128 * 1024); addr < end; addr = begin + pow2) {
--		cache_op(Index_Load_Tag_SD, addr);
-+		cache_op_s(Index_Load_Tag_SD, addr);
- 		__asm__ __volatile__("nop; nop; nop; nop;"); /* hazard... */
- 		if (!read_c0_taglo())
- 			break;
+ 	return 0;
 -- 
 2.21.0
 

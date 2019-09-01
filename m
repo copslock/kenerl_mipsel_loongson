@@ -6,40 +6,39 @@ X-Spam-Status: No, score=-8.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 17916C3A5A4
-	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:48:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6855BC3A5A4
+	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:48:27 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E2BD220828
-	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:48:24 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 45EBA20828
+	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:48:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725954AbfIAPsY (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 1 Sep 2019 11:48:24 -0400
-Received: from pio-pvt-msa2.bahnhof.se ([79.136.2.41]:57502 "EHLO
+        id S1729180AbfIAPs1 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 1 Sep 2019 11:48:27 -0400
+Received: from pio-pvt-msa2.bahnhof.se ([79.136.2.41]:57538 "EHLO
         pio-pvt-msa2.bahnhof.se" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729151AbfIAPsY (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sun, 1 Sep 2019 11:48:24 -0400
+        with ESMTP id S1729151AbfIAPs1 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sun, 1 Sep 2019 11:48:27 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTP id BC5EF3F9B6
-        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:48:21 +0200 (CEST)
+        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTP id 52EA640386
+        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:39:03 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at bahnhof.se
 Received: from pio-pvt-msa2.bahnhof.se ([127.0.0.1])
         by localhost (pio-pvt-msa2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id AD1PnPto9xjE for <linux-mips@vger.kernel.org>;
-        Sun,  1 Sep 2019 17:48:21 +0200 (CEST)
+        with ESMTP id UiPntJFwqv29 for <linux-mips@vger.kernel.org>;
+        Sun,  1 Sep 2019 17:39:02 +0200 (CEST)
 Received: from localhost (h-41-252.A163.priv.bahnhof.se [46.59.41.252])
         (Authenticated sender: mb547485)
-        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTPA id 062113F21C
-        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:48:20 +0200 (CEST)
-Date:   Sun, 1 Sep 2019 17:48:20 +0200
+        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTPA id 6A5FC4036B
+        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:39:02 +0200 (CEST)
+Date:   Sun, 1 Sep 2019 17:39:02 +0200
 From:   Fredrik Noring <noring@nocrew.org>
 To:     linux-mips@vger.kernel.org
-Subject: [PATCH 030/120] MIPS: PS2: Timer support
-Message-ID: <dd92b624fe575229937010f66e131fb9744e2da4.1567326213.git.noring@nocrew.org>
+Subject: [PATCH 007/120] MIPS: R5900: Add the SYNC.P instruction
+Message-ID: <829485da9abba9367b953c7d5756356a58e8a638.1567326213.git.noring@nocrew.org>
 References: <cover.1567326213.git.noring@nocrew.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1567326213.git.noring@nocrew.org>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mips-owner@vger.kernel.org
@@ -47,196 +46,73 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The Emotion Engine has 4 independent timers with 16-bit counters[1]. The
-bus clock or an external (H-BLANK or V-BLANK) clock perform the counting.
-When a counter reaches a specified reference value, or when it overflows,
-an interrupt is asserted. The timer status register indicates the cause.
+The SYNC.P instruction is a pipeline barrier. All instructions prior to
+the barrier are completed before the instructions following the barrier
+are fetched[1].
 
-Timers 0 and 1 have hold registers for recording the counter value when
-an SBUS interrupt occurs.
-
-Timer registers are 32-bit long and only word-accessible.
+However, the barrier operation doesn't wait for any prior instructions
+to retire, for example multiply, divide, multicycle COP1 operations or
+a pending load issued before the barrier operation.
 
 References:
 
-[1] "EE User's Manual", version 6.0, Sony Computer Entertainment Inc.,
-    pp. 33-39.
+[1] "TX System RISC TX79 Core Architecture" manual, revision 2.0,
+    Toshiba Corporation, p. A-125, https://wiki.qemu.org/File:C790.pdf
 
 Signed-off-by: Fredrik Noring <noring@nocrew.org>
 ---
- arch/mips/ps2/Makefile |   1 +
- arch/mips/ps2/time.c   | 153 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 154 insertions(+)
- create mode 100644 arch/mips/ps2/time.c
+ arch/mips/include/asm/uasm.h | 1 +
+ arch/mips/mm/uasm-mips.c     | 1 +
+ arch/mips/mm/uasm.c          | 5 +++--
+ 3 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/ps2/Makefile b/arch/mips/ps2/Makefile
-index 1e6406f42b3a..2015870f9fe7 100644
---- a/arch/mips/ps2/Makefile
-+++ b/arch/mips/ps2/Makefile
-@@ -2,3 +2,4 @@ obj-y		+= dmac-irq.o
- obj-y		+= intc-irq.o
- obj-y		+= irq.o
- obj-y		+= memory.o
-+obj-y		+= time.o
-diff --git a/arch/mips/ps2/time.c b/arch/mips/ps2/time.c
-new file mode 100644
-index 000000000000..4979679bc909
---- /dev/null
-+++ b/arch/mips/ps2/time.c
-@@ -0,0 +1,153 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * PlayStation 2 timer functions
-+ *
-+ * Copyright (C) 2010-2013 Jürgen Urban
-+ * Copyright (C) 2017-2019 Fredrik Noring
-+ */
-+
-+#include <linux/errno.h>
-+#include <linux/init.h>
-+#include <linux/kernel_stat.h>
-+#include <linux/sched.h>
-+#include <linux/kernel.h>
-+#include <linux/param.h>
-+#include <linux/string.h>
-+#include <linux/mm.h>
-+#include <linux/interrupt.h>
-+#include <linux/timex.h>
-+
-+#include <asm/bootinfo.h>
-+#include <asm/time.h>
-+#include <asm/mipsregs.h>
-+#include <asm/io.h>
-+#include <asm/irq.h>
-+#include <asm/mach-ps2/irq.h>
-+
-+#define CPU_FREQ		294912000	/* CPU clock frequency (Hz) */
-+#define BUS_CLOCK		(CPU_FREQ/2)	/* Bus clock frequency (Hz) */
-+#define TM_COMPARE_VALUE	(BUS_CLOCK/256/HZ)  /* To generate HZ event */
-+
-+/*
-+ * The Emotion Engine has four independent timers with 16-bit counters. The
-+ * bus clock or an external (H-BLANK or V-BLANK) clock performs the counting.
-+ * When a counter reaches a specified reference value, or when it overflows,
-+ * an interrupt is asserted. The timer status register indicates the cause.
-+ *
-+ * Timers 0 and 1 have hold registers for recording the counter value when an
-+ * SBUS interrupt occurs.
-+ *
-+ * Timer registers are 32-bit long and only word-accessible.
-+ */
-+
-+#define T0_COUNT		0x10000000	/* Timer 0 counter value */
-+#define T0_MODE			0x10000010	/* Timer 0 mode/status */
-+#define T0_COMP			0x10000020	/* Timer 0 compare value */
-+#define T0_HOLD			0x10000030	/* Timer 0 hold value */
-+
-+#define T1_COUNT		0x10000800	/* Timer 1 counter value */
-+#define T1_MODE			0x10000810	/* Timer 1 mode/status */
-+#define T1_COMP			0x10000820	/* Timer 1 compare value */
-+#define T1_HOLD			0x10000830	/* Timer 1 hold value */
-+
-+#define T2_COUNT		0x10001000	/* Timer 2 counter value */
-+#define T2_MODE			0x10001010	/* Timer 2 mode/status */
-+#define T2_COMP			0x10001020	/* Timer 2 compare value */
-+
-+#define T3_COUNT		0x10001800	/* Timer 3 counter value */
-+#define T3_MODE			0x10001810	/* Timer 3 mode/status */
-+#define T3_COMP			0x10001820	/* Timer 3 compare value */
-+
-+#define TM_MODE_CLKS_BUSCLK	(0 << 0) /* BUSCLK (147.456 MHz) */
-+#define TM_MODE_CLKS_BUSCLK_16	(1 << 0) /* 1/16 of BUSCLK */
-+#define TM_MODE_CLKS_BUSCLK_256	(2 << 0) /* 1/256 of BUSCLK */
-+#define TM_MODE_CLKS_EXTERNAL	(3 << 0) /* External clock (V-BLANK) */
-+#define TM_MODE_GATE_DISABLE	(0 << 2) /* Gate function is not used */
-+#define TM_MODE_GATE_ENABLE	(1 << 2) /* Gate function is used */
-+#define TM_MODE_GATS_H_BLANK	(0 << 3) /* H-BLANK (disabled if CLKS is 3) */
-+#define TM_MODE_GATS_V_BLANK	(1 << 3) /* V-BLANK */
-+#define TM_MODE_GATM_WHILE_LOW	(0 << 4) /* Count while gate signal is low */
-+#define TM_MODE_GATM_RESET_RISE	(1 << 4) /* Reset and start on rising edge */
-+#define TM_MODE_GATM_RESET_FALL	(2 << 4) /* Reset and start on falling edge */
-+#define TM_MODE_GATM_RESET_BOTH	(3 << 4) /* Reset and start on both edges */
-+#define TM_MODE_ZRET_KEEP	(0 << 6) /* Keep counting ignoring reference */
-+#define TM_MODE_ZRET_CLEAR	(1 << 6) /* Zero counter reaching reference */
-+#define TM_MODE_CUE_STOP	(0 << 7) /* Stop counting */
-+#define TM_MODE_CUE_START	(1 << 7) /* Start counting */
-+#define TM_MODE_CMPE_DISABLE	(0 << 8) /* Disable compare interrupts */
-+#define TM_MODE_CMPE_ENABLE	(1 << 8) /* Interrupt reaching reference */
-+#define TM_MODE_OVFE_DISABLE	(0 << 9) /* Disable overflow interrupts */
-+#define TM_MODE_OVFE_ENABLE	(1 << 9) /* Interrupt on overflow */
-+
-+/*
-+ * The equal status flag bit is 1 when a compare-interrupt
-+ * has occured. Write 1 to clear.
-+ */
-+#define TM_MODE_EQUAL_FLAG	(1 << 10)
-+
-+/*
-+ * The overflow status flag bit is 1 when an overflow-interrupt
-+ * has occured. Write 1 to clear.
-+ */
-+#define TM_MODE_OVERFLOW_FLAG	(1 << 11)
-+
-+static irqreturn_t ps2_timer_interrupt(int irq, void *dev_id)
-+{
-+	struct clock_event_device *cd = dev_id;
-+
-+	outl(inl(T0_MODE), T0_MODE); /* Clear the interrupt */
-+
-+	cd->event_handler(cd);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int timer0_periodic(struct clock_event_device *evt)
-+{
-+	outl(0, T0_COUNT);
-+	outl(TM_COMPARE_VALUE, T0_COMP);
-+	outl(TM_MODE_CLKS_BUSCLK_256 | TM_MODE_ZRET_CLEAR | TM_MODE_CUE_START |
-+		TM_MODE_CMPE_ENABLE | TM_MODE_EQUAL_FLAG, T0_MODE);
-+
-+	return 0;
-+}
-+
-+static int timer0_shutdown(struct clock_event_device *evt)
-+{
-+	outl(0, T0_MODE); /* Stop timer */
-+
-+	return 0;
-+}
-+
-+static struct irqaction timer0_irqaction = {
-+	.handler	= ps2_timer_interrupt,
-+	.flags		= IRQF_PERCPU | IRQF_TIMER,
-+	.name		= "intc-timer0",
-+};
-+
-+static struct clock_event_device timer0_clockevent_device = {
-+	.name		= "timer0",
-+	/* FIXME: Timer is also able to provide CLOCK_EVT_FEAT_ONESHOT. */
-+	.features	= CLOCK_EVT_FEAT_PERIODIC,
-+
-+	/* FIXME: .mult, .shift, .max_delta_ns and .min_delta_ns left uninitialized */
-+
-+	.rating		= 300, /* FIXME: Check value. */
-+	.irq		= IRQ_INTC_TIMER0,
-+	.set_state_periodic	= timer0_periodic,
-+	.set_state_shutdown	= timer0_shutdown,
-+};
-+
-+void __init plat_time_init(void)
-+{
-+	/* Add timer 0 as clock event source. */
-+	timer0_clockevent_device.cpumask = cpumask_of(smp_processor_id());
-+	clockevents_register_device(&timer0_clockevent_device);
-+	timer0_irqaction.dev_id = &timer0_clockevent_device;
-+	setup_irq(IRQ_INTC_TIMER0, &timer0_irqaction);
-+
-+	/* FIXME: Timer 1 is free and can also be configured as clock event source. */
-+
-+	/* Setup frequency for IP7 timer interrupt. */
-+	mips_hpt_frequency = CPU_FREQ;
-+}
+diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
+index f7effca791a5..71ddf155ef85 100644
+--- a/arch/mips/include/asm/uasm.h
++++ b/arch/mips/include/asm/uasm.h
+@@ -171,6 +171,7 @@ Ip_u3u2u1(_srlv);
+ Ip_u3u1u2(_subu);
+ Ip_u2s3u1(_sw);
+ Ip_u1(_sync);
++Ip_0(_syncp);
+ Ip_u1(_syscall);
+ Ip_0(_tlbp);
+ Ip_0(_tlbr);
+diff --git a/arch/mips/mm/uasm-mips.c b/arch/mips/mm/uasm-mips.c
+index 7154a1d99aad..725c6fe1e317 100644
+--- a/arch/mips/mm/uasm-mips.c
++++ b/arch/mips/mm/uasm-mips.c
+@@ -191,6 +191,7 @@ static const struct insn insn_table[insn_invalid] = {
+ 	[insn_subu]	= {M(spec_op, 0, 0, 0, 0, subu_op),	RS | RT | RD},
+ 	[insn_sw]	= {M(sw_op, 0, 0, 0, 0, 0),  RS | RT | SIMM},
+ 	[insn_sync]	= {M(spec_op, 0, 0, 0, 0, sync_op), RE},
++	[insn_syncp]	= {M(spec_op, 0, 0, 0, 0x10, sync_op), 0},
+ 	[insn_syscall]	= {M(spec_op, 0, 0, 0, 0, syscall_op), SCIMM},
+ 	[insn_tlbp]	= {M(cop0_op, cop_op, 0, 0, 0, tlbp_op),  0},
+ 	[insn_tlbr]	= {M(cop0_op, cop_op, 0, 0, 0, tlbr_op),  0},
+diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
+index c56f129c9a4b..32c7a5827ba8 100644
+--- a/arch/mips/mm/uasm.c
++++ b/arch/mips/mm/uasm.c
+@@ -64,8 +64,8 @@ enum opcode {
+ 	insn_scd, insn_seleqz, insn_selnez, insn_sd, insn_sh, insn_sll,
+ 	insn_sllv, insn_slt, insn_slti, insn_sltiu, insn_sltu, insn_sra,
+ 	insn_srav, insn_srl, insn_srlv, insn_subu, insn_sw, insn_sync,
+-	insn_syscall, insn_tlbp, insn_tlbr, insn_tlbwi, insn_tlbwr, insn_wait,
+-	insn_wsbh, insn_xor, insn_xori, insn_yield,
++	insn_syncp, insn_syscall, insn_tlbp, insn_tlbr, insn_tlbwi, insn_tlbwr,
++	insn_wait, insn_wsbh, insn_xor, insn_xori, insn_yield,
+ 	insn_invalid /* insn_invalid must be last */
+ };
+ 
+@@ -369,6 +369,7 @@ I_u2u1u3(_rotr)
+ I_u3u1u2(_subu)
+ I_u2s3u1(_sw)
+ I_u1(_sync)
++I_0(_syncp)
+ I_0(_tlbp)
+ I_0(_tlbr)
+ I_0(_tlbwi)
 -- 
 2.21.0
 

@@ -6,36 +6,36 @@ X-Spam-Status: No, score=-8.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22189C3A5A7
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E412C3A5A4
 	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:46:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 026C221897
+	by mail.kernel.org (Postfix) with ESMTP id 22C82233A2
 	for <linux-mips@archiver.kernel.org>; Sun,  1 Sep 2019 15:46:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728980AbfIAPq5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        id S1728900AbfIAPq5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
         Sun, 1 Sep 2019 11:46:57 -0400
-Received: from pio-pvt-msa1.bahnhof.se ([79.136.2.40]:56630 "EHLO
+Received: from pio-pvt-msa1.bahnhof.se ([79.136.2.40]:56634 "EHLO
         pio-pvt-msa1.bahnhof.se" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728900AbfIAPq5 (ORCPT
+        with ESMTP id S1728621AbfIAPq5 (ORCPT
         <rfc822;linux-mips@vger.kernel.org>); Sun, 1 Sep 2019 11:46:57 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 8D67240F37
-        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:46:55 +0200 (CEST)
+        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 438D93F897
+        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:40:27 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at bahnhof.se
 Received: from pio-pvt-msa1.bahnhof.se ([127.0.0.1])
         by localhost (pio-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Kho4OY3DZPGg for <linux-mips@vger.kernel.org>;
-        Sun,  1 Sep 2019 17:46:54 +0200 (CEST)
+        with ESMTP id mfyUCjypZbOB for <linux-mips@vger.kernel.org>;
+        Sun,  1 Sep 2019 17:40:26 +0200 (CEST)
 Received: from localhost (h-41-252.A163.priv.bahnhof.se [46.59.41.252])
         (Authenticated sender: mb547485)
-        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id E209740C35
-        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:46:54 +0200 (CEST)
-Date:   Sun, 1 Sep 2019 17:46:54 +0200
+        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id 4A01A3F7B1
+        for <linux-mips@vger.kernel.org>; Sun,  1 Sep 2019 17:40:26 +0200 (CEST)
+Date:   Sun, 1 Sep 2019 17:40:26 +0200
 From:   Fredrik Noring <noring@nocrew.org>
 To:     linux-mips@vger.kernel.org
-Subject: [PATCH 024/120] MIPS: PS2: Define PlayStation 2 I/O port, ROM and
- RAM address spaces
-Message-ID: <c7147838400b6c5e181c000c48f51e5348d02b64.1567326213.git.noring@nocrew.org>
+Subject: [PATCH 012/120] MIPS: R5900: Avoid pipeline hazards with the
+ TLBW[IR] instructions
+Message-ID: <55596f09de274312357656ee483314ec4ef8c51a.1567326213.git.noring@nocrew.org>
 References: <cover.1567326213.git.noring@nocrew.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -47,79 +47,41 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
+On the R5900, the TLBWI[1] and TLBWR[2] instructions must be followed by
+an ERET or a SYNC.P instruction to ensure a TLB update.
+
+References:
+
+[1] "TX System RISC TX79 Core Architecture" manual, revision 2.0,
+    Toshiba Corporation, p. C-39, https://wiki.qemu.org/File:C790.pdf
+
+[2] Ibid. p. C-40.
+
 Signed-off-by: Fredrik Noring <noring@nocrew.org>
 ---
- arch/mips/include/asm/mach-ps2/rom.h | 17 +++++++++++++++++
- arch/mips/ps2/Makefile               |  1 +
- arch/mips/ps2/memory.c               | 27 +++++++++++++++++++++++++++
- 3 files changed, 45 insertions(+)
- create mode 100644 arch/mips/include/asm/mach-ps2/rom.h
- create mode 100644 arch/mips/ps2/Makefile
- create mode 100644 arch/mips/ps2/memory.c
+ arch/mips/mm/tlbex.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/mips/include/asm/mach-ps2/rom.h b/arch/mips/include/asm/mach-ps2/rom.h
-new file mode 100644
-index 000000000000..6760be183696
---- /dev/null
-+++ b/arch/mips/include/asm/mach-ps2/rom.h
-@@ -0,0 +1,17 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * PlayStation 2 read-only memory (ROM)
-+ *
-+ * Copyright (C) 2019 Fredrik Noring
-+ */
-+
-+#ifndef __ASM_MACH_PS2_ROM_H
-+#define __ASM_MACH_PS2_ROM_H
-+
-+#define ROM0_BASE	0x1fc00000	/* ROM0 base address (boot) */
-+#define ROM0_SIZE	0x400000	/* ROM0 maximum size */
-+
-+#define ROM1_BASE	0x1e000000	/* ROM1 base address (DVD) */
-+#define ROM1_SIZE	0x100000	/* ROM1 maximum size */
-+
-+#endif /* __ASM_MACH_PS2_ROM_H */
-diff --git a/arch/mips/ps2/Makefile b/arch/mips/ps2/Makefile
-new file mode 100644
-index 000000000000..24d537d2fb9f
---- /dev/null
-+++ b/arch/mips/ps2/Makefile
-@@ -0,0 +1 @@
-+obj-y		+= memory.o
-diff --git a/arch/mips/ps2/memory.c b/arch/mips/ps2/memory.c
-new file mode 100644
-index 000000000000..66ca37f38330
---- /dev/null
-+++ b/arch/mips/ps2/memory.c
-@@ -0,0 +1,27 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * PlayStation 2 memory
-+ *
-+ * Copyright (C) 2019 Fredrik Noring
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/ioport.h>
-+#include <linux/types.h>
-+
-+#include <asm/bootinfo.h>
-+
-+void __init plat_mem_setup(void)
-+{
-+	ioport_resource.start = 0x10000000;
-+	ioport_resource.end   = 0x1fffffff;
-+
-+	iomem_resource.start = 0x00000000;
-+	iomem_resource.end   = KSEG2 - 1;
-+
-+	add_memory_region(0x00000000, 0x02000000, BOOT_MEM_RAM);
-+	add_memory_region(ROM0_BASE, ROM0_SIZE, BOOT_MEM_ROM_DATA);
-+	add_memory_region(ROM1_BASE, ROM1_SIZE, BOOT_MEM_ROM_DATA);
-+
-+	set_io_port_base(CKSEG1);	/* KSEG1 is uncached */
-+}
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 0519e2eafbb8..89ff0eae5397 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -622,6 +622,15 @@ void build_tlb_write_entry(u32 **p, struct uasm_label **l,
+ 		uasm_i_nop(p);
+ 		tlbw(p);
+ 		break;
++	case CPU_R5900:
++		/*
++		 * On the R5900, the TLBWI and TLBWR instructions must be
++		 * followed by an ERET or a SYNC.P instruction to ensure a
++		 * TLB update.
++		 */
++		tlbw(p);
++		uasm_i_syncp(p);
++		break;
+ 
+ 	case CPU_JZRISC:
+ 		tlbw(p);
 -- 
 2.21.0
 

@@ -2,62 +2,146 @@ Return-Path: <SRS0=HboV=W5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1010FC3A59E
-	for <linux-mips@archiver.kernel.org>; Mon,  2 Sep 2019 14:40:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22C94C3A59E
+	for <linux-mips@archiver.kernel.org>; Mon,  2 Sep 2019 14:51:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E3F8C21744
-	for <linux-mips@archiver.kernel.org>; Mon,  2 Sep 2019 14:40:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EA78621744
+	for <linux-mips@archiver.kernel.org>; Mon,  2 Sep 2019 14:51:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1567435864;
+	bh=71pLWk8MdR2BOEmIJHJ2tEkCtIxRrDQMnHh6cQ1w+II=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:List-ID:From;
+	b=frFyvZ2aSPluz9Ew2vnD3QCY4Bs0bKTs4HqS4P7f6SBBBCnUz5kwWogYOH89ZXodc
+	 8UcxtKZsU4ig7+mU3FzUFhqBTtCskN7/btWsbY9S3vtBURc50V/oNWgZXFZklVb7ZX
+	 VHsREEOXWFgy0wMnMDwoD99m2EP5osc6qO8NRZps=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731524AbfIBOkK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 2 Sep 2019 10:40:10 -0400
-Received: from pio-pvt-msa1.bahnhof.se ([79.136.2.40]:35476 "EHLO
-        pio-pvt-msa1.bahnhof.se" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731519AbfIBOkK (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 2 Sep 2019 10:40:10 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 64E51417AD;
-        Mon,  2 Sep 2019 16:40:08 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-Received: from pio-pvt-msa1.bahnhof.se ([127.0.0.1])
-        by localhost (pio-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Sqv5eylgobSW; Mon,  2 Sep 2019 16:40:07 +0200 (CEST)
-Received: from localhost (h-41-252.A163.priv.bahnhof.se [46.59.41.252])
-        (Authenticated sender: mb547485)
-        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id 97ACB41797;
-        Mon,  2 Sep 2019 16:40:07 +0200 (CEST)
-Date:   Mon, 2 Sep 2019 16:40:07 +0200
-From:   Fredrik Noring <noring@nocrew.org>
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     linux-mips@vger.kernel.org
-Subject: Re: [PATCH 094/120] MIPS: PS2: FB: Frame buffer driver for the
- PlayStation 2
-Message-ID: <20190902144007.GA2479@sx9>
-References: <cover.1567326213.git.noring@nocrew.org>
- <4927c42fb3401c42c4c5a077f272331ac79d80b1.1567326213.git.noring@nocrew.org>
- <1003c9cc-c30e-00a7-7494-4f1cb4862e88@flygoat.com>
+        id S1730830AbfIBOvA (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 2 Sep 2019 10:51:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52634 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726436AbfIBOvA (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 2 Sep 2019 10:51:00 -0400
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2B09021897;
+        Mon,  2 Sep 2019 14:50:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1567435859;
+        bh=71pLWk8MdR2BOEmIJHJ2tEkCtIxRrDQMnHh6cQ1w+II=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=IgOfV4zJAO/gl7avGfHCcrRz75Z2bQ1g9P9ui20ZUBezasAoKLWDdlsReZA7CMq/w
+         JKIIGcOPRcKEYYq/ICfGNHIZPsixxf1hEekeWvtMzGzUemhrvZ1K0XpBhzVE426Q+d
+         X8H4Zfu+NGjbrqNPqJY8dlFGlZGlmLWjoqoH6xpc=
+Received: by mail-qk1-f171.google.com with SMTP id 4so12705744qki.6;
+        Mon, 02 Sep 2019 07:50:59 -0700 (PDT)
+X-Gm-Message-State: APjAAAUc/mdsB9gLx+F8ByRjesmkL+KhXHXOa0nJUFpCxCdaWXBRyj8F
+        kWMa0vFCHDpQiWqlOT8nY28RYo0//RznoO8S2g==
+X-Google-Smtp-Source: APXvYqyh28Ow2UJPekS8IlWnjRcGuFquE4h1Btq6Udon+B5ixZMsP3odA9iep7SfJTniUSqfAkbwkbi3IhdjZEq0KtU=
+X-Received: by 2002:a37:8905:: with SMTP id l5mr29175066qkd.152.1567435858286;
+ Mon, 02 Sep 2019 07:50:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1003c9cc-c30e-00a7-7494-4f1cb4862e88@flygoat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20190827085302.5197-1-jiaxun.yang@flygoat.com>
+ <20190827085302.5197-12-jiaxun.yang@flygoat.com> <CAL_JsqL6htVye-LSBWw1WwRy9xH=zwuH6gurscwoCWj9Te_hAg@mail.gmail.com>
+ <d94eff2b-76ec-5cd2-512d-5ee0406a1bb9@flygoat.com> <20190827204105.7nyt4pi7lvxse5ij@pburton-laptop>
+In-Reply-To: <20190827204105.7nyt4pi7lvxse5ij@pburton-laptop>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Mon, 2 Sep 2019 15:50:47 +0100
+X-Gmail-Original-Message-ID: <CAL_Jsq+VmFi6r1-WOa9RJ4vfqsZLqcn5HMbv1oyQjhtJ8Qd8Lw@mail.gmail.com>
+Message-ID: <CAL_Jsq+VmFi6r1-WOa9RJ4vfqsZLqcn5HMbv1oyQjhtJ8Qd8Lw@mail.gmail.com>
+Subject: Re: [PATCH 11/13] dt-bindings: mips: Add loongson cpus & boards
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        "open list:MIPS" <linux-mips@vger.kernel.org>,
+        Huacai Chen <chenhc@lemote.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <maz@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.co>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Jiaxun Yang,
+On Tue, Aug 27, 2019 at 9:41 PM Paul Burton <paul.burton@mips.com> wrote:
+>
+> Hi guys,
+>
+> On Tue, Aug 27, 2019 at 10:18:46PM +0800, Jiaxun Yang wrote:
+> > On 2019/8/27 =E4=B8=8B=E5=8D=888:45, Rob Herring wrote:
+> > > On Tue, Aug 27, 2019 at 3:55 AM Jiaxun Yang <jiaxun.yang@flygoat.com>=
+ wrote:
+> > > > diff --git a/Documentation/devicetree/bindings/mips/loongson/cpus.y=
+aml b/Documentation/devicetree/bindings/mips/loongson/cpus.yaml
+> > > > new file mode 100644
+> > > > index 000000000000..410d896a0078
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/mips/loongson/cpus.yaml
+> > > > @@ -0,0 +1,38 @@
+> > > > +# SPDX-License-Identifier: GPL-2.0
+> > > Dual license for new bindings please:
+> > >
+> > > (GPL-2.0-only OR BSD-2-Clause)
+> > >
+> > > > +%YAML 1.2
+> > > > +---
+> > > > +$id: http://devicetree.org/schemas/mips/loongson/cpus.yaml#
+> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > +
+> > > > +title: Loongson CPUs bindings
+> > > > +
+> > > > +maintainers:
+> > > > +  - Jiaxun Yang <jiaxun.yang@flygoat.com>
+> > > > +
+> > > > +description: |+
+> > > > +  The device tree allows to describe the layout of CPUs in a syste=
+m through
+> > > > +  the "cpus" node, which in turn contains a number of subnodes (ie=
+ "cpu")
+> > > > +  defining properties for every cpu.
+> > > > +
+> > > > +  Bindings for CPU nodes follow the Devicetree Specification, avai=
+lable from:
+> > > > +
+> > > > +  https://www.devicetree.org/specifications/
+> > > > +
+> > > > +properties:
+> > > > +  reg:
+> > > > +    maxItems: 1
+> > > > +    description: |
+> > > > +      Physical ID of a CPU, Can be read from CP0 EBase.CPUNum.
+> > > Is this definition specific to Loongson CPUs or all MIPS?
+> >
+> > Currently it's specific to Loongson CPU only, as other processors may u=
+sing
+> > different method to express CPU map.
+> >
+> > Different from Arm, MIPS family of processors seems less uniform and ha=
+ve
+> > their own designs.
+> >
+> > For this point, we'd better ask Paul's opinion.
+>
+> In general on MIPS we detect CPU properties at runtime from coprocessor
+> 0 registers & similar sources of information, so there's not really a
+> need to specify anything about the CPU in devicetree.
 
-> According to kernel policy[1] no more new FBDev driver would be accepted.
-> 
-> Please refactor it to DRM.
+We thought the same thing initially for Arm... Mostly what is in DT is
+not what is discoverable. Are clock speeds, power domains, low power
+states, etc. all discoverable?
 
-I had the impression that the DRM does not support a kernel console?
+> For example here
+> you say yourself that the value for this property can be read from
+> EBase.CPUNum - so why specify it in DT?
 
-Standard hardware, on its part, does not have a serial port or similar
-alternatives that could easily function as a console, unfortunately.
+To map DT nodes to cores?
 
-Fredrik
+Rob

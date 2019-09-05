@@ -2,30 +2,59 @@ Return-Path: <SRS0=Lyod=XA=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DF7D3C3A5A5
-	for <linux-mips@archiver.kernel.org>; Thu,  5 Sep 2019 11:09:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CCDA5C3A5AA
+	for <linux-mips@archiver.kernel.org>; Thu,  5 Sep 2019 11:17:49 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C30E222CF6
-	for <linux-mips@archiver.kernel.org>; Thu,  5 Sep 2019 11:09:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A4C5822CF5
+	for <linux-mips@archiver.kernel.org>; Thu,  5 Sep 2019 11:17:49 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk header.b="TmAHYZxq"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388234AbfIELJz (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 5 Sep 2019 07:09:55 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:59887 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732051AbfIELJy (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 5 Sep 2019 07:09:54 -0400
-Received: from [213.220.153.21] (helo=wittgenstein)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <christian.brauner@ubuntu.com>)
-        id 1i5pdd-0000xz-G0; Thu, 05 Sep 2019 11:09:17 +0000
-Date:   Thu, 5 Sep 2019 13:09:15 +0200
-From:   Christian Brauner <christian.brauner@ubuntu.com>
-To:     Aleksa Sarai <cyphar@cyphar.com>
+        id S1732773AbfIELRt (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 5 Sep 2019 07:17:49 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:41000 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388290AbfIELRn (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 5 Sep 2019 07:17:43 -0400
+Received: by mail-lj1-f194.google.com with SMTP id a4so2028114ljk.8
+        for <linux-mips@vger.kernel.org>; Thu, 05 Sep 2019 04:17:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rasmusvillemoes.dk; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=FZQLTiI56V9ejCTERxmKEuoyOsqpXI4ROWUat/u48IQ=;
+        b=TmAHYZxqRc6xu2le8iULfxikI7ku0uT9OqruTeiVIjBtHlSUVtr7xfmu4YCFlsjTOs
+         Rhq1GYmaO5KwXBXGMlzcAxQ/LcO6e9A60OIH5XcxDVVNn2uwqfJXj5l04xQJTBjas8S+
+         rezhJDHHi4QSeAmUuvBdnaXdMHr6k1YEDw8fQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=FZQLTiI56V9ejCTERxmKEuoyOsqpXI4ROWUat/u48IQ=;
+        b=B1KnVGSDnBOVFA4X6FoOSM2YZcVpwITuJf+0NvpSEAYK5Qgp+Nt6kiKAl0rOrIyr3a
+         gzJHB17hug9Z8/CMgXsMQ8TzfP7aDaaJxe0FBVMDvzlxrCfnhgM/QmC2qHaf8Yl0N846
+         c+32IUUYl2JQG7ftE7dcV9Q4sx1kEoz8HuOuRR8uNUE5f9/ywmeEEGL0mDiKmu/Uesyr
+         ofm6pa5ctGBQX/721MaTm03t5T/mEFQMFkd7P3dmeOEni11FhAzutp/XMvC05ZSMi+IU
+         WK12hOpky6Nl29MqQtg360/TVFpPCPDbfFnrj3bCSsOcMM5XKLLAFVTnozK7vNcspjSL
+         nh1w==
+X-Gm-Message-State: APjAAAX+diUdCV3xdDixtaM07THzHcSxchzraJq52feiW3j+FoLwZItW
+        bAyfsg5bAifB5A6gli5IihgKcw==
+X-Google-Smtp-Source: APXvYqy+jIyWA4s/Awrv2CCVQWWEoIb0eYt4SAhqVoZ9KSv6Iim6pns0uTxVPV5vb5IsmAlCA9M4vg==
+X-Received: by 2002:a2e:5418:: with SMTP id i24mr1705390ljb.126.1567682261376;
+        Thu, 05 Sep 2019 04:17:41 -0700 (PDT)
+Received: from [172.16.11.28] ([81.216.59.226])
+        by smtp.gmail.com with ESMTPSA id l3sm377157lfc.31.2019.09.05.04.17.38
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 05 Sep 2019 04:17:40 -0700 (PDT)
+Subject: Re: [PATCH v12 01/12] lib: introduce copy_struct_{to,from}_user
+ helpers
+To:     Christian Brauner <christian.brauner@ubuntu.com>,
+        Aleksa Sarai <cyphar@cyphar.com>
 Cc:     Al Viro <viro@zeniv.linux.org.uk>,
         Jeff Layton <jlayton@kernel.org>,
         "J. Bruce Fields" <bfields@fieldses.org>,
@@ -36,7 +65,6 @@ Cc:     Al Viro <viro@zeniv.linux.org.uk>,
         Ingo Molnar <mingo@redhat.com>,
         Peter Zijlstra <peterz@infradead.org>,
         Christian Brauner <christian@brauner.io>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         Eric Biederman <ebiederm@xmission.com>,
         Andy Lutomirski <luto@kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -60,43 +88,50 @@ Cc:     Al Viro <viro@zeniv.linux.org.uk>,
         linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v12 01/12] lib: introduce copy_struct_{to,from}_user
- helpers
-Message-ID: <20190905110915.4vvhicg4ldmpi5u6@wittgenstein>
 References: <20190904201933.10736-1-cyphar@cyphar.com>
  <20190904201933.10736-2-cyphar@cyphar.com>
+ <20190905110544.d6c5t7rx25kvywmi@wittgenstein>
+From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Message-ID: <ae415ea8-4442-d81c-3b46-2ae5fb35bbdf@rasmusvillemoes.dk>
+Date:   Thu, 5 Sep 2019 13:17:38 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <20190905110544.d6c5t7rx25kvywmi@wittgenstein>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190904201933.10736-2-cyphar@cyphar.com>
-User-Agent: NeoMutt/20180716
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, Sep 05, 2019 at 06:19:22AM +1000, Aleksa Sarai wrote:
-> A common pattern for syscall extensions is increasing the size of a
-> struct passed from userspace, such that the zero-value of the new fields
-> result in the old kernel behaviour (allowing for a mix of userspace and
-> kernel vintages to operate on one another in most cases). This is done
-> in both directions -- hence two helpers -- though it's more common to
-> have to copy user space structs into kernel space.
-> 
-> Previously there was no common lib/ function that implemented
-> the necessary extension-checking semantics (and different syscalls
-> implemented them slightly differently or incompletely[1]). A future
-> patch replaces all of the common uses of this pattern to use the new
-> copy_struct_{to,from}_user() helpers.
-> 
-> [1]: For instance {sched_setattr,perf_event_open,clone3}(2) all do do
->      similar checks to copy_struct_from_user() while rt_sigprocmask(2)
->      always rejects differently-sized struct arguments.
-> 
-> Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+On 05/09/2019 13.05, Christian Brauner wrote:
+> On Thu, Sep 05, 2019 at 06:19:22AM +1000, Aleksa Sarai wrote:
 
-I would probably split this out into a separate patchset. It can very
-well go in before openat2(). Thoughts?
+>> +	if (unlikely(!access_ok(dst, usize)))
+>> +		return -EFAULT;
+>> +
+>> +	/* Deal with trailing bytes. */
+>> +	if (usize < ksize) {
+>> +		if (memchr_inv(src + size, 0, rest))
+>> +			return -EFBIG;
+>> +	} else if (usize > ksize) {
+>> +		if (__memzero_user(dst + size, rest))
+>> +			return -EFAULT;
+> 
+> Is zeroing that memory really our job? Seems to me we should just check
+> it is zeroed.
 
-Christian
+Of course it is, otherwise you'd require userspace to clear the output
+buffer it gives us, which in the majority of cases is wasted work. It's
+much easier to reason about if we just say "the kernel populates [uaddr,
+uaddr + usize)".
+
+It's completely symmetric to copy_struct_from_user doing a memset() of
+the tail of the kernel buffer in case of ksize>usize - you wouldn't want
+to require the kernel callers to pass a zeroed buffer to
+copy_struct_from_user() - it's just that when we memset(__user*),
+there's an error check to do.
+
+Rasmus

@@ -2,71 +2,97 @@ Return-Path: <SRS0=Lyod=XA=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4DECFC3A5A5
-	for <linux-mips@archiver.kernel.org>; Thu,  5 Sep 2019 13:21:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D53FC3A5A5
+	for <linux-mips@archiver.kernel.org>; Thu,  5 Sep 2019 13:32:59 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 45D7F206DE
-	for <linux-mips@archiver.kernel.org>; Thu,  5 Sep 2019 13:21:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 838F22070C
+	for <linux-mips@archiver.kernel.org>; Thu,  5 Sep 2019 13:32:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1567690378;
+	bh=gAfpREAUjPx32bCVpX/QRONrGLArS9EYowVV+J13G2I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=CvCgSUbl7LgE9tahOo5LWD5A0B0EkswmxrlMW8DeWMGrxpC22wOMpjzxcB0PXcgUJ
+	 iQNwpCpwkKBEQjJN9dDvnormgI6LMsJt9awCnf1ENipMXYg3Iuxt3bkuoAO0KYansJ
+	 lIWywka8MWDUO7JKGYEPnP/ekvOhUonS4fvNI/ko=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731556AbfIENVv convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 5 Sep 2019 09:21:51 -0400
-Received: from mx2.suse.de ([195.135.220.15]:60580 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726097AbfIENVv (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 5 Sep 2019 09:21:51 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 79872B035;
-        Thu,  5 Sep 2019 13:21:50 +0000 (UTC)
-Date:   Thu, 5 Sep 2019 15:21:50 +0200
-From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
-To:     Mike Rapoport <rppt@kernel.org>
+        id S1727521AbfIENc6 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 5 Sep 2019 09:32:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53076 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727514AbfIENc6 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 5 Sep 2019 09:32:58 -0400
+Received: from rapoport-lnx (nesher1.haifa.il.ibm.com [195.110.40.7])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0F90F206DE;
+        Thu,  5 Sep 2019 13:32:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1567690377;
+        bh=gAfpREAUjPx32bCVpX/QRONrGLArS9EYowVV+J13G2I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZPtL/gE9krL/IhempLi40HKIdV/N1wp5V5h2NnWuIEQ5s8ZLexH/BzM6btza01Tn5
+         vEbfq7ciYK9AeyCxqIifTErleu0e2Oe8cRnPLbKamyYMgRg0Cn57fQAovmRYWSqCib
+         WMLnf9IqsMzJkqH9GYjlNhXmeB76s0wF4U04thJs=
+Date:   Thu, 5 Sep 2019 16:32:53 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Thomas Bogendoerfer <tbogendoerfer@suse.de>
 Cc:     Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
         linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
 Subject: Re: [PATCH] mips: sgi-ip27: switch from DISCONTIGMEM to SPARSEMEM
-Message-Id: <20190905152150.f7ff6ef70726085de63df828@suse.de>
-In-Reply-To: <1567662477-27404-1-git-send-email-rppt@kernel.org>
+Message-ID: <20190905133251.GA3650@rapoport-lnx>
 References: <1567662477-27404-1-git-send-email-rppt@kernel.org>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-suse-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+ <20190905152150.f7ff6ef70726085de63df828@suse.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190905152150.f7ff6ef70726085de63df828@suse.de>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu,  5 Sep 2019 08:47:57 +0300
-Mike Rapoport <rppt@kernel.org> wrote:
-
-> From: Mike Rapoport <rppt@linux.ibm.com>
+On Thu, Sep 05, 2019 at 03:21:50PM +0200, Thomas Bogendoerfer wrote:
+> On Thu,  5 Sep 2019 08:47:57 +0300
+> Mike Rapoport <rppt@kernel.org> wrote:
 > 
-> The memory initialization of SGI-IP27 is already half-way to support
-> SPARSEMEM and only a call to sparse_init() was missing. Add it to
-> prom_meminit() and adjust arch/mips/Kconfig to enable SPARSEMEM and
-> SPARSEMEM_EXTREME for SGI-IP27
+> > From: Mike Rapoport <rppt@linux.ibm.com>
+> > 
+> > The memory initialization of SGI-IP27 is already half-way to support
+> > SPARSEMEM and only a call to sparse_init() was missing. Add it to
+> > prom_meminit() and adjust arch/mips/Kconfig to enable SPARSEMEM and
+> > SPARSEMEM_EXTREME for SGI-IP27
+> > 
+> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> > ---
+> > 
+> > Thomas, could you please test this on your Origin machine?
 > 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
+> it crashes in sparse_early_usemaps_alloc_pgdat_section(). Since there is
+> already a sparse_init() in arch_mem_setup() I removed it from ip27-memory.c.
+
+Oops, missed that.
+
+> With this booting made more progress but I get an unaligned access in
+> kernel_init_free_pages(). 
+
+Can you please share the log?
+ 
+> My time is a little bit limited today to dig deeper, but testing patches
+> is easy.
 > 
-> Thomas, could you please test this on your Origin machine?
-
-it crashes in sparse_early_usemaps_alloc_pgdat_section(). Since there is
-already a sparse_init() in arch_mem_setup() I removed it from ip27-memory.c.
-With this booting made more progress but I get an unaligned access in
-kernel_init_free_pages(). 
-
-My time is a little bit limited today to dig deeper, but testing patches
-is easy.
-
-Thomas.
+> Thomas.
+> 
+> -- 
+> SUSE Software Solutions Germany GmbH
+> HRB 247165 (AG München)
+> Geschäftsführer: Felix Imendörffer
 
 -- 
-SUSE Software Solutions Germany GmbH
-HRB 247165 (AG München)
-Geschäftsführer: Felix Imendörffer
+Sincerely yours,
+Mike.

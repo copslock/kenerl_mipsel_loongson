@@ -2,136 +2,155 @@ Return-Path: <SRS0=xHTq=XH=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.0 required=3.0
-	tests=HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D66EAC5ACAE
-	for <linux-mips@archiver.kernel.org>; Thu, 12 Sep 2019 10:18:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BEACC4CEC5
+	for <linux-mips@archiver.kernel.org>; Thu, 12 Sep 2019 10:58:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B2D2D20830
-	for <linux-mips@archiver.kernel.org>; Thu, 12 Sep 2019 10:18:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 725AE214D8
+	for <linux-mips@archiver.kernel.org>; Thu, 12 Sep 2019 10:58:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1568285920;
+	bh=ri4DX0jWeAR1yy3PHEcU0ID7qnBiwLO0Rgp4NA8oeE8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=KxqG+ia3VrFIU72/fGc5EeE3lTZq8RSYwhKsqoe56Sdv8ljtJMqC3M9DXgtunsDvy
+	 AFh8vmEz+WstkUUMtdDGPWQMirXg38XZFsDjY3wKZptcBty3zFIby7f1qAVXdbDfxp
+	 baXLyZ0shjHYnDztbO9455WDV1VT5T3BkpJtjmyY=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731108AbfILKSC (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 12 Sep 2019 06:18:02 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:33204 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730811AbfILKSB (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 12 Sep 2019 06:18:01 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 01CAE14800DBA7180C95;
-        Thu, 12 Sep 2019 18:17:57 +0800 (CST)
-Received: from localhost.localdomain (10.67.212.75) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 12 Sep 2019 18:17:55 +0800
-From:   Yunsheng Lin <linyunsheng@huawei.com>
-To:     <catalin.marinas@arm.com>, <will@kernel.org>, <mingo@redhat.com>,
-        <bp@alien8.de>, <rth@twiddle.net>, <ink@jurassic.park.msu.ru>,
-        <mattst88@gmail.com>, <benh@kernel.crashing.org>,
-        <paulus@samba.org>, <mpe@ellerman.id.au>,
-        <heiko.carstens@de.ibm.com>, <gor@linux.ibm.com>,
-        <borntraeger@de.ibm.com>, <ysato@users.sourceforge.jp>,
-        <dalias@libc.org>, <davem@davemloft.net>, <ralf@linux-mips.org>,
-        <paul.burton@mips.com>, <jhogan@kernel.org>,
-        <jiaxun.yang@flygoat.com>, <chenhc@lemote.com>
-CC:     <akpm@linux-foundation.org>, <rppt@linux.ibm.com>,
-        <anshuman.khandual@arm.com>, <tglx@linutronix.de>, <cai@lca.pw>,
-        <robin.murphy@arm.com>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <hpa@zytor.com>, <x86@kernel.org>,
-        <dave.hansen@linux.intel.com>, <luto@kernel.org>,
-        <peterz@infradead.org>, <len.brown@intel.com>, <axboe@kernel.dk>,
-        <dledford@redhat.com>, <jeffrey.t.kirsher@intel.com>,
-        <linux-alpha@vger.kernel.org>, <naveen.n.rao@linux.vnet.ibm.com>,
-        <mwb@linux.vnet.ibm.com>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-s390@vger.kernel.org>, <linux-sh@vger.kernel.org>,
-        <sparclinux@vger.kernel.org>, <tbogendoerfer@suse.de>,
-        <linux-mips@vger.kernel.org>, <rafael@kernel.org>,
-        <mhocko@kernel.org>, <gregkh@linuxfoundation.org>
-Subject: [PATCH v3 2/8] x86: numa: make node_to_cpumask_map() NUMA_NO_NODE aware for x86
-Date:   Thu, 12 Sep 2019 18:15:28 +0800
-Message-ID: <1568283334-178380-3-git-send-email-linyunsheng@huawei.com>
-X-Mailer: git-send-email 2.8.1
-In-Reply-To: <1568283334-178380-1-git-send-email-linyunsheng@huawei.com>
-References: <1568283334-178380-1-git-send-email-linyunsheng@huawei.com>
+        id S1731284AbfILK6k (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 12 Sep 2019 06:58:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57862 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730811AbfILK6j (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 12 Sep 2019 06:58:39 -0400
+Received: from rapoport-lnx (unknown [88.157.232.34])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8369821479;
+        Thu, 12 Sep 2019 10:58:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1568285918;
+        bh=ri4DX0jWeAR1yy3PHEcU0ID7qnBiwLO0Rgp4NA8oeE8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=iq0N7apOzLju2Y2Uc5VIqIviB2zX9q93C1e+slLnCqhm8EWOSjQbWvMCASglAws6R
+         a8S0jRJ+D7dOOpzA6uQgXzRgyCnqKpTUaLmdpNXj+r06vpN8hH1PN+J2nWUDFuuTRC
+         LYk7LFBQIf0tPyQDNuuTZrRigJZZFA/mAnO5M3yA=
+Date:   Thu, 12 Sep 2019 11:58:33 +0100
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Cc:     Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCH] mips: sgi-ip27: switch from DISCONTIGMEM to SPARSEMEM
+Message-ID: <20190912105831.GA10677@rapoport-lnx>
+References: <1567662477-27404-1-git-send-email-rppt@kernel.org>
+ <20190905152150.f7ff6ef70726085de63df828@suse.de>
+ <20190905133251.GA3650@rapoport-lnx>
+ <20190905154831.88b7853b47ba7db7bd7626bd@suse.de>
+ <20190905154747.GB3650@rapoport-lnx>
+ <20190905233800.0f6b3fb3722cde2f5a88663a@suse.de>
+ <20190906130223.GA17704@rapoport-lnx>
+ <20190909182242.c1ef9717d14b20212ef75954@suse.de>
+ <20190910113243.GA19207@rapoport-lnx>
+ <20190911160939.19f776535770d12ff51a2af7@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.212.75]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190911160939.19f776535770d12ff51a2af7@suse.de>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-When passing the return value of dev_to_node() to cpumask_of_node()
-without checking the node id if the node id is NUMA_NO_NODE, there is
-global-out-of-bounds detected by KASAN.
+On Wed, Sep 11, 2019 at 04:09:39PM +0200, Thomas Bogendoerfer wrote:
+> On Tue, 10 Sep 2019 12:32:44 +0100
+> Mike Rapoport <rppt@kernel.org> wrote:
+> 
+> > [..]
+> 
+> Patch below works on the same Origin.
+> 
+> Does memblocks_present() deal better with the one reserved page per node
+> than sparse_memory_present_with_active_regions() ? Or is there a better
+> explanation ? My debug prints didn't make sense out of it...
 
-From the discussion [1], NUMA_NO_NODE really means no node affinity,
-which also means all cpus should be usable. So the cpumask_of_node()
-should always return all cpus online when user passes the node id
-as NUMA_NO_NODE, just like similar semantic that page allocator handles
-NUMA_NO_NODE.
+I think the problem is that when we call
+sparse_memory_present_with_active_regions() per node, the page for the node
+data of the next nodes is not yet reserved and since memory_present() does
+memblock allocations it may use that memory.
 
-But we cannot really copy the page allocator logic. Simply because the
-page allocator doesn't enforce the near node affinity. It just picks it
-up as a preferred node but then it is free to fallback to any other numa
-node. This is not the case here and node_to_cpumask_map will only restrict
-to the particular node's cpus which would have really non deterministic
-behavior depending on where the code is executed. So in fact we really
-want to return cpu_online_mask for NUMA_NO_NODE.
+We can try to verify that with "memblock=debug" in the command line.
 
-Also there is a debuging version of node_to_cpumask_map(), which only
-is used when CONFIG_DEBUG_PER_CPU_MAPS is defined, this patch changes
-it to handle NUMA_NO_NODE as the normal node_to_cpumask_map(). And "fix"
-a sign "bug" since it is for debugging and should catch all the error
-cases.
+Another thing we could try to rule out the differences between
+memblocks_present() and sparse_memory_present_with_active_regions() is to
+replace memblocks_present() in your patch with
+sparse_memory_present_with_active_regions(MAX_NUMNODES).
 
-[1] https://lore.kernel.org/patchwork/patch/1125789/
-Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
-Suggested-by: Michal Hocko <mhocko@kernel.org>
----
-V3: Change to only handle NUMA_NO_NODE, and return cpu_online_mask
-    for NUMA_NO_NODE case, and change the commit log to better justify
-    the change.
----
- arch/x86/include/asm/topology.h | 3 +++
- arch/x86/mm/numa.c              | 7 +++++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ 
+> Thomas.
+> 
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index d50fafd7bf3a..e4b02b5f3487 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -669,6 +669,7 @@ config SGI_IP22
+>  config SGI_IP27
+>  	bool "SGI IP27 (Origin200/2000)"
+>  	select ARCH_HAS_PHYS_TO_DMA
+> +	select ARCH_SPARSEMEM_ENABLE
+>  	select FW_ARC
+>  	select FW_ARC64
+>  	select BOOT_ELF64
+> @@ -2633,18 +2634,9 @@ config ARCH_FLATMEM_ENABLE
+>  	def_bool y
+>  	depends on !NUMA && !CPU_LOONGSON2
+>  
+> -config ARCH_DISCONTIGMEM_ENABLE
+> -	bool
+> -	default y if SGI_IP27
+> -	help
+> -	  Say Y to support efficient handling of discontiguous physical memory,
+> -	  for architectures which are either NUMA (Non-Uniform Memory Access)
+> -	  or have huge holes in the physical address space for other reasons.
+> -	  See <file:Documentation/vm/numa.rst> for more.
+> -
+>  config ARCH_SPARSEMEM_ENABLE
+>  	bool
+> -	select SPARSEMEM_STATIC
+> +	select SPARSEMEM_STATIC if !SGI_IP27
+>  
+>  config NUMA
+>  	bool "NUMA Support"
+> diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
+> index fb077a947575..370f2ba14a89 100644
+> --- a/arch/mips/sgi-ip27/ip27-memory.c
+> +++ b/arch/mips/sgi-ip27/ip27-memory.c
+> @@ -410,8 +410,6 @@ static void __init node_mem_init(cnodeid_t node)
+>  
+>  	memblock_reserve(slot_firstpfn << PAGE_SHIFT,
+>  			 ((slot_freepfn - slot_firstpfn) << PAGE_SHIFT));
+> -
+> -	sparse_memory_present_with_active_regions(node);
+>  }
+>  
+>  /*
+> @@ -444,6 +442,7 @@ void __init prom_meminit(void)
+>  		}
+>  		__node_data[node] = &null_node;
+>  	}
+> +	memblocks_present();
+>  }
+>  
+>  void __init prom_free_prom_memory(void)
+> 
+> -- 
+> SUSE Software Solutions Germany GmbH
+> HRB 247165 (AG München)
+> Geschäftsführer: Felix Imendörffer
 
-diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
-index 4b14d23..7fa82e1 100644
---- a/arch/x86/include/asm/topology.h
-+++ b/arch/x86/include/asm/topology.h
-@@ -69,6 +69,9 @@ extern const struct cpumask *cpumask_of_node(int node);
- /* Returns a pointer to the cpumask of CPUs on Node 'node'. */
- static inline const struct cpumask *cpumask_of_node(int node)
- {
-+	if (node == NUMA_NO_NODE)
-+		return cpu_online_mask;
-+
- 	return node_to_cpumask_map[node];
- }
- #endif
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index e6dad60..c676ffb 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -861,9 +861,12 @@ void numa_remove_cpu(int cpu)
-  */
- const struct cpumask *cpumask_of_node(int node)
- {
--	if (node >= nr_node_ids) {
-+	if (node == NUMA_NO_NODE)
-+		return cpu_online_mask;
-+
-+	if ((unsigned int)node >= nr_node_ids) {
- 		printk(KERN_WARNING
--			"cpumask_of_node(%d): node > nr_node_ids(%u)\n",
-+			"cpumask_of_node(%d): node >= nr_node_ids(%u)\n",
- 			node, nr_node_ids);
- 		dump_stack();
- 		return cpu_none_mask;
 -- 
-2.8.1
-
+Sincerely yours,
+Mike.

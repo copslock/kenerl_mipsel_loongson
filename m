@@ -8,52 +8,52 @@ X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C81ADC4CECA
-	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 19:10:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DFC23C4CEC9
+	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 19:10:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9BA5620CC7
-	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 19:10:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AF41F2089F
+	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 19:10:50 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TEWPOXwV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RmTU+XQh"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389023AbfIMTKj (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 13 Sep 2019 15:10:39 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:40278 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388321AbfIMTKh (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 13 Sep 2019 15:10:37 -0400
-Received: by mail-pl1-f195.google.com with SMTP id y10so13613072pll.7;
-        Fri, 13 Sep 2019 12:10:36 -0700 (PDT)
+        id S2389107AbfIMTKf (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 13 Sep 2019 15:10:35 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:38700 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388321AbfIMTKe (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 13 Sep 2019 15:10:34 -0400
+Received: by mail-pf1-f196.google.com with SMTP id h195so18664881pfe.5;
+        Fri, 13 Sep 2019 12:10:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=NJmtMt3lb+Jh7/54C7Wh0cgNaZ6kTY930vy6CWOqbNM=;
-        b=TEWPOXwVcUd7n6YYM5iomHZyHlfGoSxzv3E5JnerXffYw4STAqBc8HMmijJobQPA2Z
-         4NtDgId3CLS7rpRGMGMaUqEQCyP4wHYq7HDqMn2KogQCa/AURCCRyK5QrUXOZAuHsu97
-         g6DzY/4wEO/kT252VFiT1UactJaeR1RQ4YzOG0WbFQHIBPvMzmaFbRj/glNNkMl9vCKK
-         i3WJXgvfQF6nuxMer6sQZ9h774FzV9uxMv+zlupv/bc1H4JL3ly6zsEatuNfCKVxNghB
-         I6QT7/Tid7WQbpdhiVq76C8X90lCIZm3gA7kkVAXvCFEXXart11tRBjCysY+uBHFxoUp
-         j6tg==
+        bh=iEP53jXE1H7ai299FkwmfDyKSeiJcsObnQa2nVkj7GM=;
+        b=RmTU+XQhLlb77l+u6rtOMoxnjiC4sUe9yqmMLEoWDQpaVJWSGUnNkGUZLHwo0wggVs
+         j2oI6XkqFsOc7YGifwwBDLX+v4ftQFWjFOU5xX09feO1DH4K0h9SHDcVBBPXDuAvHfFi
+         o0SBM7dOTwL8hmns8bawZ9R7As9D19uePMMA8yoBwjw9R3ZuJ7Zj8rl9NzICa5QCyl0b
+         9zXTg8ykarZj0dbFBSNbu+sVHXdrzJlxMh0gr7ICtNlnoJps46lvBVPm3I1pn4Kq11WJ
+         rrW1Qw6HVKqGa77aUw9YeqHBzpmROGVLhR4OAdXu3f+5Ec/Y05pjhpPXIsw7n1Ec47Ch
+         fi0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=NJmtMt3lb+Jh7/54C7Wh0cgNaZ6kTY930vy6CWOqbNM=;
-        b=Mu//BgrWWmYlEE0VuUZ/0u/2wHwR3IVc4uhefqF88IfwT9OeS5CKfOtuaNlzQsbMzF
-         jiuT4VTysydOUp0GifykvRb4bX/qOZ5LEvT183qlbvnzv5Ht6R3FzdMr7jIls/AqDXyG
-         HMSDAo9fn1qZRaaLJajZuEhdbd6pY4c0V7l7awyV2DTS5NjHk8CQTp/u0VutsZ0Xd0Ex
-         mhKpZRlnpxEics5yvnJ67EVHZcRJdHHEt6RiGR90uNj19Evo0puiWgdom2ueiDZFet2x
-         FpAy0liuLY1NlINuBFWbQzIl+pIpR+FwAaazFZNC5llgXTteftX3JawCdsMWC/ebV3IG
-         NpPg==
-X-Gm-Message-State: APjAAAV9qY0pds8TynayoBsWYKx5g0RELwzKYGLLwhzIxVBDj8jIA9NF
-        yaffD7+9Jyiefrjwaiwsu4RqmvSvT/o=
-X-Google-Smtp-Source: APXvYqztzVVNlRy0nky8YRo5TuTahQ8JI+kV2G8JwUejG+nnQlSeGUCXtMtjo5k1K5m/ZZx9s7yJwA==
-X-Received: by 2002:a17:902:8302:: with SMTP id bd2mr51910587plb.9.1568401835804;
-        Fri, 13 Sep 2019 12:10:35 -0700 (PDT)
+        bh=iEP53jXE1H7ai299FkwmfDyKSeiJcsObnQa2nVkj7GM=;
+        b=Pv1WD0RdinSfj7paZLeJl+trV2PpgcT+OvWAk820p0YZMFg1KUFPN5MAJ3fqpHqpqB
+         jWdaYoHTo/DV1iX2yYAe2lNPSHyqBx6Nl7fpXomujwujOdjj3jJ5L4LCzY7obCrCclj7
+         Nl23Is/UxcHJvNl2NV8api3FjGAv8nbTO9rSzsUgIeKd5/E3CVmUuN1a4YiBWow+SkhM
+         QplBa/avD3czUNYQTa6bhNcf+rTpAQtZ72c4ydw4Rdt7Lx9UxQBk0ZI0puC6BK1wt+HK
+         dKExyUTjuLO3ZwD8kf9WCJXPGmeP+O0vUaPCCwsudo5IItaBegODBWJmxjgWZXShm/4f
+         Nw0Q==
+X-Gm-Message-State: APjAAAXay2wd/kCCRxI7gTK1c98bMVRjtBR9ndVudAC799Cwv8siiDJd
+        cRsOzFXC8uA2Ntmg7aGv29sXaZDrnsc=
+X-Google-Smtp-Source: APXvYqwZiwo1tQoW5TA31J5VMCx37dKX/0t8zB3TPFBw/T8fvXEn6i2sWUrClMrwhVWgjCOH0YFDug==
+X-Received: by 2002:a65:41c6:: with SMTP id b6mr44482007pgq.269.1568401833576;
+        Fri, 13 Sep 2019 12:10:33 -0700 (PDT)
 Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id r18sm27273779pfc.3.2019.09.13.12.10.34
+        by smtp.gmail.com with ESMTPSA id r18sm27273779pfc.3.2019.09.13.12.10.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2019 12:10:35 -0700 (PDT)
+        Fri, 13 Sep 2019 12:10:33 -0700 (PDT)
 From:   Florian Fainelli <f.fainelli@gmail.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Florian Fainelli <f.fainelli@gmail.com>,
@@ -68,9 +68,9 @@ Cc:     Florian Fainelli <f.fainelli@gmail.com>,
         bcm-kernel-feedback-list@broadcom.com (open list:BROADCOM BMIPS MIPS
         ARCHITECTURE),
         linux-mips@vger.kernel.org (open list:BROADCOM BMIPS MIPS ARCHITECTURE)
-Subject: [PATCH 5/6] irqchip/irq-bcm7038-l1: Support brcm,int-fwd-mask
-Date:   Fri, 13 Sep 2019 12:10:25 -0700
-Message-Id: <20190913191026.8801-6-f.fainelli@gmail.com>
+Subject: [PATCH 3/6] irqchip/irq-bcm7038-l1: Enable parent IRQ if necessary
+Date:   Fri, 13 Sep 2019 12:10:23 -0700
+Message-Id: <20190913191026.8801-4-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190913191026.8801-1-f.fainelli@gmail.com>
 References: <20190913191026.8801-1-f.fainelli@gmail.com>
@@ -79,64 +79,29 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On some specific chips like 7211 we need to leave some interrupts
-untouched/forwarded to the VPU which is another agent in the system
-making use of that interrupt controller hardware (goes to both ARM GIC
-and VPU L1 interrupt controller). Make that possible by using the
-existing brcm,int-fwd-mask property.
+If the 'brcm,irq-can-wake' property is specified, make sure we also
+enable the corresponding parent interrupt we are attached to.
 
 Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- drivers/irqchip/irq-bcm7038-l1.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-bcm7038-l1.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/drivers/irqchip/irq-bcm7038-l1.c b/drivers/irqchip/irq-bcm7038-l1.c
-index 0ad473249f16..5e8f0fbc5f20 100644
+index c7e37eefec6d..0ad473249f16 100644
 --- a/drivers/irqchip/irq-bcm7038-l1.c
 +++ b/drivers/irqchip/irq-bcm7038-l1.c
-@@ -44,6 +44,7 @@ struct bcm7038_l1_chip {
- 	struct list_head	list;
- 	u32			wake_mask[MAX_WORDS];
- #endif
-+	u32			irq_fwd_mask[MAX_WORDS];
- 	u8			affinity[MAX_WORDS * IRQS_PER_WORD];
- };
- 
-@@ -265,6 +266,7 @@ static int __init bcm7038_l1_init_one(struct device_node *dn,
- 	resource_size_t sz;
- 	struct bcm7038_l1_cpu *cpu;
- 	unsigned int i, n_words, parent_irq;
-+	int ret;
- 
- 	if (of_address_to_resource(dn, idx, &res))
+@@ -297,6 +297,10 @@ static int __init bcm7038_l1_init_one(struct device_node *dn,
+ 		pr_err("failed to map parent interrupt %d\n", parent_irq);
  		return -EINVAL;
-@@ -278,6 +280,14 @@ static int __init bcm7038_l1_init_one(struct device_node *dn,
- 	else if (intc->n_words != n_words)
- 		return -EINVAL;
- 
-+	ret = of_property_read_u32_array(dn , "brcm,int-fwd-mask",
-+					 intc->irq_fwd_mask, n_words);
-+	if (ret != 0 && ret != -EINVAL) {
-+		/* property exists but has the wrong number of words */
-+		pr_err("invalid brcm,int-fwd-mask property\n");
-+		return -EINVAL;
-+	}
-+
- 	cpu = intc->cpus[idx] = kzalloc(sizeof(*cpu) + n_words * sizeof(u32),
- 					GFP_KERNEL);
- 	if (!cpu)
-@@ -288,8 +298,9 @@ static int __init bcm7038_l1_init_one(struct device_node *dn,
- 		return -ENOMEM;
- 
- 	for (i = 0; i < n_words; i++) {
--		l1_writel(0xffffffff, cpu->map_base + reg_mask_set(intc, i));
--		cpu->mask_cache[i] = 0xffffffff;
-+		l1_writel(0xffffffff & ~intc->irq_fwd_mask[i],
-+			  cpu->map_base + reg_mask_set(intc, i));
-+		cpu->mask_cache[i] = 0xffffffff & ~intc->irq_fwd_mask[i];
  	}
++
++	if (of_property_read_bool(dn, "brcm,irq-can-wake"))
++		enable_irq_wake(parent_irq);
++
+ 	irq_set_chained_handler_and_data(parent_irq, bcm7038_l1_irq_handle,
+ 					 intc);
  
- 	parent_irq = irq_of_parse_and_map(dn, idx);
 -- 
 2.17.1
 

@@ -2,56 +2,58 @@ Return-Path: <SRS0=SIfr=XI=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 17508C4CEC9
-	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 19:15:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D919BC4CEC8
+	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 19:16:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id DEA162084F
-	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 19:15:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A5961206A5
+	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 19:16:01 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HMUUpeg7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jtbuwLj4"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389876AbfIMTPs (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 13 Sep 2019 15:15:48 -0400
-Received: from mail-pg1-f171.google.com ([209.85.215.171]:32975 "EHLO
-        mail-pg1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388860AbfIMTPs (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 13 Sep 2019 15:15:48 -0400
-Received: by mail-pg1-f171.google.com with SMTP id n190so15745053pgn.0;
-        Fri, 13 Sep 2019 12:15:47 -0700 (PDT)
+        id S2390071AbfIMTPz (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 13 Sep 2019 15:15:55 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:39101 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390051AbfIMTPx (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 13 Sep 2019 15:15:53 -0400
+Received: by mail-pf1-f195.google.com with SMTP id i1so9820764pfa.6;
+        Fri, 13 Sep 2019 12:15:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=IbrgnnIi8mQgTBX8fvBLijtOJs8824mPLU4/EMPTvJU=;
-        b=HMUUpeg7PwLa27pWDxfkHzPF/G9eoPiQiuC6zLCGPr/wWT7cxbQzAjvpA9Id3SWNlG
-         C9XqKGnOT2ByhQ8REsy7VIigj2WVisjafv9wdy3l3TRnzTkzrSkwZymAwJCO+hHAnKsG
-         Z2Om2qcJNMmTxwi+71heLCJGnJp7BWsOIC9iMcHOjP4MqQa7hPrEELUdOPDSXsOPGmYK
-         bMzdrQ9Gc1avpE3lLQIkzOqzEeT+bGyQh3K6z7E5WnKBx6fgBhR/1RxKqWFPvAYieomI
-         GECp0yEwtTgRo2hZ80HxWhuCEs6GppR5UNgvhtJIE/E3+GvET46fioc0EuSq9i4WFwkq
-         O5wA==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=BRtSatqLH/MfhNYbSV1CsCvP0aOfEd/XjwPUQaxk57I=;
+        b=jtbuwLj4zNgb1GtpmdFk0gc5/kOlfHWykktKB/RyfHGZlZ1uNNSe///SsSsOJUQYFF
+         Q9razuSg4mXJrOS3/UL7LsOqJCRQ3kwJ61kXoB9GaoWUMuk39DPbAje3201ECWIP6foO
+         5tvjebWmEksOAdijtNIJCgdo0QIt76FT2Cu4Uc8LjA7mpoLUgAeE7lJMuIXTsSOiR8TU
+         ZiJDd2lV4KYp8fZRljygwB/gZbxkKw2lXiLxI95TPPvR+hxQP5vhRdb5JGiCSBmj6VzY
+         uhkJTeOlUCpYzsaVOJtrHduNmkwVa2XZuljaU0dT/4SI5WtVmLAHjoR6E+SeaSvCf12j
+         Bw4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=IbrgnnIi8mQgTBX8fvBLijtOJs8824mPLU4/EMPTvJU=;
-        b=iUepHU6lbPVi1qQ8BMmbzi7a6Iwh2+pjRk/1jiAU7gk4KKbaNJ2oIU5a+vZUt4rRyi
-         jeP9Ga6UEpjwTOWGYyI5GM+mdRS+RZpCGboD1dlZ6dE/vE814NV4uia4Ya/BVJvyANpJ
-         38kkQezee3SBvzKhFWrizskA0PX4TVFkppDjJMDubwS/cxF/fQk3iugfBFpvuyCtba3q
-         okPU/nvXBmrUKUxCiD6N88zzyEWSN6e2DhK4TcdB570NAXYJvSxhXRaMELo2gR1IB/yq
-         W3GjG0LgrOwkAsREQgnV5zcxjqm30ZroNN632Ib6YPs+abPlbRPNui8ZWVzZ86scvmVu
-         olfQ==
-X-Gm-Message-State: APjAAAU6CRDKY7KX9msSWe5h8Qd/394gTHA8s1XycJlmyEGzcPz5lH68
-        d1wyTtJP+86rKgR2MFS8A8VoRiaMPXU=
-X-Google-Smtp-Source: APXvYqzvnmd7K/fJ4Hw+Ni1SoafIghqh8a4Vo5cum5IzRFEu2MpdRfin5IqW9ruB36JzPuGbbuTxwA==
-X-Received: by 2002:a63:1046:: with SMTP id 6mr45800676pgq.111.1568402147186;
-        Fri, 13 Sep 2019 12:15:47 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=BRtSatqLH/MfhNYbSV1CsCvP0aOfEd/XjwPUQaxk57I=;
+        b=Yoy9HlDON14GqNsJo+5BSOs+AxuzkvUBPfXwRf6QaZ6odYR4Lqz2xMkwhKkYjikbWo
+         hh5HrspqpG+7mEPhKaW+jbr9ROVTrGU33N1s6EhJH0w+GsjJmirdpVSy9GtmHTWVmenO
+         Rv/CoxY7cCMMfCI7+XHqmXzHC9U06QwSIQW3gFRiStVmmwHbZ1AsNA8Ul1p89t6wunpL
+         dMuCvvBjOnemfLlfCQQz30RRicSpxUYNNgBFhTrzBvca5uZtREMx7LGD7qlLpnld1eDB
+         kLgdz1PZL6vddIsEqVuTPwdx8RLeCbEVTaszr+M9mVrFHTr0zQyC2Gq5GLV4Si1jALxe
+         pXLQ==
+X-Gm-Message-State: APjAAAVIiyEucjhGThvLUPrrt6DZEKWw2zFrxHF3dpzXBGX1kYZ+oPZl
+        T8mm8M+hJ1HYTiMZgQUPeGd8d/LgUAo=
+X-Google-Smtp-Source: APXvYqzxO0qzlIQtB7mDNY47JFE1/g8cLqnGE+hjEzq3cLN7pORngII31PI7vqJXoRIRninpX2wrJQ==
+X-Received: by 2002:a63:e44b:: with SMTP id i11mr7318696pgk.297.1568402152112;
+        Fri, 13 Sep 2019 12:15:52 -0700 (PDT)
 Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id m24sm6988149pgj.71.2019.09.13.12.15.45
+        by smtp.gmail.com with ESMTPSA id m24sm6988149pgj.71.2019.09.13.12.15.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2019 12:15:46 -0700 (PDT)
+        Fri, 13 Sep 2019 12:15:51 -0700 (PDT)
 From:   Florian Fainelli <f.fainelli@gmail.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Florian Fainelli <f.fainelli@gmail.com>,
@@ -66,40 +68,41 @@ Cc:     Florian Fainelli <f.fainelli@gmail.com>,
         bcm-kernel-feedback-list@broadcom.com (open list:BROADCOM BMIPS MIPS
         ARCHITECTURE),
         linux-mips@vger.kernel.org (open list:BROADCOM BMIPS MIPS ARCHITECTURE)
-Subject: [PATCH v2 0/5] irqchip/irq-bcm7038-l1 updates
-Date:   Fri, 13 Sep 2019 12:15:37 -0700
-Message-Id: <20190913191542.9908-1-f.fainelli@gmail.com>
+Subject: [PATCH v2 4/5] dt-bindings: Document brcm,int-fwd-mask property for bcm7038-l1-intc
+Date:   Fri, 13 Sep 2019 12:15:41 -0700
+Message-Id: <20190913191542.9908-5-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190913191542.9908-1-f.fainelli@gmail.com>
+References: <20190913191542.9908-1-f.fainelli@gmail.com>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Marc, Jason, Thomas,
+Indicate that the brcm,int-fwd-mask property is optional and can be
+optionaly set on platforms which require to leave specific interrupts
+untouched from Linux and retain the firmware configuration.
 
-This patch series contains some updates from our internal tree to
-support power management and allow configuring specific instances of the
-brcm,bcm7038-l1-intc to leave some interrupts untouched and how the
-firmware might have configured them.
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+ .../bindings/interrupt-controller/brcm,bcm7038-l1-intc.txt    | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Changes in v2:
-
-- dropped the accidental fixup patch that made it to the list and squash
-  it with patch #1 as it should have
-
-Florian Fainelli (4):
-  dt-bindings: Document brcm,irq-can-wake for brcm,bcm7038-l1-intc.txt
-  irqchip/irq-bcm7038-l1: Enable parent IRQ if necessary
-  dt-bindings: Document brcm,int-fwd-mask property for bcm7038-l1-intc
-  irqchip/irq-bcm7038-l1: Support brcm,int-fwd-mask
-
-Justin Chen (1):
-  irqchip/irq-bcm7038-l1: Add PM support
-
- .../brcm,bcm7038-l1-intc.txt                  |   9 ++
- drivers/irqchip/irq-bcm7038-l1.c              | 117 +++++++++++++++++-
- 2 files changed, 124 insertions(+), 2 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7038-l1-intc.txt b/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7038-l1-intc.txt
+index 4eb043270f5b..31d31af408c5 100644
+--- a/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7038-l1-intc.txt
++++ b/Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7038-l1-intc.txt
+@@ -36,6 +36,10 @@ Optional properties:
+ - brcm,irq-can-wake: If present, this means the L1 controller can be used as a
+   wakeup source for system suspend/resume.
+ 
++- brcm,int-fwd-mask: if present, a bit mask to indicate which interrupts
++  have already been configured by the firmware and should be left untouched.
++  This should have one 32-bit word per status/set/clear/mask group.
++
+ If multiple reg ranges and interrupt-parent entries are present on an SMP
+ system, the driver will allow IRQ SMP affinity to be set up through the
+ /proc/irq/ interface.  In the simplest possible configuration, only one
 -- 
 2.17.1
 

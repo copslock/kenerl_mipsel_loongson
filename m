@@ -2,195 +2,241 @@ Return-Path: <SRS0=SIfr=XI=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 818C6C4CEC5
-	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 16:00:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86588C4CEC9
+	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 19:10:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 52140208C2
-	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 16:00:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 47D1B2084F
+	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 19:10:33 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=zoho.com header.i=zhouyanjie@zoho.com header.b="i+EsRJLF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rd9zXjfQ"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728938AbfIMP77 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 13 Sep 2019 11:59:59 -0400
-Received: from sender4-pp-o94.zoho.com ([136.143.188.94]:25459 "EHLO
-        sender4-pp-o94.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728811AbfIMP76 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 13 Sep 2019 11:59:58 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1568390366; cv=none; 
-        d=zoho.com; s=zohoarc; 
-        b=SLLlGc9nv+SD9CgdET16ANDVpnhBzDuR2sh4VVT9nLaLPzoBudiYAhT1wKIEs5rF5bTsBEMP5ZJCapcyYmZFaBe50oLlIrNIoytj9gLi+coZZli4u0jSS4gxQuJLCbcthLFsGz1HJiqRwgIx8QLbbBrX5+m5TjCX4brSjrrYomw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com; s=zohoarc; 
-        t=1568390366; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To:ARC-Authentication-Results; 
-        bh=IL7XvFCTAWRH0WfapoAjEN/ppfvJmC4N1IUgD1yn/nU=; 
-        b=bkuCYM/LLnwobDGxQSHTD/9ebvQ7AH273OiDlL6Yule0LqCB2khIbjrk4fiyc1ZxrcIt9IRT+8g6aM00ORZC6D+3EVnZS4DnLF3aUa34zgva8Tm0dHBWmHVpEo4CXg8ymHym/XVwOP14Lj5jqpXHqC5RVusP7st5AfsgnV0obcA=
-ARC-Authentication-Results: i=1; mx.zoho.com;
-        dkim=pass  header.i=zoho.com;
-        spf=pass  smtp.mailfrom=zhouyanjie@zoho.com;
-        dmarc=pass header.from=<zhouyanjie@zoho.com> header.from=<zhouyanjie@zoho.com>
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; 
-  s=zapps768; d=zoho.com; 
-  h=subject:to:references:cc:from:message-id:date:user-agent:mime-version:in-reply-to:content-type; 
-  b=gb2yf8aMBgQQUV+YAfFw71i28sSXMDTY2vr+r1YrSH+AEoExjUOno+AksLgMbDhT768pTbTHGEV4
-    ugNpIPh23j5oJ3YpvA7DPIIjVilRFvERq7gvH3Cuzmx7QWfO+P2a  
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1568390366;
-        s=zm2019; d=zoho.com; i=zhouyanjie@zoho.com;
-        h=Subject:To:References:Cc:From:Message-ID:Date:MIME-Version:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        l=4148; bh=IL7XvFCTAWRH0WfapoAjEN/ppfvJmC4N1IUgD1yn/nU=;
-        b=i+EsRJLFX8bCwgiMZZeDMqINI/z9o2D5LXEBhGLDNMap+c4D1iRReuwfwxdLbvo/
-        EjPwPLeA9GjlcSQaUlYZV+cfxOMMQDBnoJWhRFGxlh6iNtaVuMiuyxbkpCzAjIsC/Gy
-        FrkzMTx+ZSBjWzg+pczu35ELjAUnxuSyPNBW0XDQ=
-Received: from [192.168.88.140] (171.221.112.87 [171.221.112.87]) by mx.zohomail.com
-        with SMTPS id 1568390363342552.6980296947244; Fri, 13 Sep 2019 08:59:23 -0700 (PDT)
-Subject: Re: [PATCH 1/4] MMC: Ingenic: Adjust the macro definition name.
-To:     Ezequiel Garcia <ezequiel@collabora.com>,
-        linux-mips@vger.kernel.org
-References: <1567669089-88693-1-git-send-email-zhouyanjie@zoho.com>
- <1567669089-88693-2-git-send-email-zhouyanjie@zoho.com>
- <e9ef3a9093e8572eb3be2aa654dd30069c493a4b.camel@collabora.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-        devicetree@vger.kernel.org, ulf.hansson@linaro.org,
-        paul.burton@mips.com, linus.walleij@linaro.org,
-        paul@crapouillou.net, malat@debian.org, yuehaibing@huawei.com,
-        robh+dt@kernel.org, mark.rutland@arm.com, syq@debian.org,
-        jiaxun.yang@flygoat.com
-From:   Zhou Yanjie <zhouyanjie@zoho.com>
-Message-ID: <5D7BBCCF.2010600@zoho.com>
-Date:   Fri, 13 Sep 2019 23:59:11 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.8.0
-MIME-Version: 1.0
-In-Reply-To: <e9ef3a9093e8572eb3be2aa654dd30069c493a4b.camel@collabora.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
+        id S2388214AbfIMTKc (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 13 Sep 2019 15:10:32 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:34259 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388321AbfIMTKc (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 13 Sep 2019 15:10:32 -0400
+Received: by mail-pl1-f195.google.com with SMTP id d3so13666238plr.1;
+        Fri, 13 Sep 2019 12:10:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=FFcP+UDVFEHmJs1QxzZlzSRhhd6SePZOlYiyZUxy6po=;
+        b=rd9zXjfQyCb3Bo8/P721KqHGHmPAJdBE4Wvuh9BsBaFIMShZkZreNJdo45Iil47Q5O
+         OJ1xVbGjR4CtVETA8CGjZgFkhg5sWt5vWyp8po9A9iiw0vybB5CW9ZzVryy8jydu8ibr
+         I+flMYYZb9/gcuzP2XbygxSjwejGAa/u7XsEnlTWPeQ1KIew1BrWuKQc8a6duT8Lc7se
+         ny9adHtm4i2uxwvfEvCOQKgfwCAW24Lr4uvig+e471z50K8bkPJ7QBv20hkg36gURXwb
+         pVrhJB7ZI5FO6B64XUX/C6rIofqWwUhGjXII0k72FrVaRkQP1ZiF7PgGie4Zvws9Gk6R
+         tygA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=FFcP+UDVFEHmJs1QxzZlzSRhhd6SePZOlYiyZUxy6po=;
+        b=ivq6Cnd9Ek4yOfQ6a0qwWUMW8qPOTwK0NA3Kl/V1bLyL6u7y7s0tNW7H/j6syUntQO
+         0mU63NNTn73UyFLjVuPf+ieTXIPF+bJz1vAkQnSVd5MY4qSbP5FFveZtaqsW5dJFb0rD
+         y9ZI0bd6St7H65OOzZWBxrMrkCKHyUX0lfnbWlv0w9HL7yxQGibe+ZGl0y891oTsyUPR
+         r9k1kaZ7NTranGdJfExdqch7PXQkvUtifK5dfOlftKC1a3xEuYAnqVrBeEK0oXUcmCJA
+         m30JqN+cquXPTTy4As5P6gpK1LiEH+4QtDnvLJIlPXiWt/aUDzfSqlFjUZzZkMYxqFE/
+         Li3g==
+X-Gm-Message-State: APjAAAWz1pidOOEcncNtupg19FzCCzBQAyhrc1kWXiJPA4eQiNxeqrEX
+        OiT9WCDp2t+5KH+Mv5i6XGq/RpZ8q6U=
+X-Google-Smtp-Source: APXvYqyUX3O49Mdt0MzVDLtyNcXrGaddTXK4bW6BELEhUNQ8Ab33gUUR75qABZaEiC50qikFLcf60w==
+X-Received: by 2002:a17:902:8c8a:: with SMTP id t10mr28825173plo.109.1568401831271;
+        Fri, 13 Sep 2019 12:10:31 -0700 (PDT)
+Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id r18sm27273779pfc.3.2019.09.13.12.10.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Sep 2019 12:10:30 -0700 (PDT)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Justin Chen <justinpopo6@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <maz@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
+        DEVICE TREE BINDINGS),
+        bcm-kernel-feedback-list@broadcom.com (open list:BROADCOM BMIPS MIPS
+        ARCHITECTURE),
+        linux-mips@vger.kernel.org (open list:BROADCOM BMIPS MIPS ARCHITECTURE)
+Subject: [PATCH 1/6] irqchip/irq-bcm7038-l1: Add PM support
+Date:   Fri, 13 Sep 2019 12:10:21 -0700
+Message-Id: <20190913191026.8801-2-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190913191026.8801-1-f.fainelli@gmail.com>
+References: <20190913191026.8801-1-f.fainelli@gmail.com>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Ezequiel,
+From: Justin Chen <justinpopo6@gmail.com>
 
-On 2019=E5=B9=B409=E6=9C=8813=E6=97=A5 23:32, Ezequiel Garcia wrote:
-> Hi Zhou,
->
-> Thanks for your interest in this driver, I'm glad
-> so see it's more used.
->
-> On Thu, 2019-09-05 at 15:38 +0800, Zhou Yanjie wrote:
->> Adjust the macro definition name to match the corresponding
->> register name in the datasheet.
->>
-> It's not really an issue to have slighlt different
-> names on the macros. They are currently sufficiently
-> descriptive, and I don't think it's deserves a patch.
-Thanks for your advice, I'll drop this in v2. Do you have any suggestions
-for the other three patches?
+The current l1 controller does not mask any interrupts when dropping
+into suspend. This mean we can receive unexpected wake up sources.
+Modified MIPS l1 controller to mask the all non-wake interrupts before
+dropping into suspend.
 
-Best regards!
->
-> Thanks,
-> Ezequiel
->
->> Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
->> ---
->>   drivers/mmc/host/jz4740_mmc.c | 18 +++++++++---------
->>   1 file changed, 9 insertions(+), 9 deletions(-)
->>
->> diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc=
-.c
->> index ffdbfaa..1b1fcb7 100644
->> --- a/drivers/mmc/host/jz4740_mmc.c
->> +++ b/drivers/mmc/host/jz4740_mmc.c
->> @@ -28,7 +28,7 @@
->>   #include <asm/mach-jz4740/dma.h>
->>  =20
->>   #define JZ_REG_MMC_STRPCL=090x00
->> -#define JZ_REG_MMC_STATUS=090x04
->> +#define JZ_REG_MMC_STAT=09=090x04
->>   #define JZ_REG_MMC_CLKRT=090x08
->>   #define JZ_REG_MMC_CMDAT=090x0C
->>   #define JZ_REG_MMC_RESTO=090x10
->> @@ -40,7 +40,7 @@
->>   #define JZ_REG_MMC_IREG=09=090x28
->>   #define JZ_REG_MMC_CMD=09=090x2C
->>   #define JZ_REG_MMC_ARG=09=090x30
->> -#define JZ_REG_MMC_RESP_FIFO=090x34
->> +#define JZ_REG_MMC_RES=09=090x34
->>   #define JZ_REG_MMC_RXFIFO=090x38
->>   #define JZ_REG_MMC_TXFIFO=090x3C
->>   #define JZ_REG_MMC_DMAC=09=090x44
->> @@ -391,7 +391,7 @@ static void jz4740_mmc_clock_disable(struct jz4740_m=
-mc_host *host)
->>  =20
->>   =09writew(JZ_MMC_STRPCL_CLOCK_STOP, host->base + JZ_REG_MMC_STRPCL);
->>   =09do {
->> -=09=09status =3D readl(host->base + JZ_REG_MMC_STATUS);
->> +=09=09status =3D readl(host->base + JZ_REG_MMC_STAT);
->>   =09} while (status & JZ_MMC_STATUS_CLK_EN && --timeout);
->>   }
->>  =20
->> @@ -403,7 +403,7 @@ static void jz4740_mmc_reset(struct jz4740_mmc_host =
-*host)
->>   =09writew(JZ_MMC_STRPCL_RESET, host->base + JZ_REG_MMC_STRPCL);
->>   =09udelay(10);
->>   =09do {
->> -=09=09status =3D readl(host->base + JZ_REG_MMC_STATUS);
->> +=09=09status =3D readl(host->base + JZ_REG_MMC_STAT);
->>   =09} while (status & JZ_MMC_STATUS_IS_RESETTING && --timeout);
->>   }
->>  =20
->> @@ -446,7 +446,7 @@ static void jz4740_mmc_transfer_check_state(struct j=
-z4740_mmc_host *host,
->>   {
->>   =09int status;
->>  =20
->> -=09status =3D readl(host->base + JZ_REG_MMC_STATUS);
->> +=09status =3D readl(host->base + JZ_REG_MMC_STAT);
->>   =09if (status & JZ_MMC_STATUS_WRITE_ERROR_MASK) {
->>   =09=09if (status & (JZ_MMC_STATUS_TIMEOUT_WRITE)) {
->>   =09=09=09host->req->cmd->error =3D -ETIMEDOUT;
->> @@ -580,10 +580,10 @@ static bool jz4740_mmc_read_data(struct jz4740_mmc=
-_host *host,
->>   =09/* For whatever reason there is sometime one word more in the fifo =
-then
->>   =09 * requested */
->>   =09timeout =3D 1000;
->> -=09status =3D readl(host->base + JZ_REG_MMC_STATUS);
->> +=09status =3D readl(host->base + JZ_REG_MMC_STAT);
->>   =09while (!(status & JZ_MMC_STATUS_DATA_FIFO_EMPTY) && --timeout) {
->>   =09=09d =3D readl(fifo_addr);
->> -=09=09status =3D readl(host->base + JZ_REG_MMC_STATUS);
->> +=09=09status =3D readl(host->base + JZ_REG_MMC_STAT);
->>   =09}
->>  =20
->>   =09return false;
->> @@ -614,7 +614,7 @@ static void jz4740_mmc_read_response(struct jz4740_m=
-mc_host *host,
->>   {
->>   =09int i;
->>   =09uint16_t tmp;
->> -=09void __iomem *fifo_addr =3D host->base + JZ_REG_MMC_RESP_FIFO;
->> +=09void __iomem *fifo_addr =3D host->base + JZ_REG_MMC_RES;
->>  =20
->>   =09if (cmd->flags & MMC_RSP_136) {
->>   =09=09tmp =3D readw(fifo_addr);
->> @@ -797,7 +797,7 @@ static irqreturn_t jz_mmc_irq(int irq, void *devid)
->>   =09struct mmc_command *cmd =3D host->cmd;
->>   =09uint32_t irq_reg, status, tmp;
->>  =20
->> -=09status =3D readl(host->base + JZ_REG_MMC_STATUS);
->> +=09status =3D readl(host->base + JZ_REG_MMC_STAT);
->>   =09irq_reg =3D jz4740_mmc_read_irq_reg(host);
->>  =20
->>   =09tmp =3D irq_reg;
->
->
+Signed-off-by: Justin Chen <justinpopo6@gmail.com>
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+ drivers/irqchip/irq-bcm7038-l1.c | 98 ++++++++++++++++++++++++++++++++
+ 1 file changed, 98 insertions(+)
 
-
+diff --git a/drivers/irqchip/irq-bcm7038-l1.c b/drivers/irqchip/irq-bcm7038-l1.c
+index fc75c61233aa..c7e37eefec6d 100644
+--- a/drivers/irqchip/irq-bcm7038-l1.c
++++ b/drivers/irqchip/irq-bcm7038-l1.c
+@@ -27,6 +27,7 @@
+ #include <linux/types.h>
+ #include <linux/irqchip.h>
+ #include <linux/irqchip/chained_irq.h>
++#include <linux/syscore_ops.h>
+ 
+ #define IRQS_PER_WORD		32
+ #define REG_BYTES_PER_IRQ_WORD	(sizeof(u32) * 4)
+@@ -39,6 +40,10 @@ struct bcm7038_l1_chip {
+ 	unsigned int		n_words;
+ 	struct irq_domain	*domain;
+ 	struct bcm7038_l1_cpu	*cpus[NR_CPUS];
++#ifdef CONFIG_PM_SLEEP
++	struct list_head	list;
++	u32			wake_mask[MAX_WORDS];
++#endif
+ 	u8			affinity[MAX_WORDS * IRQS_PER_WORD];
+ };
+ 
+@@ -47,6 +52,17 @@ struct bcm7038_l1_cpu {
+ 	u32			mask_cache[0];
+ };
+ 
++/*
++ * We keep a list of bcm7038_l1_chip used for suspend/resume. This hack is
++ * used because the struct chip_type suspend/resume hooks are not called
++ * unless chip_type is hooked onto a generic_chip. Since this driver does
++ * not use generic_chip, we need to manually hook our resume/suspend to
++ * syscore_ops.
++ */
++#ifdef CONFIG_PM_SLEEP
++static LIST_HEAD(bcm7038_l1_intcs_list);
++#endif
++
+ /*
+  * STATUS/MASK_STATUS/MASK_SET/MASK_CLEAR are packed one right after another:
+  *
+@@ -287,6 +303,77 @@ static int __init bcm7038_l1_init_one(struct device_node *dn,
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_PM_SLEEP
++static int bcm7038_l1_suspend(void)
++{
++	struct bcm7038_l1_chip *intc;
++	unsigned long flags;
++	int boot_cpu, word;
++
++	/* Wakeup interrupt should only come from the boot cpu */
++	boot_cpu = cpu_logical_map(smp_processor_id());
++
++	list_for_each_entry(intc, &bcm7038_l1_intcs_list, list) {
++		raw_spin_lock_irqsave(&intc->lock, flags);
++		for (word = 0; word < intc->n_words; word++) {
++			l1_writel(~intc->wake_mask[word],
++				intc->cpus[boot_cpu]->map_base +
++				reg_mask_set(intc, word));
++			l1_writel(intc->wake_mask[word],
++				intc->cpus[boot_cpu]->map_base +
++				reg_mask_clr(intc, word));
++		}
++		raw_spin_unlock_irqrestore(&intc->lock, flags);
++	}
++
++	return 0;
++}
++
++static void bcm7038_l1_resume(void)
++{
++	struct bcm7038_l1_chip *intc;
++	unsigned long flags;
++	int boot_cpu, word;
++
++	boot_cpu = cpu_logical_map(smp_processor_id());
++
++	list_for_each_entry(intc, &bcm7038_l1_intcs_list, list) {
++		raw_spin_lock_irqsave(&intc->lock, flags);
++		for (word = 0; word < intc->n_words; word++) {
++			l1_writel(intc->cpus[boot_cpu]->mask_cache[word],
++				intc->cpus[boot_cpu]->map_base +
++				reg_mask_set(intc, word));
++			l1_writel(~intc->cpus[boot_cpu]->mask_cache[word],
++				intc->cpus[boot_cpu]->map_base +
++				reg_mask_clr(intc, word));
++		}
++		raw_spin_unlock_irqrestore(&intc->lock, flags);
++	}
++}
++
++static struct syscore_ops bcm7038_l1_syscore_ops = {
++	.suspend	= bcm7038_l1_suspend,
++	.resume		= bcm7038_l1_resume,
++};
++
++static int bcm7038_l1_set_wake(struct irq_data *d, unsigned int on)
++{
++	struct bcm7038_l1_chip *intc = irq_data_get_irq_chip_data(d);
++	unsigned long flags;
++	u32 word = d->hwirq / IRQS_PER_WORD;
++	u32 mask = BIT(d->hwirq % IRQS_PER_WORD);
++
++	raw_spin_lock_irqsave(&intc->lock, flags);
++	if (on)
++		intc->wake_mask[word] |= mask;
++	else
++		intc->wake_mask[word] &= ~mask;
++	raw_spin_unlock_irqrestore(&intc->lock, flags);
++
++	return 0;
++}
++#endif
++
+ static struct irq_chip bcm7038_l1_irq_chip = {
+ 	.name			= "bcm7038-l1",
+ 	.irq_mask		= bcm7038_l1_mask,
+@@ -295,6 +382,9 @@ static struct irq_chip bcm7038_l1_irq_chip = {
+ #ifdef CONFIG_SMP
+ 	.irq_cpu_offline	= bcm7038_l1_cpu_offline,
+ #endif
++#if CONFIG_PM_SLEEP
++	.irq_set_wake		= bcm7038_l1_set_wake,
++#endif
+ };
+ 
+ static int bcm7038_l1_map(struct irq_domain *d, unsigned int virq,
+@@ -340,6 +430,14 @@ int __init bcm7038_l1_of_init(struct device_node *dn,
+ 		goto out_unmap;
+ 	}
+ 
++#ifdef CONFIG_PM_SLEEP
++	/* Add bcm7038_l1_chip into a list */
++	INIT_LIST_HEAD(&intc->list);
++	list_add_tail(&intc->list, &bcm7038_l1_intcs_list);
++
++	register_syscore_ops(&bcm7038_l1_syscore_ops);
++#endif
++
+ 	pr_info("registered BCM7038 L1 intc (%pOF, IRQs: %d)\n",
+ 		dn, IRQS_PER_WORD * intc->n_words);
+ 
+-- 
+2.17.1
 

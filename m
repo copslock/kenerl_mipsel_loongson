@@ -2,209 +2,155 @@ Return-Path: <SRS0=SIfr=XI=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C4A1AC49ED7
-	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 14:37:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9892EC49ED7
+	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 15:33:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9149120693
-	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 14:37:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1568385439;
-	bh=yUH6OCGvHhyQTZpyfpuHu9LxH3S+yNq5VNeZI6f7go0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=L3BWmCtrWtfNUZgMsi5v+Wx48uWs5kfJFzlzhvV75zTKwgNt3xPVSnzUUAqmrv5zR
-	 NEdUTkra9Gr0FW+/hgSUa+l1/2sf7e8Zi3t7HgjJrlVEgGg1oQC33HYugDBE87LAIb
-	 OHPcWTViTppJ7cKE1rbU2jO3zgbnq4jrUK2bmfLs=
+	by mail.kernel.org (Postfix) with ESMTP id 7262420693
+	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 15:33:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728861AbfIMOgJ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 13 Sep 2019 10:36:09 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:35004 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726558AbfIMOgJ (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 13 Sep 2019 10:36:09 -0400
-Received: by mail-ot1-f66.google.com with SMTP id t6so16445799otp.2;
-        Fri, 13 Sep 2019 07:36:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:date:from:to:cc:subject:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=EhVYjm/YBm0igQafg8TH8nGG75SYappzyaYQWt33XPA=;
-        b=g6f4AWIbnXROw0N9q2CL4QeEc/7hW/RSjc/Y9BNQeNMy9mPVmxsEKomrsrb94QFDSg
-         NRWUwM8TCt46Hk5hMaP41+0fklHgBeekr6tc9QX8QcYmCpqrwc93PpJW2pK5JG4B/CHn
-         0LrPwv46chPV8prMnJKomUdNqD0TbUGyUAhddiXr9qnM0wNbXcw1usvOrXkmmlhYyEPo
-         KNGMhCc+m3biHbifCfLkpat/z26kUO9qbPoKVqh5saNi8YZ3rZb2JQGCZlWkeBX0UbIl
-         qU70/4y1llvhMVJrIWyHz9UKJ0A3YECN3RrdvPaKsIrTCL4dfqR+ucSXS5E5wJGz9n03
-         rgdg==
-X-Gm-Message-State: APjAAAXZPoQoOx8bhzY8WfiW2JYEInBqnKrsxP7EVpjiLASYLEBFM/8Q
-        sGHrliIqSh1OAgUfi0KDOiIlNlA=
-X-Google-Smtp-Source: APXvYqxFXbXgcv9cvlYNEsqbSyTU5GT2myXwn5HRX+RIDFQZX6Of/xSC0KyE0TaktDfaACiCpcljCA==
-X-Received: by 2002:a05:6830:1103:: with SMTP id w3mr7219205otq.147.1568385367903;
-        Fri, 13 Sep 2019 07:36:07 -0700 (PDT)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id 36sm10597332ott.66.2019.09.13.07.36.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2019 07:36:07 -0700 (PDT)
-Message-ID: <5d7ba957.1c69fb81.a8a33.834a@mx.google.com>
-Date:   Fri, 13 Sep 2019 15:36:06 +0100
-From:   Rob Herring <robh@kernel.org>
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     linux-mips@vger.kernel.org, chenhc@lemote.com,
-        paul.burton@mips.com, tglx@linutronix.de, jason@lakedaemon.net,
-        maz@kernel.org, linux-kernel@vger.kernel.org, mark.rutland@arm.co,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v1 12/18] dt-bindings: mips: Add loongson cpus & boards
-References: <20190830043232.20191-1-jiaxun.yang@flygoat.com>
- <20190830043232.20191-7-jiaxun.yang@flygoat.com>
+        id S2388639AbfIMPdA (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 13 Sep 2019 11:33:00 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:57372 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727452AbfIMPc7 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 13 Sep 2019 11:32:59 -0400
+Received: from [IPv6:2001:8a0:6c2f:b301:66f4:e6a0:633:7a5e] (unknown [IPv6:2001:8a0:6c2f:b301:66f4:e6a0:633:7a5e])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: ezequiel)
+        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 279BE28B9BE;
+        Fri, 13 Sep 2019 16:32:56 +0100 (BST)
+Message-ID: <e9ef3a9093e8572eb3be2aa654dd30069c493a4b.camel@collabora.com>
+Subject: Re: [PATCH 1/4] MMC: Ingenic: Adjust the macro definition name.
+From:   Ezequiel Garcia <ezequiel@collabora.com>
+To:     Zhou Yanjie <zhouyanjie@zoho.com>, linux-mips@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, ulf.hansson@linaro.org,
+        paul.burton@mips.com, linus.walleij@linaro.org,
+        paul@crapouillou.net, malat@debian.org, yuehaibing@huawei.com,
+        robh+dt@kernel.org, mark.rutland@arm.com, syq@debian.org,
+        jiaxun.yang@flygoat.com
+Date:   Fri, 13 Sep 2019 16:32:52 +0100
+In-Reply-To: <1567669089-88693-2-git-send-email-zhouyanjie@zoho.com>
+References: <1567669089-88693-1-git-send-email-zhouyanjie@zoho.com>
+         <1567669089-88693-2-git-send-email-zhouyanjie@zoho.com>
+Organization: Collabora
+X-Priority: 1
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190830043232.20191-7-jiaxun.yang@flygoat.com>
-X-Mutt-References: <20190830043232.20191-7-jiaxun.yang@flygoat.com>
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Fri, Aug 30, 2019 at 12:32:26PM +0800, Jiaxun Yang wrote:
-> Prepare for later dts.
+Hi Zhou,
+
+Thanks for your interest in this driver, I'm glad
+so see it's more used.
+
+On Thu, 2019-09-05 at 15:38 +0800, Zhou Yanjie wrote:
+> Adjust the macro definition name to match the corresponding
+> register name in the datasheet.
 > 
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+
+It's not really an issue to have slighlt different
+names on the macros. They are currently sufficiently
+descriptive, and I don't think it's deserves a patch.
+
+Thanks,
+Ezequiel
+
+> Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
 > ---
->  .../bindings/mips/loongson/cpus.yaml          | 38 +++++++++++
->  .../bindings/mips/loongson/devices.yaml       | 64 +++++++++++++++++++
->  2 files changed, 102 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mips/loongson/cpus.yaml
->  create mode 100644 Documentation/devicetree/bindings/mips/loongson/devices.yaml
+>  drivers/mmc/host/jz4740_mmc.c | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/mips/loongson/cpus.yaml b/Documentation/devicetree/bindings/mips/loongson/cpus.yaml
-> new file mode 100644
-> index 000000000000..dc6dd5114d5e
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mips/loongson/cpus.yaml
-> @@ -0,0 +1,38 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mips/loongson/cpus.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Loongson CPUs bindings
-> +
-> +maintainers:
-> +  - Jiaxun Yang <jiaxun.yang@flygoat.com>
-> +
-> +description: |+
-> +  The device tree allows to describe the layout of CPUs in a system through
-> +  the "cpus" node, which in turn contains a number of subnodes (ie "cpu")
-> +  defining properties for every cpu.
-> +
-> +  Bindings for CPU nodes follow the Devicetree Specification, available from:
-> +
-> +  https://www.devicetree.org/specifications/
-> +
-> +properties:
-> +  reg:
-> +    maxItems: 1
-> +    description: |
-> +      Physical ID of a CPU, Can be read from CP0 EBase.CPUNum.
-> +
-> +  compatible:
-> +    enum:
-> +      - loongson,gs464
-> +      - loongson,gs464e
-> +      - loongson,gs264
-> +      - loongson,gs464v
-> +
-> +required:
-> +  - device_type
-> +  - reg
-> +  - compatible
-> +...
-> diff --git a/Documentation/devicetree/bindings/mips/loongson/devices.yaml b/Documentation/devicetree/bindings/mips/loongson/devices.yaml
-> new file mode 100644
-> index 000000000000..aa6c42013d2c
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mips/loongson/devices.yaml
-> @@ -0,0 +1,64 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mips/loongson/devices.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Loongson based Platforms Device Tree Bindings
-> +
-> +maintainers:
-> +  - Jiaxun Yang <jiaxun.yang@flygoat.com>
+> diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
+> index ffdbfaa..1b1fcb7 100644
+> --- a/drivers/mmc/host/jz4740_mmc.c
+> +++ b/drivers/mmc/host/jz4740_mmc.c
+> @@ -28,7 +28,7 @@
+>  #include <asm/mach-jz4740/dma.h>
+>  
+>  #define JZ_REG_MMC_STRPCL	0x00
+> -#define JZ_REG_MMC_STATUS	0x04
+> +#define JZ_REG_MMC_STAT		0x04
+>  #define JZ_REG_MMC_CLKRT	0x08
+>  #define JZ_REG_MMC_CMDAT	0x0C
+>  #define JZ_REG_MMC_RESTO	0x10
+> @@ -40,7 +40,7 @@
+>  #define JZ_REG_MMC_IREG		0x28
+>  #define JZ_REG_MMC_CMD		0x2C
+>  #define JZ_REG_MMC_ARG		0x30
+> -#define JZ_REG_MMC_RESP_FIFO	0x34
+> +#define JZ_REG_MMC_RES		0x34
+>  #define JZ_REG_MMC_RXFIFO	0x38
+>  #define JZ_REG_MMC_TXFIFO	0x3C
+>  #define JZ_REG_MMC_DMAC		0x44
+> @@ -391,7 +391,7 @@ static void jz4740_mmc_clock_disable(struct jz4740_mmc_host *host)
+>  
+>  	writew(JZ_MMC_STRPCL_CLOCK_STOP, host->base + JZ_REG_MMC_STRPCL);
+>  	do {
+> -		status = readl(host->base + JZ_REG_MMC_STATUS);
+> +		status = readl(host->base + JZ_REG_MMC_STAT);
+>  	} while (status & JZ_MMC_STATUS_CLK_EN && --timeout);
+>  }
+>  
+> @@ -403,7 +403,7 @@ static void jz4740_mmc_reset(struct jz4740_mmc_host *host)
+>  	writew(JZ_MMC_STRPCL_RESET, host->base + JZ_REG_MMC_STRPCL);
+>  	udelay(10);
+>  	do {
+> -		status = readl(host->base + JZ_REG_MMC_STATUS);
+> +		status = readl(host->base + JZ_REG_MMC_STAT);
+>  	} while (status & JZ_MMC_STATUS_IS_RESETTING && --timeout);
+>  }
+>  
+> @@ -446,7 +446,7 @@ static void jz4740_mmc_transfer_check_state(struct jz4740_mmc_host *host,
+>  {
+>  	int status;
+>  
+> -	status = readl(host->base + JZ_REG_MMC_STATUS);
+> +	status = readl(host->base + JZ_REG_MMC_STAT);
+>  	if (status & JZ_MMC_STATUS_WRITE_ERROR_MASK) {
+>  		if (status & (JZ_MMC_STATUS_TIMEOUT_WRITE)) {
+>  			host->req->cmd->error = -ETIMEDOUT;
+> @@ -580,10 +580,10 @@ static bool jz4740_mmc_read_data(struct jz4740_mmc_host *host,
+>  	/* For whatever reason there is sometime one word more in the fifo then
+>  	 * requested */
+>  	timeout = 1000;
+> -	status = readl(host->base + JZ_REG_MMC_STATUS);
+> +	status = readl(host->base + JZ_REG_MMC_STAT);
+>  	while (!(status & JZ_MMC_STATUS_DATA_FIFO_EMPTY) && --timeout) {
+>  		d = readl(fifo_addr);
+> -		status = readl(host->base + JZ_REG_MMC_STATUS);
+> +		status = readl(host->base + JZ_REG_MMC_STAT);
+>  	}
+>  
+>  	return false;
+> @@ -614,7 +614,7 @@ static void jz4740_mmc_read_response(struct jz4740_mmc_host *host,
+>  {
+>  	int i;
+>  	uint16_t tmp;
+> -	void __iomem *fifo_addr = host->base + JZ_REG_MMC_RESP_FIFO;
+> +	void __iomem *fifo_addr = host->base + JZ_REG_MMC_RES;
+>  
+>  	if (cmd->flags & MMC_RSP_136) {
+>  		tmp = readw(fifo_addr);
+> @@ -797,7 +797,7 @@ static irqreturn_t jz_mmc_irq(int irq, void *devid)
+>  	struct mmc_command *cmd = host->cmd;
+>  	uint32_t irq_reg, status, tmp;
+>  
+> -	status = readl(host->base + JZ_REG_MMC_STATUS);
+> +	status = readl(host->base + JZ_REG_MMC_STAT);
+>  	irq_reg = jz4740_mmc_read_irq_reg(host);
+>  
+>  	tmp = irq_reg;
 
-Add a blank line here.
 
-> +description: |
-> +  Devices with a Loongson CPU shall have the following properties.
-> +
-> +properties:
-> +  $nodename:
-> +    const: '/'
-> +  compatible:
-> +    oneOf:
-> +
-> +      - description: Loongson 3A1000 + RS780E 1Way
-> +        items:
-> +          - const: loongson,ls3a1000-780e-1way
-
-This is a board or a chip? Normally we have a board compatible followed 
-by a SoC compatible.
-
-What's the difference between 1-way, 2-way, 4-way? Maybe there's another 
-way to describe that. 
-
-> +
-> +      - description: Loongson 3A1000 + RS780E 2Way
-> +        items:
-> +          - const: loongson,ls3a1000-780e-2way
-> +
-> +      - description: Loongson 3A1000 + RS780E 4Way
-> +        items:
-> +          - const: loongson,ls3a1000-780e-4way
-> +
-> +      - description: Loongson 3B1000/1500 + RS780E 1Way
-> +        items:
-> +          - const: loongson,ls3b-780e-1way
-> +
-> +      - description: Loongson 3B1000/1500 + RS780E 2Way
-> +        items:
-> +          - const: loongson,ls3b-780e-2way
-> +
-> +      - description: Loongson 3A2000 + RS780E 1Way
-> +        items:
-> +          - const: loongson,ls3a2000-780e-1way
-> +
-> +      - description: Loongson 3A2000 + RS780E 2Way
-> +        items:
-> +          - const: loongson,ls3a2000-780e-2way
-> +
-> +      - description: Loongson 3A2000 + RS780E 4Way
-> +        items:
-> +          - const: loongson,ls3a2000-780e-4way
-> +
-> +      - description: Loongson 3A3000 + RS780E 1Way
-> +        items:
-> +          - const: loongson,ls3a3000-780e-1way
-> +
-> +      - description: Loongson 3A3000 + RS780E 2Way
-> +        items:
-> +          - const: loongson,ls3a3000-780e-2way
-> +
-> +      - description: Loongson 3A3000 + RS780E 4Way
-> +        items:
-> +          - const: loongson,ls3a3000-780e-4way
-> +
-> +...
-> -- 
-> 2.22.0
-> 
 

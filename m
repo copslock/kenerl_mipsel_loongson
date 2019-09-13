@@ -2,57 +2,58 @@ Return-Path: <SRS0=SIfr=XI=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DC28C4CEC8
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C81ADC4CECA
 	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 19:10:49 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 70E82208C2
+	by mail.kernel.org (Postfix) with ESMTP id 9BA5620CC7
 	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 19:10:49 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nPz3tW4q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TEWPOXwV"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389362AbfIMTKj (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        id S2389023AbfIMTKj (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
         Fri, 13 Sep 2019 15:10:39 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:35436 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389316AbfIMTKh (ORCPT
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:40278 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388321AbfIMTKh (ORCPT
         <rfc822;linux-mips@vger.kernel.org>); Fri, 13 Sep 2019 15:10:37 -0400
-Received: by mail-pf1-f195.google.com with SMTP id 205so18665141pfw.2;
-        Fri, 13 Sep 2019 12:10:37 -0700 (PDT)
+Received: by mail-pl1-f195.google.com with SMTP id y10so13613072pll.7;
+        Fri, 13 Sep 2019 12:10:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=52dr8qatRQLADbgLjvJtKFDILDVDIhY+4/06nquh468=;
-        b=nPz3tW4qoi5HnmP98xfj1kSrj3sha1ABx497Kmj4jQRBIpWtlTctWT7YqDGYOjX8B6
-         FJ5JTdfEQDXUcLTcV7tbnQQ/VjQgAHYHYrxnKPMekGXE4XZsyVWJyY2RR4bsDzJUsgfv
-         /EcyWPmb/sADi5EsrIyWfPi0+32fVGKGyB4OxCS0R3ffeR+J4TX8vUYo8i5ouIEuGFAz
-         JDxfrPma7RBsOyJzL5d6Zhr8UJtRdMOLhVC8vJ0PzfHqQyUVGufdBodRfZdhTonao7iI
-         qIZm7CrBsFPtCBv7RqVPP1x62PfcvIfoKmVXDKRR7FYM4TXzKfWTnjPMncGn0gieS5zQ
-         K9Wg==
+        bh=NJmtMt3lb+Jh7/54C7Wh0cgNaZ6kTY930vy6CWOqbNM=;
+        b=TEWPOXwVcUd7n6YYM5iomHZyHlfGoSxzv3E5JnerXffYw4STAqBc8HMmijJobQPA2Z
+         4NtDgId3CLS7rpRGMGMaUqEQCyP4wHYq7HDqMn2KogQCa/AURCCRyK5QrUXOZAuHsu97
+         g6DzY/4wEO/kT252VFiT1UactJaeR1RQ4YzOG0WbFQHIBPvMzmaFbRj/glNNkMl9vCKK
+         i3WJXgvfQF6nuxMer6sQZ9h774FzV9uxMv+zlupv/bc1H4JL3ly6zsEatuNfCKVxNghB
+         I6QT7/Tid7WQbpdhiVq76C8X90lCIZm3gA7kkVAXvCFEXXart11tRBjCysY+uBHFxoUp
+         j6tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=52dr8qatRQLADbgLjvJtKFDILDVDIhY+4/06nquh468=;
-        b=DysDme8Cigmh9Xs6ENpknDxhVRP5q0bPXmX3QBrMlUgVeUWK/4JwwWmU6kj/OTIIKL
-         F2Cz9HUaAHjmnFTnQbDp7O1WuvNGPkg7RIMl+SY6YPU45+8YzFThTHbX6Xo171Or6kiC
-         AxdnLLbWKg/u7Y680zSNVVkRjeOcYe+R37vEwjxX0HailVMlxutR+FNaez7nWC3HJTgD
-         TPFKM6aV+heSEAN2H2+92wXbWAX2etzP2CcLRpN25P2TmYSZKaLFafxx56lWr4mKjCB+
-         P0KSXbqRg55V2KDkW9KPNOZUATBA7www0E6x+tKhzWcXoup/OHe689N1AD7Q0glZp9Np
-         rGxw==
-X-Gm-Message-State: APjAAAV9V6y3pWDvbYsT1IwZwYRym84Y5F0FZfYc+/AM0n6XC8Bt3XRO
-        NDIFDZL21k4XsDxpcAGkvXQsor512vU=
-X-Google-Smtp-Source: APXvYqxqR/TzT50mDL3/6MR0Yms0OQkm4wIHlKEHIMITDKqcUSrr3CHMxgugyGlui1PyebpzoowadA==
-X-Received: by 2002:a17:90a:8987:: with SMTP id v7mr7088657pjn.115.1568401836877;
-        Fri, 13 Sep 2019 12:10:36 -0700 (PDT)
+        bh=NJmtMt3lb+Jh7/54C7Wh0cgNaZ6kTY930vy6CWOqbNM=;
+        b=Mu//BgrWWmYlEE0VuUZ/0u/2wHwR3IVc4uhefqF88IfwT9OeS5CKfOtuaNlzQsbMzF
+         jiuT4VTysydOUp0GifykvRb4bX/qOZ5LEvT183qlbvnzv5Ht6R3FzdMr7jIls/AqDXyG
+         HMSDAo9fn1qZRaaLJajZuEhdbd6pY4c0V7l7awyV2DTS5NjHk8CQTp/u0VutsZ0Xd0Ex
+         mhKpZRlnpxEics5yvnJ67EVHZcRJdHHEt6RiGR90uNj19Evo0puiWgdom2ueiDZFet2x
+         FpAy0liuLY1NlINuBFWbQzIl+pIpR+FwAaazFZNC5llgXTteftX3JawCdsMWC/ebV3IG
+         NpPg==
+X-Gm-Message-State: APjAAAV9qY0pds8TynayoBsWYKx5g0RELwzKYGLLwhzIxVBDj8jIA9NF
+        yaffD7+9Jyiefrjwaiwsu4RqmvSvT/o=
+X-Google-Smtp-Source: APXvYqztzVVNlRy0nky8YRo5TuTahQ8JI+kV2G8JwUejG+nnQlSeGUCXtMtjo5k1K5m/ZZx9s7yJwA==
+X-Received: by 2002:a17:902:8302:: with SMTP id bd2mr51910587plb.9.1568401835804;
+        Fri, 13 Sep 2019 12:10:35 -0700 (PDT)
 Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id r18sm27273779pfc.3.2019.09.13.12.10.35
+        by smtp.gmail.com with ESMTPSA id r18sm27273779pfc.3.2019.09.13.12.10.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2019 12:10:36 -0700 (PDT)
+        Fri, 13 Sep 2019 12:10:35 -0700 (PDT)
 From:   Florian Fainelli <f.fainelli@gmail.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Florian Fainelli <f.fainelli@gmail.com>,
@@ -67,9 +68,9 @@ Cc:     Florian Fainelli <f.fainelli@gmail.com>,
         bcm-kernel-feedback-list@broadcom.com (open list:BROADCOM BMIPS MIPS
         ARCHITECTURE),
         linux-mips@vger.kernel.org (open list:BROADCOM BMIPS MIPS ARCHITECTURE)
-Subject: [PATCH 6/6] fixup! irqchip/irq-bcm7038-l1: Add PM support
-Date:   Fri, 13 Sep 2019 12:10:26 -0700
-Message-Id: <20190913191026.8801-7-f.fainelli@gmail.com>
+Subject: [PATCH 5/6] irqchip/irq-bcm7038-l1: Support brcm,int-fwd-mask
+Date:   Fri, 13 Sep 2019 12:10:25 -0700
+Message-Id: <20190913191026.8801-6-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190913191026.8801-1-f.fainelli@gmail.com>
 References: <20190913191026.8801-1-f.fainelli@gmail.com>
@@ -78,23 +79,64 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
+On some specific chips like 7211 we need to leave some interrupts
+untouched/forwarded to the VPU which is another agent in the system
+making use of that interrupt controller hardware (goes to both ARM GIC
+and VPU L1 interrupt controller). Make that possible by using the
+existing brcm,int-fwd-mask property.
+
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- drivers/irqchip/irq-bcm7038-l1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-bcm7038-l1.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/irqchip/irq-bcm7038-l1.c b/drivers/irqchip/irq-bcm7038-l1.c
-index 5e8f0fbc5f20..811a34201dd4 100644
+index 0ad473249f16..5e8f0fbc5f20 100644
 --- a/drivers/irqchip/irq-bcm7038-l1.c
 +++ b/drivers/irqchip/irq-bcm7038-l1.c
-@@ -397,7 +397,7 @@ static struct irq_chip bcm7038_l1_irq_chip = {
- #ifdef CONFIG_SMP
- 	.irq_cpu_offline	= bcm7038_l1_cpu_offline,
+@@ -44,6 +44,7 @@ struct bcm7038_l1_chip {
+ 	struct list_head	list;
+ 	u32			wake_mask[MAX_WORDS];
  #endif
--#if CONFIG_PM_SLEEP
-+#ifdef CONFIG_PM_SLEEP
- 	.irq_set_wake		= bcm7038_l1_set_wake,
- #endif
++	u32			irq_fwd_mask[MAX_WORDS];
+ 	u8			affinity[MAX_WORDS * IRQS_PER_WORD];
  };
+ 
+@@ -265,6 +266,7 @@ static int __init bcm7038_l1_init_one(struct device_node *dn,
+ 	resource_size_t sz;
+ 	struct bcm7038_l1_cpu *cpu;
+ 	unsigned int i, n_words, parent_irq;
++	int ret;
+ 
+ 	if (of_address_to_resource(dn, idx, &res))
+ 		return -EINVAL;
+@@ -278,6 +280,14 @@ static int __init bcm7038_l1_init_one(struct device_node *dn,
+ 	else if (intc->n_words != n_words)
+ 		return -EINVAL;
+ 
++	ret = of_property_read_u32_array(dn , "brcm,int-fwd-mask",
++					 intc->irq_fwd_mask, n_words);
++	if (ret != 0 && ret != -EINVAL) {
++		/* property exists but has the wrong number of words */
++		pr_err("invalid brcm,int-fwd-mask property\n");
++		return -EINVAL;
++	}
++
+ 	cpu = intc->cpus[idx] = kzalloc(sizeof(*cpu) + n_words * sizeof(u32),
+ 					GFP_KERNEL);
+ 	if (!cpu)
+@@ -288,8 +298,9 @@ static int __init bcm7038_l1_init_one(struct device_node *dn,
+ 		return -ENOMEM;
+ 
+ 	for (i = 0; i < n_words; i++) {
+-		l1_writel(0xffffffff, cpu->map_base + reg_mask_set(intc, i));
+-		cpu->mask_cache[i] = 0xffffffff;
++		l1_writel(0xffffffff & ~intc->irq_fwd_mask[i],
++			  cpu->map_base + reg_mask_set(intc, i));
++		cpu->mask_cache[i] = 0xffffffff & ~intc->irq_fwd_mask[i];
+ 	}
+ 
+ 	parent_irq = irq_of_parse_and_map(dn, idx);
 -- 
 2.17.1
 

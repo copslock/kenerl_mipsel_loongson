@@ -1,242 +1,159 @@
-Return-Path: <SRS0=SIfr=XI=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=S5WD=XJ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 89829C4CEC8
-	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 19:16:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21B56C4CEC7
+	for <linux-mips@archiver.kernel.org>; Sat, 14 Sep 2019 10:41:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 4E8942084F
-	for <linux-mips@archiver.kernel.org>; Fri, 13 Sep 2019 19:16:09 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sJJ+SsFB"
+	by mail.kernel.org (Postfix) with ESMTP id E31D4206A4
+	for <linux-mips@archiver.kernel.org>; Sat, 14 Sep 2019 10:41:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1568457682;
+	bh=9/H5bRCdNvvCpmNx4Gw/GSYF6iabQyLsISVeNmZqhYY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=dlanYO/N+88Rgw/h5KwultaDhGQOu2AJiCi/63WYf7fg7lVsUAVI/4rXjIllcavVa
+	 IIEkDtGVLSH9MKqYRlT8+J3dpKqCsRCJfsOwOPM/0yU6nQ/ZqZonnVS1NTNeXRbAIB
+	 QJ8y/7QDFk2uIwL1MU4kQIrSFLzhQroGy2iOvXJg=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389946AbfIMTPv (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 13 Sep 2019 15:15:51 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:45094 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388860AbfIMTPv (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 13 Sep 2019 15:15:51 -0400
-Received: by mail-pf1-f193.google.com with SMTP id y72so18626553pfb.12;
-        Fri, 13 Sep 2019 12:15:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=dcs6bMyS/VDu68tzLaf+jXNYIvYTGSAM7Bablmbjtko=;
-        b=sJJ+SsFBjNEeBJLl3+8b06rFGIeb+5olRurrrk19mN5RhLHimGUrcOji5FrI6ujnwp
-         JMF7txWsn89EUYJJ3bWFfHm5ElcBO2d5XSxOouVl6ZbIAjtKmMLE88IKvjfZZmDNlmnT
-         7DiDhbAgLCz9nRjdh24kCFtkmw5WuIfcwsieJjEBP0lEsr0NKXAVHiKmIhMZbqMcfUbu
-         PnZ9S3GcmLy3WkOKpbj++UzDgYq2j8n9cUguVw4uej9i1IqJQ+IyHI2dCZyse3pZCPrE
-         z3oDSmUuy16DaNSC35hGOM72ngnymKghDVAZSBqZbxeBwMgON+6fmvE4SrajEHCtdJA8
-         NKVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=dcs6bMyS/VDu68tzLaf+jXNYIvYTGSAM7Bablmbjtko=;
-        b=cIn2ACRCMjCwtPZhj2K4myTPsYTwaeZ00fp8N0KJ4eGPaMNrvBITRDt5hcjGgJhIBY
-         F0seYjJ1kl3OTczg9Cki3p3NJCaKrmTizF/u4EPFUHIgtQp07VB5z6ZQ6JX8Tm8pIQZ9
-         tKi+BzO3/yuM+9cmJJ0xTYpX3RJ4F2GJzMPWbac6aF5BMvC9JuikNFiZCXWZgO9MJpMV
-         SUw08g7Olm9BRtfh/WA7FIE+A4UAGyYEM0qCRd59L5FZvVwkQoH7DFqxqM5GZi8ssF8s
-         +PrF42GP3KdiN7yttfskkrXlDlSZjYrGR5PrBNVvd1iWuGPYYI57ibJNyfyrD70zrgtr
-         WnWA==
-X-Gm-Message-State: APjAAAUzQLK9FkxQga8SSDCdLofCSTpitpX0NrYVzOtQxbIl99wh8AjT
-        u7L6K0T3EtE2db20xUHHfI++CJ92spc=
-X-Google-Smtp-Source: APXvYqwZKbhxTZdGWMshxGNcxFTxjfeFGOIkX1BMH19hPGJynwsek8/TY57nQjtt7q/Q3tQ7CN9l7w==
-X-Received: by 2002:a63:cb4f:: with SMTP id m15mr44502938pgi.100.1568402148516;
-        Fri, 13 Sep 2019 12:15:48 -0700 (PDT)
-Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id m24sm6988149pgj.71.2019.09.13.12.15.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2019 12:15:47 -0700 (PDT)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Justin Chen <justinpopo6@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
-        DEVICE TREE BINDINGS),
-        bcm-kernel-feedback-list@broadcom.com (open list:BROADCOM BMIPS MIPS
-        ARCHITECTURE),
-        linux-mips@vger.kernel.org (open list:BROADCOM BMIPS MIPS ARCHITECTURE)
-Subject: [PATCH v2 1/5] irqchip/irq-bcm7038-l1: Add PM support
-Date:   Fri, 13 Sep 2019 12:15:38 -0700
-Message-Id: <20190913191542.9908-2-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190913191542.9908-1-f.fainelli@gmail.com>
-References: <20190913191542.9908-1-f.fainelli@gmail.com>
+        id S1728811AbfINKlV (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 14 Sep 2019 06:41:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43384 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728546AbfINKlV (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 14 Sep 2019 06:41:21 -0400
+Received: from rapoport-lnx (unknown [87.71.71.249])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6CC6020578;
+        Sat, 14 Sep 2019 10:41:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1568457680;
+        bh=9/H5bRCdNvvCpmNx4Gw/GSYF6iabQyLsISVeNmZqhYY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=DL2w9gzAtsYQCurwg49AR0XlEL4OkIkKwNhLxkytBAiB4d3dhFaM6kPwIHruHNRTl
+         fwefz2CqhmNiSJzh/AyXpCV0yCK76A0KYpsOBP+0NnCfQwVtAQ76ZXe//5JBsilmfh
+         v/PXVgRP5YdVgokXhwmpvHVAmC0BIOwizkZ+q4V4=
+Date:   Sat, 14 Sep 2019 11:41:13 +0100
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc:     Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCH] mips: sgi-ip27: switch from DISCONTIGMEM to SPARSEMEM
+Message-ID: <20190914104112.GA12045@rapoport-lnx>
+References: <20190905154831.88b7853b47ba7db7bd7626bd@suse.de>
+ <20190905154747.GB3650@rapoport-lnx>
+ <20190905233800.0f6b3fb3722cde2f5a88663a@suse.de>
+ <20190906130223.GA17704@rapoport-lnx>
+ <20190909182242.c1ef9717d14b20212ef75954@suse.de>
+ <20190910113243.GA19207@rapoport-lnx>
+ <20190911160939.19f776535770d12ff51a2af7@suse.de>
+ <20190912105831.GA10677@rapoport-lnx>
+ <20190912155539.6151b0811e858455be4c8d86@suse.de>
+ <20190912140912.GA13137@alpha.franken.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190912140912.GA13137@alpha.franken.de>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Justin Chen <justinpopo6@gmail.com>
+Hi Thomas,
 
-The current l1 controller does not mask any interrupts when dropping
-into suspend. This mean we can receive unexpected wake up sources.
-Modified MIPS l1 controller to mask the all non-wake interrupts before
-dropping into suspend.
+On Thu, Sep 12, 2019 at 04:09:12PM +0200, Thomas Bogendoerfer wrote:
+> On Thu, Sep 12, 2019 at 03:55:39PM +0200, Thomas Bogendoerfer wrote:
+> > - reserved[0xd]	[0x000000035bff8000-0x000000035bffffff], 0x0000000000008000 bytes flags: 0x0
+> > 
+> > I have no idea which reservation this is, but it's not from one of the
+> > node data.
+> 
+> that's sparsemem's mem_section. And 
+> 
+>  free_bootmem_with_active_regions(node, end_pfn);
 
-Signed-off-by: Justin Chen <justinpopo6@gmail.com>
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- drivers/irqchip/irq-bcm7038-l1.c | 98 ++++++++++++++++++++++++++++++++
- 1 file changed, 98 insertions(+)
+It seems that the call to free_bootmem_with_active_regions() should have
+been removed along with bootmem and it's not needed now.
 
-diff --git a/drivers/irqchip/irq-bcm7038-l1.c b/drivers/irqchip/irq-bcm7038-l1.c
-index fc75c61233aa..f5e4ff5251ab 100644
---- a/drivers/irqchip/irq-bcm7038-l1.c
-+++ b/drivers/irqchip/irq-bcm7038-l1.c
-@@ -27,6 +27,7 @@
- #include <linux/types.h>
- #include <linux/irqchip.h>
- #include <linux/irqchip/chained_irq.h>
-+#include <linux/syscore_ops.h>
+Can you please test the below version of the patch?
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index d50fafd..e4b02b5 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -669,6 +669,7 @@ config SGI_IP22
+ config SGI_IP27
+ 	bool "SGI IP27 (Origin200/2000)"
+ 	select ARCH_HAS_PHYS_TO_DMA
++	select ARCH_SPARSEMEM_ENABLE
+ 	select FW_ARC
+ 	select FW_ARC64
+ 	select BOOT_ELF64
+@@ -2633,18 +2634,9 @@ config ARCH_FLATMEM_ENABLE
+ 	def_bool y
+ 	depends on !NUMA && !CPU_LOONGSON2
  
- #define IRQS_PER_WORD		32
- #define REG_BYTES_PER_IRQ_WORD	(sizeof(u32) * 4)
-@@ -39,6 +40,10 @@ struct bcm7038_l1_chip {
- 	unsigned int		n_words;
- 	struct irq_domain	*domain;
- 	struct bcm7038_l1_cpu	*cpus[NR_CPUS];
-+#ifdef CONFIG_PM_SLEEP
-+	struct list_head	list;
-+	u32			wake_mask[MAX_WORDS];
-+#endif
- 	u8			affinity[MAX_WORDS * IRQS_PER_WORD];
- };
+-config ARCH_DISCONTIGMEM_ENABLE
+-	bool
+-	default y if SGI_IP27
+-	help
+-	  Say Y to support efficient handling of discontiguous physical memory,
+-	  for architectures which are either NUMA (Non-Uniform Memory Access)
+-	  or have huge holes in the physical address space for other reasons.
+-	  See <file:Documentation/vm/numa.rst> for more.
+-
+ config ARCH_SPARSEMEM_ENABLE
+ 	bool
+-	select SPARSEMEM_STATIC
++	select SPARSEMEM_STATIC if !SGI_IP27
  
-@@ -47,6 +52,17 @@ struct bcm7038_l1_cpu {
- 	u32			mask_cache[0];
- };
+ config NUMA
+ 	bool "NUMA Support"
+diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
+index fb077a9..9db8692 100644
+--- a/arch/mips/sgi-ip27/ip27-memory.c
++++ b/arch/mips/sgi-ip27/ip27-memory.c
+@@ -406,12 +406,8 @@ static void __init node_mem_init(cnodeid_t node)
+ 	slot_freepfn += PFN_UP(sizeof(struct pglist_data) +
+ 			       sizeof(struct hub_data));
  
-+/*
-+ * We keep a list of bcm7038_l1_chip used for suspend/resume. This hack is
-+ * used because the struct chip_type suspend/resume hooks are not called
-+ * unless chip_type is hooked onto a generic_chip. Since this driver does
-+ * not use generic_chip, we need to manually hook our resume/suspend to
-+ * syscore_ops.
-+ */
-+#ifdef CONFIG_PM_SLEEP
-+static LIST_HEAD(bcm7038_l1_intcs_list);
-+#endif
-+
- /*
-  * STATUS/MASK_STATUS/MASK_SET/MASK_CLEAR are packed one right after another:
-  *
-@@ -287,6 +303,77 @@ static int __init bcm7038_l1_init_one(struct device_node *dn,
- 	return 0;
+-	free_bootmem_with_active_regions(node, end_pfn);
+-
+ 	memblock_reserve(slot_firstpfn << PAGE_SHIFT,
+ 			 ((slot_freepfn - slot_firstpfn) << PAGE_SHIFT));
+-
+-	sparse_memory_present_with_active_regions(node);
  }
  
-+#ifdef CONFIG_PM_SLEEP
-+static int bcm7038_l1_suspend(void)
-+{
-+	struct bcm7038_l1_chip *intc;
-+	unsigned long flags;
-+	int boot_cpu, word;
-+
-+	/* Wakeup interrupt should only come from the boot cpu */
-+	boot_cpu = cpu_logical_map(smp_processor_id());
-+
-+	list_for_each_entry(intc, &bcm7038_l1_intcs_list, list) {
-+		raw_spin_lock_irqsave(&intc->lock, flags);
-+		for (word = 0; word < intc->n_words; word++) {
-+			l1_writel(~intc->wake_mask[word],
-+				intc->cpus[boot_cpu]->map_base +
-+				reg_mask_set(intc, word));
-+			l1_writel(intc->wake_mask[word],
-+				intc->cpus[boot_cpu]->map_base +
-+				reg_mask_clr(intc, word));
-+		}
-+		raw_spin_unlock_irqrestore(&intc->lock, flags);
-+	}
-+
-+	return 0;
-+}
-+
-+static void bcm7038_l1_resume(void)
-+{
-+	struct bcm7038_l1_chip *intc;
-+	unsigned long flags;
-+	int boot_cpu, word;
-+
-+	boot_cpu = cpu_logical_map(smp_processor_id());
-+
-+	list_for_each_entry(intc, &bcm7038_l1_intcs_list, list) {
-+		raw_spin_lock_irqsave(&intc->lock, flags);
-+		for (word = 0; word < intc->n_words; word++) {
-+			l1_writel(intc->cpus[boot_cpu]->mask_cache[word],
-+				intc->cpus[boot_cpu]->map_base +
-+				reg_mask_set(intc, word));
-+			l1_writel(~intc->cpus[boot_cpu]->mask_cache[word],
-+				intc->cpus[boot_cpu]->map_base +
-+				reg_mask_clr(intc, word));
-+		}
-+		raw_spin_unlock_irqrestore(&intc->lock, flags);
-+	}
-+}
-+
-+static struct syscore_ops bcm7038_l1_syscore_ops = {
-+	.suspend	= bcm7038_l1_suspend,
-+	.resume		= bcm7038_l1_resume,
-+};
-+
-+static int bcm7038_l1_set_wake(struct irq_data *d, unsigned int on)
-+{
-+	struct bcm7038_l1_chip *intc = irq_data_get_irq_chip_data(d);
-+	unsigned long flags;
-+	u32 word = d->hwirq / IRQS_PER_WORD;
-+	u32 mask = BIT(d->hwirq % IRQS_PER_WORD);
-+
-+	raw_spin_lock_irqsave(&intc->lock, flags);
-+	if (on)
-+		intc->wake_mask[word] |= mask;
-+	else
-+		intc->wake_mask[word] &= ~mask;
-+	raw_spin_unlock_irqrestore(&intc->lock, flags);
-+
-+	return 0;
-+}
-+#endif
-+
- static struct irq_chip bcm7038_l1_irq_chip = {
- 	.name			= "bcm7038-l1",
- 	.irq_mask		= bcm7038_l1_mask,
-@@ -295,6 +382,9 @@ static struct irq_chip bcm7038_l1_irq_chip = {
- #ifdef CONFIG_SMP
- 	.irq_cpu_offline	= bcm7038_l1_cpu_offline,
- #endif
-+#ifdef CONFIG_PM_SLEEP
-+	.irq_set_wake		= bcm7038_l1_set_wake,
-+#endif
- };
- 
- static int bcm7038_l1_map(struct irq_domain *d, unsigned int virq,
-@@ -340,6 +430,14 @@ int __init bcm7038_l1_of_init(struct device_node *dn,
- 		goto out_unmap;
+ /*
+@@ -444,6 +440,8 @@ void __init prom_meminit(void)
+ 		}
+ 		__node_data[node] = &null_node;
  	}
- 
-+#ifdef CONFIG_PM_SLEEP
-+	/* Add bcm7038_l1_chip into a list */
-+	INIT_LIST_HEAD(&intc->list);
-+	list_add_tail(&intc->list, &bcm7038_l1_intcs_list);
 +
-+	register_syscore_ops(&bcm7038_l1_syscore_ops);
-+#endif
-+
- 	pr_info("registered BCM7038 L1 intc (%pOF, IRQs: %d)\n",
- 		dn, IRQS_PER_WORD * intc->n_words);
++	memblocks_present();
+ }
  
--- 
-2.17.1
+ void __init prom_free_prom_memory(void)
+ 
+> on the last node will free this reserved memory, when memory
+> is added node by node. This explains it.
+> 
+> So when resending the patch add my
+> 
+> Tested-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+> 
+> Thomas.
+> 
+> -- 
+> Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+> good idea.                                                [ RFC1925, 2.3 ]
 
+-- 
+Sincerely yours,
+Mike.

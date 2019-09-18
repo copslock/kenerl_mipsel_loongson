@@ -7,54 +7,55 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DB52AC4CEC9
-	for <linux-mips@archiver.kernel.org>; Wed, 18 Sep 2019 22:03:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 23408C4CEC9
+	for <linux-mips@archiver.kernel.org>; Wed, 18 Sep 2019 22:04:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id AF3FC21907
-	for <linux-mips@archiver.kernel.org>; Wed, 18 Sep 2019 22:03:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D721021848
+	for <linux-mips@archiver.kernel.org>; Wed, 18 Sep 2019 22:04:10 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavecomp.com header.i=@wavecomp.com header.b="MB6H152B"
+	dkim=pass (1024-bit key) header.d=wavecomp.com header.i=@wavecomp.com header.b="vc57zSKt"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728423AbfIRWDe (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 18 Sep 2019 18:03:34 -0400
-Received: from mail-eopbgr730133.outbound.protection.outlook.com ([40.107.73.133]:12862
-        "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
+        id S1731399AbfIRWEK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 18 Sep 2019 18:04:10 -0400
+Received: from mail-eopbgr760090.outbound.protection.outlook.com ([40.107.76.90]:7339
+        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731457AbfIRWDe (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 18 Sep 2019 18:03:34 -0400
+        id S1729027AbfIRWEK (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 18 Sep 2019 18:04:10 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fBjwQcsvNE4mUb389u8ot+4UEEzqv0ewhP/oc02Si2N0ade36buc/VdO3zsMZn2Fap1WXLoBInGm6cBfAAHlVkerc/5D8D83dNsXEa8pZun4KhJD0j0oEYaOEoS9TVgfAkWq+aMZVzdMEzHL5qDG58ROIcwZmonaWFiTjSyF54UEjPX1khdNj5MXY/o6x4bxDgxIUc4F7nKS6yUUZhlWlntbknLLy1trMbip2Jgw1psrtE9yZyoAimBW2CBt0j1uY/ibE2EV6cxC+N4IflvKCXtLEW/XBK3CVzG8K+yoaQBF33k7y7lCXlwOG1h5KfMJGC0ONIQOOgxLgT/ylGi7bw==
+ b=jdPhYU4CtAVCHTAem3jMgPYoM8Bdo3v+Ov5kjKgj5Bl4jdrwaHSN1Tp9CkWAKRjF8lEsgSMJnMD5yci6+A0k9GuCusN757NNOlvt/ndwvgMFpYx9464ELynwVfr5Mh83R9YBnJGrpaAxlBBmzPXBCEZG1/iiJELhjiuLicq0AmRcbA0vj9BL9zYgQD5wn896o+w5lMKQkrnnezjbWExwpcwthrYGCxZPMw2+jomttIhvhLp9V+DBTqQZv+1Pk54YFA5rfci+DH+gMWdTPEfDXNJIuU63nUHgSbL6YP32sGaAP9Pwn0p9UBXsgeXNisNcmrYKTfHqDY+y/1TVUT575A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wVQc7FmIcYqVVw9S1q8HEIqiJ4+9MrDbTMvtRdSxieA=;
- b=TFzWn0JbRFb9TeSI/lJmpOO9k3BdeqfY8H7u4lmpKPk5f6hXJxyXzWUzwDAbqPc8Mzz/gdrvUawWswQlv7FFX4qFTi3zuAzDiLEnEEFE1ysDd8g4TmOBiEn95oK2gZL4nLrmlXFQZHKexJBzGpQY2WT4Jlw+HGgpMklw1S0u1GYTZd3WPPQlMm8sxNduJ82bGYy1IMaoTO01gUkvQEv3IYsPotf9NoNbEyout+vCrnmikX1M6QNq1EVgNR1IdC52BzpXgs8Z1XVDsLRBy+FUhT0zl32XH0ZdZSEnXgfGfIfmaTlSsAyN44GsRcH0jItzx+mOQgFNRfHe1oKv8NRNtg==
+ bh=ioFTyCEd4cP3VhvRel5WzT53ZK7kIom+KDzbNYah6WI=;
+ b=ih2Dom/WJvTlSj4JsXSydTnndjw9/IIiwmZkNlDsYh9+NrVSdsMeGjd5n3+C/W9h40YDR9VERQKVM/RlOsclAM88JPUpV+4WOQganlkvNQxqDr11OcKjcvNGKMhwPOnW4yXebMnm+cm1CQ8rYXNJ65PmrLjaVexZKDMDzqd8vsJE3HXInLaaw9aam0S6SotesHRuFe3E9W335+XtouYZhrrIEdPBr/KROWlnTI1Zj1vq/KrQdHFm/MccNCMX/BZDZGcoJYMoBRMYBf4Rj9ZQrr3ISoIEMe4xQ09hATcvgxUYmOhjMWYrAucjNdmHCzNzn4s2BzEzdDBDHdcCrIjOxw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=wavecomp.com; dmarc=pass action=none header.from=mips.com;
  dkim=pass header.d=mips.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wavecomp.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wVQc7FmIcYqVVw9S1q8HEIqiJ4+9MrDbTMvtRdSxieA=;
- b=MB6H152Bn/yPvO8n2Y5z6diyvdif4lf52xzS3XZKLBTroCypGm/2KCyWKxEaACj8un/xHQpoRY+kKQ1onF0juxlr75eyCqWvdHsoH0YnyE/i11K5OiJFZtQZflGdPaRNJ2BT1twKxz7Ug2pbWbb6HppofMNBznBG2Yv0CyzYvpU=
+ bh=ioFTyCEd4cP3VhvRel5WzT53ZK7kIom+KDzbNYah6WI=;
+ b=vc57zSKtNqcfRdUhFGFk68aNQk16gCEe7PNoybvfrKK2sEG3Ioh5Fod5IAzzYYSeiRv5vGKhffwuizfhFxmmtekFWv6ymR0lyY0E2O+exoo9XYv/Z4PJWpcWpBHC3Dfy/V4Jf+0jyi6myLyELekFiZp1kce+qHEziVa3nGuWEJQ=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.172.60.12) by
- MWHPR2201MB1088.namprd22.prod.outlook.com (10.174.169.150) with Microsoft
+ MWHPR2201MB1375.namprd22.prod.outlook.com (10.174.160.150) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2263.21; Wed, 18 Sep 2019 22:03:30 +0000
+ 15.20.2263.16; Wed, 18 Sep 2019 22:03:27 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::f9e8:5e8c:7194:fad3]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::f9e8:5e8c:7194:fad3%11]) with mapi id 15.20.2284.009; Wed, 18 Sep
- 2019 22:03:30 +0000
+ 2019 22:03:27 +0000
 From:   Paul Burton <paul.burton@mips.com>
 To:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-CC:     Paul Burton <pburton@wavecomp.com>
-Subject: [PATCH 3/3] MIPS: Detect bad _PFN_SHIFT values
-Thread-Topic: [PATCH 3/3] MIPS: Detect bad _PFN_SHIFT values
-Thread-Index: AQHVbmznjOnIdvArA0mIzitgByHIKA==
-Date:   Wed, 18 Sep 2019 22:03:30 +0000
-Message-ID: <20190918220258.29428-3-paul.burton@mips.com>
-References: <20190918220258.29428-1-paul.burton@mips.com>
-In-Reply-To: <20190918220258.29428-1-paul.burton@mips.com>
+CC:     Paul Burton <pburton@wavecomp.com>,
+        Dmitry Korotin <dkorotin@wavecomp.com>
+Subject: [PATCH 1/3] MIPS: Disable pte_special() for MIPS32 with 4KiB pages &
+ RiXi
+Thread-Topic: [PATCH 1/3] MIPS: Disable pte_special() for MIPS32 with 4KiB
+ pages & RiXi
+Thread-Index: AQHVbmzmqHjqG429vkSh9effcziumA==
+Date:   Wed, 18 Sep 2019 22:03:27 +0000
+Message-ID: <20190918220258.29428-1-paul.burton@mips.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -68,63 +69,127 @@ x-ms-exchange-messagesentrepresentingtype: 1
 x-mailer: git-send-email 2.23.0
 x-originating-ip: [12.246.51.142]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: b438b3db-0357-49db-7b37-08d73c840a4f
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600167)(711020)(4605104)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:MWHPR2201MB1088;
-x-ms-traffictypediagnostic: MWHPR2201MB1088:
+x-ms-office365-filtering-correlation-id: 69021238-503e-4b53-9599-08d73c840892
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600167)(711020)(4605104)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:MWHPR2201MB1375;
+x-ms-traffictypediagnostic: MWHPR2201MB1375:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MWHPR2201MB108822DB26DE288A6E23361BC18E0@MWHPR2201MB1088.namprd22.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3383;
+x-microsoft-antispam-prvs: <MWHPR2201MB1375FF56A284ACAF8781CB6AC18E0@MWHPR2201MB1375.namprd22.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7219;
 x-forefront-prvs: 01644DCF4A
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(376002)(136003)(366004)(396003)(346002)(39840400004)(189003)(199004)(71200400001)(71190400001)(42882007)(2616005)(6506007)(26005)(50226002)(476003)(6916009)(76176011)(66946007)(66556008)(66476007)(102836004)(478600001)(7736002)(6116002)(14454004)(25786009)(2501003)(4326008)(8676002)(99286004)(186003)(81166006)(36756003)(64756008)(81156014)(3846002)(8936002)(6512007)(386003)(2906002)(6436002)(305945005)(11346002)(446003)(1076003)(52116002)(5640700003)(316002)(5660300002)(2351001)(107886003)(6486002)(66066001)(44832011)(486006)(256004)(66446008)(4744005);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1088;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(6029001)(346002)(376002)(366004)(136003)(199004)(189003)(486006)(305945005)(2351001)(14454004)(25786009)(44832011)(2906002)(508600001)(107886003)(6506007)(386003)(66066001)(66946007)(71190400001)(71200400001)(64756008)(52116002)(6512007)(7736002)(99286004)(102836004)(66556008)(66476007)(66446008)(8676002)(4326008)(81156014)(81166006)(42882007)(5660300002)(26005)(6436002)(6486002)(476003)(8936002)(54906003)(50226002)(6916009)(36756003)(14444005)(256004)(186003)(5640700003)(1076003)(2501003)(2616005)(3846002)(6116002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1375;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: bACovr9j92EHNvLXN7nw4B81w5vSs/FFZ/pPyVkzAiLSdmelXoK7FLBVX+i8ISw5tzFkRYSpyqjzbM4YtdSZ32bcYElAWLJKClbGKuQcS9YxewhKR7Ed1ticW0V5YmVCxXT7DLx5X3H+Fzpn5h/eX4YoPGqWZCBBqQua/XWCjqQgZ0N1ZjvnOmuxb8I5fIl5jVUGabVmJnCSvjb+mE1/ibCjgvCVnIfR9qCvUlZJAWE7lwguRxOfqtVU2I5AytZZq5jyjzCHYJaNarXm9/wRaV4gAM4fIlGMmgj/YG7/WdLWoEf32idYo1hxNhOc28pCdE75CBp3KZDDLwvZ0PH6zPFwMY2wjchPXklvPItDqN/eMaDVxoQttyrWcYq9Pi6EyVhTXmPIywLZJpND389n3NZpOWWQeJSeFcSzCBgsXrw=
+x-microsoft-antispam-message-info: gCtrDzZK3VEPIlNmvaOW7ngn2O0Dydqe11qbH56gXh2AY29BsaFDxqkbnHD1S1dZn+cPu2SH+8KNgVOfNsEmED5PzQ8kQj4aVJ9Pk42JPYIOf1cfQmynYVqX9xuPfBTgYRnpeIbyEDMuCC4t2KCtSYUprSHyLG3a+nUFp0dStFb5DUdr72d/i1qFhpukLAzmTQTtyMsQYnDj8UiNzkGyWS1cffaUK7YKTio6rxnubdrRcOn9Vxx5+zcFddXu2/XGW0zXWXqfPOvP56jLHw3VMnVfYaellJufQcZhAj5I+usPodnAxgYorYRQqXRjDWB0tCx+glxYAmstsLG3fIQcCCDDUYw0c1BjAxjcRa3umXMqUgvaul+1Vj1SNecDWFZrCrJwXzFkSJJvmax5WZTzGFVYFiw6SJDXs8Yh/Y0FRiM=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b438b3db-0357-49db-7b37-08d73c840a4f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Sep 2019 22:03:30.4804
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69021238-503e-4b53-9599-08d73c840892
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Sep 2019 22:03:27.5677
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 1pIVG06hy41FQYIuDNpc0cCQHYdC0ydztwrvL/HKRFqi4OJX5S07jBlM/vQWWU1O5PQuoBWgm3lskWxkH/t/jg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1088
+X-MS-Exchange-CrossTenant-userprincipalname: 9+eZEO1b3GV8FE6XGz27KyAg77YW42j0cyDVfaLqyW6OV2A40zgUfr4fPAte4tGat/nWi0q08AVZVSlp87d0ZA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1375
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-2 recent commits have fixed issues where _PFN_SHIFT grew too large due
-to the introduction of too many pgprot bits in our PTEs for some MIPS32
-kernel configurations. Tracking down such issues can be tricky, so add a
-BUILD_BUG_ON() to help.
+Commit 61cbfff4b1a7 ("MIPS: pte_special()/pte_mkspecial() support")
+added a _PAGE_SPECIAL bit to the pgprot bits of our PTEs. Unfortunately
+for MIPS32 configurations with RiXi support this pushed the number of
+pgprot bits to 13 (ie. _PFN_SHIFT =3D 13). When using 4KB pages (ie.
+PAGE_SHIFT =3D 12) this results in us shifting the most significant bit of
+the physical address beyond the end of the PTE, leading any mapped
+access to a physical address above 2GB to incorrectly access an address
+2GB lower than intended.
 
+For now, disable the pte_special() support for MIPS32 configurations
+that use 4KB pages & support RiXi.
+
+Fixes: 61cbfff4b1a7 ("MIPS: pte_special()/pte_mkspecial() support")
 Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: Dmitry Korotin <dkorotin@wavecomp.com>
 ---
 
- arch/mips/mm/init.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/mips/Kconfig                    |  2 +-
+ arch/mips/include/asm/pgtable-bits.h | 14 +++++++++++++-
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 6fea3b54c961..090fa653dfa9 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -446,6 +446,12 @@ static inline void __init mem_init_free_highmem(void)
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 3f18aa018a0c..18163c138676 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -84,7 +84,7 @@ config MIPS
+ 	select RTC_LIB
+ 	select SYSCTL_EXCEPTION_TRACE
+ 	select VIRT_TO_BUS
+-	select ARCH_HAS_PTE_SPECIAL
++	select ARCH_HAS_PTE_SPECIAL if !(32BIT && PAGE_SIZE_4KB && CPU_HAS_RIXI)
 =20
- void __init mem_init(void)
- {
-+	/*
-+	 * When _PFN_SHIFT is greater than PAGE_SHIFT we won't have enough PTE
-+	 * bits to hold a full 32b physical address on MIPS32 systems.
-+	 */
-+	BUILD_BUG_ON(IS_ENABLED(CONFIG_32BIT) && (_PFN_SHIFT > PAGE_SHIFT));
-+
- #ifdef CONFIG_HIGHMEM
- #ifdef CONFIG_DISCONTIGMEM
- #error "CONFIG_HIGHMEM and CONFIG_DISCONTIGMEM dont work together yet"
+ menu "Machine selection"
+=20
+diff --git a/arch/mips/include/asm/pgtable-bits.h b/arch/mips/include/asm/p=
+gtable-bits.h
+index 409ae01ed7be..4da79b85c179 100644
+--- a/arch/mips/include/asm/pgtable-bits.h
++++ b/arch/mips/include/asm/pgtable-bits.h
+@@ -52,7 +52,9 @@ enum pgtable_bits {
+ 	_PAGE_WRITE_SHIFT,
+ 	_PAGE_ACCESSED_SHIFT,
+ 	_PAGE_MODIFIED_SHIFT,
++#if defined(CONFIG_ARCH_HAS_PTE_SPECIAL)
+ 	_PAGE_SPECIAL_SHIFT,
++#endif
+ };
+=20
+ /*
+@@ -79,7 +81,9 @@ enum pgtable_bits {
+ 	_PAGE_WRITE_SHIFT,
+ 	_PAGE_ACCESSED_SHIFT,
+ 	_PAGE_MODIFIED_SHIFT,
++#if defined(CONFIG_ARCH_HAS_PTE_SPECIAL)
+ 	_PAGE_SPECIAL_SHIFT,
++#endif
+ };
+=20
+ #elif defined(CONFIG_CPU_R3K_TLB)
+@@ -92,7 +96,9 @@ enum pgtable_bits {
+ 	_PAGE_WRITE_SHIFT,
+ 	_PAGE_ACCESSED_SHIFT,
+ 	_PAGE_MODIFIED_SHIFT,
++#if defined(CONFIG_ARCH_HAS_PTE_SPECIAL)
+ 	_PAGE_SPECIAL_SHIFT,
++#endif
+=20
+ 	/* Used by TLB hardware (placed in EntryLo) */
+ 	_PAGE_GLOBAL_SHIFT =3D 8,
+@@ -116,7 +122,9 @@ enum pgtable_bits {
+ #if defined(CONFIG_MIPS_HUGE_TLB_SUPPORT)
+ 	_PAGE_HUGE_SHIFT,
+ #endif
++#if defined(CONFIG_ARCH_HAS_PTE_SPECIAL)
+ 	_PAGE_SPECIAL_SHIFT,
++#endif
+=20
+ 	/* Used by TLB hardware (placed in EntryLo*) */
+ #if defined(CONFIG_CPU_HAS_RIXI)
+@@ -139,7 +147,11 @@ enum pgtable_bits {
+ #if defined(CONFIG_MIPS_HUGE_TLB_SUPPORT)
+ # define _PAGE_HUGE		(1 << _PAGE_HUGE_SHIFT)
+ #endif
+-#define _PAGE_SPECIAL		(1 << _PAGE_SPECIAL_SHIFT)
++#if defined(CONFIG_ARCH_HAS_PTE_SPECIAL)
++# define _PAGE_SPECIAL		(1 << _PAGE_SPECIAL_SHIFT)
++#else
++# define _PAGE_SPECIAL		0
++#endif
+=20
+ /* Used by TLB hardware (placed in EntryLo*) */
+ #if defined(CONFIG_XPA)
 --=20
 2.23.0
 

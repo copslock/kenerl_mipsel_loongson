@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 05AEFC49ED7
-	for <linux-mips@archiver.kernel.org>; Thu, 19 Sep 2019 22:19:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 039B5C49ED7
+	for <linux-mips@archiver.kernel.org>; Thu, 19 Sep 2019 22:22:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id CEB7520678
-	for <linux-mips@archiver.kernel.org>; Thu, 19 Sep 2019 22:19:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CD4DA21D7A
+	for <linux-mips@archiver.kernel.org>; Thu, 19 Sep 2019 22:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1568931544;
+	s=default; t=1568931733;
 	bh=ATTSTQNzeM8sUDrhqGjI62uCRviZbT7bue9ppOoviPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=zMzwWYdO7rCkNNHJPNPpGmguChkGTkWgdj+ZXf5PiN2FWnlwU65UbDHobuVvSaDt+
-	 54YDEvcGIRpU62a0jJBPJGdqKQYCfj/ws9H2G5mt10yanq7yai+8ysJTbA8U1Pt0At
-	 ZM+P9xaPTnaMC3Pcsw0/bnykr9oTT/y8uRUwrA0A=
+	b=Rurz6cmKdAFg1svI6txFmzddqifjD3LDzL5a66KLVYsxmFvu7AFaNkD5M7J7ohBje
+	 8+cQDzax9BAII7MH7QiJJRkzE4HLuZSzqX7AtwF1xdWbvA1ryOMZd6MzG3/xNJebkS
+	 OSc6O+wepMWA34FoXHOFVc+4YeofLiDChA9VYHdc=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406602AbfISWS6 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 19 Sep 2019 18:18:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60736 "EHLO mail.kernel.org"
+        id S2404758AbfISWWM (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 19 Sep 2019 18:22:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37052 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404703AbfISWS6 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 19 Sep 2019 18:18:58 -0400
+        id S2406778AbfISWWK (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 19 Sep 2019 18:22:10 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CDF7E21D6C;
-        Thu, 19 Sep 2019 22:18:56 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5877C21927;
+        Thu, 19 Sep 2019 22:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568931537;
+        s=default; t=1568931729;
         bh=ATTSTQNzeM8sUDrhqGjI62uCRviZbT7bue9ppOoviPs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ciy1WpbJFohKxi6fZdnqOeMg7v/YF42jtnwpsNSEsq83m6514z1oMeu1OV0JjewKZ
-         NVCEb2/nL35LSZ/NjMg9rRrRcOjc7RQ4iuC8hY5QoNr1MVwAmMvrCYYMA5bdMQ+h2w
-         P60UvQa5QJcyAvTXg7Mn27LMo7INsjdjbZnUN1TQ=
+        b=SIBwdd53HHOsyzU7I8eubSnyXON7rFH2W5gqUdA26alQi5fMwvZzuVexUcS6xuo58
+         mG/a6zLGwjZI2CR+YHKXpejRObyl0LxukyaB9IC9OHi+92VZzp5vl7SdHGzg7H0ytx
+         tEFDsh94z3OmGxAlVraBY8/ENVSIY3Q3hCTomD90=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Guenter Roeck <linux@roeck-us.net>,
         "Maciej W. Rozycki" <macro@linux-mips.org>,
         linux-mips@vger.kernel.org
-Subject: [PATCH 4.9 22/74] MIPS: VDSO: Use same -m%-float cflag as the kernel proper
-Date:   Fri, 20 Sep 2019 00:03:35 +0200
-Message-Id: <20190919214806.913155402@linuxfoundation.org>
+Subject: [PATCH 4.4 19/56] MIPS: VDSO: Use same -m%-float cflag as the kernel proper
+Date:   Fri, 20 Sep 2019 00:04:00 +0200
+Message-Id: <20190919214753.768218356@linuxfoundation.org>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20190919214800.519074117@linuxfoundation.org>
-References: <20190919214800.519074117@linuxfoundation.org>
+In-Reply-To: <20190919214742.483643642@linuxfoundation.org>
+References: <20190919214742.483643642@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8

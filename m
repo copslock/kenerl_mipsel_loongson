@@ -2,57 +2,68 @@ Return-Path: <SRS0=T/5f=XY=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 976DCC352A9
-	for <linux-mips@archiver.kernel.org>; Sun, 29 Sep 2019 17:39:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 31BE9C4360C
+	for <linux-mips@archiver.kernel.org>; Sun, 29 Sep 2019 17:39:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 71B3221D7A
-	for <linux-mips@archiver.kernel.org>; Sun, 29 Sep 2019 17:39:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0A1B021D7A
+	for <linux-mips@archiver.kernel.org>; Sun, 29 Sep 2019 17:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1569778742;
-	bh=P3WkhO3G6h+D3zdNU95Zo/yNNpyRu695qymatgVIGik=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=D1byzYnjjdibF0JXzP5H6yhxx+2TDDxWGZMgVf5exTqsC7Rg5mzlaZt9YZgMDY2ta
-	 /cFXdvhVnXP8qbyzM0aTKTgR1SkVW9bxgeSkPY/KmDmKsCqc6IrcRxY7DuyQY9mpN2
-	 2C3Q2kKh8RIL63u3O03aMsob0X1mH3VO6+KMD/TE=
+	s=default; t=1569778749;
+	bh=WrghAeNzTGmbheaQre+L1DgLavNEbOtJ9RxrZY3iou0=;
+	h=From:To:Cc:Subject:Date:List-ID:From;
+	b=dHny9TQ0+TI/aMj1daxHeskNLdrjyN/2m9H3LqvBYbbMvW7AJdC3E2nNubwIio4jw
+	 rdj51Ajw77u6hfX702rovbgBwtyvZMBzppPPKk4/w+sLV+tNo+fW46LbtSn6UVr61C
+	 aWwA9WVdhe8UFczzu8EhY8R9SibxkP39/UsO/fP4=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730060AbfI2RjB (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 29 Sep 2019 13:39:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47906 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729741AbfI2Rfl (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        id S1730616AbfI2Rfl (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
         Sun, 29 Sep 2019 13:35:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47830 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729743AbfI2Rfj (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sun, 29 Sep 2019 13:35:39 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4DB8D2196E;
-        Sun, 29 Sep 2019 17:35:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2F75E21A4C;
+        Sun, 29 Sep 2019 17:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569778541;
-        bh=P3WkhO3G6h+D3zdNU95Zo/yNNpyRu695qymatgVIGik=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C+equMCpRgfYtZ+HIq3ZU5YpFWKYOpwlC3a7I85vLwAsTKH4+MH8O+l92bN9c6QHY
-         4BqdHPuXhQY4vpLCtTqZEROUdiPxDs/IK//aJEsy9ShFUHfeQOgQ5GaRUUi8HRh6Tv
-         +LeYDaiTka7iwUTxxKkUCiYpVPu4I1AOpQX4briQ=
+        s=default; t=1569778538;
+        bh=WrghAeNzTGmbheaQre+L1DgLavNEbOtJ9RxrZY3iou0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=pIakAgD8Pb9xS8xa+H8ICaidsZRsjPUXVxwhxvFW9tl2Q85WuBPQgFrj0DPhtl9gI
+         sv3XQW8XOYFIqDQxpmsj2zXB+THdqSwjGuIryJMF9vRnsflqQI0ZazsG+cRwRyocRl
+         PbSndnY3hbQHxNTvS/FjpnjU7MHInDMdj69fxUKY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Nathan Chancellor <natechancellor@gmail.com>,
+Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Mathieu Malaterre <malat@debian.org>,
+        Artur Rojek <contact@artur-rojek.eu>,
+        Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
         Paul Burton <paul.burton@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-mips@vger.kernel.org, clang-built-linux@googlegroups.com,
+        Jonathan Corbet <corbet@lwn.net>,
+        Lee Jones <lee.jones@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-clk@vger.kernel.org, od@zcrc.me,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 02/23] MIPS: tlbex: Explicitly cast _PAGE_NO_EXEC to a boolean
-Date:   Sun, 29 Sep 2019 13:35:12 -0400
-Message-Id: <20190929173535.9744-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 01/23] clk: jz4740: Add TCU clock
+Date:   Sun, 29 Sep 2019 13:35:11 -0400
+Message-Id: <20190929173535.9744-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190929173535.9744-1-sashal@kernel.org>
-References: <20190929173535.9744-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -62,57 +73,71 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Nathan Chancellor <natechancellor@gmail.com>
+From: Paul Cercueil <paul@crapouillou.net>
 
-[ Upstream commit c59ae0a1055127dd3828a88e111a0db59b254104 ]
+[ Upstream commit 73dd11dc1a883d4c994d729dc9984f4890001157 ]
 
-clang warns:
+Add the missing TCU clock to the list of clocks supplied by the CGU for
+the JZ4740 SoC.
 
-arch/mips/mm/tlbex.c:634:19: error: use of logical '&&' with constant
-operand [-Werror,-Wconstant-logical-operand]
-        if (cpu_has_rixi && _PAGE_NO_EXEC) {
-                         ^  ~~~~~~~~~~~~~
-arch/mips/mm/tlbex.c:634:19: note: use '&' for a bitwise operation
-        if (cpu_has_rixi && _PAGE_NO_EXEC) {
-                         ^~
-                         &
-arch/mips/mm/tlbex.c:634:19: note: remove constant to silence this
-warning
-        if (cpu_has_rixi && _PAGE_NO_EXEC) {
-                        ~^~~~~~~~~~~~~~~~
-1 error generated.
-
-Explicitly cast this value to a boolean so that clang understands we
-intend for this to be a non-zero value.
-
-Fixes: 00bf1c691d08 ("MIPS: tlbex: Avoid placing software PTE bits in Entry* PFN fields")
-Link: https://github.com/ClangBuiltLinux/linux/issues/609
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Tested-by: Mathieu Malaterre <malat@debian.org>
+Tested-by: Artur Rojek <contact@artur-rojek.eu>
+Acked-by: Stephen Boyd <sboyd@kernel.org>
+Acked-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: James Hogan <jhogan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: linux-mips@vger.kernel.org
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Lee Jones <lee.jones@linaro.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: Jason Cooper <jason@lakedaemon.net>
+Cc: Marc Zyngier <marc.zyngier@arm.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: devicetree@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Cc: clang-built-linux@googlegroups.com
+Cc: linux-doc@vger.kernel.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-clk@vger.kernel.org
+Cc: od@zcrc.me
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/mm/tlbex.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/ingenic/jz4740-cgu.c       | 6 ++++++
+ include/dt-bindings/clock/jz4740-cgu.h | 1 +
+ 2 files changed, 7 insertions(+)
 
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index c2a6869418f77..dc495578d44d3 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -634,7 +634,7 @@ static __maybe_unused void build_convert_pte_to_entrylo(u32 **p,
- 		return;
- 	}
+diff --git a/drivers/clk/ingenic/jz4740-cgu.c b/drivers/clk/ingenic/jz4740-cgu.c
+index 32fcc75f6f77e..216ba051e743c 100644
+--- a/drivers/clk/ingenic/jz4740-cgu.c
++++ b/drivers/clk/ingenic/jz4740-cgu.c
+@@ -211,6 +211,12 @@ static const struct ingenic_cgu_clk_info jz4740_cgu_clocks[] = {
+ 		.parents = { JZ4740_CLK_EXT, -1, -1, -1 },
+ 		.gate = { CGU_REG_CLKGR, 5 },
+ 	},
++
++	[JZ4740_CLK_TCU] = {
++		"tcu", CGU_CLK_GATE,
++		.parents = { JZ4740_CLK_EXT, -1, -1, -1 },
++		.gate = { CGU_REG_CLKGR, 1 },
++	},
+ };
  
--	if (cpu_has_rixi && _PAGE_NO_EXEC) {
-+	if (cpu_has_rixi && !!_PAGE_NO_EXEC) {
- 		if (fill_includes_sw_bits) {
- 			UASM_i_ROTR(p, reg, reg, ilog2(_PAGE_GLOBAL));
- 		} else {
+ static void __init jz4740_cgu_init(struct device_node *np)
+diff --git a/include/dt-bindings/clock/jz4740-cgu.h b/include/dt-bindings/clock/jz4740-cgu.h
+index 6ed83f926ae71..e82d77028581a 100644
+--- a/include/dt-bindings/clock/jz4740-cgu.h
++++ b/include/dt-bindings/clock/jz4740-cgu.h
+@@ -34,5 +34,6 @@
+ #define JZ4740_CLK_ADC		19
+ #define JZ4740_CLK_I2C		20
+ #define JZ4740_CLK_AIC		21
++#define JZ4740_CLK_TCU		22
+ 
+ #endif /* __DT_BINDINGS_CLOCK_JZ4740_CGU_H__ */
 -- 
 2.20.1
 

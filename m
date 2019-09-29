@@ -2,144 +2,146 @@ Return-Path: <SRS0=T/5f=XY=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E11BC352A9
-	for <linux-mips@archiver.kernel.org>; Sun, 29 Sep 2019 17:44:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3D7EC4360C
+	for <linux-mips@archiver.kernel.org>; Sun, 29 Sep 2019 19:39:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 2508321882
-	for <linux-mips@archiver.kernel.org>; Sun, 29 Sep 2019 17:44:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1569779041;
-	bh=+MMQDdfDZRYfEA9WTqoj7O66pjR+UGqGUMel+eWVUrA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=Fty/T+TZoVb2Lcxmj1BdBpp9Zq6AcDGOGVBPFbYdjmy+Oxca2tXnfnW4dF5v10372
-	 Xr9z2O7GKmXiCxfdDrjAHvFVHvtd/4YZVOVos+Ui/H8mvCtUB+7QMPCVfemM60AJum
-	 m46GHFaHYKzGS0HBJk0f5K2FupyUG4UuciHFuuTM=
+	by mail.kernel.org (Postfix) with ESMTP id AAC6D21835
+	for <linux-mips@archiver.kernel.org>; Sun, 29 Sep 2019 19:39:21 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QtAWw1m1"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729032AbfI2RbD (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 29 Sep 2019 13:31:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41322 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726149AbfI2RbC (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sun, 29 Sep 2019 13:31:02 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9D22721835;
-        Sun, 29 Sep 2019 17:30:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569778261;
-        bh=+MMQDdfDZRYfEA9WTqoj7O66pjR+UGqGUMel+eWVUrA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qyVAwCFbEuA4keIUrNRS2lBRhbJyvm9KB5EG04uzkBAvDMTmikPR6UF2P/Y3zsfMs
-         o9q41nxRS/3k+J1zpW7ntmGpeXyfdTDSABggHogLd3NmkWMciQQC8BQNqH8qlSq2jk
-         i/K9cFYJG3whYGo9mNxw//d6Nk/Wtfa4MQq944W4=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Paul Cercueil <paul@crapouillou.net>,
-        Mathieu Malaterre <malat@debian.org>,
-        Artur Rojek <contact@artur-rojek.eu>,
-        Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-clk@vger.kernel.org, od@zcrc.me,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.3 02/49] clk: jz4740: Add TCU clock
-Date:   Sun, 29 Sep 2019 13:30:02 -0400
-Message-Id: <20190929173053.8400-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190929173053.8400-1-sashal@kernel.org>
+        id S1729282AbfI2TjV (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 29 Sep 2019 15:39:21 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:33640 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729217AbfI2TjV (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sun, 29 Sep 2019 15:39:21 -0400
+Received: by mail-pl1-f193.google.com with SMTP id d22so3026829pls.0;
+        Sun, 29 Sep 2019 12:39:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=cWzyN/kk5zIsu98AByAT+qCphFKK3lgjqUy370laSJ4=;
+        b=QtAWw1m1CSD8Rp40KtFAtfv3dYr25cIprGMRAQVhF8jPjPpT23hhtxADKEZtnu8REF
+         C6bQSIBnmLr504LwkeqIUR6RThWPjAF6pQVzK3XtXJooJc41ar0Rcy4j2HZ80YXgiakx
+         y/+sAwhESf9Z7rGVZhtF7xVJU7RowIhF/z79l7eK8UvRxJBCLsDRhFM8XthihU48idGd
+         J9rOgfS298WcxWboFdkpL6IKYFFS51Rnz5yj6v0Rg+ywDt5WLPbeiApLhymX6kQhLApq
+         BpVsKe4x4q6CK/SkjdoJvUQccDtvpfFk1vVgiZoebbEgWEjKsjHCccy8/oRVS9iYgiUx
+         8JUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=cWzyN/kk5zIsu98AByAT+qCphFKK3lgjqUy370laSJ4=;
+        b=BlWozANw510e7bmmA5JaxaUIZYsH+TPt0m3oYydGeaizmwWmFV4tS/1qBFnHskMecU
+         /UQW87DSGL69AOcf+4JmvBG3V5Y2LQIAoweJbZz5HSrZf+3tWG/m/nNhwdcxG94OfnFY
+         rE+mZ8pJikbiLKIIlNxDuCMe71Iis/Vm09p6iYYut+IvL9Milx9VehfRqHZ8+lD3OtV4
+         hZHA4c9V9E7sqDkTgc4FHJWxtwURrsUCu5dh6U7XzhkjB2PC+gtUWfzDZndtQMLsaJBb
+         267rls+vGlTL4LdM8CdnlpDWGB12vvlEwMeU+iYSb/t3gY7OkY+tpcrajymNrQnREHSh
+         s2HA==
+X-Gm-Message-State: APjAAAV1upc/OAyaaMaCsnGw4prg+yb9Osoio4Lz9UA7SYUAKnGKuUK7
+        9RQ2iUNZKUEnnFa5Aau9vEErzKcu
+X-Google-Smtp-Source: APXvYqx3hRo7qRmfXjwZA1sflWvx1xzryy0SWuJwjsbpyCv4hSp8+/ComVDoxShk76M7DtWCwZahPw==
+X-Received: by 2002:a17:902:b48f:: with SMTP id y15mr9037039plr.168.1569785959926;
+        Sun, 29 Sep 2019 12:39:19 -0700 (PDT)
+Received: from [192.168.1.3] (ip68-111-84-250.oc.oc.cox.net. [68.111.84.250])
+        by smtp.gmail.com with ESMTPSA id v43sm26851393pjb.1.2019.09.29.12.39.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 29 Sep 2019 12:39:19 -0700 (PDT)
+Subject: Re: [PATCH AUTOSEL 5.3 20/49] firmware: bcm47xx_nvram: Correct size_t
+ printf format
+To:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Cc:     =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@linux-mips.org,
+        joe@perches.com,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        linux-mips@vger.kernel.org
 References: <20190929173053.8400-1-sashal@kernel.org>
+ <20190929173053.8400-20-sashal@kernel.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <feb780d4-c9f7-b662-729c-babd361b223e@gmail.com>
+Date:   Sun, 29 Sep 2019 12:39:05 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+In-Reply-To: <20190929173053.8400-20-sashal@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Paul Cercueil <paul@crapouillou.net>
 
-[ Upstream commit 73dd11dc1a883d4c994d729dc9984f4890001157 ]
 
-Add the missing TCU clock to the list of clocks supplied by the CGU for
-the JZ4740 SoC.
+On 9/29/2019 10:30 AM, Sasha Levin wrote:
+> From: Florian Fainelli <f.fainelli@gmail.com>
+> 
+> [ Upstream commit feb4eb060c3aecc3c5076bebe699cd09f1133c41 ]
+> 
+> When building on a 64-bit host, we will get warnings like those:
+> 
+> drivers/firmware/broadcom/bcm47xx_nvram.c:103:3: note: in expansion of macro 'pr_err'
+>    pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
+>    ^~~~~~
+> drivers/firmware/broadcom/bcm47xx_nvram.c:103:28: note: format string is defined here
+>    pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
+>                            ~^
+>                            %li
+> 
+> Use %zu instead for that purpose.
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Tested-by: Mathieu Malaterre <malat@debian.org>
-Tested-by: Artur Rojek <contact@artur-rojek.eu>
-Acked-by: Stephen Boyd <sboyd@kernel.org>
-Acked-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Lee Jones <lee.jones@linaro.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Michael Turquette <mturquette@baylibre.com>
-Cc: Jason Cooper <jason@lakedaemon.net>
-Cc: Marc Zyngier <marc.zyngier@arm.com>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: devicetree@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-doc@vger.kernel.org
-Cc: linux-mips@vger.kernel.org
-Cc: linux-clk@vger.kernel.org
-Cc: od@zcrc.me
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/clk/ingenic/jz4740-cgu.c       | 6 ++++++
- include/dt-bindings/clock/jz4740-cgu.h | 1 +
- 2 files changed, 7 insertions(+)
+This is not a fix that should be backported as it was done only to allow
+the driver to the made buildable with COMPILE_TEST. Please drop it from
+your auto-selection.
 
-diff --git a/drivers/clk/ingenic/jz4740-cgu.c b/drivers/clk/ingenic/jz4740-cgu.c
-index 4c0a20949c2c2..67f8a0e142845 100644
---- a/drivers/clk/ingenic/jz4740-cgu.c
-+++ b/drivers/clk/ingenic/jz4740-cgu.c
-@@ -222,6 +222,12 @@ static const struct ingenic_cgu_clk_info jz4740_cgu_clocks[] = {
- 		.parents = { JZ4740_CLK_EXT, -1, -1, -1 },
- 		.gate = { CGU_REG_CLKGR, 5 },
- 	},
-+
-+	[JZ4740_CLK_TCU] = {
-+		"tcu", CGU_CLK_GATE,
-+		.parents = { JZ4740_CLK_EXT, -1, -1, -1 },
-+		.gate = { CGU_REG_CLKGR, 1 },
-+	},
- };
- 
- static void __init jz4740_cgu_init(struct device_node *np)
-diff --git a/include/dt-bindings/clock/jz4740-cgu.h b/include/dt-bindings/clock/jz4740-cgu.h
-index 6ed83f926ae71..e82d77028581a 100644
---- a/include/dt-bindings/clock/jz4740-cgu.h
-+++ b/include/dt-bindings/clock/jz4740-cgu.h
-@@ -34,5 +34,6 @@
- #define JZ4740_CLK_ADC		19
- #define JZ4740_CLK_I2C		20
- #define JZ4740_CLK_AIC		21
-+#define JZ4740_CLK_TCU		22
- 
- #endif /* __DT_BINDINGS_CLOCK_JZ4740_CGU_H__ */
+> 
+> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+> Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
+> Signed-off-by: Paul Burton <paul.burton@mips.com>
+> Cc: linux-mips@linux-mips.org
+> Cc: joe@perches.com
+> Cc: Rafał Miłecki <zajec5@gmail.com>
+> Cc: linux-mips@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/firmware/broadcom/bcm47xx_nvram.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/firmware/broadcom/bcm47xx_nvram.c b/drivers/firmware/broadcom/bcm47xx_nvram.c
+> index 77eb74666ecbc..6d2820f6aca13 100644
+> --- a/drivers/firmware/broadcom/bcm47xx_nvram.c
+> +++ b/drivers/firmware/broadcom/bcm47xx_nvram.c
+> @@ -96,7 +96,7 @@ static int nvram_find_and_copy(void __iomem *iobase, u32 lim)
+>  		nvram_len = size;
+>  	}
+>  	if (nvram_len >= NVRAM_SPACE) {
+> -		pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
+> +		pr_err("nvram on flash (%zu bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
+>  		       nvram_len, NVRAM_SPACE - 1);
+>  		nvram_len = NVRAM_SPACE - 1;
+>  	}
+> @@ -148,7 +148,7 @@ static int nvram_init(void)
+>  	    header.len > sizeof(header)) {
+>  		nvram_len = header.len;
+>  		if (nvram_len >= NVRAM_SPACE) {
+> -			pr_err("nvram on flash (%i bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
+> +			pr_err("nvram on flash (%zu bytes) is bigger than the reserved space in memory, will just copy the first %i bytes\n",
+>  				header.len, NVRAM_SPACE);
+>  			nvram_len = NVRAM_SPACE - 1;
+>  		}
+> 
+
 -- 
-2.20.1
-
+Florian

@@ -2,164 +2,140 @@ Return-Path: <SRS0=RYQo=X3=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 727E7C352AA
-	for <linux-mips@archiver.kernel.org>; Wed,  2 Oct 2019 17:14:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 905C0C352AA
+	for <linux-mips@archiver.kernel.org>; Wed,  2 Oct 2019 17:47:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 358C52054F
-	for <linux-mips@archiver.kernel.org>; Wed,  2 Oct 2019 17:14:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 672EE21D82
+	for <linux-mips@archiver.kernel.org>; Wed,  2 Oct 2019 17:47:10 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavecomp.com header.i=@wavecomp.com header.b="DAKoCadU"
+	dkim=pass (1024-bit key) header.d=wavecomp.com header.i=@wavecomp.com header.b="DGBHW6my"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728199AbfJBROg (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 2 Oct 2019 13:14:36 -0400
-Received: from mail-eopbgr690098.outbound.protection.outlook.com ([40.107.69.98]:60710
-        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
+        id S1728474AbfJBRrK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 2 Oct 2019 13:47:10 -0400
+Received: from mail-eopbgr720138.outbound.protection.outlook.com ([40.107.72.138]:35519
+        "EHLO NAM05-CO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728149AbfJBROg (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 2 Oct 2019 13:14:36 -0400
+        id S1728412AbfJBRrK (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 2 Oct 2019 13:47:10 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oJCovABkeFGMj0MJ4jXs/7Ypu8fRRRKr94JUzJlx7E7SEeFiwSerBTYK+1MXNVOUz1gid8MITgZJB06Eio9wrL3vFHbK7UD0lPRkTCLTlwJrGPUwTG7SxsBOwK9POTDh/t5id3dtFNn7S8+zmlI5XfkVDe6ak4XwbNPW4DhlRhdH8WZ7d/wrDoH6pfhnZMS/dDRuJ3MzReC3E+moF6L/VcHqhiN/uJid/wOk3vvN8qVwh7d5EK7UMRwzUFFjlNyNxu2vT0pBzrg7AYrcLL2AuIEacRX8D2Jfe6KvGxWA2IPJNtGzkqEoyi4IjYmC/99B4zQxtAnL1ARyMViRq9rTww==
+ b=Ll+qXvac6DcutucENLeAIaupRC5y/JxU7XkoDo6E8Z6f3jjJn1LJbXKEs+h7yCd0tydMbiNIe+fiHkySipHAeF3ZDeVlQj6JfrYLgQcSGAdE/HfFKPMdJyYcoh3xLawGIs48w4tNkwjNpiS/BD9GZyPXS1E1C6hGxHnBLzJg9n4cHLovKLe5xTdhsjuIJIWQ0+VscdVKRFllYHKUPoxUzuXeF1RdXdxItPhppGTMrPw+6nVDZkXKM3etIXvhSM5tE/CePfWcZDPlkjFgu05mS6/2vwOeQUybjnmOEzdzWRXQamzwO9uEX75Mj/LtivmV7zHnjI8uPQTBzlo/sAe19A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WG/16uns95m8iiPc/tsEWzSuSVDWlnwEWNuKqiPtmd0=;
- b=G8WPyj0MN5RaUL+hWT3edTGRpHMKg5wvG0FEt6JdVc3YompHrUrZZBGM+j8LASTUgZhqPbxPkbugPOcXG0tB8PcdhXNj/5xOvMxrrrtZtcc7dBU2WsCiiAdQx/CBn52T4EFQ67pOqAuEaKWc/SrvB06SttGOh6yiaDw4nOZkxolqMFzGJRaYxWxGeUQMJFneE9ugx+7WLSqW6mPdF3+Qm3vLPztPiRX+wCN5BwPnK3CFpDT6FNzyOBIL8cNjEYmwJzfnlqQhHxsZwwkXNAP7zXtoCEXlqFunWvzBVLGCWsdZMapRchdq+aJ4FSSjOzrJsFy2SNyWQAgIHNst3W/iSA==
+ bh=DXH/eNAwtvvHwaW80VvF/8bVvtjFVbQSqAW4mkjtAwA=;
+ b=KiFms3EDqwZPjikrbwsivu6mTXtlQU5sqvGgeBA4JJCJFJJuTX6LNjNdLMQuptlSca0fmb5FhmMw9cIVB8L8vjuqTdzWmSzOyuU/GnjnmrgoEszC7fhYiFOx/Nx+JiGZ7NbqQkm9OZYw7lDvLRuNHuXyfMeh8Y/QZTHDFhJ/SwjvF35IAsU7DQD12Jh36gfvZAodEud0Iwub4PjhrWuQqEwJ1DZl4ekd+deUXx2YYpXy/44NJuqhk/X71fn5tpbBc0K4TSrCQCx8kxwxTzV2HxfsXKvOuFPtW3wQHdUT4eANzbG+Wvx0OXheQdyNBbNccrtmAHnFx51yo1OOyvea7w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=wavecomp.com; dmarc=pass action=none header.from=mips.com;
  dkim=pass header.d=mips.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wavecomp.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WG/16uns95m8iiPc/tsEWzSuSVDWlnwEWNuKqiPtmd0=;
- b=DAKoCadUU+32PMe6lKNWD+PLe7U9CP43oz83lbICGmEmb4V6NmZdTKObjuc+pu1CblVxxU6bQrJuWkwlGrc/hUVc1L5n9BN4nuWSed5QEQ0hzs/fALgp2iWZbfF6ynHT7DD33z8E/e81781r1dpUdxQWmpRHk8lS+XX1UmK2fNU=
+ bh=DXH/eNAwtvvHwaW80VvF/8bVvtjFVbQSqAW4mkjtAwA=;
+ b=DGBHW6myIHjUTqwgcqFUJoL8eYpmrc5Mo8RnBCGFlQoaM3MUsSJwBZgYew5hrd5uJgNTYc9iZlOaOW32dWGl8HD5ogzf96dJ7ybp1gjbSrXOXYWNN0yDprz24amg90OkqPQ0PRzaMQdPoTv5TN96SNeCpyWe7/NykbwQX0FeEJs=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.172.60.12) by
- MWHPR2201MB1759.namprd22.prod.outlook.com (10.164.206.39) with Microsoft SMTP
+ MWHPR2201MB1646.namprd22.prod.outlook.com (10.174.167.35) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2305.20; Wed, 2 Oct 2019 17:14:32 +0000
+ 15.20.2305.20; Wed, 2 Oct 2019 17:46:36 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::498b:c2cd:e816:1481]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::498b:c2cd:e816:1481%2]) with mapi id 15.20.2305.023; Wed, 2 Oct 2019
- 17:14:31 +0000
+ 17:46:36 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Paul Burton <pburton@wavecomp.com>
-CC:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        Paul Burton <pburton@wavecomp.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: octeon: Include required header; fix octeon
- ethernet  build
-Thread-Topic: [PATCH] MIPS: octeon: Include required header; fix octeon
- ethernet  build
-Thread-Index: AQHVeUTaE242exN6yU6adRnp4AQQRw==
-Date:   Wed, 2 Oct 2019 17:14:31 +0000
-Message-ID: <MWHPR2201MB12773A25D55977CA6ABA0D56C19C0@MWHPR2201MB1277.namprd22.prod.outlook.com>
-References: <20191001215622.4173931-1-paul.burton@mips.com>
-In-Reply-To: <20191001215622.4173931-1-paul.burton@mips.com>
+To:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+CC:     Paul Burton <pburton@wavecomp.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>
+Subject: [PATCH 2/2] MIPS: VDSO: Fix build for binutils < 2.25
+Thread-Topic: [PATCH 2/2] MIPS: VDSO: Fix build for binutils < 2.25
+Thread-Index: AQHVeUlWDfP89pcbwEGYZtTvpI6IMw==
+Date:   Wed, 2 Oct 2019 17:46:36 +0000
+Message-ID: <20191002174438.127127-2-paul.burton@mips.com>
+References: <20191002174438.127127-1-paul.burton@mips.com>
+In-Reply-To: <20191002174438.127127-1-paul.burton@mips.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BY5PR13CA0030.namprd13.prod.outlook.com
- (2603:10b6:a03:180::43) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: BYAPR07CA0076.namprd07.prod.outlook.com
+ (2603:10b6:a03:12b::17) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:18::12)
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
+x-mailer: git-send-email 2.23.0
 x-originating-ip: [12.94.197.246]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 1568fdba-8ecf-4413-c81f-08d7475bfd37
-x-ms-traffictypediagnostic: MWHPR2201MB1759:
-x-ms-exchange-purlcount: 1
+x-ms-office365-filtering-correlation-id: 9bad8cf1-e9ce-4238-b32c-08d7476077d5
+x-ms-traffictypediagnostic: MWHPR2201MB1646:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MWHPR2201MB17592C77018918C09ABF16ACC19C0@MWHPR2201MB1759.namprd22.prod.outlook.com>
+x-microsoft-antispam-prvs: <MWHPR2201MB1646BE78B31BD1D3F5E986B0C19C0@MWHPR2201MB1646.namprd22.prod.outlook.com>
 x-ms-oob-tlc-oobclassifiers: OLM:7691;
 x-forefront-prvs: 0178184651
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(979002)(346002)(376002)(136003)(39830400003)(396003)(366004)(199004)(189003)(14444005)(256004)(52536014)(4326008)(6306002)(9686003)(26005)(14454004)(52116002)(55016002)(478600001)(42882007)(6862004)(6246003)(229853002)(966005)(71190400001)(6436002)(71200400001)(8676002)(81156014)(81166006)(476003)(8936002)(486006)(74316002)(33656002)(44832011)(7736002)(54906003)(11346002)(3846002)(316002)(6116002)(2906002)(25786009)(99286004)(446003)(76176011)(102836004)(5660300002)(64756008)(66446008)(66556008)(386003)(66476007)(186003)(66946007)(66066001)(305945005)(7696005)(6506007)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1759;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(366004)(39830400003)(376002)(136003)(396003)(189003)(199004)(66476007)(8936002)(6116002)(6916009)(6436002)(5640700003)(3846002)(14454004)(6486002)(478600001)(1076003)(486006)(2351001)(5660300002)(81156014)(8676002)(50226002)(81166006)(66556008)(64756008)(66446008)(66946007)(316002)(36756003)(54906003)(25786009)(76176011)(44832011)(6512007)(7736002)(102836004)(6506007)(52116002)(26005)(11346002)(446003)(42882007)(66066001)(476003)(2616005)(386003)(99286004)(2501003)(305945005)(71190400001)(71200400001)(186003)(2906002)(14444005)(4326008)(256004);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1646;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: axSEe5EO6W5RmGvltjBkbx26QsjI56OO3Kr12U2feqKVAJsMp21maxWVS35bevC5A0G/wAMXpUNRN9izxu3Tqq82AJsANe/BEYZyNFqz04u8pudVN2zIHUE+rEbhGkJrVhwxcT3JquxN3bvmhxm2AZbs6QctbXSbhDeti05woyL2C0rnMNyzM7QE7kNSpkgSZUO/RirTRfTOocW8YJSUry39rnj+0Ja9dWH2R5jzAhLtft+MZHRlap92qICaxuSzeiIzFkHucEURZd1PTQntS+uYVckCPZsDJIfR4esnrb92tyr9aNgN6d6V4ngxHejvWjbuTUnamu41dRbQfGFlQYGS8TAYjOqvtNIEDKAge3P8kkqVvB7jtPJK7aumGIWYZix/rVKuKuxp9BMXtqW4nKtsTGtI6Wm8TlwHHF+iS7ZJD9sf4iblcSW5Racoxm0m1mlft4vMyvtYEHZvVbVdEg==
+x-microsoft-antispam-message-info: nrxFyTu0ioddbt0iNGW7iP+5tnGM14paMKC5dvqmHeXjNJujFBOtmPEIu4g+GFBnDEJyvCH91S8eXtMzIR1/LDgd1BoXJWfMGf/iZpGYREvD/7LsTEuCoF+2q6tpGMsKjwYrmbG7dxIepvWcJxQcjAolmb/mhM3taZUCz1uZzTGpQhqa6Uee4hLKUyJkARn5IYcCAUigI7hwk5VuxO0/oQjNL+gvrJkUPDunMir7J9l8qe+GLK6lFTFGW8zOz8xJTvVJM87s7qnvU2Iss2zfEEa2L6W9sNQyfZ6m6goquK0qCFEgs7AtZKPbuZf0wJFSEKDJeqRZf7aLbDKX/1i/26eR5h2YgI3qPv4AunFK7kg19K0KjuTMgouEfp6DUMKFLAcsgDNTOYxZ//T7ZwzJGnufnPZT5sr3fsZEzyaZqpA=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1568fdba-8ecf-4413-c81f-08d7475bfd37
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Oct 2019 17:14:31.6809
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9bad8cf1-e9ce-4238-b32c-08d7476077d5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Oct 2019 17:46:36.4033
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: JcbyZOOcabCxolbN85gvbnYVMnwuSAAJgMvRS7Bn8lqqUZBtBNOonchGbAEr2mB47/tkJV9ikm3aP+FdacEtSg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1759
+X-MS-Exchange-CrossTenant-userprincipalname: cK27cldi85MPivu22WAsxubh5Mn/18OIx9c2TI5HQFEGAqMSp23BHD4i01+B4ql23oN3GuB4yFWxSq3jsd37Ng==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1646
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hello,
+Versions of binutils prior to 2.25 are unable to link our VDSO due to an
+unsupported R_MIPS_PC32 relocation generated by the ".word _start - ."
+line of the inline asm in get_vdso_base(). As such, the intent is that
+when building with binutils older than 2.25 we don't build code for
+gettimeofday() & friends in the VDSO that rely upon get_vdso_base().
 
-Paul Burton wrote:
-> Commit 171a9bae68c7 ("staging/octeon: Allow test build on !MIPS") moved
-> the inclusion of a bunch of headers by various files in the Octeon
-> ethernet driver into a common header, but in doing so it changed the
-> order in which those headers are included.
->=20
-> Prior to the referenced commit drivers/staging/octeon/ethernet.c
-> included asm/octeon/cvmx-pip.h before asm/octeon/cvmx-ipd.h, which makes
-> use of the CVMX_PIP_SFT_RST definition pulled in by the former. After
-> commit 171a9bae68c7 ("staging/octeon: Allow test build on !MIPS") we
-> pull in asm/octeon/cvmx-ipd.h first & builds fail with:
->=20
->   In file included from drivers/staging/octeon/octeon-ethernet.h:27,
->                    from drivers/staging/octeon/ethernet.c:22:
->   arch/mips/include/asm/octeon/cvmx-ipd.h: In function 'cvmx_ipd_free_ptr=
-':
->   arch/mips/include/asm/octeon/cvmx-ipd.h:330:27: error: storage size of
->     'pip_sft_rst' isn't known
->       union cvmx_pip_sft_rst pip_sft_rst;
->                              ^~~~~~~~~~~
->   arch/mips/include/asm/octeon/cvmx-ipd.h:331:36: error: 'CVMX_PIP_SFT_RS=
-T'
->     undeclared (first use in this function); did you mean 'CVMX_CIU_SOFT_=
-RST'?
->       pip_sft_rst.u64 =3D cvmx_read_csr(CVMX_PIP_SFT_RST);
->                                       ^~~~~~~~~~~~~~~~
->                                       CVMX_CIU_SOFT_RST
->   arch/mips/include/asm/octeon/cvmx-ipd.h:331:36: note: each undeclared
->     identifier is reported only once for each function it appears in
->   arch/mips/include/asm/octeon/cvmx-ipd.h:330:27: warning: unused variabl=
-e
->     'pip_sft_rst' [-Wunused-variable]
->       union cvmx_pip_sft_rst pip_sft_rst;
->                              ^~~~~~~~~~~
->   make[4]: *** [scripts/Makefile.build:266: drivers/staging/octeon/ethern=
-et.o]
->     Error 1
->   make[3]: *** [scripts/Makefile.build:509: drivers/staging/octeon] Error=
- 2
->=20
-> Fix this by having asm/octeon/cvmx-ipd.h include the
-> asm/octeon/cvmx-pip-defs.h header that it is reliant upon, rather than
-> requiring its users to pull in that header before it.
+Commit 24640f233b46 ("mips: Add support for generic vDSO") converted us
+to using generic VDSO infrastructure, and as part of that the
+gettimeofday() functionality moved to a new vgettimeofday.c file. The
+check for binutils < 2.25 wasn't updated to handle this new filename,
+and so it continues trying to remove the old unused filename from the
+build. The end result is that we try to include the gettimeofday() code
+in builds that will fail to link.
 
-Applied to mips-fixes.
+Fix this by updating the binutils < 2.25 case to remove vgettimeofday.c
+from obj-vdso-y, rather than gettimeofday.c.
 
-> commit 0228ecf6128c
-> https://git.kernel.org/mips/c/0228ecf6128c
->=20
-> Signed-off-by: Paul Burton <paul.burton@mips.com>
-> Fixes: 171a9bae68c7 ("staging/octeon: Allow test build on !MIPS")
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Fixes: 24640f233b46 ("mips: Add support for generic vDSO")
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+---
 
-Thanks,
-    Paul
+ arch/mips/vdso/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[ This message was auto-generated; if you believe anything is incorrect
-  then please email paul.burton@mips.com to report it. ]
+diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
+index 69cfa0a5339e..807f0f782f75 100644
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -59,7 +59,7 @@ CFLAGS_REMOVE_vgettimeofday.o =3D -pg
+ ifndef CONFIG_CPU_MIPSR6
+   ifeq ($(call ld-ifversion, -lt, 225000000, y),y)
+     $(warning MIPS VDSO requires binutils >=3D 2.25)
+-    obj-vdso-y :=3D $(filter-out gettimeofday.o, $(obj-vdso-y))
++    obj-vdso-y :=3D $(filter-out vgettimeofday.o, $(obj-vdso-y))
+     ccflags-vdso +=3D -DDISABLE_MIPS_VDSO
+   endif
+ endif
+--=20
+2.23.0
+

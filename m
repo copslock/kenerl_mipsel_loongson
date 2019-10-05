@@ -2,107 +2,89 @@ Return-Path: <SRS0=xLsO=X6=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C472EC47404
-	for <linux-mips@archiver.kernel.org>; Sat,  5 Oct 2019 23:00:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EDB95C47404
+	for <linux-mips@archiver.kernel.org>; Sat,  5 Oct 2019 23:01:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9369A222CA
-	for <linux-mips@archiver.kernel.org>; Sat,  5 Oct 2019 23:00:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C496F222C8
+	for <linux-mips@archiver.kernel.org>; Sat,  5 Oct 2019 23:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1570316439;
-	bh=jNhO1yhzGmSxpfUauYxPl/dwBJJO9Ob403LUDD3Bg+Q=;
+	s=default; t=1570316488;
+	bh=OSMf8B0AB6AIqckNzRwk3oaI7AdreTyoAu9Y39HJWY4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=GisiFJ9jNzwosWsBQJ9GFviAnoYXWyNfY/4snpJwVBGmSxnBxTUaP99yJ9UzTFi5e
-	 r41Min/JkFcxasQHX8Hbzi7W+HeXg4zvDhYUMwCU2/OmfW84xQUhMlirBvPNNtGJ/z
-	 hFS642apb542p8KusS3jtcZjcSgxCW5hKEfbQt64=
+	b=L4EMJOiA5rMLZ0Ul8tgLviLoSjbUIxC3BtjPmnieXunobHUoVFxhTI9naFQn9EjYz
+	 zkC6fI3O9Diz67q0zQWAxml/TKqvOm7dlRGSCWy/1G6QErG9w3QBbY7OoSEKgKtV1y
+	 k0V2UfbdwMVv47Lw6Uq7JaUa/fEPAAgRFgSn5Arg=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725966AbfJEXAj (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 5 Oct 2019 19:00:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51026 "EHLO mail.kernel.org"
+        id S1726100AbfJEXB0 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 5 Oct 2019 19:01:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51600 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725947AbfJEXAj (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sat, 5 Oct 2019 19:00:39 -0400
+        id S1726094AbfJEXBZ (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 5 Oct 2019 19:01:25 -0400
 Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C6574222C5;
-        Sat,  5 Oct 2019 23:00:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id F123520862;
+        Sat,  5 Oct 2019 23:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570316438;
-        bh=jNhO1yhzGmSxpfUauYxPl/dwBJJO9Ob403LUDD3Bg+Q=;
+        s=default; t=1570316485;
+        bh=OSMf8B0AB6AIqckNzRwk3oaI7AdreTyoAu9Y39HJWY4=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YNaXatoOwa/0IdJBMX+mRjlIeFMz4GkAT5W8RUCWhl3BkW1NLTl/9B0lgMloyKZLd
-         LoQ5dTmMajZ3BTzoFiGWTTNA9+iqYUJf8fZSMkAVg8X0pVbnHZY3lWUWj/Qv4WzOB/
-         oHvVrKf1hQYoUv8A/SUj9T234TIgtseI9C3HCQEg=
-Date:   Sat, 5 Oct 2019 19:00:36 -0400
+        b=Wdh7qOQEB4QaKJ9SsdQIroEMCFUpYSThpjFkzk3JTX+LmSsoc8UgEcT/7Dh+9cp4M
+         hCXIakPFvhJkjm/MKMrN6YCu5z66OVEtIbxUxKmCC7vGerW1A44245MN1f7bqzjCOM
+         h0u2+hCUSBGr8akNAPcZtdglTavpSlWip+KIgu1I=
+Date:   Sat, 5 Oct 2019 19:01:24 -0400
 From:   Sasha Levin <sashal@kernel.org>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
         Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
         devicetree@vger.kernel.org, john@phrozen.org, kishon@ti.com,
-        ralf@linux-mips.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        ralf@linux-mips.org, robh+dt@kernel.org,
+        Hauke Mehrtens <hauke@hauke-m.de>, mark.rutland@arm.com,
         ms@dev.tdt.de
-Subject: Re: [PATCH AUTOSEL 5.2 17/42] MIPS: lantiq: update the clock alias'
+Subject: Re: [PATCH AUTOSEL 4.19 12/33] MIPS: lantiq: update the clock alias'
  for the mainline PCIe PHY driver
-Message-ID: <20191005230036.GB25255@sasha-vm>
-References: <20190929173244.8918-1-sashal@kernel.org>
- <20190929173244.8918-17-sashal@kernel.org>
- <fe9161b3-2402-e5a8-959b-63c807be3e08@hauke-m.de>
+Message-ID: <20191005230124.GC25255@sasha-vm>
+References: <20190929173424.9361-1-sashal@kernel.org>
+ <20190929173424.9361-12-sashal@kernel.org>
+ <CAFBinCCD7xTnektDhDa+wRsAWmyzMwgfou59Y3=Qf8b2utaciw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <fe9161b3-2402-e5a8-959b-63c807be3e08@hauke-m.de>
+In-Reply-To: <CAFBinCCD7xTnektDhDa+wRsAWmyzMwgfou59Y3=Qf8b2utaciw@mail.gmail.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Sun, Sep 29, 2019 at 07:39:49PM +0200, Hauke Mehrtens wrote:
->On 9/29/19 7:32 PM, Sasha Levin wrote:
+On Sun, Sep 29, 2019 at 07:40:28PM +0200, Martin Blumenstingl wrote:
+>Hi Sasha,
+>
+>On Sun, Sep 29, 2019 at 7:34 PM Sasha Levin <sashal@kernel.org> wrote:
+>>
 >> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 >>
 >> [ Upstream commit ed90302be64a53d9031c8ce05428c358b16a5d96 ]
 >>
 >> The mainline PCIe PHY driver has it's own devicetree node. Update the
 >> clock alias so the mainline driver finds the clocks.
->>
->> The first PCIe PHY is located at 0x1f106800 and exists on VRX200, ARX300
->> and GRX390.
->> The second PCIe PHY is located at 0x1f700400 and exists on ARX300 and
->> GRX390.
->> The third PCIe PHY is located at 0x1f106a00 and exists onl on GRX390.
->> Lantiq's board support package (called "UGW") names these registers
->> "PDI".
->>
->> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
->> Signed-off-by: Paul Burton <paul.burton@mips.com>
->> Cc: linux-mips@vger.kernel.org
->> Cc: devicetree@vger.kernel.org
->> Cc: john@phrozen.org
->> Cc: kishon@ti.com
->> Cc: ralf@linux-mips.org
->> Cc: robh+dt@kernel.org
->> Cc: linux-kernel@vger.kernel.org
->> Cc: hauke@hauke-m.de
->> Cc: mark.rutland@arm.com
->> Cc: ms@dev.tdt.de
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>  arch/mips/lantiq/xway/sysctrl.c | 16 ++++++++--------
->>  1 file changed, 8 insertions(+), 8 deletions(-)
+>the mainline PCIe PHY driver only made it into Linux 5.4
+>I am pointing this out because OpenWrt uses an out-of-tree PCIe driver
+>with Linux 4.19 and this patch will break that if we don't do
+>additional work there
 >
->Hi Sasha,
->
->This change only makes sense with the new upstream PCIe phy driver which
->was added to kernel 5.4 [0], older kernel versions do not have this PCIe
->PHY driver. I would not backport these changes to older kernel versions.
+>thus I would like to understand why this got queued as backport for
+>various -stable kernels
 
-I'll drop it, thank you!
+It went through the automatic selection process, where we attempt to
+identify fixes that were not tagged for stable.
+
+I've dropped this patch from all stable trees, thank you.
 
 -- 
 Thanks,

@@ -2,104 +2,53 @@ Return-Path: <SRS0=7KIV=YC=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-2.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06F4FECE58D
-	for <linux-mips@archiver.kernel.org>; Wed,  9 Oct 2019 13:27:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75C69C47404
+	for <linux-mips@archiver.kernel.org>; Wed,  9 Oct 2019 13:46:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D304D21920
-	for <linux-mips@archiver.kernel.org>; Wed,  9 Oct 2019 13:27:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4EECE21835
+	for <linux-mips@archiver.kernel.org>; Wed,  9 Oct 2019 13:46:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731434AbfJIN1b (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 9 Oct 2019 09:27:31 -0400
-Received: from mx2.suse.de ([195.135.220.15]:47464 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731369AbfJIN1a (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 9 Oct 2019 09:27:30 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 5AB1BB01E;
-        Wed,  9 Oct 2019 13:27:29 +0000 (UTC)
-From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 4/6] MIPS: fw: arc: workaround 64bit kernel/32bit ARC problems
-Date:   Wed,  9 Oct 2019 15:27:15 +0200
-Message-Id: <20191009132718.25346-5-tbogendoerfer@suse.de>
-X-Mailer: git-send-email 2.16.4
-In-Reply-To: <20191009132718.25346-1-tbogendoerfer@suse.de>
-References: <20191009132718.25346-1-tbogendoerfer@suse.de>
+        id S1731181AbfJINqZ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 9 Oct 2019 09:46:25 -0400
+Received: from eddie.linux-mips.org ([148.251.95.138]:36538 "EHLO
+        cvs.linux-mips.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731180AbfJINqY (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 9 Oct 2019 09:46:24 -0400
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S23993463AbfJINqWU6nXj (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 9 Oct 2019 15:46:22 +0200
+Date:   Wed, 9 Oct 2019 14:46:22 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Paul Burton <paul.burton@mips.com>
+cc:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        Paul Burton <pburton@wavecomp.com>
+Subject: Re: [PATCH 1/4] MIPS: cmdline: Remove
+ CONFIG_MIPS_CMDLINE_BUILTIN_EXTEND
+In-Reply-To: <20191007221951.1889661-1-paul.burton@mips.com>
+Message-ID: <alpine.LFD.2.21.1910091440050.25653@eddie.linux-mips.org>
+References: <20191007221951.1889661-1-paul.burton@mips.com>
+User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Pointer arguments for 32bit ARC PROMs must reside in CKSEG0/1. While
-the initial stack resides in CKSEG0 the first kernel thread stack
-is already placed at a XKPHYS address, which ARC32 can't handle.
-The workaround here is to use static variables, which are placed
-into BSS and linked to a CKSEG0 address.
+On Mon, 7 Oct 2019, Paul Burton wrote:
 
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
----
- arch/mips/fw/arc/promlib.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+> CONFIG_MIPS_CMDLINE_BUILTIN_EXTEND is not selected by any of our
+> defconfigs, so remove it to simplify the messy command line logic in
+> arch_mem_init() a little.
 
-diff --git a/arch/mips/fw/arc/promlib.c b/arch/mips/fw/arc/promlib.c
-index be381307fbb0..5e9e840a9314 100644
---- a/arch/mips/fw/arc/promlib.c
-+++ b/arch/mips/fw/arc/promlib.c
-@@ -11,6 +11,21 @@
- #include <asm/bcache.h>
- #include <asm/setup.h>
- 
-+#if defined(CONFIG_64BIT) && defined(CONFIG_FW_ARC32)
-+/*
-+ * For 64bit kernels working with a 32bit ARC PROM pointer arguments
-+ * for ARC calls need to reside in CKEG0/1. But as soon as the kernel
-+ * switches to it's first kernel thread stack is set to an address in
-+ * XKPHYS, so anything on stack can't be used anymore. This is solved
-+ * by using a * static declartion variables are put into BSS, which is
-+ * linked to a CKSEG0 address. Since this is only used on UP platforms
-+ * there is not spinlock needed
-+ */
-+#define O32_STATIC	static
-+#else
-+#define O32_STATIC
-+#endif
-+
- /*
-  * IP22 boardcache is not compatible with board caches.	 Thus we disable it
-  * during romvec action.  Since r4xx0.c is always compiled and linked with your
-@@ -23,8 +38,10 @@
- 
- void prom_putchar(char c)
- {
--	ULONG cnt;
--	CHAR it = c;
-+	O32_STATIC ULONG cnt;
-+	O32_STATIC CHAR it;
-+
-+	it = c;
- 
- 	bc_disable();
- 	ArcWrite(1, &it, 1, &cnt);
-@@ -33,8 +50,8 @@ void prom_putchar(char c)
- 
- char prom_getchar(void)
- {
--	ULONG cnt;
--	CHAR c;
-+	O32_STATIC ULONG cnt;
-+	O32_STATIC CHAR c;
- 
- 	bc_disable();
- 	ArcRead(0, &c, 1, &cnt);
--- 
-2.16.4
+ That sounds like a poor argument for a functional regression to me.  I 
+have the option enabled in several configs I have been using just to be 
+able to temporarily override any built-in parameters with ones typed from 
+the console monitor's prompt.  Is it my mistake that I haven't put it in a 
+defconfig?
 
+  Maciej

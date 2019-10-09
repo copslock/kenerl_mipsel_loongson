@@ -2,101 +2,80 @@ Return-Path: <SRS0=7KIV=YC=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.1 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7EF81ECE58C
-	for <linux-mips@archiver.kernel.org>; Wed,  9 Oct 2019 17:30:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 25629C47404
+	for <linux-mips@archiver.kernel.org>; Wed,  9 Oct 2019 18:43:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 56B4420B7C
-	for <linux-mips@archiver.kernel.org>; Wed,  9 Oct 2019 17:30:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1570642233;
-	bh=qhJM50bxO+MG7WrkXdo6i8sZ/JZEPykOMKFr88gZ6t8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=YAALT29DTBiHy0/kwvsovPJZZyquQsOtV41ZGfcQpFkZsEUv3s1OmOCkmflapOeFY
-	 GPCAA9O6sg9O/nNhcICSQiGQnP/6Nb4c1Pv4/ffneQvqTbITjf/pF0dXE1Wp26kfWv
-	 W1rVUxkS+ayqM6XWN6EFkVRRQkCkv7n85D+DUKyY=
+	by mail.kernel.org (Postfix) with ESMTP id E4AB121848
+	for <linux-mips@archiver.kernel.org>; Wed,  9 Oct 2019 18:43:14 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="WNndJd8i"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732572AbfJIRa1 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 9 Oct 2019 13:30:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48634 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732133AbfJIRYI (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 9 Oct 2019 13:24:08 -0400
-Received: from sasha-vm.mshome.net (unknown [167.220.2.234])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CFF56218DE;
-        Wed,  9 Oct 2019 17:24:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570641848;
-        bh=qhJM50bxO+MG7WrkXdo6i8sZ/JZEPykOMKFr88gZ6t8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qJb0INn/yS5Ss50TxHZ3DSaKmDK1TVBqYiLgCq4RPmlvgW4XVS5oLoQ/KJpqxK9xF
-         eB9rYDHmb7/gVAj+rVG0jFAt/9yuxe6kyM28VYnL81SarZD+u6yOcdTAH5+5dHesRr
-         hCRKM8YKB13+vEPrU5L6PoQPIcefJXu/7LItezJc=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
+        id S1730490AbfJISnO (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 9 Oct 2019 14:43:14 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:33612 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728804AbfJISnO (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 9 Oct 2019 14:43:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=4IINCFeaSJyuK///5d+ZVyEn9IR5HdVzFzHth3rJj94=; b=WNndJd8iEM1zprft3l27wvIsf
+        meIaoWTsmNDuGLgQZJ7VOmwlYs9l8Y1l8AkowGTHRJ1VfNpJvUVIZfCkr4gTvDcWTooV5KloG0czV
+        x8sXo2VRYn+K/fsyIGfoYSX34WcnneGFkDIIG6yaoEu5MR2I9dRjPw/JO25DXmGmTWQAxnPvfC0+R
+        ttVYbv7tLrm4gjTz3+MswMTyJ6zryiXjew9wDj4pLpJ2TLdVEeaTP6Ewjzbkv+QIxPaswGm2bUCwv
+        0S0axOq7ytdUaKGF1vbwUoJYlF8Uj0LF3NA/+KmQ/oBi80MtmKf/IGBRw1CqlYvo85ERvDgXD1/Zu
+        q92iUrevg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.2 #3 (Red Hat Linux))
+        id 1iIGvX-0001tD-Ee; Wed, 09 Oct 2019 18:43:11 +0000
+Date:   Wed, 9 Oct 2019 11:43:11 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, devicetree@vger.kernel.org,
-        linux-mips@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 13/26] MIPS: dts: ar9331: fix interrupt-controller size
-Date:   Wed,  9 Oct 2019 13:05:45 -0400
-Message-Id: <20191009170558.32517-13-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191009170558.32517-1-sashal@kernel.org>
-References: <20191009170558.32517-1-sashal@kernel.org>
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: add support for SGI Octane (IP30)
+Message-ID: <20191009184311.GA20261@infradead.org>
+References: <20191009155928.3047-1-tbogendoerfer@suse.de>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191009155928.3047-1-tbogendoerfer@suse.de>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+> +++ b/arch/mips/sgi-ip30/ip30-pci.c
+> @@ -0,0 +1,19 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * ip30-pci.c: misc PCI related helper code for IP30 architecture
+> + */
+> +
+> +#include <asm/pci/bridge.h>
+> +
+> +dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr)
+> +{
+> +	struct pci_dev *pdev = to_pci_dev(dev);
+> +	struct bridge_controller *bc = BRIDGE_CONTROLLER(pdev->bus);
+> +
+> +	return bc->baddr + paddr;
+> +}
+> +
+> +phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
+> +{
+> +	return dma_addr & ~(0xffUL << 56);
+> +}
 
-[ Upstream commit 0889d07f3e4b171c453b2aaf2b257f9074cdf624 ]
-
-It is two registers each of 4 byte.
-
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: linux-mips@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/mips/boot/dts/qca/ar9331.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/boot/dts/qca/ar9331.dtsi b/arch/mips/boot/dts/qca/ar9331.dtsi
-index 2bae201aa3651..1c7bf11f8450b 100644
---- a/arch/mips/boot/dts/qca/ar9331.dtsi
-+++ b/arch/mips/boot/dts/qca/ar9331.dtsi
-@@ -99,7 +99,7 @@
- 
- 			miscintc: interrupt-controller@18060010 {
- 				compatible = "qca,ar7240-misc-intc";
--				reg = <0x18060010 0x4>;
-+				reg = <0x18060010 0x8>;
- 
- 				interrupt-parent = <&cpuintc>;
- 				interrupts = <6>;
--- 
-2.20.1
-
+This file is duplicated from ip27.  I think we should aim to share
+it given the common hardware even if it is mostly trivial.

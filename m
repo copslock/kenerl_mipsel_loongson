@@ -2,76 +2,111 @@ Return-Path: <SRS0=7KIV=YC=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D3145ECE58D
-	for <linux-mips@archiver.kernel.org>; Wed,  9 Oct 2019 13:27:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E9F0C47404
+	for <linux-mips@archiver.kernel.org>; Wed,  9 Oct 2019 13:27:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B701321A4A
-	for <linux-mips@archiver.kernel.org>; Wed,  9 Oct 2019 13:27:30 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 72276218AC
+	for <linux-mips@archiver.kernel.org>; Wed,  9 Oct 2019 13:27:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731416AbfJIN1a (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 9 Oct 2019 09:27:30 -0400
-Received: from mx2.suse.de ([195.135.220.15]:47412 "EHLO mx1.suse.de"
+        id S1731432AbfJIN1b (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 9 Oct 2019 09:27:31 -0400
+Received: from mx2.suse.de ([195.135.220.15]:47452 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731152AbfJIN1a (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        id S1731357AbfJIN1a (ORCPT <rfc822;linux-mips@vger.kernel.org>);
         Wed, 9 Oct 2019 09:27:30 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 70562AC6E;
-        Wed,  9 Oct 2019 13:27:28 +0000 (UTC)
+        by mx1.suse.de (Postfix) with ESMTP id 362E7AF6B;
+        Wed,  9 Oct 2019 13:27:29 +0000 (UTC)
 From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 0/6] Clean up ARC code and fix IP22/28 early printk
-Date:   Wed,  9 Oct 2019 15:27:11 +0200
-Message-Id: <20191009132718.25346-1-tbogendoerfer@suse.de>
+Subject: [PATCH 3/6] MIPS: Kconfig: always select ARC_MEMORY and ARC_PROMLIB for platform
+Date:   Wed,  9 Oct 2019 15:27:14 +0200
+Message-Id: <20191009132718.25346-4-tbogendoerfer@suse.de>
 X-Mailer: git-send-email 2.16.4
+In-Reply-To: <20191009132718.25346-1-tbogendoerfer@suse.de>
+References: <20191009132718.25346-1-tbogendoerfer@suse.de>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-While fixing the problem of not working EARLY_PRINTK on IP22/IP28
-I've removed not used ARC function and made 32bit ARC PROMs working
-with 64bit kernels. By switching to memory detection via PROM calls
-EARLY_PRINTK works now. And by using the regular 64bit spaces
-maximum memory of 384MB on Indigo2 R4k machines is working, too.
+Instead of having a default y option with depends simply select
+options for the platforms where they are needed.
 
-Thomas Bogendoerfer (6):
-  MIPS: fw: arc: remove unused ARC code
-  MIPS: fw: arc: use call_o32 to call ARC prom from 64bit kernel
-  MIPS: Kconfig: always select ARC_MEMORY and ARC_PROMLIB for platform
-  MIPS: fw: arc: workaround 64bit kernel/32bit ARC problems
-  MIPS: SGI-IP22: set PHYS_OFFSET to memory start
-  MIPS: SGI-IP22/28: Use PROM for memory detection
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+---
+ arch/mips/Kconfig | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
- arch/mips/Kconfig                        |  32 +++-----
- arch/mips/fw/arc/Makefile                |   2 +-
- arch/mips/fw/arc/env.c                   |   6 --
- arch/mips/fw/arc/file.c                  |  49 ------------
- arch/mips/fw/arc/identify.c              |   5 ++
- arch/mips/fw/arc/init.c                  |   5 ++
- arch/mips/fw/arc/memory.c                |   9 +++
- arch/mips/fw/arc/misc.c                  |  59 --------------
- arch/mips/fw/arc/promlib.c               |  25 +++++-
- arch/mips/fw/arc/salone.c                |  25 ------
- arch/mips/fw/arc/time.c                  |  25 ------
- arch/mips/fw/arc/tree.c                  | 127 -------------------------------
- arch/mips/include/asm/bootinfo.h         |   1 +
- arch/mips/include/asm/mach-ip22/spaces.h |  12 +--
- arch/mips/include/asm/sgialib.h          |  12 ---
- arch/mips/include/asm/sgiarcs.h          | 103 ++++++++-----------------
- arch/mips/sgi-ip22/ip22-mc.c             |  74 +++++-------------
- 17 files changed, 105 insertions(+), 466 deletions(-)
- delete mode 100644 arch/mips/fw/arc/salone.c
- delete mode 100644 arch/mips/fw/arc/time.c
- delete mode 100644 arch/mips/fw/arc/tree.c
-
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index f71699cd9f73..37336d4ab969 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -359,6 +359,8 @@ config MACH_DECSTATION
+ 
+ config MACH_JAZZ
+ 	bool "Jazz family of machines"
++	select ARC_MEMORY
++	select ARC_PROMLIB
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select ARCH_MIGHT_HAVE_PC_SERIO
+ 	select FW_ARC
+@@ -631,6 +633,7 @@ config RALINK
+ 
+ config SGI_IP22
+ 	bool "SGI IP22 (Indy/Indigo2)"
++	select ARC_PROMLIB
+ 	select FW_ARC
+ 	select FW_ARC32
+ 	select ARCH_MIGHT_HAVE_PC_SERIO
+@@ -699,6 +702,7 @@ config SGI_IP27
+ 
+ config SGI_IP28
+ 	bool "SGI IP28 (Indigo2 R10k)"
++	select ARC_PROMLIB
+ 	select FW_ARC
+ 	select FW_ARC64
+ 	select ARCH_MIGHT_HAVE_PC_SERIO
+@@ -737,6 +741,8 @@ config SGI_IP28
+ 
+ config SGI_IP32
+ 	bool "SGI IP32 (O2)"
++	select ARC_MEMORY
++	select ARC_PROMLIB
+ 	select ARCH_HAS_PHYS_TO_DMA
+ 	select FW_ARC
+ 	select FW_ARC32
+@@ -844,6 +850,8 @@ config SIBYTE_BIGSUR
+ 
+ config SNI_RM
+ 	bool "SNI RM200/300/400"
++	select ARC_MEMORY
++	select ARC_PROMLIB
+ 	select FW_ARC if CPU_LITTLE_ENDIAN
+ 	select FW_ARC32 if CPU_LITTLE_ENDIAN
+ 	select FW_SNIPROM if CPU_BIG_ENDIAN
+@@ -1360,13 +1368,9 @@ config ARC_CONSOLE
+ 
+ config ARC_MEMORY
+ 	bool
+-	depends on MACH_JAZZ || SNI_RM || SGI_IP32
+-	default y
+ 
+ config ARC_PROMLIB
+ 	bool
+-	depends on MACH_JAZZ || SNI_RM || SGI_IP22 || SGI_IP28 || SGI_IP32
+-	default y
+ 
+ config FW_ARC64
+ 	bool
 -- 
 2.16.4
 

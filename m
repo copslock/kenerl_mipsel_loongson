@@ -2,380 +2,251 @@ Return-Path: <SRS0=7KIV=YC=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 86A98ECE58E
-	for <linux-mips@archiver.kernel.org>; Wed,  9 Oct 2019 10:18:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8CB5C47404
+	for <linux-mips@archiver.kernel.org>; Wed,  9 Oct 2019 12:19:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5D63421848
-	for <linux-mips@archiver.kernel.org>; Wed,  9 Oct 2019 10:18:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 855A421721
+	for <linux-mips@archiver.kernel.org>; Wed,  9 Oct 2019 12:19:53 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ldvtV0Xx"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731102AbfJIKSI (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 9 Oct 2019 06:18:08 -0400
-Received: from mx2.suse.de ([195.135.220.15]:60984 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730490AbfJIKRb (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 9 Oct 2019 06:17:31 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id DD38CAF87;
-        Wed,  9 Oct 2019 10:17:27 +0000 (UTC)
-From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
-To:     Jakub Kicinski <jakub.kicinski@netronome.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        netdev@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-serial@vger.kernel.org
-Subject: [PATCH v8 2/5] MIPS: PCI: use information from 1-wire PROM for IOC3 detection
-Date:   Wed,  9 Oct 2019 12:17:09 +0200
-Message-Id: <20191009101713.12238-3-tbogendoerfer@suse.de>
-X-Mailer: git-send-email 2.16.4
-In-Reply-To: <20191009101713.12238-1-tbogendoerfer@suse.de>
-References: <20191009101713.12238-1-tbogendoerfer@suse.de>
+        id S1729854AbfJIMTx (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 9 Oct 2019 08:19:53 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:40281 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729566AbfJIMTx (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 9 Oct 2019 08:19:53 -0400
+Received: by mail-wm1-f67.google.com with SMTP id b24so2343231wmj.5
+        for <linux-mips@vger.kernel.org>; Wed, 09 Oct 2019 05:19:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=W8hMmTrFj6nWlNc5lOhoxzTRPIz9s33pAusTWvtUFnk=;
+        b=ldvtV0XxMofX6BdpR/tS0LI0rWSdBJYy4xqrIAfTIYpPcQgnY2yLdWbCwysKDmQCY9
+         gxpb+GSOGp1UctUMlzYigS5tz8csoIRBmdncOV2cyuMifIWU+U7FeGaSoH/eS3sXG4K2
+         QAH3pcYmAVnhhYq4twtZKwNsE1Eb664880pIBtjin575oBNTIf5PruaGykJqrmAk2T3C
+         EetPS/462b5rqG445avtlOb8QfHGV8dSmrCiRHZQ9RG6qLsLyvan11y86qXb6SYc8Rj1
+         G+mSdeHKluWg+CM+ktwTbF8MWaU3n/LGR/+OgkMBdsZBPsYWSTIs71wHstAd1ml4nQBE
+         Lc6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=W8hMmTrFj6nWlNc5lOhoxzTRPIz9s33pAusTWvtUFnk=;
+        b=DEnWL+RoWJitkCmL4aFJTws012pPPaMqCvn29svA5ptW3FlbNFZEljjpAP00if7Wl+
+         ml12aA1+4/EPlsG4y148gK/pxQOXQbtaQHsEMKNND4xlFMoF5KAdgGCswwU0kNKLPCXE
+         nHTqfvD22XWB2tvLfeOi7MY5+f4Su3ROdeFUX0jWZ3O14idJW5zAnE4G5a+k0seN4zYB
+         rZ8vSd0IgD50mEv/jKLtEmps4/hedd6Eejn521WB+3jyO7GP9wUeyDOl7grFXaElmEw8
+         NiwXfAdGVo7vgZ4Ebn2sv/hQwBkmhfaQBAfEfsWYXIZka0H9uQbfMoWiM5AyF+TWs4cg
+         uXnw==
+X-Gm-Message-State: APjAAAVlrZJLUE0fnr5iv5cS+vifFKe+VStyv9bipUsbReCYrotFy57T
+        LguQBGTyu8qP8t3/Cddsy6uocmuphAc=
+X-Google-Smtp-Source: APXvYqz5wnpTDH25aJ2e2vi2Ez3aQKtaPyECbkgawqn7V2keD+VFhhOd21iYRRIf8mZD7jPzVwl6Qg==
+X-Received: by 2002:a1c:ed04:: with SMTP id l4mr2539365wmh.116.1570623589954;
+        Wed, 09 Oct 2019 05:19:49 -0700 (PDT)
+Received: from [192.168.1.35] (46.red-83-42-66.dynamicip.rima-tde.net. [83.42.66.46])
+        by smtp.gmail.com with ESMTPSA id y3sm8545830wmg.2.2019.10.09.05.19.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Oct 2019 05:19:49 -0700 (PDT)
+Subject: Re: [PATCH] MIPS: Drop 32-bit asm string functions
+To:     Paul Burton <paul.burton@mips.com>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Cc:     Paul Burton <pburton@wavecomp.com>,
+        Alexander Lobakin <alobakin@dlink.ru>
+References: <20191008194552.2176475-1-paul.burton@mips.com>
+From:   =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>
+Message-ID: <0a625df3-dff6-0dcc-d0bd-63845d450ca3@amsat.org>
+Date:   Wed, 9 Oct 2019 14:19:48 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
+MIME-Version: 1.0
+In-Reply-To: <20191008194552.2176475-1-paul.burton@mips.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-IOC3 chips in SGI system are conntected to a bridge ASIC, which has
-a 1-wire prom attached with part number information. This changeset
-uses this information to create PCI subsystem information, which
-the MFD driver uses for further platform device setup.
+On 10/8/19 9:46 PM, Paul Burton wrote:
+> We have assembly implementations of strcpy(), strncpy(), strcmp() &
+> strncmp() which:
+> 
+>   - Are simple byte-at-a-time loops with no particular optimizations. As
+>     a comment in the code describes, they're "rather naive".
+> 
+>   - Offer no clear performance advantage over the generic C
+>     implementations - in microbenchmarks performed by Alexander Lobakin
+>     the asm functions sometimes win & sometimes lose, but generally not
+>     by large margins in either direction.
 
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
----
- arch/mips/include/asm/pci/bridge.h |   1 +
- arch/mips/include/asm/sn/ioc3.h    |   9 +++
- arch/mips/pci/pci-xtalk-bridge.c   | 135 ++++++++++++++++++++++++++++++++++++-
- arch/mips/sgi-ip27/ip27-xtalk.c    |  38 +++++++++--
- 4 files changed, 175 insertions(+), 8 deletions(-)
+Maybe add: "See URL below for full benchmark results."
 
-diff --git a/arch/mips/include/asm/pci/bridge.h b/arch/mips/include/asm/pci/bridge.h
-index a92cd30b48c9..3bc630ff9ad4 100644
---- a/arch/mips/include/asm/pci/bridge.h
-+++ b/arch/mips/include/asm/pci/bridge.h
-@@ -807,6 +807,7 @@ struct bridge_controller {
- 	unsigned long		intr_addr;
- 	struct irq_domain	*domain;
- 	unsigned int		pci_int[8];
-+	u32			ioc3_sid[8];
- 	nasid_t			nasid;
- };
- 
-diff --git a/arch/mips/include/asm/sn/ioc3.h b/arch/mips/include/asm/sn/ioc3.h
-index a947eed48fee..78ef760ddde4 100644
---- a/arch/mips/include/asm/sn/ioc3.h
-+++ b/arch/mips/include/asm/sn/ioc3.h
-@@ -590,4 +590,13 @@ struct ioc3_etxd {
- 
- #define MIDR_DATA_MASK		0x0000ffff
- 
-+/* subsystem IDs supplied by card detection in pci-xtalk-bridge */
-+#define	IOC3_SUBSYS_IP27_BASEIO6G	0xc300
-+#define	IOC3_SUBSYS_IP27_MIO		0xc301
-+#define	IOC3_SUBSYS_IP27_BASEIO		0xc302
-+#define	IOC3_SUBSYS_IP29_SYSBOARD	0xc303
-+#define	IOC3_SUBSYS_IP30_SYSBOARD	0xc304
-+#define	IOC3_SUBSYS_MENET		0xc305
-+#define	IOC3_SUBSYS_MENET4		0xc306
-+
- #endif /* MIPS_SN_IOC3_H */
-diff --git a/arch/mips/pci/pci-xtalk-bridge.c b/arch/mips/pci/pci-xtalk-bridge.c
-index 7b4d40354ee7..dcf6117a17c3 100644
---- a/arch/mips/pci/pci-xtalk-bridge.c
-+++ b/arch/mips/pci/pci-xtalk-bridge.c
-@@ -11,16 +11,22 @@
- #include <linux/dma-direct.h>
- #include <linux/platform_device.h>
- #include <linux/platform_data/xtalk-bridge.h>
-+#include <linux/nvmem-consumer.h>
-+#include <linux/crc16.h>
- 
- #include <asm/pci/bridge.h>
- #include <asm/paccess.h>
- #include <asm/sn/irq_alloc.h>
-+#include <asm/sn/ioc3.h>
-+
-+#define CRC16_INIT	0
-+#define CRC16_VALID	0xb001
- 
- /*
-  * Most of the IOC3 PCI config register aren't present
-  * we emulate what is needed for a normal PCI enumeration
-  */
--static int ioc3_cfg_rd(void *addr, int where, int size, u32 *value)
-+static int ioc3_cfg_rd(void *addr, int where, int size, u32 *value, u32 sid)
- {
- 	u32 cf, shift, mask;
- 
-@@ -30,6 +36,9 @@ static int ioc3_cfg_rd(void *addr, int where, int size, u32 *value)
- 		if (get_dbe(cf, (u32 *)addr))
- 			return PCIBIOS_DEVICE_NOT_FOUND;
- 		break;
-+	case 0x2c:
-+		cf = sid;
-+		break;
- 	case 0x3c:
- 		/* emulate sane interrupt pin value */
- 		cf = 0x00000100;
-@@ -111,7 +120,8 @@ static int pci_conf0_read_config(struct pci_bus *bus, unsigned int devfn,
- 	 */
- 	if (cf == (PCI_VENDOR_ID_SGI | (PCI_DEVICE_ID_SGI_IOC3 << 16))) {
- 		addr = &bridge->b_type0_cfg_dev[slot].f[fn].l[where >> 2];
--		return ioc3_cfg_rd(addr, where, size, value);
-+		return ioc3_cfg_rd(addr, where, size, value,
-+				   bc->ioc3_sid[slot]);
- 	}
- 
- 	addr = &bridge->b_type0_cfg_dev[slot].f[fn].c[where ^ (4 - size)];
-@@ -149,7 +159,8 @@ static int pci_conf1_read_config(struct pci_bus *bus, unsigned int devfn,
- 	 */
- 	if (cf == (PCI_VENDOR_ID_SGI | (PCI_DEVICE_ID_SGI_IOC3 << 16))) {
- 		addr = &bridge->b_type1_cfg.c[(fn << 8) | (where & ~3)];
--		return ioc3_cfg_rd(addr, where, size, value);
-+		return ioc3_cfg_rd(addr, where, size, value,
-+				   bc->ioc3_sid[slot]);
- 	}
- 
- 	addr = &bridge->b_type1_cfg.c[(fn << 8) | (where ^ (4 - size))];
-@@ -426,6 +437,117 @@ static int bridge_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
- 	return irq;
- }
- 
-+#define IOC3_SID(sid)	(PCI_VENDOR_ID_SGI << 16 | (sid))
-+
-+static void bridge_setup_ip27_baseio6g(struct bridge_controller *bc)
-+{
-+	bc->ioc3_sid[2] = IOC3_SID(IOC3_SUBSYS_IP27_BASEIO6G);
-+	bc->ioc3_sid[6] = IOC3_SID(IOC3_SUBSYS_IP27_MIO);
-+}
-+
-+static void bridge_setup_ip27_baseio(struct bridge_controller *bc)
-+{
-+	bc->ioc3_sid[2] = IOC3_SID(IOC3_SUBSYS_IP27_BASEIO);
-+}
-+
-+static void bridge_setup_ip29_baseio(struct bridge_controller *bc)
-+{
-+	bc->ioc3_sid[2] = IOC3_SID(IOC3_SUBSYS_IP29_SYSBOARD);
-+}
-+
-+static void bridge_setup_ip30_sysboard(struct bridge_controller *bc)
-+{
-+	bc->ioc3_sid[2] = IOC3_SID(IOC3_SUBSYS_IP30_SYSBOARD);
-+}
-+
-+static void bridge_setup_menet(struct bridge_controller *bc)
-+{
-+	bc->ioc3_sid[0] = IOC3_SID(IOC3_SUBSYS_MENET);
-+	bc->ioc3_sid[1] = IOC3_SID(IOC3_SUBSYS_MENET);
-+	bc->ioc3_sid[2] = IOC3_SID(IOC3_SUBSYS_MENET);
-+	bc->ioc3_sid[3] = IOC3_SID(IOC3_SUBSYS_MENET4);
-+}
-+
-+#define BRIDGE_BOARD_SETUP(_partno, _setup)	\
-+	{ .match = _partno, .setup = _setup }
-+
-+static const struct {
-+	char *match;
-+	void (*setup)(struct bridge_controller *bc);
-+} bridge_ioc3_devid[] = {
-+	BRIDGE_BOARD_SETUP("030-0734-", bridge_setup_ip27_baseio6g),
-+	BRIDGE_BOARD_SETUP("030-0880-", bridge_setup_ip27_baseio6g),
-+	BRIDGE_BOARD_SETUP("030-1023-", bridge_setup_ip27_baseio),
-+	BRIDGE_BOARD_SETUP("030-1124-", bridge_setup_ip27_baseio),
-+	BRIDGE_BOARD_SETUP("030-1025-", bridge_setup_ip29_baseio),
-+	BRIDGE_BOARD_SETUP("030-1244-", bridge_setup_ip29_baseio),
-+	BRIDGE_BOARD_SETUP("030-1389-", bridge_setup_ip29_baseio),
-+	BRIDGE_BOARD_SETUP("030-0887-", bridge_setup_ip30_sysboard),
-+	BRIDGE_BOARD_SETUP("030-1467-", bridge_setup_ip30_sysboard),
-+	BRIDGE_BOARD_SETUP("030-0873-", bridge_setup_menet),
-+};
-+
-+static void bridge_setup_board(struct bridge_controller *bc, char *partnum)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(bridge_ioc3_devid); i++)
-+		if (!strncmp(partnum, bridge_ioc3_devid[i].match,
-+			     strlen(bridge_ioc3_devid[i].match))) {
-+			bridge_ioc3_devid[i].setup(bc);
-+		}
-+}
-+
-+static int bridge_nvmem_match(struct device *dev, const void *data)
-+{
-+	const char *name = dev_name(dev);
-+	const char *prefix = data;
-+
-+	if (strlen(name) < strlen(prefix))
-+		return 0;
-+
-+	return memcmp(prefix, dev_name(dev), strlen(prefix)) == 0;
-+}
-+
-+static int bridge_get_partnum(u64 baddr, char *partnum)
-+{
-+	struct nvmem_device *nvmem;
-+	char prefix[24];
-+	u8 prom[64];
-+	int i, j;
-+	int ret;
-+
-+	snprintf(prefix, sizeof(prefix), "bridge-%012llx-0b-", baddr);
-+
-+	nvmem = nvmem_device_find(prefix, bridge_nvmem_match);
-+	if (IS_ERR(nvmem))
-+		return PTR_ERR(nvmem);
-+
-+	ret = nvmem_device_read(nvmem, 0, 64, prom);
-+	nvmem_device_put(nvmem);
-+
-+	if (ret != 64)
-+		return ret;
-+
-+	if (crc16(CRC16_INIT, prom, 32) != CRC16_VALID ||
-+	    crc16(CRC16_INIT, prom + 32, 32) != CRC16_VALID)
-+		return -EINVAL;
-+
-+	/* Assemble part number */
-+	j = 0;
-+	for (i = 0; i < 19; i++)
-+		if (prom[i + 11] != ' ')
-+			partnum[j++] = prom[i + 11];
-+
-+	for (i = 0; i < 6; i++)
-+		if (prom[i + 32] != ' ')
-+			partnum[j++] = prom[i + 32];
-+
-+	partnum[j] = 0;
-+
-+	return 0;
-+}
-+
- static int bridge_probe(struct platform_device *pdev)
- {
- 	struct xtalk_bridge_platform_data *bd = dev_get_platdata(&pdev->dev);
-@@ -434,9 +556,14 @@ static int bridge_probe(struct platform_device *pdev)
- 	struct pci_host_bridge *host;
- 	struct irq_domain *domain, *parent;
- 	struct fwnode_handle *fn;
-+	char partnum[26];
- 	int slot;
- 	int err;
- 
-+	/* get part number from one wire prom */
-+	if (bridge_get_partnum(virt_to_phys((void *)bd->bridge_addr), partnum))
-+		return -EPROBE_DEFER; /* not available yet */
-+
- 	parent = irq_get_default_host();
- 	if (!parent)
- 		return -ENODEV;
-@@ -517,6 +644,8 @@ static int bridge_probe(struct platform_device *pdev)
- 	}
- 	bridge_read(bc, b_wid_tflush);	  /* wait until Bridge PIO complete */
- 
-+	bridge_setup_board(bc, partnum);
-+
- 	host->dev.parent = dev;
- 	host->sysdata = bc;
- 	host->busnr = 0;
-diff --git a/arch/mips/sgi-ip27/ip27-xtalk.c b/arch/mips/sgi-ip27/ip27-xtalk.c
-index 4a1f0b0c29e2..9b7524362a11 100644
---- a/arch/mips/sgi-ip27/ip27-xtalk.c
-+++ b/arch/mips/sgi-ip27/ip27-xtalk.c
-@@ -10,6 +10,7 @@
- #include <linux/kernel.h>
- #include <linux/smp.h>
- #include <linux/platform_device.h>
-+#include <linux/platform_data/sgi-w1.h>
- #include <linux/platform_data/xtalk-bridge.h>
- #include <asm/sn/addrs.h>
- #include <asm/sn/types.h>
-@@ -26,9 +27,35 @@
- static void bridge_platform_create(nasid_t nasid, int widget, int masterwid)
- {
- 	struct xtalk_bridge_platform_data *bd;
-+	struct sgi_w1_platform_data *wd;
- 	struct platform_device *pdev;
-+	struct resource w1_res;
- 	unsigned long offset;
- 
-+	offset = NODE_OFFSET(nasid);
-+
-+	wd = kzalloc(sizeof(*wd), GFP_KERNEL);
-+	if (!wd)
-+		goto no_mem;
-+
-+	snprintf(wd->dev_id, sizeof(wd->dev_id), "bridge-%012lx",
-+		 offset + (widget << SWIN_SIZE_BITS));
-+
-+	memset(&w1_res, 0, sizeof(w1_res));
-+	w1_res.start = offset + (widget << SWIN_SIZE_BITS) +
-+				offsetof(struct bridge_regs, b_nic);
-+	w1_res.end = w1_res.start + 3;
-+	w1_res.flags = IORESOURCE_MEM;
-+
-+	pdev = platform_device_alloc("sgi_w1", PLATFORM_DEVID_AUTO);
-+	if (!pdev) {
-+		kfree(wd);
-+		goto no_mem;
-+	}
-+	platform_device_add_resources(pdev, &w1_res, 1);
-+	platform_device_add_data(pdev, wd, sizeof(*wd));
-+	platform_device_add(pdev);
-+
- 	bd = kzalloc(sizeof(*bd), GFP_KERNEL);
- 	if (!bd)
- 		goto no_mem;
-@@ -38,7 +65,6 @@ static void bridge_platform_create(nasid_t nasid, int widget, int masterwid)
- 		goto no_mem;
- 	}
- 
--	offset = NODE_OFFSET(nasid);
- 
- 	bd->bridge_addr = RAW_NODE_SWIN_BASE(nasid, widget);
- 	bd->intr_addr	= BIT_ULL(47) + 0x01800000 + PI_INT_PEND_MOD;
-@@ -46,14 +72,14 @@ static void bridge_platform_create(nasid_t nasid, int widget, int masterwid)
- 	bd->masterwid	= masterwid;
- 
- 	bd->mem.name	= "Bridge PCI MEM";
--	bd->mem.start	= offset + (widget << SWIN_SIZE_BITS);
--	bd->mem.end	= bd->mem.start + SWIN_SIZE - 1;
-+	bd->mem.start	= offset + (widget << SWIN_SIZE_BITS) + BRIDGE_DEVIO0;
-+	bd->mem.end	= offset + (widget << SWIN_SIZE_BITS) + SWIN_SIZE - 1;
- 	bd->mem.flags	= IORESOURCE_MEM;
- 	bd->mem_offset	= offset;
- 
- 	bd->io.name	= "Bridge PCI IO";
--	bd->io.start	= offset + (widget << SWIN_SIZE_BITS);
--	bd->io.end	= bd->io.start + SWIN_SIZE - 1;
-+	bd->io.start	= offset + (widget << SWIN_SIZE_BITS) + BRIDGE_DEVIO0;
-+	bd->io.end	= offset + (widget << SWIN_SIZE_BITS) + SWIN_SIZE - 1;
- 	bd->io.flags	= IORESOURCE_IO;
- 	bd->io_offset	= offset;
- 
-@@ -81,6 +107,8 @@ static int probe_one_port(nasid_t nasid, int widget, int masterwid)
- 		bridge_platform_create(nasid, widget, masterwid);
- 		break;
- 	default:
-+		pr_info("xtalk:n%d/%d unknown widget (0x%x)\n",
-+			nasid, widget, partnum);
- 		break;
- 	}
- 
--- 
-2.16.4
+> 
+>   - Don't support 64-bit kernels, where we already make use of the
+>     generic C implementations.
+> 
+>   - Tend to bloat kernel code size due to inlining.
+> 
+>   - Don't support CONFIG_FORTIFY_SOURCE.
+> 
+>   - Won't support nanoMIPS without rework.
+> 
+> For all of these reasons, delete the asm implementations & make use of
+> the generic C implementations for 32-bit kernels just like we already do
+> for 64-bit kernels.
+> 
+> Signed-off-by: Paul Burton <paul.burton@mips.com>
+> URL: https://lore.kernel.org/linux-mips/a2a35f1cf58d6db19eb4af9b4ae21e35@dlink.ru/
+> Cc: Alexander Lobakin <alobakin@dlink.ru>
 
+Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
+
+> ---
+> 
+>   arch/mips/include/asm/string.h | 123 ---------------------------------
+>   1 file changed, 123 deletions(-)
+> 
+> diff --git a/arch/mips/include/asm/string.h b/arch/mips/include/asm/string.h
+> index 4b938c55b397..1de3bbce8e88 100644
+> --- a/arch/mips/include/asm/string.h
+> +++ b/arch/mips/include/asm/string.h
+> @@ -10,129 +10,6 @@
+>   #ifndef _ASM_STRING_H
+>   #define _ASM_STRING_H
+>   
+> -#if !defined(__OPTIMIZE__) || !defined(CONFIG_FORTIFY_SOURCE)
+> -
+> -/*
+> - * Most of the inline functions are rather naive implementations so I just
+> - * didn't bother updating them for 64-bit ...
+> - */
+> -#ifdef CONFIG_32BIT
+> -
+> -#ifndef IN_STRING_C
+> -
+> -#define __HAVE_ARCH_STRCPY
+> -static __inline__ char *strcpy(char *__dest, __const__ char *__src)
+> -{
+> -  char *__xdest = __dest;
+> -
+> -  __asm__ __volatile__(
+> -	".set\tnoreorder\n\t"
+> -	".set\tnoat\n"
+> -	"1:\tlbu\t$1,(%1)\n\t"
+> -	"addiu\t%1,1\n\t"
+> -	"sb\t$1,(%0)\n\t"
+> -	"bnez\t$1,1b\n\t"
+> -	"addiu\t%0,1\n\t"
+> -	".set\tat\n\t"
+> -	".set\treorder"
+> -	: "=r" (__dest), "=r" (__src)
+> -	: "0" (__dest), "1" (__src)
+> -	: "memory");
+> -
+> -  return __xdest;
+> -}
+> -
+> -#define __HAVE_ARCH_STRNCPY
+> -static __inline__ char *strncpy(char *__dest, __const__ char *__src, size_t __n)
+> -{
+> -  char *__xdest = __dest;
+> -
+> -  if (__n == 0)
+> -    return __xdest;
+> -
+> -  __asm__ __volatile__(
+> -	".set\tnoreorder\n\t"
+> -	".set\tnoat\n"
+> -	"1:\tlbu\t$1,(%1)\n\t"
+> -	"subu\t%2,1\n\t"
+> -	"sb\t$1,(%0)\n\t"
+> -	"beqz\t$1,2f\n\t"
+> -	"addiu\t%0,1\n\t"
+> -	"bnez\t%2,1b\n\t"
+> -	"addiu\t%1,1\n"
+> -	"2:\n\t"
+> -	".set\tat\n\t"
+> -	".set\treorder"
+> -	: "=r" (__dest), "=r" (__src), "=r" (__n)
+> -	: "0" (__dest), "1" (__src), "2" (__n)
+> -	: "memory");
+> -
+> -  return __xdest;
+> -}
+> -
+> -#define __HAVE_ARCH_STRCMP
+> -static __inline__ int strcmp(__const__ char *__cs, __const__ char *__ct)
+> -{
+> -  int __res;
+> -
+> -  __asm__ __volatile__(
+> -	".set\tnoreorder\n\t"
+> -	".set\tnoat\n\t"
+> -	"lbu\t%2,(%0)\n"
+> -	"1:\tlbu\t$1,(%1)\n\t"
+> -	"addiu\t%0,1\n\t"
+> -	"bne\t$1,%2,2f\n\t"
+> -	"addiu\t%1,1\n\t"
+> -	"bnez\t%2,1b\n\t"
+> -	"lbu\t%2,(%0)\n\t"
+> -#if defined(CONFIG_CPU_R3000)
+> -	"nop\n\t"
+> -#endif
+> -	"move\t%2,$1\n"
+> -	"2:\tsubu\t%2,$1\n"
+> -	"3:\t.set\tat\n\t"
+> -	".set\treorder"
+> -	: "=r" (__cs), "=r" (__ct), "=r" (__res)
+> -	: "0" (__cs), "1" (__ct));
+> -
+> -  return __res;
+> -}
+> -
+> -#endif /* !defined(IN_STRING_C) */
+> -
+> -#define __HAVE_ARCH_STRNCMP
+> -static __inline__ int
+> -strncmp(__const__ char *__cs, __const__ char *__ct, size_t __count)
+> -{
+> -	int __res;
+> -
+> -	__asm__ __volatile__(
+> -	".set\tnoreorder\n\t"
+> -	".set\tnoat\n"
+> -	"1:\tlbu\t%3,(%0)\n\t"
+> -	"beqz\t%2,2f\n\t"
+> -	"lbu\t$1,(%1)\n\t"
+> -	"subu\t%2,1\n\t"
+> -	"bne\t$1,%3,3f\n\t"
+> -	"addiu\t%0,1\n\t"
+> -	"bnez\t%3,1b\n\t"
+> -	"addiu\t%1,1\n"
+> -	"2:\n\t"
+> -#if defined(CONFIG_CPU_R3000)
+> -	"nop\n\t"
+> -#endif
+> -	"move\t%3,$1\n"
+> -	"3:\tsubu\t%3,$1\n\t"
+> -	".set\tat\n\t"
+> -	".set\treorder"
+> -	: "=r" (__cs), "=r" (__ct), "=r" (__count), "=r" (__res)
+> -	: "0" (__cs), "1" (__ct), "2" (__count));
+> -
+> -	return __res;
+> -}
+> -#endif /* CONFIG_32BIT */
+> -#endif /* !defined(__OPTIMIZE__) || !defined(CONFIG_FORTIFY_SOURCE) */
+> -
+>   #define __HAVE_ARCH_MEMSET
+>   extern void *memset(void *__s, int __c, size_t __count);
+>   
+> 

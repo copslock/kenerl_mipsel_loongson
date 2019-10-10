@@ -7,37 +7,37 @@ X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B3A62C4360C
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 08:45:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A6B7DC4360C
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 08:54:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8929921D7B
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 08:45:30 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 817AA2064A
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 08:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1570697130;
-	bh=X1df99eEDsmcqfQWwNpuErLPe5rH8mKR59GykrUYY1Q=;
+	s=default; t=1570697691;
+	bh=HhSofep+VUsQ/9VVJr8Kkbo5ADa9EIyjMwn72tedMOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=UHv5vDivOUw7Qm6oRy6dCf/Snx+l8uErzTwyHG+FbUYXx4ScNUCKH1JULMFF39XdM
-	 va+cHoXlDB7NnY7/pu5FKN2Z/7WGLd3mp0MfLMPAQsoZCa4UkAXS7D6J9yl7yuJ7mn
-	 wtKckePrYasD0kpFgtOJZvBR5Jdw+UetM6OGHmcU=
+	b=Az8p921GS2/ZVRSOX3d5BKLsf0DQS3NqvI4O1y6Sve1MYTpXozfmZ6quqygPs6U0N
+	 uwGUO1Q4JDvZUb9Whd7e3KEQZyRO9omiHdN9x0lKcNdqw6jWB8Up42pPOBqNdUy4m0
+	 AwcRW+7dXskENdWCmsNtx/VXaRKEmefqGrUJh+wc=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389123AbfJJIp0 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 10 Oct 2019 04:45:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50980 "EHLO mail.kernel.org"
+        id S2389917AbfJJIuK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 10 Oct 2019 04:50:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57046 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387494AbfJJIpZ (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 10 Oct 2019 04:45:25 -0400
+        id S2389891AbfJJIuJ (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 10 Oct 2019 04:50:09 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 253582054F;
-        Thu, 10 Oct 2019 08:45:23 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0F809208C3;
+        Thu, 10 Oct 2019 08:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570697124;
-        bh=X1df99eEDsmcqfQWwNpuErLPe5rH8mKR59GykrUYY1Q=;
+        s=default; t=1570697408;
+        bh=HhSofep+VUsQ/9VVJr8Kkbo5ADa9EIyjMwn72tedMOE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FXcOx3HB7D26V3SwCrQQ+0T9sZA0k9/lPvkKnnGgDwQoLDc03sINYcSXHfGW1gIO7
-         lO52hBqv/hFfcfg8awU9DaxRxt7d7B+soDEGmvO1Lrm6xd6FkLXL4xNpeWwaxhXf2M
-         yyr0pgNmsH1bLvy/D90wl5kl4jq/oAg5pZ8tO/mY=
+        b=rq51Ohb9BRAFMLd0EjWTRaxW7GKFhkkZ3mtU8A4B0h+YKIXl0q0yPTf/rbWZCBk8u
+         QTrCkHevGPCGjsuafN6//gLkAGz0BuaeGJ9ZyONK4urBBqCnnYMKAEmnxdcCovTKIB
+         +9aoMQGlsBMyYABWhJdId35bCdRheV0vND5yjGJQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Huacai Chen <chenhc@lemote.com>,
         Yunqiang Su <ysu@wavecomp.com>,
         Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
-Subject: [PATCH 4.19 027/114] MIPS: Treat Loongson Extensions as ASEs
-Date:   Thu, 10 Oct 2019 10:35:34 +0200
-Message-Id: <20191010083557.446095085@linuxfoundation.org>
+Subject: [PATCH 4.14 17/61] MIPS: Treat Loongson Extensions as ASEs
+Date:   Thu, 10 Oct 2019 10:36:42 +0200
+Message-Id: <20191010083459.461605528@linuxfoundation.org>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191010083544.711104709@linuxfoundation.org>
-References: <20191010083544.711104709@linuxfoundation.org>
+In-Reply-To: <20191010083449.500442342@linuxfoundation.org>
+References: <20191010083449.500442342@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -85,8 +85,8 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/include/asm/cpu-features.h
 +++ b/arch/mips/include/asm/cpu-features.h
-@@ -387,6 +387,22 @@
- #define cpu_has_dsp3		__ase(MIPS_ASE_DSP3)
+@@ -348,6 +348,22 @@
+ #define cpu_has_dsp3		(cpu_data[0].ases & MIPS_ASE_DSP3)
  #endif
  
 +#ifndef cpu_has_loongson_mmi
@@ -106,11 +106,11 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +#endif
 +
  #ifndef cpu_has_mipsmt
- #define cpu_has_mipsmt		__isa_lt_and_ase(6, MIPS_ASE_MIPSMT)
+ #define cpu_has_mipsmt		(cpu_data[0].ases & MIPS_ASE_MIPSMT)
  #endif
 --- a/arch/mips/include/asm/cpu.h
 +++ b/arch/mips/include/asm/cpu.h
-@@ -436,5 +436,9 @@ enum cpu_type_enum {
+@@ -433,5 +433,9 @@ enum cpu_type_enum {
  #define MIPS_ASE_MSA		0x00000100 /* MIPS SIMD Architecture */
  #define MIPS_ASE_DSP3		0x00000200 /* Signal Processing ASE Rev 3*/
  #define MIPS_ASE_MIPS16E2	0x00000400 /* MIPS16e2 */
@@ -122,7 +122,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  #endif /* _ASM_CPU_H */
 --- a/arch/mips/kernel/cpu-probe.c
 +++ b/arch/mips/kernel/cpu-probe.c
-@@ -1489,6 +1489,8 @@ static inline void cpu_probe_legacy(stru
+@@ -1478,6 +1478,8 @@ static inline void cpu_probe_legacy(stru
  			__cpu_name[cpu] = "ICT Loongson-3";
  			set_elf_platform(cpu, "loongson3a");
  			set_isa(c, MIPS_CPU_ISA_M64R1);
@@ -131,7 +131,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  			break;
  		case PRID_REV_LOONGSON3B_R1:
  		case PRID_REV_LOONGSON3B_R2:
-@@ -1496,6 +1498,8 @@ static inline void cpu_probe_legacy(stru
+@@ -1485,6 +1487,8 @@ static inline void cpu_probe_legacy(stru
  			__cpu_name[cpu] = "ICT Loongson-3";
  			set_elf_platform(cpu, "loongson3b");
  			set_isa(c, MIPS_CPU_ISA_M64R1);
@@ -140,7 +140,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  			break;
  		}
  
-@@ -1861,6 +1865,8 @@ static inline void cpu_probe_loongson(st
+@@ -1845,6 +1849,8 @@ static inline void cpu_probe_loongson(st
  		decode_configs(c);
  		c->options |= MIPS_CPU_FTLB | MIPS_CPU_TLBINV | MIPS_CPU_LDPTE;
  		c->writecombine = _CACHE_UNCACHED_ACCELERATED;

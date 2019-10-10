@@ -6,35 +6,46 @@ X-Spam-Status: No, score=-0.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA519C10F14
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 13:01:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B525ECE58E
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 13:29:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 919DB206B6
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 13:01:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 75479206B6
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 13:29:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728339AbfJJNBi convert rfc822-to-8bit (ORCPT
+        id S2387435AbfJJN3w convert rfc822-to-8bit (ORCPT
         <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 10 Oct 2019 09:01:38 -0400
-Received: from mx2.suse.de ([195.135.220.15]:57892 "EHLO mx1.suse.de"
+        Thu, 10 Oct 2019 09:29:52 -0400
+Received: from mx2.suse.de ([195.135.220.15]:48462 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728274AbfJJNBi (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 10 Oct 2019 09:01:38 -0400
+        id S1727489AbfJJN3w (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 10 Oct 2019 09:29:52 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 8B7CEAED6;
-        Thu, 10 Oct 2019 13:01:36 +0000 (UTC)
-Date:   Thu, 10 Oct 2019 15:01:36 +0200
+        by mx1.suse.de (Postfix) with ESMTP id 17B43AC40;
+        Thu, 10 Oct 2019 13:29:50 +0000 (UTC)
+Date:   Thu, 10 Oct 2019 15:29:49 +0200
 From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+To:     Jakub Kicinski <jakub.kicinski@netronome.com>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: add support for SGI Octane (IP30)
-Message-Id: <20191010150136.a30e47b37f8c8aed9e863a5e@suse.de>
-In-Reply-To: <20191009184311.GA20261@infradead.org>
-References: <20191009155928.3047-1-tbogendoerfer@suse.de>
-        <20191009184311.GA20261@infradead.org>
+        James Hogan <jhogan@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        netdev@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-serial@vger.kernel.org
+Subject: Re: [PATCH v8 3/5] mfd: ioc3: Add driver for SGI IOC3 chip
+Message-Id: <20191010152949.f5049c2728beffa38f07c924@suse.de>
+In-Reply-To: <20191009201714.19296e3f@cakuba.netronome.com>
+References: <20191009101713.12238-1-tbogendoerfer@suse.de>
+        <20191009101713.12238-4-tbogendoerfer@suse.de>
+        <20191009201714.19296e3f@cakuba.netronome.com>
 X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
@@ -44,37 +55,57 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Wed, 9 Oct 2019 11:43:11 -0700
-Christoph Hellwig <hch@infradead.org> wrote:
+On Wed, 9 Oct 2019 20:17:14 -0700
+Jakub Kicinski <jakub.kicinski@netronome.com> wrote:
 
-> > +++ b/arch/mips/sgi-ip30/ip30-pci.c
-> > @@ -0,0 +1,19 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * ip30-pci.c: misc PCI related helper code for IP30 architecture
-> > + */
-> > +
-> > +#include <asm/pci/bridge.h>
-> > +
-> > +dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr)
+> On Wed,  9 Oct 2019 12:17:10 +0200, Thomas Bogendoerfer wrote:
+> [...]
+> > +static int ioc3_cad_duo_setup(struct ioc3_priv_data *ipd)
 > > +{
-> > +	struct pci_dev *pdev = to_pci_dev(dev);
-> > +	struct bridge_controller *bc = BRIDGE_CONTROLLER(pdev->bus);
+> > +	int ret;
 > > +
-> > +	return bc->baddr + paddr;
-> > +}
+> > +	ret = ioc3_irq_domain_setup(ipd, ipd->pdev->irq);
+> > +	if (ret)
+> > +		return ret;
 > > +
-> > +phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
-> > +{
-> > +	return dma_addr & ~(0xffUL << 56);
+> > +	ret = ioc3_eth_setup(ipd, true);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	return ioc3_kbd_setup(ipd);
 > > +}
 > 
-> This file is duplicated from ip27.  I think we should aim to share
-> it given the common hardware even if it is mostly trivial.
+> None of these setup calls have a "cleanup" or un-setup call. Is this
+> really okay? I know nothing about MFD, but does mfd_add_devices() not
+> require a remove for example? Doesn't the IRQ handling need cleanup?
 
-ok, as far as I can anticipate IP35 verion of this functions will be
-the same as well. So I'll move both into pci-xtalk-bridge.c in the
-next version of the patch.
+good catch, I'll add that.
+
+> > +	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
+> > +	if (ret) {
+> > +		dev_warn(&pdev->dev,
+> > +			 "Failed to set 64-bit DMA mask, trying 32-bit\n");
+> > +		ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
+> > +		if (ret) {
+> > +			dev_err(&pdev->dev, "Can't set DMA mask, aborting\n");
+> > +			return ret;
+> 
+> So failing here we don't care about disabling the pci deivce..
+
+fixed in the next version.
+
+> > +
+> > +	/*
+> > +	 * Map all IOC3 registers.  These are shared between subdevices
+> > +	 * so the main IOC3 module manages them.
+> > +	 */
+> > +	regs = pci_ioremap_bar(pdev, 0);
+> 
+> This doesn't seem unmapped on error paths, nor remove?
+
+will fix.
+
+Thank you for the review.
 
 Thomas.
 

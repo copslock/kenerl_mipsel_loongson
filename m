@@ -2,176 +2,165 @@ Return-Path: <SRS0=sCPg=YD=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=0.6 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	GUARANTEED_100_PERCENT,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77708C4360C
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 08:57:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44938C4360C
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 09:02:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 45A9921920
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 08:57:49 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GheWtHyu"
+	by mail.kernel.org (Postfix) with ESMTP id 1C23121920
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 09:02:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1570698162;
+	bh=TCv7P4P55wOWxJe1zl0BvFhLRs/OUW8MmTl9rU+rGi4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=cxU6ocodM9LaoSvEXFL3FgaZ5B8BUy1JQGEHqxPauPCS0xBVPjmn6iC3d6lNMzqEo
+	 zYmPgOLTKCVliy6+/Y3YZs9X1F+UTDrcILoReswkmKxCo4suSaXpKI5nuNAmI0fJ+o
+	 9qF9YBnzO7ed0StfwBbOYBpDbYtsssP7SRksiynE=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389317AbfJJI5n (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 10 Oct 2019 04:57:43 -0400
-Received: from merlin.infradead.org ([205.233.59.134]:57860 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389496AbfJJI5m (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 10 Oct 2019 04:57:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=rb2GpQEK1mzik7VDpp+Q0B0w/sBe3+HggdUz3hckVXc=; b=GheWtHyuaOnqUCnRP+8IuZIby
-        4L30bGsje9ocd5iUH8NVIyCuSMdmhnrmZrWz4CqW+5c5ARUagEFX1CvM76na3juS0ZJgeA2iYqwk/
-        vwGspjDN5aU24+JGaDMCixz3MgBW377tOmmXo2TWuT0UuPWw0cRhImx8n6XpmynMtaPKIAN3DBxTa
-        0KYATEHfwUVLJhVPmXdgaiKw32BBuEEZNOhzsRv1MWaogEY/OvQauPZeduJb2hzhIlP3nOAsoN5Rl
-        /qvf5mbxvb8slIP6EE8OU3wON/t6u1zPMDLdVuSRCezXRpuRyx1ogUaXW7AVDphTfQVYCd6ZMVuiy
-        IrIgGZokA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
-        id 1iIUFD-0000dI-8N; Thu, 10 Oct 2019 08:56:23 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        id S2387881AbfJJIjb (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 10 Oct 2019 04:39:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43062 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387430AbfJJIjb (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 10 Oct 2019 04:39:31 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id B86223074EB;
-        Thu, 10 Oct 2019 10:55:24 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id DBA9E202F4F50; Thu, 10 Oct 2019 10:56:16 +0200 (CEST)
-Date:   Thu, 10 Oct 2019 10:56:16 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     Yunsheng Lin <linyunsheng@huawei.com>,
-        Michal Hocko <mhocko@kernel.org>, catalin.marinas@arm.com,
-        will@kernel.org, mingo@redhat.com, bp@alien8.de, rth@twiddle.net,
-        ink@jurassic.park.msu.ru, mattst88@gmail.com,
-        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
-        heiko.carstens@de.ibm.com, gor@linux.ibm.com,
-        borntraeger@de.ibm.com, ysato@users.sourceforge.jp,
-        dalias@libc.org, davem@davemloft.net, ralf@linux-mips.org,
-        paul.burton@mips.com, jhogan@kernel.org, jiaxun.yang@flygoat.com,
-        chenhc@lemote.com, akpm@linux-foundation.org, rppt@linux.ibm.com,
-        anshuman.khandual@arm.com, tglx@linutronix.de, cai@lca.pw,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        hpa@zytor.com, x86@kernel.org, dave.hansen@linux.intel.com,
-        luto@kernel.org, len.brown@intel.com, axboe@kernel.dk,
-        dledford@redhat.com, jeffrey.t.kirsher@intel.com,
-        linux-alpha@vger.kernel.org, naveen.n.rao@linux.vnet.ibm.com,
-        mwb@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, tbogendoerfer@suse.de,
-        linux-mips@vger.kernel.org, rafael@kernel.org,
-        gregkh@linuxfoundation.org
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-Message-ID: <20191010085616.GQ2311@hirez.programming.kicks-ass.net>
-References: <20190924115401.GM23050@dhcp22.suse.cz>
- <20190924120943.GP2349@hirez.programming.kicks-ass.net>
- <20190924122500.GP23050@dhcp22.suse.cz>
- <20190924124325.GQ2349@hirez.programming.kicks-ass.net>
- <20190924125936.GR2349@hirez.programming.kicks-ass.net>
- <20190924131939.GS23050@dhcp22.suse.cz>
- <1adcbe68-6753-3497-48a0-cc84ac503372@huawei.com>
- <20190925104108.GE4553@hirez.programming.kicks-ass.net>
- <47fa4cee-8528-7c23-c7de-7be1b65aa2ae@huawei.com>
- <bec80499-86d9-bf1f-df23-9044a8099992@arm.com>
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9EFCC20B7C;
+        Thu, 10 Oct 2019 08:39:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1570696770;
+        bh=TCv7P4P55wOWxJe1zl0BvFhLRs/OUW8MmTl9rU+rGi4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=oZjtaCneTIN+ppfss/xajn3f2kp45FuI8ZDsqJ90b3sKgGKq1kJGUzxhR8+UNJ6Ba
+         WKkJry7xcUC9f9rOsaVstl0Na0enEoQqCsMmDFOv1UYoTl4BKlbmhjCvPXZNxcESTK
+         SOYwlprS4BXEZj4zaYduSPN/eh7hYc9XG/UB6EK4=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Yunqiang Su <ysu@wavecomp.com>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
+Subject: [PATCH 5.3 047/148] MIPS: Treat Loongson Extensions as ASEs
+Date:   Thu, 10 Oct 2019 10:35:08 +0200
+Message-Id: <20191010083613.994151814@linuxfoundation.org>
+X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20191010083609.660878383@linuxfoundation.org>
+References: <20191010083609.660878383@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bec80499-86d9-bf1f-df23-9044a8099992@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Wed, Oct 09, 2019 at 01:25:14PM +0100, Robin Murphy wrote:
-> On 2019-10-08 9:38 am, Yunsheng Lin wrote:
-> > On 2019/9/25 18:41, Peter Zijlstra wrote:
-> > > On Wed, Sep 25, 2019 at 05:14:20PM +0800, Yunsheng Lin wrote:
-> > > >  From the discussion above, It seems making the node_to_cpumask_map()
-> > > > NUMA_NO_NODE aware is the most feasible way to move forwad.
-> > > 
-> > > That's still wrong.
-> > 
-> > Hi, Peter
-> > 
-> > It seems this has trapped in the dead circle.
-> > 
-> >  From my understanding, NUMA_NO_NODE which means not node numa preference
-> > is the state to describe the node of virtual device or the physical device
-> > that has equal distance to all cpu.
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-So I _really_ don't believe in the equidistant physical device. Physics
-just doesn't allow that. Or rather, you can, but then it'll be so slow
-it doesn't matter.
+commit d2f965549006acb865c4638f1f030ebcefdc71f6 upstream.
 
-The only possible option is equidistant to a _small_ number of nodes,
-and if that is a reality, then we should look at that. So far however
-it's purely been a hypothetical device.
+Recently, binutils had split Loongson-3 Extensions into four ASEs:
+MMI, CAM, EXT, EXT2. This patch do the samething in kernel and expose
+them in cpuinfo so applications can probe supported ASEs at runtime.
 
-> > We can be stricter if the device does have a nearer node, but we can not
-> > deny that a device does not have a node numa preference or node affinity,
-> > which also means the control or data buffer can be allocated at the node where
-> > the process is running.
-> > 
-> > As you has proposed, making it -2 and have dev_to_node() warn if the device does
-> > have a nearer node and not set by the fw is a way to be stricter.
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: Yunqiang Su <ysu@wavecomp.com>
+Cc: stable@vger.kernel.org # v4.14+
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: linux-mips@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Because it is 100% guaranteed (we have proof) that BIOS is shit and
-doesn't set node affinity for devices that really should have it.
+---
+ arch/mips/include/asm/cpu-features.h |   16 ++++++++++++++++
+ arch/mips/include/asm/cpu.h          |    4 ++++
+ arch/mips/kernel/cpu-probe.c         |    6 ++++++
+ arch/mips/kernel/proc.c              |    4 ++++
+ 4 files changed, 30 insertions(+)
 
-So we're trading a hypothetical shared device vs not reporting actual
-BIOS bugs. That's no contest.
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -397,6 +397,22 @@
+ #define cpu_has_dsp3		__ase(MIPS_ASE_DSP3)
+ #endif
+ 
++#ifndef cpu_has_loongson_mmi
++#define cpu_has_loongson_mmi		__ase(MIPS_ASE_LOONGSON_MMI)
++#endif
++
++#ifndef cpu_has_loongson_cam
++#define cpu_has_loongson_cam		__ase(MIPS_ASE_LOONGSON_CAM)
++#endif
++
++#ifndef cpu_has_loongson_ext
++#define cpu_has_loongson_ext		__ase(MIPS_ASE_LOONGSON_EXT)
++#endif
++
++#ifndef cpu_has_loongson_ext2
++#define cpu_has_loongson_ext2		__ase(MIPS_ASE_LOONGSON_EXT2)
++#endif
++
+ #ifndef cpu_has_mipsmt
+ #define cpu_has_mipsmt		__isa_lt_and_ase(6, MIPS_ASE_MIPSMT)
+ #endif
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -433,5 +433,9 @@ enum cpu_type_enum {
+ #define MIPS_ASE_MSA		0x00000100 /* MIPS SIMD Architecture */
+ #define MIPS_ASE_DSP3		0x00000200 /* Signal Processing ASE Rev 3*/
+ #define MIPS_ASE_MIPS16E2	0x00000400 /* MIPS16e2 */
++#define MIPS_ASE_LOONGSON_MMI	0x00000800 /* Loongson MultiMedia extensions Instructions */
++#define MIPS_ASE_LOONGSON_CAM	0x00001000 /* Loongson CAM */
++#define MIPS_ASE_LOONGSON_EXT	0x00002000 /* Loongson EXTensions */
++#define MIPS_ASE_LOONGSON_EXT2	0x00004000 /* Loongson EXTensions R2 */
+ 
+ #endif /* _ASM_CPU_H */
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1573,6 +1573,8 @@ static inline void cpu_probe_legacy(stru
+ 			__cpu_name[cpu] = "ICT Loongson-3";
+ 			set_elf_platform(cpu, "loongson3a");
+ 			set_isa(c, MIPS_CPU_ISA_M64R1);
++			c->ases |= (MIPS_ASE_LOONGSON_MMI | MIPS_ASE_LOONGSON_CAM |
++				MIPS_ASE_LOONGSON_EXT);
+ 			break;
+ 		case PRID_REV_LOONGSON3B_R1:
+ 		case PRID_REV_LOONGSON3B_R2:
+@@ -1580,6 +1582,8 @@ static inline void cpu_probe_legacy(stru
+ 			__cpu_name[cpu] = "ICT Loongson-3";
+ 			set_elf_platform(cpu, "loongson3b");
+ 			set_isa(c, MIPS_CPU_ISA_M64R1);
++			c->ases |= (MIPS_ASE_LOONGSON_MMI | MIPS_ASE_LOONGSON_CAM |
++				MIPS_ASE_LOONGSON_EXT);
+ 			break;
+ 		}
+ 
+@@ -1946,6 +1950,8 @@ static inline void cpu_probe_loongson(st
+ 		decode_configs(c);
+ 		c->options |= MIPS_CPU_FTLB | MIPS_CPU_TLBINV | MIPS_CPU_LDPTE;
+ 		c->writecombine = _CACHE_UNCACHED_ACCELERATED;
++		c->ases |= (MIPS_ASE_LOONGSON_MMI | MIPS_ASE_LOONGSON_CAM |
++			MIPS_ASE_LOONGSON_EXT | MIPS_ASE_LOONGSON_EXT2);
+ 		break;
+ 	default:
+ 		panic("Unknown Loongson Processor ID!");
+--- a/arch/mips/kernel/proc.c
++++ b/arch/mips/kernel/proc.c
+@@ -124,6 +124,10 @@ static int show_cpuinfo(struct seq_file
+ 	if (cpu_has_eva)	seq_printf(m, "%s", " eva");
+ 	if (cpu_has_htw)	seq_printf(m, "%s", " htw");
+ 	if (cpu_has_xpa)	seq_printf(m, "%s", " xpa");
++	if (cpu_has_loongson_mmi)	seq_printf(m, "%s", " loongson-mmi");
++	if (cpu_has_loongson_cam)	seq_printf(m, "%s", " loongson-cam");
++	if (cpu_has_loongson_ext)	seq_printf(m, "%s", " loongson-ext");
++	if (cpu_has_loongson_ext2)	seq_printf(m, "%s", " loongson-ext2");
+ 	seq_printf(m, "\n");
+ 
+ 	if (cpu_has_mmips) {
 
-Worse, we have virtual devices that have clear node affinity without it
-set.
 
-So we're growing shit, allowing bugs, and what do we get in return? Warm
-fuzzies is not it.
-
-> > Any better suggestion to move this forward?
-> 
-> FWIW (since this is in my inbox), it sounds like the fundamental issue is
-> that NUMA_NO_NODE is conflated for at least two different purposes, so
-> trying to sort that out would be a good first step. AFAICS we have genuine
-> "don't care" cases like alloc_pages_node(), where if the producer says it
-> doesn't matter then the consumer is free to make its own judgement on what
-> to do, and fundamentally different "we expect this thing to have an affinity
-> but it doesn't, so we can't say what's appropriate" cases which could really
-> do with some separate indicator like "NUMA_INVALID_NODE".
-
-It can possible be a 3 state:
-
- - UNKNON; overridden by parent/bus/etc..
-   ERROR when still UNKNOWN on register.
-
- - INVALID; ERROR on devm usage.
-   for virtual devices / pure sysfs nodes
-
- - NO_NODE; may only be set on virtual devices (we can check against PCI
-   bus etc..) when there really is no better option.
-
-But I only want to see the NO_NODE crap at the end, after all other
-possible avenues have been done.
-
-> The tricky part is then bestowed on the producers to decide whether they can
-> downgrade "invalid" to "don't care". You can technically build 'a device'
-> whose internal logic is distributed between nodes and thus appears to have
-> equal affinity - interrupt controllers, for example, may have per-CPU or
-> per-node interfaces that end up looking like that - so although it's
-> unlikely it's not outright nonsensical.
-
-I'm thinking we should/do create per cpu/node devices for such
-distributed stuff. For instance, we create per-cpu clockevent devices
-(where appropriate).
-
-> Similarly a 'device' that's actually emulated behind a firmware call
-> interface may well effectively have no real affinity.
-
-Emulated devices are typically slow as heck and should be avoided if at
-all possible. I don't see NUMA affinity being important for them.

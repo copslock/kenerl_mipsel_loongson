@@ -2,165 +2,83 @@ Return-Path: <SRS0=sCPg=YD=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+X-Spam-Status: No, score=-0.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 44938C4360C
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 09:02:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BA519C10F14
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 13:01:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 1C23121920
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 09:02:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1570698162;
-	bh=TCv7P4P55wOWxJe1zl0BvFhLRs/OUW8MmTl9rU+rGi4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=cxU6ocodM9LaoSvEXFL3FgaZ5B8BUy1JQGEHqxPauPCS0xBVPjmn6iC3d6lNMzqEo
-	 zYmPgOLTKCVliy6+/Y3YZs9X1F+UTDrcILoReswkmKxCo4suSaXpKI5nuNAmI0fJ+o
-	 9qF9YBnzO7ed0StfwBbOYBpDbYtsssP7SRksiynE=
+	by mail.kernel.org (Postfix) with ESMTP id 919DB206B6
+	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 13:01:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387881AbfJJIjb (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 10 Oct 2019 04:39:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43062 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387430AbfJJIjb (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 10 Oct 2019 04:39:31 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9EFCC20B7C;
-        Thu, 10 Oct 2019 08:39:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570696770;
-        bh=TCv7P4P55wOWxJe1zl0BvFhLRs/OUW8MmTl9rU+rGi4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oZjtaCneTIN+ppfss/xajn3f2kp45FuI8ZDsqJ90b3sKgGKq1kJGUzxhR8+UNJ6Ba
-         WKkJry7xcUC9f9rOsaVstl0Na0enEoQqCsMmDFOv1UYoTl4BKlbmhjCvPXZNxcESTK
-         SOYwlprS4BXEZj4zaYduSPN/eh7hYc9XG/UB6EK4=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Yunqiang Su <ysu@wavecomp.com>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
-Subject: [PATCH 5.3 047/148] MIPS: Treat Loongson Extensions as ASEs
-Date:   Thu, 10 Oct 2019 10:35:08 +0200
-Message-Id: <20191010083613.994151814@linuxfoundation.org>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191010083609.660878383@linuxfoundation.org>
-References: <20191010083609.660878383@linuxfoundation.org>
-User-Agent: quilt/0.66
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        id S1728339AbfJJNBi convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 10 Oct 2019 09:01:38 -0400
+Received: from mx2.suse.de ([195.135.220.15]:57892 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728274AbfJJNBi (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 10 Oct 2019 09:01:38 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 8B7CEAED6;
+        Thu, 10 Oct 2019 13:01:36 +0000 (UTC)
+Date:   Thu, 10 Oct 2019 15:01:36 +0200
+From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: add support for SGI Octane (IP30)
+Message-Id: <20191010150136.a30e47b37f8c8aed9e863a5e@suse.de>
+In-Reply-To: <20191009184311.GA20261@infradead.org>
+References: <20191009155928.3047-1-tbogendoerfer@suse.de>
+        <20191009184311.GA20261@infradead.org>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+On Wed, 9 Oct 2019 11:43:11 -0700
+Christoph Hellwig <hch@infradead.org> wrote:
 
-commit d2f965549006acb865c4638f1f030ebcefdc71f6 upstream.
+> > +++ b/arch/mips/sgi-ip30/ip30-pci.c
+> > @@ -0,0 +1,19 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * ip30-pci.c: misc PCI related helper code for IP30 architecture
+> > + */
+> > +
+> > +#include <asm/pci/bridge.h>
+> > +
+> > +dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr)
+> > +{
+> > +	struct pci_dev *pdev = to_pci_dev(dev);
+> > +	struct bridge_controller *bc = BRIDGE_CONTROLLER(pdev->bus);
+> > +
+> > +	return bc->baddr + paddr;
+> > +}
+> > +
+> > +phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
+> > +{
+> > +	return dma_addr & ~(0xffUL << 56);
+> > +}
+> 
+> This file is duplicated from ip27.  I think we should aim to share
+> it given the common hardware even if it is mostly trivial.
 
-Recently, binutils had split Loongson-3 Extensions into four ASEs:
-MMI, CAM, EXT, EXT2. This patch do the samething in kernel and expose
-them in cpuinfo so applications can probe supported ASEs at runtime.
+ok, as far as I can anticipate IP35 verion of this functions will be
+the same as well. So I'll move both into pci-xtalk-bridge.c in the
+next version of the patch.
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: Huacai Chen <chenhc@lemote.com>
-Cc: Yunqiang Su <ysu@wavecomp.com>
-Cc: stable@vger.kernel.org # v4.14+
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: linux-mips@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thomas.
 
----
- arch/mips/include/asm/cpu-features.h |   16 ++++++++++++++++
- arch/mips/include/asm/cpu.h          |    4 ++++
- arch/mips/kernel/cpu-probe.c         |    6 ++++++
- arch/mips/kernel/proc.c              |    4 ++++
- 4 files changed, 30 insertions(+)
-
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -397,6 +397,22 @@
- #define cpu_has_dsp3		__ase(MIPS_ASE_DSP3)
- #endif
- 
-+#ifndef cpu_has_loongson_mmi
-+#define cpu_has_loongson_mmi		__ase(MIPS_ASE_LOONGSON_MMI)
-+#endif
-+
-+#ifndef cpu_has_loongson_cam
-+#define cpu_has_loongson_cam		__ase(MIPS_ASE_LOONGSON_CAM)
-+#endif
-+
-+#ifndef cpu_has_loongson_ext
-+#define cpu_has_loongson_ext		__ase(MIPS_ASE_LOONGSON_EXT)
-+#endif
-+
-+#ifndef cpu_has_loongson_ext2
-+#define cpu_has_loongson_ext2		__ase(MIPS_ASE_LOONGSON_EXT2)
-+#endif
-+
- #ifndef cpu_has_mipsmt
- #define cpu_has_mipsmt		__isa_lt_and_ase(6, MIPS_ASE_MIPSMT)
- #endif
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -433,5 +433,9 @@ enum cpu_type_enum {
- #define MIPS_ASE_MSA		0x00000100 /* MIPS SIMD Architecture */
- #define MIPS_ASE_DSP3		0x00000200 /* Signal Processing ASE Rev 3*/
- #define MIPS_ASE_MIPS16E2	0x00000400 /* MIPS16e2 */
-+#define MIPS_ASE_LOONGSON_MMI	0x00000800 /* Loongson MultiMedia extensions Instructions */
-+#define MIPS_ASE_LOONGSON_CAM	0x00001000 /* Loongson CAM */
-+#define MIPS_ASE_LOONGSON_EXT	0x00002000 /* Loongson EXTensions */
-+#define MIPS_ASE_LOONGSON_EXT2	0x00004000 /* Loongson EXTensions R2 */
- 
- #endif /* _ASM_CPU_H */
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1573,6 +1573,8 @@ static inline void cpu_probe_legacy(stru
- 			__cpu_name[cpu] = "ICT Loongson-3";
- 			set_elf_platform(cpu, "loongson3a");
- 			set_isa(c, MIPS_CPU_ISA_M64R1);
-+			c->ases |= (MIPS_ASE_LOONGSON_MMI | MIPS_ASE_LOONGSON_CAM |
-+				MIPS_ASE_LOONGSON_EXT);
- 			break;
- 		case PRID_REV_LOONGSON3B_R1:
- 		case PRID_REV_LOONGSON3B_R2:
-@@ -1580,6 +1582,8 @@ static inline void cpu_probe_legacy(stru
- 			__cpu_name[cpu] = "ICT Loongson-3";
- 			set_elf_platform(cpu, "loongson3b");
- 			set_isa(c, MIPS_CPU_ISA_M64R1);
-+			c->ases |= (MIPS_ASE_LOONGSON_MMI | MIPS_ASE_LOONGSON_CAM |
-+				MIPS_ASE_LOONGSON_EXT);
- 			break;
- 		}
- 
-@@ -1946,6 +1950,8 @@ static inline void cpu_probe_loongson(st
- 		decode_configs(c);
- 		c->options |= MIPS_CPU_FTLB | MIPS_CPU_TLBINV | MIPS_CPU_LDPTE;
- 		c->writecombine = _CACHE_UNCACHED_ACCELERATED;
-+		c->ases |= (MIPS_ASE_LOONGSON_MMI | MIPS_ASE_LOONGSON_CAM |
-+			MIPS_ASE_LOONGSON_EXT | MIPS_ASE_LOONGSON_EXT2);
- 		break;
- 	default:
- 		panic("Unknown Loongson Processor ID!");
---- a/arch/mips/kernel/proc.c
-+++ b/arch/mips/kernel/proc.c
-@@ -124,6 +124,10 @@ static int show_cpuinfo(struct seq_file
- 	if (cpu_has_eva)	seq_printf(m, "%s", " eva");
- 	if (cpu_has_htw)	seq_printf(m, "%s", " htw");
- 	if (cpu_has_xpa)	seq_printf(m, "%s", " xpa");
-+	if (cpu_has_loongson_mmi)	seq_printf(m, "%s", " loongson-mmi");
-+	if (cpu_has_loongson_cam)	seq_printf(m, "%s", " loongson-cam");
-+	if (cpu_has_loongson_ext)	seq_printf(m, "%s", " loongson-ext");
-+	if (cpu_has_loongson_ext2)	seq_printf(m, "%s", " loongson-ext2");
- 	seq_printf(m, "\n");
- 
- 	if (cpu_has_mmips) {
-
-
+-- 
+SUSE Software Solutions Germany GmbH
+HRB 247165 (AG München)
+Geschäftsführer: Felix Imendörffer

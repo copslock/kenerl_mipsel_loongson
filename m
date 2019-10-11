@@ -1,70 +1,119 @@
-Return-Path: <SRS0=sCPg=YD=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=OK/w=YE=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A40AC4360C
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 23:12:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 93B84ECE596
+	for <linux-mips@archiver.kernel.org>; Fri, 11 Oct 2019 03:00:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 329C4214E0
-	for <linux-mips@archiver.kernel.org>; Thu, 10 Oct 2019 23:12:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6C59321A4A
+	for <linux-mips@archiver.kernel.org>; Fri, 11 Oct 2019 03:00:23 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=netronome-com.20150623.gappssmtp.com header.i=@netronome-com.20150623.gappssmtp.com header.b="KzBWLKoF"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726135AbfJJXMB (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 10 Oct 2019 19:12:01 -0400
-Received: from smtprelay0200.hostedemail.com ([216.40.44.200]:34105 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725959AbfJJXMB (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 10 Oct 2019 19:12:01 -0400
-X-Greylist: delayed 542 seconds by postgrey-1.27 at vger.kernel.org; Thu, 10 Oct 2019 19:12:00 EDT
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave05.hostedemail.com (Postfix) with ESMTP id 51E6018018126
-        for <linux-mips@vger.kernel.org>; Thu, 10 Oct 2019 23:02:59 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id EE2ED182CED28;
-        Thu, 10 Oct 2019 23:02:57 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-HE-Tag: frame79_53e2ee6598517
-X-Filterd-Recvd-Size: 1572
-Received: from XPS-9350.home (unknown [47.151.152.152])
-        (Authenticated sender: joe@perches.com)
-        by omf19.hostedemail.com (Postfix) with ESMTPA;
-        Thu, 10 Oct 2019 23:02:56 +0000 (UTC)
-Message-ID: <fbaeb107184c64e9cfa52a416809bc8866e40adc.camel@perches.com>
-Subject: Re: [PATCH] MIPS: OCTEON: Replace SIZEOF_FIELD() macro
-From:   Joe Perches <joe@perches.com>
-To:     Kees Cook <keescook@chromium.org>,
+        id S1726843AbfJKDAX (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 10 Oct 2019 23:00:23 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:41751 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726714AbfJKDAV (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 10 Oct 2019 23:00:21 -0400
+Received: by mail-pg1-f196.google.com with SMTP id t3so4902985pga.8
+        for <linux-mips@vger.kernel.org>; Thu, 10 Oct 2019 20:00:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=netronome-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :organization:mime-version:content-transfer-encoding;
+        bh=nP3GB4eev/Uw/7TzzPBf7q6vVOFurBjXFqfQUZ+MDGI=;
+        b=KzBWLKoFEXWJXPLXk8rihO70idubrVY0AvebVOxegnFY86QJmJGnQAku+lqeexuYjB
+         9G74EjZ5ZvlXtWdwx6WwfpqvWL6VZhkBTLucMGD8v4+2hORNhyJnUiBwwpBCF8JxvYyl
+         Y/VEUCQaO4qMcQjX25jnBmyNowejWuBTvCczZAtLpuYiP3fyFPOQUIuwfkc7KI12BXX2
+         EwM6/7cZLGE5aW9q4v+KkZG7M4Ko8VEfRigsYkPSfXxu8CCT86YN8Kz/jywZSNG+JnPs
+         /EYL79jv7SvwRhbBYvBe5MtI4NC0fHqrZX5X0RP9DTqt0mKF84SdidfQjH90hJrCfHuU
+         JAsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:organization:mime-version:content-transfer-encoding;
+        bh=nP3GB4eev/Uw/7TzzPBf7q6vVOFurBjXFqfQUZ+MDGI=;
+        b=dMmWBWXjw6/pZggKO/EW+88yFnsiov9jGX9x5Jn79SBUM4JX3Y2vzsz+BLZXHfo02L
+         PB6ty3fe0qxaGmdJdTL4UQQwgN8UDBpV0cFH6pLNQsDqWuI8lHsrkH2p2oPCfvtyjGES
+         7ETc9/gjphJ/sPiSg4Ek3XWieZW9pYluLLE9EAPRAGs5x3cRQfQA8cSNFDuKoPzbIACi
+         Nh442/CzrXNeTI/8qtNqHLZVgrfTSDNXfYdVD/whtz2DkgjCncwxGpMB9UAPaw/SF0n7
+         HMauM4Oj1tHdyfL5JyD30l+e4Lhybhd0maGgVvrV6dsX2VT+fLXmA58Da/UUG2BzbKjP
+         igyw==
+X-Gm-Message-State: APjAAAXTrM40rSvY1iMuajlRYhFlYcctWzHwkJDRdhoAUHH8bm/HIp2R
+        u3Ito/whHQbUMfFy80jkPjSBuw==
+X-Google-Smtp-Source: APXvYqyC7PSkR8RT7VypdyqNldAyGXeW91322WLbhsrNNwrkgAMBn6eiIibb+JzCUjR+ko/vo+L6ow==
+X-Received: by 2002:a65:688a:: with SMTP id e10mr13223631pgt.122.1570762818461;
+        Thu, 10 Oct 2019 20:00:18 -0700 (PDT)
+Received: from cakuba.netronome.com (c-73-202-202-92.hsd1.ca.comcast.net. [73.202.202.92])
+        by smtp.gmail.com with ESMTPSA id q6sm8505284pgn.44.2019.10.10.20.00.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Oct 2019 20:00:18 -0700 (PDT)
+Date:   Thu, 10 Oct 2019 20:00:02 -0700
+From:   Jakub Kicinski <jakub.kicinski@netronome.com>
+To:     Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Paul Burton <paul.burton@mips.com>,
+        Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>,
-        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Thu, 10 Oct 2019 16:02:55 -0700
-In-Reply-To: <201910101545.586BCFC@keescook>
-References: <201910101545.586BCFC@keescook>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.32.1-2 
+        Lee Jones <lee.jones@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        netdev@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-serial@vger.kernel.org
+Subject: Re: [PATCH v9 3/5] mfd: ioc3: Add driver for SGI IOC3 chip
+Message-ID: <20191010200002.5fe5f34f@cakuba.netronome.com>
+In-Reply-To: <20191010145953.21327-4-tbogendoerfer@suse.de>
+References: <20191010145953.21327-1-tbogendoerfer@suse.de>
+        <20191010145953.21327-4-tbogendoerfer@suse.de>
+Organization: Netronome Systems, Ltd.
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, 2019-10-10 at 15:46 -0700, Kees Cook wrote:
-> In preparation for switching to a standard sizeof_member() macro to find the
-> size of a member of a struct, remove the custom SIZEOF_FIELD() macro and use
-> the more common FIELD_SIZEOF() instead. Later patches will globally replace
-> FIELD_SIZEOF() and sizeof_field() with the more accurate sizeof_member().
+On Thu, 10 Oct 2019 16:59:49 +0200, Thomas Bogendoerfer wrote:
+>  	dev = alloc_etherdev(sizeof(struct ioc3_private));
+> -	if (!dev) {
+> -		err = -ENOMEM;
+> -		goto out_disable;
+> -	}
+> -
+> -	if (pci_using_dac)
+> -		dev->features |= NETIF_F_HIGHDMA;
 
-Is the intent to have a single treewide flag day conversion of
-FIELD_SIZEOF -> sizeof_member or submit individual patches to
-subsystem maintainers?
+Looks like the NETIF_F_HIGHDMA feature will not longer be set, is that
+okay?
 
-I don't recall Linus buying in to either mechanism.
+> -	err = pci_request_regions(pdev, "ioc3");
+> -	if (err)
+> -		goto out_free;
+> +	if (!dev)
+> +		return -ENOMEM;
+>  
+>  	SET_NETDEV_DEV(dev, &pdev->dev);
+>  
+>  	ip = netdev_priv(dev);
+> -	ip->dev = dev;
+> -	ip->dma_dev = &pdev->dev;
+> -
+> -	dev->irq = pdev->irq;
+> +	ip->dma_dev = pdev->dev.parent;
+> +	ip->regs = devm_platform_ioremap_resource(pdev, 0);
+> +	if (!ip->regs) {
+> +		err = -ENOMEM;
+> +		goto out_free;
+> +	}
 

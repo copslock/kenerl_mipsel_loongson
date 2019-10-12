@@ -2,167 +2,157 @@ Return-Path: <SRS0=/R1U=YF=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.3 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PULL_REQUEST,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F2ADFC4360C
-	for <linux-mips@archiver.kernel.org>; Sat, 12 Oct 2019 19:04:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E8CCC4360C
+	for <linux-mips@archiver.kernel.org>; Sat, 12 Oct 2019 20:43:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B32E3206A1
-	for <linux-mips@archiver.kernel.org>; Sat, 12 Oct 2019 19:04:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 55B272089C
+	for <linux-mips@archiver.kernel.org>; Sat, 12 Oct 2019 20:43:40 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=wavecomp.com header.i=@wavecomp.com header.b="WeO588V/"
+	dkim=pass (1024-bit key) header.d=wavecomp.com header.i=@wavecomp.com header.b="Nlb8iXv+"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729458AbfJLTET (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 12 Oct 2019 15:04:19 -0400
-Received: from mail-eopbgr740108.outbound.protection.outlook.com ([40.107.74.108]:36118
+        id S1729563AbfJLUnk (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 12 Oct 2019 16:43:40 -0400
+Received: from mail-eopbgr740101.outbound.protection.outlook.com ([40.107.74.101]:53632
         "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729324AbfJLTET (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sat, 12 Oct 2019 15:04:19 -0400
+        id S1729432AbfJLUnj (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 12 Oct 2019 16:43:39 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mI2P1+aFLkYbLDkQsYHdpGgy/IM2kkr19gUDg9ZHzFYnWVhsj9IfqjF4SyXtQyZjwrH+il1+pg2ISyjfLwwHE2YzSdVkCY8zcS1bHt1d6Tued5jAa6DCb9cFcdzCR42YwI1dhKkK2z1g+TLcFeWjkmLwAhHC3CjdBK1qQifJYW4wr7lr40YFuwZRBvrOXvjjZ5iGbSOqoX0Yac9ci+esXI+lIebRuNAKsnSCKexSFHfYxQYP01MR3sXLuBiSl3gk6bEZSrCClXJ/9JcQ4ItTCmS5837uRu7/+9IvguFfcuYn0OzfvlEVLhD71vGPxXZp6TeINn55tMln/+uf1JIwAg==
+ b=EwYM6WXS7BWTRW5n1IRR6uEh397XoLWzGMzi2m2uDnVGicX7hMSw8wrB0DimDL9uzIwKomdXoCqAwuqZn4XOZCsJXdxazJDwQUxM8c6k6F39SNXm2p73Qd2RNAAr09J42dM023Pe9s9rnTp5k909mgwn4WTHKzKLzzTrp+DktAfWgAWbED+Tbj3hFEhavhjJ8BQ8hLIkMSQj4bnqQFsdM6zAxyyS4yr+55wYGzRnXZ+if0hpsHdQvn5zC3H8uhKpbTDwiDl/AbwbsJFrM4oQrYBPlr7XYLaMukbFf+r3pn0x4beEBB4Fe0r5hLjPBJMN19X2WEfplt6RvMcPCW0jwA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gyIvOC8tynPUXZDoRFQG5yc95e8stlSjMGNKAQdaZz4=;
- b=dHx52hbln6OQdF0CW+cHVgRAWaTnEXrxIAFsIxjt/aO9tphaKGElMwfu8X4J/cBEG4a3ifEL8mp41XhbUiRMkuSh6R+kLCDxUUdwheKndxTStP6+6QjgQTQ1Tr1oLJ+UsRAxYQXDqD2xVDtl1jxC6hi8qONBLXcOPlU1cXmRegYt848QZpIB14mkEHZKeFS7xx/3zYnN/uGeXJM+ZZ6db7Beo9UM1dOXRlm22aezWdql2LRMd+smH2OAM2R6CRXfw6Ej6pjA39ZgMeOTjitSMEwUBoT1fm96HcLJRl7wUxUdSx+hZRU03uDrwPtC9PAvWPW0JfysDfeWkoqgvc7GPw==
+ bh=A5sudP7ea20s+qVO30X1cE2JvR0EAHMh+gU8lADVars=;
+ b=FNkmeYgIj/nLrJUQO8DIM2lLuWn2ZTLomVvJNFhbkweQ5TVDYIZMtZSHWPiDtR2hCEdRowhHRERaH8dvZFlWIgdWYEZM9v6oumnnC6pcrYSMf+GePSpjXPB7iVvmEF7G5228Trzxle9bbBCdK0OCNXe5/Kd6kAbL0f1jcKdY6MbhGqi7K6adjn67z1D9zMKWaFbQ7MtshQZEH9Y1pwbYCifeCIh17rTlrnqMddrkcirvhyr7ojm54mGwj6uawkNH38VBlRb9oz1qGLX6lq7xU3Isf8qXG4ta0vLAJnWqREmyH0L9xeVHiz7KUPIKjmiDR6FOPIZhGQwSRquwSJ7l5Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=wavecomp.com; dmarc=pass action=none header.from=mips.com;
  dkim=pass header.d=mips.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wavecomp.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gyIvOC8tynPUXZDoRFQG5yc95e8stlSjMGNKAQdaZz4=;
- b=WeO588V/FhC2iazrcOvHSdtb6HasEkrduPpIgbxXMq37M58kfbChKdDFnqoV9GbdIp3pzkfjuATfREWRPjWsppSwk+mPRaMGapnx+a1a5jhXb+9W1uGFtrRiH99pUeNgO2TsNkEcgicLLqkFsVTS7XtZJ51PUjtBVaewaEHaWCI=
+ bh=A5sudP7ea20s+qVO30X1cE2JvR0EAHMh+gU8lADVars=;
+ b=Nlb8iXv+/WMfOHiE3281n9ep7k5ONrgaHG5vVpHtupJV6MI8C6pYrqn7fjYivDDim8Im8i9+kDX37o7MKQDNq1KIpmiqRaTxy7BFmNdgWS5UJ2lHbmVzCYE0dMCR/Uy36WPQcKS5f66uy9Qq1Hce/XJdkUiBJu6cWUteXA43yOU=
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.172.60.12) by
- MWHPR2201MB1725.namprd22.prod.outlook.com (10.164.206.155) with Microsoft
+ MWHPR2201MB1536.namprd22.prod.outlook.com (10.174.170.161) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2347.17; Sat, 12 Oct 2019 19:04:14 +0000
+ 15.20.2347.21; Sat, 12 Oct 2019 20:43:37 +0000
 Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::c1dc:dba3:230c:e7f0]) by MWHPR2201MB1277.namprd22.prod.outlook.com
  ([fe80::c1dc:dba3:230c:e7f0%8]) with mapi id 15.20.2347.021; Sat, 12 Oct 2019
- 19:04:14 +0000
+ 20:43:37 +0000
 From:   Paul Burton <paul.burton@mips.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-CC:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: [GIT PULL] MIPS fixes
-Thread-Topic: [GIT PULL] MIPS fixes
-Thread-Index: AQHVgS/WLh8bRoU0Ik2icH8kD9VxjQ==
-Date:   Sat, 12 Oct 2019 19:04:14 +0000
-Message-ID: <20191012190412.vaazxi325tjnab2d@pburton-laptop>
+To:     "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+CC:     Paul Burton <pburton@wavecomp.com>,
+        kbuild test robot <lkp@intel.com>
+Subject: [PATCH 2/3] MIPS: Fix CONFIG_OF_EARLY_FLATTREE=n builds
+Thread-Topic: [PATCH 2/3] MIPS: Fix CONFIG_OF_EARLY_FLATTREE=n builds
+Thread-Index: AQHVgT24liWPWOQHqkCXhN4EuapzCg==
+Date:   Sat, 12 Oct 2019 20:43:37 +0000
+Message-ID: <20191012204326.2564623-2-paul.burton@mips.com>
+References: <20191012204326.2564623-1-paul.burton@mips.com>
+In-Reply-To: <20191012204326.2564623-1-paul.burton@mips.com>
 Accept-Language: en-US
 Content-Language: en-US
-X-MS-Has-Attach: yes
+X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BY5PR13CA0009.namprd13.prod.outlook.com
- (2603:10b6:a03:180::22) To MWHPR2201MB1277.namprd22.prod.outlook.com
+x-clientproxiedby: BYAPR02CA0050.namprd02.prod.outlook.com
+ (2603:10b6:a03:54::27) To MWHPR2201MB1277.namprd22.prod.outlook.com
  (2603:10b6:301:18::12)
-user-agent: NeoMutt/20180716
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=pburton@wavecomp.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
+x-mailer: git-send-email 2.23.0
 x-originating-ip: [2601:646:8a00:9810:9d6:9cca:ff8c:efe0]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 0aba8659-d7be-4280-dc48-08d74f46f8f8
-x-ms-traffictypediagnostic: MWHPR2201MB1725:
-x-microsoft-antispam-prvs: <MWHPR2201MB1725A83276148D80EEDF8882C1960@MWHPR2201MB1725.namprd22.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-ms-office365-filtering-correlation-id: 36d6de62-a12c-4fed-6fbd-08d74f54db27
+x-ms-traffictypediagnostic: MWHPR2201MB1536:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <MWHPR2201MB15369BF80630BEB66733B857C1960@MWHPR2201MB1536.namprd22.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:89;
 x-forefront-prvs: 0188D66E61
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(136003)(346002)(366004)(396003)(39840400004)(376002)(189003)(199004)(8676002)(2906002)(6486002)(305945005)(7736002)(6116002)(99286004)(9686003)(14454004)(478600001)(99936001)(316002)(6512007)(58126008)(6436002)(33716001)(66946007)(66446008)(64756008)(66556008)(66476007)(66616009)(81156014)(81166006)(6916009)(71190400001)(71200400001)(386003)(6506007)(256004)(42882007)(8936002)(54906003)(14444005)(5660300002)(4001150100001)(1076003)(186003)(25786009)(44832011)(476003)(102836004)(486006)(52116002)(4326008)(46003);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1725;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(376002)(346002)(396003)(366004)(136003)(39840400004)(199004)(189003)(25786009)(71190400001)(2351001)(71200400001)(36756003)(256004)(305945005)(6916009)(14454004)(478600001)(4326008)(6116002)(7736002)(1076003)(99286004)(81166006)(81156014)(8676002)(46003)(446003)(316002)(11346002)(5640700003)(42882007)(2616005)(52116002)(8936002)(50226002)(476003)(76176011)(186003)(102836004)(54906003)(6506007)(386003)(6486002)(2906002)(6436002)(66476007)(66446008)(486006)(66946007)(64756008)(44832011)(2501003)(66556008)(5660300002)(6512007);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1536;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: UhI2DkWusF22FSqYR1WtPB3wNYAaQ3mzEzQtoAcmZU4+qTbpYlDcKXzTIAg6eFQTxoxvSDALubrlEnTmQpyncnZL688yq0eMuh7aAOG5zLrLWHRkouCsEnPSgvnQV4oCTJ4phPn1SoWs9GDhHBrGc4bi7z4tlgf28dvLS+7Ye9qd+0l3ypvED+NV+qxLYB2rCALb86VH6LS3AZ14O39gmL5Wy5yk0OrP+SCdZlp4FIYsyfmcYfm8oKP7zt7ZmcdKlZ0HyC5RphByI6Fl0O5eF9ZaJsOhhI4VZoyJ/NQo0Jqy7FjLkg1K5pB1Wtxs5AWEb9ZiXIA3pw7F5nTZQKzYagWprYebki7Vt4M4qW1isv2z3RBt+BotFPm279o1YmmnPuJBOArlZ1KQX9vJBxq+m/BFGD6Jh9Akjofhoe/f/UE=
-x-ms-exchange-transport-forked: True
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="swr3tlnyelo3xej2"
+x-microsoft-antispam-message-info: lDubhBXG504qNp3RlscTVYdpoCEV3E3dnqKY/JJNYowKzMuR8xxU46iNms0AZ1fsBK30MNLZzVX7NjTMhWyhl4SBMD1HmCI5vHVGtSCkfKI8gdnTihwOZuZir7hlo5yConRsm/lc7xeOGiKk3Vfg59tQSRPXdveDF0sd0aidwUvEwBcLMPlBH7eiaTSA0ak1sSIqniqefYUKZwZXAUvuZ1zKJkGmT1ymeQan+ZHOwCAmFa13Y8PRMZEK17Z32aM26RFJsvKv5tY+/oA94FCQQlAJVMAI9DhLJ7ijpiDDwGJ9cr8T4eOOVn4yHjUKJeKfjWqJ1E4waFpotWKyFzfA8Q4s83LhgT8PHQ1nmdQxWZjL5TjUXBFZwQSoxqgtXh64wKliq27gmEIXdh+408sVKDrGalzIXFJCkG7M3ayta90=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: mips.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0aba8659-d7be-4280-dc48-08d74f46f8f8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Oct 2019 19:04:14.4736
+X-MS-Exchange-CrossTenant-Network-Message-Id: 36d6de62-a12c-4fed-6fbd-08d74f54db27
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Oct 2019 20:43:37.1955
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pJwS6wdh82YktCuOPh5ShKS2jeHYZRjfz0e+pfarzOd0qbbBxJucIBxMAbKunfoLMLfzH39WHz/uniLI6sb2/A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1725
+X-MS-Exchange-CrossTenant-userprincipalname: Up6ASVGL8LpGONVVo3wP7bckZzWhp5mjne893wBsJdgcyqmjpsUpVnYWLcsb8FszquD9dzmuikeFebQC9iQizQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1536
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
---swr3tlnyelo3xej2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Configurations with CONFIG_OF_EARLY_FLATTREE=3Dn fail to build since
+commit 7784cac69735 ("MIPS: cmdline: Clean up boot_command_line
+initialization") because of_scan_flat_dt() & of_scan_flat_dt() are not
+defined in these configurations. Fix this by #ifdef'ing the affected
+code...
 
-Hi Linus,
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Fixes: 7784cac69735 ("MIPS: cmdline: Clean up boot_command_line initializat=
+ion")
+Reported-by: kbuild test robot <lkp@intel.com>
+---
 
-Here are a few MIPS fixes for 5.4; please pull.
+ arch/mips/kernel/setup.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Thanks,
-    Paul
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 119999d31558..7ccc8a9e1bfe 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -551,6 +551,8 @@ static void __init bootcmdline_append(const char *s, si=
+ze_t max)
+ 	strlcat(boot_command_line, s, max);
+ }
+=20
++#ifdef CONFIG_OF_EARLY_FLATTREE
++
+ static int __init bootcmdline_scan_chosen(unsigned long node, const char *=
+uname,
+ 					  int depth, void *data)
+ {
+@@ -571,6 +573,8 @@ static int __init bootcmdline_scan_chosen(unsigned long=
+ node, const char *uname,
+ 	return 1;
+ }
+=20
++#endif /* CONFIG_OF_EARLY_FLATTREE */
++
+ static void __init bootcmdline_init(char **cmdline_p)
+ {
+ 	bool dt_bootargs =3D false;
+@@ -597,12 +601,14 @@ static void __init bootcmdline_init(char **cmdline_p)
+ 	else
+ 		boot_command_line[0] =3D 0;
+=20
++#ifdef CONFIG_OF_EARLY_FLATTREE
+ 	/*
+ 	 * If we're configured to take boot arguments from DT, look for those
+ 	 * now.
+ 	 */
+ 	if (IS_ENABLED(CONFIG_MIPS_CMDLINE_FROM_DTB))
+ 		of_scan_flat_dt(bootcmdline_scan_chosen, &dt_bootargs);
++#endif
+=20
+ 	/*
+ 	 * If we didn't get any arguments from DT (regardless of whether that's
+--=20
+2.23.0
 
-
-The following changes since commit da0c9ea146cbe92b832f1b0f694840ea8eb33cce:
-
-  Linux 5.4-rc2 (2019-10-06 14:27:30 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git tags/mips_fixes_5.4_2
-
-for you to fetch changes up to 2f2b4fd674cadd8c6b40eb629e140a14db4068fd:
-
-  MIPS: Disable Loongson MMI instructions for kernel build (2019-10-10 11:58:52 -0700)
-
-----------------------------------------------------------------
-A few MIPS fixes for 5.4:
-
-- Build fixes for CONFIG_OPTIMIZE_INLINING=y builds in which the
-  compiler may choose not to inline __xchg() & __cmpxchg().
-
-- A build fix for Loongson configurations with GCC 9.x.
-
-- Expose some extra HWCAP bits to indicate support for various
-  instruction set extensions to userland.
-
-- Fix bad stack access in firmware handling code for old SNI
-  RM200/300/400 machines.
-
-----------------------------------------------------------------
-Jiaxun Yang (1):
-      MIPS: elf_hwcap: Export userspace ASEs
-
-Paul Burton (1):
-      MIPS: Disable Loongson MMI instructions for kernel build
-
-Thomas Bogendoerfer (3):
-      MIPS: include: Mark __cmpxchg as __always_inline
-      MIPS: include: Mark __xchg as __always_inline
-      MIPS: fw: sni: Fix out of bounds init of o32 stack
-
- arch/mips/fw/sni/sniprom.c         |  2 +-
- arch/mips/include/asm/cmpxchg.h    |  9 +++++----
- arch/mips/include/uapi/asm/hwcap.h | 11 +++++++++++
- arch/mips/kernel/cpu-probe.c       | 33 +++++++++++++++++++++++++++++++++
- arch/mips/loongson64/Platform      |  4 ++++
- arch/mips/vdso/Makefile            |  1 +
- 6 files changed, 55 insertions(+), 5 deletions(-)
-
---swr3tlnyelo3xej2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYIAB0WIQRgLjeFAZEXQzy86/s+p5+stXUA3QUCXaIjrAAKCRA+p5+stXUA
-3VD7AQCzxLBDf/iduWPD6efDg6TS5+eAk7MgVNu2FIagzjXP5wD7BA1efontwijE
-CR813los+SEUy8MpWF8bRG7OjHh/yw0=
-=OGIZ
------END PGP SIGNATURE-----
-
---swr3tlnyelo3xej2--

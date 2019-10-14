@@ -2,92 +2,75 @@ Return-Path: <SRS0=3G5J=YH=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no
+X-Spam-Status: No, score=-0.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 510FFECE58E
-	for <linux-mips@archiver.kernel.org>; Mon, 14 Oct 2019 06:16:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 144F0C4CECE
+	for <linux-mips@archiver.kernel.org>; Mon, 14 Oct 2019 07:04:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 23D4920854
-	for <linux-mips@archiver.kernel.org>; Mon, 14 Oct 2019 06:16:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DE14C207FF
+	for <linux-mips@archiver.kernel.org>; Mon, 14 Oct 2019 07:04:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730050AbfJNGQO (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 14 Oct 2019 02:16:14 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:57381 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730036AbfJNGQO (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 14 Oct 2019 02:16:14 -0400
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1iJte6-0006er-FT; Mon, 14 Oct 2019 08:15:54 +0200
-Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1iJte2-0000yA-HW; Mon, 14 Oct 2019 08:15:50 +0200
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Andrew Lunn <andrew@lunn.ch>, Chris Snook <chris.snook@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        James Hogan <jhogan@kernel.org>,
-        Jay Cliburn <jcliburn@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Vivien Didelot <vivien.didelot@gmail.com>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-mips@vger.kernel.org
-Subject: [PATCH v1 0/4] add dsa switch support for ar9331
-Date:   Mon, 14 Oct 2019 08:15:45 +0200
-Message-Id: <20191014061549.3669-1-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.23.0
+        id S1726646AbfJNHEd (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 14 Oct 2019 03:04:33 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:36717 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726618AbfJNHEd (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 14 Oct 2019 03:04:33 -0400
+Received: by mail-oi1-f196.google.com with SMTP id k20so12904787oih.3;
+        Mon, 14 Oct 2019 00:04:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Dw9/t7+fv8sZfEmXdArF9sO9sSu1sdqEGsnevRiY4QE=;
+        b=cKAP1b3SQcXwMCzFbmLUdm3Pl43j0PY48pG6/50AtiA5ZGmeptkvvnj4QJCrjYU5jJ
+         FfIyb4Z/ePKbYl48d/udkITs9vChCBxnX2Y4VOWkptuRPLoUjvhQM+AW9h/X1OMRUtl+
+         D5g+kEYfr/K0HKRdG574I9jhppa9wlwti5VrFshni3kp+bz0XRD8z1xgyx4UiV/kKUBe
+         t5XCoOWVyfeBKZHCJuDHChIDFx5Ibjf4LmwEtugMX/dA7ToI04bpzf6d0uJWUXqSf4gc
+         WYcEd///QVyi78Yx6i6qNElAc0sEM3iuiSorMkUiig2NolyIXKzjg7c2HSqhAlb24UCx
+         WT1A==
+X-Gm-Message-State: APjAAAWSBmrThjaoUqylC4L326D+/J4id/Wur3gM+QDvcExY2V/oJlGs
+        U2RxIV8gjj/hl/Ge67cBwGeU9pcQmLkJw79XrZYk3VzV
+X-Google-Smtp-Source: APXvYqy3hEtEzR/eSvyYa7vKtxBjPr2wPoI/prOh/kWCEDWaT6miEVhKIkKYgrWZcbcd5K5vkZFd1/FaI4tCc/uvuBQ=
+X-Received: by 2002:aca:cf58:: with SMTP id f85mr22317045oig.153.1571036672614;
+ Mon, 14 Oct 2019 00:04:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@vger.kernel.org
+References: <20191014063507.5131-1-geert@linux-m68k.org>
+In-Reply-To: <20191014063507.5131-1-geert@linux-m68k.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 14 Oct 2019 09:04:21 +0200
+Message-ID: <CAMuHMdVm6WMQARNKyFEWybJHySJK0NSWEiy+Y=yXSwTsZrcXVA@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v5.4-rc3
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-This patch series provides dsa switch support for Atheros ar9331 WiSoC.
-As side effect ag71xx needed to be ported to phylink to make the switch
-driver (as well phylink based) work properly.
+On Mon, Oct 14, 2019 at 8:53 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> JFYI, when comparing v5.4-rc3[1] to v5.4-rc2[3], the summaries are:
+>   - build errors: +1/-0
 
-Oleksij Rempel (4):
-  net: ag71xx: port to phylink
-  dt-bindings: net: dsa: qca,ar9331 switch documentation
-  MIPS: ath79: ar9331: add ar9331-switch node
-  net: dsa: add support for Atheros AR9331 build-in switch
+  + /kisskb/src/drivers/staging/octeon/ethernet-spi.c: error:
+'OCTEON_IRQ_RML' undeclared (first use in this function):  => 198:19,
+224:12
 
- .../devicetree/bindings/net/dsa/ar9331.txt    | 155 ++++
- arch/mips/boot/dts/qca/ar9331.dtsi            | 128 ++-
- arch/mips/boot/dts/qca/ar9331_dpt_module.dts  |  13 +
- drivers/net/dsa/Kconfig                       |   2 +
- drivers/net/dsa/Makefile                      |   1 +
- drivers/net/dsa/qca/Kconfig                   |  11 +
- drivers/net/dsa/qca/Makefile                  |   2 +
- drivers/net/dsa/qca/ar9331.c                  | 822 ++++++++++++++++++
- drivers/net/ethernet/atheros/Kconfig          |   2 +-
- drivers/net/ethernet/atheros/ag71xx.c         | 144 +--
- include/net/dsa.h                             |   2 +
- net/dsa/Kconfig                               |   6 +
- net/dsa/Makefile                              |   1 +
- net/dsa/tag_ar9331.c                          |  97 +++
- 14 files changed, 1324 insertions(+), 62 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/dsa/ar9331.txt
- create mode 100644 drivers/net/dsa/qca/Kconfig
- create mode 100644 drivers/net/dsa/qca/Makefile
- create mode 100644 drivers/net/dsa/qca/ar9331.c
- create mode 100644 net/dsa/tag_ar9331.c
+mips-allmodconfig
+
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/4f5cafb5cb8471e54afdc9054d973535614f7675/ (232 out of 242 configs)
+> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/da0c9ea146cbe92b832f1b0f694840ea8eb33cce/ (233 out of 242 configs)
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-2.23.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

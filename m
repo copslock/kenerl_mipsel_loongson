@@ -2,105 +2,235 @@ Return-Path: <SRS0=3G5J=YH=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 13C77C4360C
-	for <linux-mips@archiver.kernel.org>; Mon, 14 Oct 2019 03:29:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 59643ECE58D
+	for <linux-mips@archiver.kernel.org>; Mon, 14 Oct 2019 06:16:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E198020673
-	for <linux-mips@archiver.kernel.org>; Mon, 14 Oct 2019 03:29:49 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=zoho.com header.i=zhouyanjie@zoho.com header.b="b5ih93pG"
+	by mail.kernel.org (Postfix) with ESMTP id 3D1A420854
+	for <linux-mips@archiver.kernel.org>; Mon, 14 Oct 2019 06:16:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729808AbfJND3p (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 13 Oct 2019 23:29:45 -0400
-Received: from sender4-pp-o94.zoho.com ([136.143.188.94]:25444 "EHLO
-        sender4-pp-o94.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729725AbfJND3p (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sun, 13 Oct 2019 23:29:45 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1571023742; cv=none; 
-        d=zoho.com; s=zohoarc; 
-        b=C124AKHAe9uJtyXjBLUVgNCJN2KsG7G1+f8I2D6rCcwjiJ2ndZBm6MpuF0sVhPaKMgkMPqqVKDuEViXxkqZWNNmDzvD0Ib3CGy6ZOncQZ9SoLOjR6RaMi1FKQHVO4Of/27iFJqOxAh5GnCAJ52/JFUcyobvMJqMpqW14UgpdcZw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com; s=zohoarc; 
-        t=1571023742; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=b4RqJU9fbu5y2OZD/3klgivELdy1yMHPoFExbrseIpk=; 
-        b=ZXIIShLwzvHV/qOEvDIz4NRtIZgGyql0zS33+v4JNjwVtqRYgPfcays8tVsL84khclFzK+Olg4jxV/L4l79suUOcEguVR8kYqvl2mTvm8KD+kRZ67CJjpWVUc6N7GAtuPlLUqTaASxB5LRz2/GcdkgZz8IeTCmXhcNFL3LWnMJw=
-ARC-Authentication-Results: i=1; mx.zoho.com;
-        dkim=pass  header.i=zoho.com;
-        spf=pass  smtp.mailfrom=zhouyanjie@zoho.com;
-        dmarc=pass header.from=<zhouyanjie@zoho.com> header.from=<zhouyanjie@zoho.com>
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; 
-  s=zapps768; d=zoho.com; 
-  h=subject:to:references:cc:from:message-id:date:user-agent:mime-version:in-reply-to:content-type; 
-  b=rVmHDCo2p9d1UoE2BFqSpECg3WQsDqLSJKx5T9Th6J5pStQpmSN8g6X+u1JNuviOGAriqXWVl5Bg
-    4f0pi/+7zFurgeLR5HtJvudoPs77OY+nm+VX5s7b+w1xa90ZX7eT  
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1571023742;
-        s=zm2019; d=zoho.com; i=zhouyanjie@zoho.com;
-        h=Subject:To:References:Cc:From:Message-ID:Date:MIME-Version:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        l=704; bh=b4RqJU9fbu5y2OZD/3klgivELdy1yMHPoFExbrseIpk=;
-        b=b5ih93pGW1qNEThvHdpIw5N3YxTAz58tuBvKEJoS54xZopJQ+poWoyE0iTxboo50
-        fez8m0hsISiZiTp6HeSgbWaWBw6Ckh01jFIdh/E3LSCa6MWIwEIHzy4S03hv05DrJ/d
-        gTe07cDhFtdCbPzvda58uGQ4bKlp+GUncdajQJaE=
-Received: from [192.168.88.140] (182.148.156.27 [182.148.156.27]) by mx.zohomail.com
-        with SMTPS id 1571023739794947.8001937635913; Sun, 13 Oct 2019 20:28:59 -0700 (PDT)
-Subject: Re: [PATCH v3 1/2] Serial: Ingenic: Add support for the X1000.
-To:     Greg KH <gregkh@linuxfoundation.org>
-References: <1548667176-119830-1-git-send-email-zhouyanjie@zoho.com>
- <1548695029-11900-1-git-send-email-zhouyanjie@zoho.com>
- <1548695029-11900-2-git-send-email-zhouyanjie@zoho.com>
- <20191012073531.GA2036970@kroah.com>
-Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org, paul.burton@mips.com, mark.rutland@arm.com,
-        syq@debian.org, ulf.hansson@linaro.org, linus.walleij@linaro.org,
-        armijn@tjaldur.nl, tglx@linutronix.de, yuehaibing@huawei.com,
-        malat@debian.org, ezequiel@collabora.com, paul@crapouillou.net,
-        linux-serial@vger.kernel.org, jslaby@suse.com,
-        jiaxun.yang@flygoat.com, 772753199@qq.com
-From:   Zhou Yanjie <zhouyanjie@zoho.com>
-Message-ID: <5DA3EB68.4050305@zoho.com>
-Date:   Mon, 14 Oct 2019 11:28:40 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.8.0
+        id S1730051AbfJNGQR (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 14 Oct 2019 02:16:17 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:40331 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730070AbfJNGQR (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 14 Oct 2019 02:16:17 -0400
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1iJte6-0006eu-FQ; Mon, 14 Oct 2019 08:15:54 +0200
+Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1iJte2-0000yS-KA; Mon, 14 Oct 2019 08:15:50 +0200
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Andrew Lunn <andrew@lunn.ch>, Chris Snook <chris.snook@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        James Hogan <jhogan@kernel.org>,
+        Jay Cliburn <jcliburn@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Vivien Didelot <vivien.didelot@gmail.com>
+Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-mips@vger.kernel.org
+Subject: [PATCH v1 2/4] dt-bindings: net: dsa: qca,ar9331 switch documentation
+Date:   Mon, 14 Oct 2019 08:15:47 +0200
+Message-Id: <20191014061549.3669-3-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20191014061549.3669-1-o.rempel@pengutronix.de>
+References: <20191014061549.3669-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20191012073531.GA2036970@kroah.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mips@vger.kernel.org
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Greg,
+Atheros AR9331 has built-in 5 port switch. The switch can be configured
+to use all 5 or 4 ports. One of built-in PHYs can be used by first built-in
+ethernet controller or to be used directly by the switch over second ethernet
+controller.
 
-I'm sorry, maybe it was a problem when I git send-email,
-causing the wrong patch to be sent to you. Just ignore
-the email about the serial patch please.
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ .../devicetree/bindings/net/dsa/ar9331.txt    | 155 ++++++++++++++++++
+ 1 file changed, 155 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/dsa/ar9331.txt
 
-Best regards!
-
-On 2019=E5=B9=B410=E6=9C=8812=E6=97=A5 15:35, Greg KH wrote:
-> On Sat, Oct 12, 2019 at 01:13:23PM +0800, Zhou Yanjie wrote:
->> Add support for probing the 8250_ingenic driver on the
->> X1000 Soc from Ingenic.
->>
->> Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
->> ---
->>   drivers/tty/serial/8250/8250_ingenic.c | 13 +++++++++----
->>   1 file changed, 9 insertions(+), 4 deletions(-)
-> <snip>
->
-> you seem to have two patches merged into one here, please fix up and
-> resend.
->
-> thanks,
->
-> greg k-h
-
-
+diff --git a/Documentation/devicetree/bindings/net/dsa/ar9331.txt b/Documentation/devicetree/bindings/net/dsa/ar9331.txt
+new file mode 100644
+index 000000000000..b0f95fd19584
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/dsa/ar9331.txt
+@@ -0,0 +1,155 @@
++Atheros AR9331 built-in switch
++=============================
++
++It is a switch built-in to Atheros AR9331 WiSoC and addressable over internal
++MDIO bus. All PHYs are build-in as well. 
++
++Required properties:
++
++ - compatible: should be: "qca,ar9331-switch" 
++ - reg: Address on the MII bus for the switch.
++ - resets : Must contain an entry for each entry in reset-names.
++ - reset-names : Must include the following entries: "switch"
++ - interrupt-parent: Phandle to the parent interrupt controller
++ - interrupts: IRQ line for the switch
++ - interrupt-controller: Indicates the switch is itself an interrupt
++   controller. This is used for the PHY interrupts.
++ - #interrupt-cells: must be 1
++ - mdio: Container of PHY and devices on the switches MDIO bus.
++
++See Documentation/devicetree/bindings/net/dsa/dsa.txt for a list of additional
++required and optional properties.
++Examples:
++
++eth0: ethernet@19000000 {
++	compatible = "qca,ar9330-eth";
++	reg = <0x19000000 0x200>;
++	interrupts = <4>;
++
++	resets = <&rst 9>, <&rst 22>;
++	reset-names = "mac", "mdio";
++	clocks = <&pll ATH79_CLK_AHB>, <&pll ATH79_CLK_AHB>;
++	clock-names = "eth", "mdio";
++
++	phy-mode = "mii";
++	phy-handle = <&phy_port4>;
++};
++
++eth1: ethernet@1a000000 {
++	compatible = "qca,ar9330-eth";
++	reg = <0x1a000000 0x200>;
++	interrupts = <5>;
++	resets = <&rst 13>, <&rst 23>;
++	reset-names = "mac", "mdio";
++	clocks = <&pll ATH79_CLK_AHB>, <&pll ATH79_CLK_AHB>;
++	clock-names = "eth", "mdio";
++
++	phy-mode = "gmii";
++	phy-handle = <&switch_port0>;
++
++	fixed-link {
++		speed = <1000>;
++		full-duplex;
++	};
++
++	mdio {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		switch10: switch@10 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			compatible = "qca,ar9331-switch";
++			reg = <16>;
++			resets = <&rst 8>;
++			reset-names = "switch";
++
++			interrupt-parent = <&miscintc>;
++			interrupts = <12>;
++
++			interrupt-controller;
++			#interrupt-cells = <1>;
++
++			ports {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				switch_port0: port@0 {
++					reg = <0>;
++					label = "cpu";
++					ethernet = <&eth1>;
++
++					phy-mode = "gmii";
++
++					fixed-link {
++						speed = <1000>;
++						full-duplex;
++					};
++				};
++
++				switch_port1: port@1 {
++					reg = <1>;
++					phy-handle = <&phy_port0>;
++					phy-mode = "internal";
++				};
++
++				switch_port2: port@2 {
++					reg = <2>;
++					phy-handle = <&phy_port1>;
++					phy-mode = "internal";
++				};
++
++				switch_port3: port@3 {
++					reg = <3>;
++					phy-handle = <&phy_port2>;
++					phy-mode = "internal";
++				};
++
++				switch_port4: port@4 {
++					reg = <4>;
++					phy-handle = <&phy_port3>;
++					phy-mode = "internal";
++				};
++
++				switch_port5: port@5 {
++					reg = <5>;
++					phy-handle = <&phy_port4>;
++					phy-mode = "internal";
++				};
++			};
++
++			mdio {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				interrupt-parent = <&switch10>;
++
++				phy_port0: phy@0 {
++					reg = <0>;
++					interrupts = <0>;
++				};
++
++				phy_port1: phy@1 {
++					reg = <1>;
++					interrupts = <0>;
++				};
++
++				phy_port2: phy@2 {
++					reg = <2>;
++					interrupts = <0>;
++				};
++
++				phy_port3: phy@3 {
++					reg = <3>;
++					interrupts = <0>;
++				};
++
++				phy_port4: phy@4 {
++					reg = <4>;
++					interrupts = <0>;
++				};
++			};
++		};
++	};
++};
+-- 
+2.23.0
 

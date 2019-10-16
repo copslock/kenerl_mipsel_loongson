@@ -2,42 +2,42 @@ Return-Path: <SRS0=Eolf=YJ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLACK,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AB37CFA372C
-	for <linux-mips@archiver.kernel.org>; Wed, 16 Oct 2019 22:03:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F206FA3728
+	for <linux-mips@archiver.kernel.org>; Wed, 16 Oct 2019 22:08:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 77571218DE
-	for <linux-mips@archiver.kernel.org>; Wed, 16 Oct 2019 22:03:43 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4AD9A207FF
+	for <linux-mips@archiver.kernel.org>; Wed, 16 Oct 2019 22:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1571263423;
-	bh=34dwj3LqK+f/Pc6CdTWGf50hADG+/PaAMtm6ggm8DlM=;
+	s=default; t=1571263711;
+	bh=Wr/xZxIqAJ6Qdy60YBuEq9FdlnUPXajz3zyOMIkcgK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=LjuATSOAnM1BfZYLBCxWmfEHwQSeoMbm0nITHdgbSwhdJbvLJW5IOKUVNazRskixM
-	 aClobrVfyRcVE11iPXaZcj0zoa8D27tiGaKPs681SUs/q8JHYpYG6tGaZ2MgZRGlHJ
-	 +Mo9iY0exW6UmMHtIBBxBC7SXDvzJ426IODDx5uU=
+	b=uYEuMsMdDJyRQjsmWG05pE+lxh1sxnsBJ6Ae883Zay6dSNdaBb6e32sI3xkNXQ3a0
+	 /QtPZHPXhaJeuKRnFbkKZe6jJckV4KB7rZIOWlrFk9uicrjS8nD4pJKDRLjdHEN/98
+	 CUW4Lea1sSJdCzMfbCXGZZfdmjvt9oYVh0k1NbFQ=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438489AbfJPV7X (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 16 Oct 2019 17:59:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54076 "EHLO mail.kernel.org"
+        id S2390183AbfJPWI3 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 16 Oct 2019 18:08:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50690 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2438485AbfJPV7X (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 16 Oct 2019 17:59:23 -0400
+        id S2438044AbfJPV5q (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 16 Oct 2019 17:57:46 -0400
 Received: from localhost (unknown [192.55.54.58])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8CEA021A49;
-        Wed, 16 Oct 2019 21:59:22 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 76AD421928;
+        Wed, 16 Oct 2019 21:57:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571263162;
-        bh=34dwj3LqK+f/Pc6CdTWGf50hADG+/PaAMtm6ggm8DlM=;
+        s=default; t=1571263065;
+        bh=Wr/xZxIqAJ6Qdy60YBuEq9FdlnUPXajz3zyOMIkcgK4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r+wuKtJKbK8wH8mBuvelYk7JSW9ipxZDXFH4BZbfH19c3zQG9BH2AuT3VKUkRKEaP
-         lEr1RQTj/YoSukfW2uo20zCm0JoU089rBero255AViI0wiCVYzbsTHVK0zEI9CtdK1
-         qoZg8Vm6kaZVeQSSo9r5F143mULtxKR9nqU6iY7I=
+        b=w5Yq27LJGcNelmH8U2Gq5iD9ZbtvBAhvBLZy7j4BFiw1CiQuRK1ISQnqboLfzAFI1
+         eca6zvzbYUCOx6dyyXJ77awKXoIgKs6JMtcYio+wVfku2t+EbMKnMt3smEhEBFIwJh
+         kRbIFfCGMx0q/32Ma0ceBdtHGq0+IDhXaskDciIc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Huacai Chen <chenhc@lemote.com>,
         Jiaxun Yang <jiaxun.yang@flygoat.com>,
         linux-mips@vger.kernel.org
-Subject: [PATCH 5.3 090/112] MIPS: Disable Loongson MMI instructions for kernel build
-Date:   Wed, 16 Oct 2019 14:51:22 -0700
-Message-Id: <20191016214905.434758748@linuxfoundation.org>
+Subject: [PATCH 4.19 66/81] MIPS: Disable Loongson MMI instructions for kernel build
+Date:   Wed, 16 Oct 2019 14:51:17 -0700
+Message-Id: <20191016214845.344235056@linuxfoundation.org>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191016214844.038848564@linuxfoundation.org>
-References: <20191016214844.038848564@linuxfoundation.org>
+In-Reply-To: <20191016214805.727399379@linuxfoundation.org>
+References: <20191016214805.727399379@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -91,7 +91,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/loongson64/Platform
 +++ b/arch/mips/loongson64/Platform
-@@ -66,6 +66,10 @@ else
+@@ -43,6 +43,10 @@ else
        $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
  endif
  
@@ -111,6 +111,6 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +	$(filter -mno-loongson-%,$(KBUILD_CFLAGS)) \
  	-D__VDSO__
  
- ifdef CONFIG_CC_IS_CLANG
+ ifeq ($(cc-name),clang)
 
 

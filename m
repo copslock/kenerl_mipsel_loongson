@@ -2,115 +2,100 @@ Return-Path: <SRS0=Eolf=YJ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A16D8FA372B
-	for <linux-mips@archiver.kernel.org>; Wed, 16 Oct 2019 21:56:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 37D19ECE599
+	for <linux-mips@archiver.kernel.org>; Wed, 16 Oct 2019 21:57:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 7526D21925
-	for <linux-mips@archiver.kernel.org>; Wed, 16 Oct 2019 21:56:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1571262992;
-	bh=L95EMHtNAx1++/FTWvOD8AFJ7l+KXtUK06uQ1uo1HIw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=CduRThVYp8Vpxmc8DPkIMsYPEb2iVajq1LRNs7mbBRLStt8GByNMmh91a6Vwgd/7u
-	 riJf1JkoDx3+zs93Uatj0MfatWvj5fiG9EX03xSM9uZqa6Nc/vWCEmZ/axZrzr3Qa8
-	 zlovOC+8n5ni2ko1WozxYkpnUHZu1Lyyim+2gH10=
+	by mail.kernel.org (Postfix) with ESMTP id 0EEA721A49
+	for <linux-mips@archiver.kernel.org>; Wed, 16 Oct 2019 21:57:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406660AbfJPV4b (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 16 Oct 2019 17:56:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48192 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2406657AbfJPV4a (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 16 Oct 2019 17:56:30 -0400
-Received: from localhost (unknown [192.55.54.58])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CE24021A49;
-        Wed, 16 Oct 2019 21:56:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571262990;
-        bh=L95EMHtNAx1++/FTWvOD8AFJ7l+KXtUK06uQ1uo1HIw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ynwlWHHJyJqer7kYxICV018N7sUxdSVFSAuZdHoF3QUgVrRzXWkTc7Lock0v/I+AF
-         qM40yFlBh//j8lXBE7ax0HMHhZKOhnRAP2eUaB56kV2ovb6RpT5t0DBsSFG0Pqw7EA
-         3hNBZa5dbZ8zad7PE7ZwMpe7uAV38MFW8WA+6Bjg=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        linux-mips@vger.kernel.org
-Subject: [PATCH 4.14 57/65] MIPS: Disable Loongson MMI instructions for kernel build
-Date:   Wed, 16 Oct 2019 14:51:11 -0700
-Message-Id: <20191016214838.518286192@linuxfoundation.org>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191016214756.457746573@linuxfoundation.org>
-References: <20191016214756.457746573@linuxfoundation.org>
-User-Agent: quilt/0.66
+        id S2406673AbfJPV5J (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 16 Oct 2019 17:57:09 -0400
+Received: from mx2.suse.de ([195.135.220.15]:54348 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2406644AbfJPV5I (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 16 Oct 2019 17:57:08 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id ACEE3B39C;
+        Wed, 16 Oct 2019 21:57:06 +0000 (UTC)
+From:   NeilBrown <neil@brown.name>
+To:     Sergio Paracuellos <sergio.paracuellos@gmail.com>, hauke@hauke-m.de
+Date:   Thu, 17 Oct 2019 08:57:00 +1100
+Cc:     paul.burton@mips.com, linux-mips@vger.kernel.org,
+        ralf@linux-mips.org
+Subject: Re: PCI support for SOC_MT7621
+In-Reply-To: <CAMhs-H93MvRBPpR2ra33wf667V_wyDmQGWY0n_rB=puq_aBGog@mail.gmail.com>
+References: <CAMhs-H93MvRBPpR2ra33wf667V_wyDmQGWY0n_rB=puq_aBGog@mail.gmail.com>
+Message-ID: <87v9sopd5f.fsf@notabene.neil.brown.name>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="=-=-=";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Paul Burton <paul.burton@mips.com>
+--=-=-=
+Content-Type: text/plain
 
-commit 2f2b4fd674cadd8c6b40eb629e140a14db4068fd upstream.
+On Wed, Oct 16 2019, Sergio Paracuellos wrote:
 
-GCC 9.x automatically enables support for Loongson MMI instructions when
-using some -march= flags, and then errors out when -msoft-float is
-specified with:
+> Hi all,
+>
+> I have a concern about commit:
+>
+> c4d48cf5e2f0 ("MIPS: ralink: deactivate PCI support for SOC_MT7621")
+>
+> This commit make a regression for my kernel configuration for gnubee
+> board which is mt7621 SOC based and also has PCI. With this applied
+> PCI_DRIVERS_GENERIC is not selectable anymore and it becomes into a
+> PCI_DRIVERS_LEGACY configuration making impossible to compile
+> mt7621-pci driver for this board.
+>
+> I think this should be reverted. Am I missing something here?
 
-  cc1: error: ‘-mloongson-mmi’ must be used with ‘-mhard-float’
+The commit reports a build error without the patch, and we don't want
+that.
+Maybe change the
+  select HAVE_PCI
+to
+  select HAVE_PCI if STAGING
+or
+  select HAVE_PCI if PCI_MT7621
 
-The kernel shouldn't be using these MMI instructions anyway, just as it
-doesn't use floating point instructions. Explicitly disable them in
-order to fix the build with GCC 9.x.
+Hauke: do either of those fix your compile error?
 
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Fixes: 3702bba5eb4f ("MIPS: Loongson: Add GCC 4.4 support for Loongson2E")
-Fixes: 6f7a251a259e ("MIPS: Loongson: Add basic Loongson 2F support")
-Fixes: 5188129b8c9f ("MIPS: Loongson-3: Improve -march option and move it to Platform")
-Cc: Huacai Chen <chenhc@lemote.com>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: stable@vger.kernel.org # v2.6.32+
-Cc: linux-mips@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/loongson64/Platform |    4 ++++
- arch/mips/vdso/Makefile       |    1 +
- 2 files changed, 5 insertions(+)
-
---- a/arch/mips/loongson64/Platform
-+++ b/arch/mips/loongson64/Platform
-@@ -43,6 +43,10 @@ else
-       $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
- endif
- 
-+# Some -march= flags enable MMI instructions, and GCC complains about that
-+# support being enabled alongside -msoft-float. Thus explicitly disable MMI.
-+cflags-y += $(call cc-option,-mno-loongson-mmi)
-+
- #
- # Loongson Machines' Support
- #
---- a/arch/mips/vdso/Makefile
-+++ b/arch/mips/vdso/Makefile
-@@ -9,6 +9,7 @@ ccflags-vdso := \
- 	$(filter -mmicromips,$(KBUILD_CFLAGS)) \
- 	$(filter -march=%,$(KBUILD_CFLAGS)) \
- 	$(filter -m%-float,$(KBUILD_CFLAGS)) \
-+	$(filter -mno-loongson-%,$(KBUILD_CFLAGS)) \
- 	-D__VDSO__
- cflags-vdso := $(ccflags-vdso) \
- 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
+Thanks,
+NeilBrown
 
 
+>
+> Thanks in advance for your time.
+>
+> Best regards,
+>     Sergio Paracuellos
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEG8Yp69OQ2HB7X0l6Oeye3VZigbkFAl2nkiwACgkQOeye3VZi
+gblQPg//Z5LD/4sXMKejfOyRB71IRuXIIikdvLVvOlbnhWPn4/by7QNGaBpEZB5j
+vU1W0MwsyGyAoiZvNzzBxFLzEDk44BHVHRzsVdgjTXSq5dEd0ywtybeh4/8SJMs8
+6CBNOuZllTyC0H+dE58OquOILW6ubl/wqBwrcRv6YxdDC57WfSbEEJD2oP3C5icm
+Js2WmynSaClPMWmy6E6Mxmh9+6AdkrLsb2ZvHzr83pHhdIkXBcWarr04OQJSmJN9
+aS7tTifRjiXY4cC8blYjU1G6E2LM3PVtl2nCZ1DQUZbAksYAqL9Nc5Pjbx5aDOmr
+D2Nwq4/MPHAJ8rKadQy+4KlrRPNAvSQGrYuYSIEjBovzMikiMzEDmQNFMExZ24yY
+7+3fuSE5F1F6HQULBl1MlOBhaXksgdKXqgkM//U4+EvmNB//s59iMUa+Q7/84jD9
+qIiNr5w5szad4Wqn5TdSRcAn0QV0zZPgFrRkpLPtiNxKuBAd5vbZj2XTgIesIMKP
+YBPK2LDGo860S0ltPM3iBTrzlGxoOoBUU0ofRdH/aXU5S8tNrjVGwF/h2AQN5VSv
+8oT/I9ZCq6pvmufpiuj2hOegJUhod9GzjguRzbDmk2QhOyOdtrtu9eCMd95IIp3A
+l6M9Exs6N04F2JhITX4elHEe1kWENbpnqFIXfATfHu0KInkkLK4=
+=t1wG
+-----END PGP SIGNATURE-----
+--=-=-=--

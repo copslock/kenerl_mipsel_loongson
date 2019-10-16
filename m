@@ -2,54 +2,55 @@ Return-Path: <SRS0=Eolf=YJ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLACK,USER_AGENT_GIT autolearn=unavailable
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D219ECE599
-	for <linux-mips@archiver.kernel.org>; Wed, 16 Oct 2019 22:08:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B1CB9ECE599
+	for <linux-mips@archiver.kernel.org>; Wed, 16 Oct 2019 22:15:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id EA6212168B
-	for <linux-mips@archiver.kernel.org>; Wed, 16 Oct 2019 22:08:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 88A38207FF
+	for <linux-mips@archiver.kernel.org>; Wed, 16 Oct 2019 22:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1571263720;
-	bh=q1wAHGpEpuMOW0RNo+VIIgY/Vr19O8NYM/TfsXkvQaU=;
+	s=default; t=1571264122;
+	bh=yNitP2iKn20kPjUaPAMPUQgBIanvMDCJUVUCUUEFZbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=Q6qSx4JVnshrStadL02uehJXZJm+JNXWGT9YPAUeBDjjy17/qsWyPzyRhsBGH/aUQ
-	 3ngDnQjbG7NaLoSeC5C2IaPwpjyYb2dXFIUKsr3AVyyepafCIY5zIHW0J6P37P+5F9
-	 L3Dq2X0LMTLgBb/5M1HtYesJwlWcXCu8WakxcvVc=
+	b=Cm5haNtyjtuLkzkK2a+mvfJ7oXOb2zG1arv99XO3nY3dbKtEQxqj1oxzftl8AAew/
+	 WEojEMB8QvK42+jZOWM8kxgy7yQKxL/M7NnvI6yH4KH5wKQebOryjdVGHki9Q/syLR
+	 tx4kAEMylkaIFPhhvm9dbmb0GGlGUFCtlvhC5tQ0=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728404AbfJPWI3 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 16 Oct 2019 18:08:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50714 "EHLO mail.kernel.org"
+        id S2390292AbfJPVz0 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 16 Oct 2019 17:55:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46054 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2406682AbfJPV5r (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 16 Oct 2019 17:57:47 -0400
+        id S1733200AbfJPVz0 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 16 Oct 2019 17:55:26 -0400
 Received: from localhost (unknown [192.55.54.58])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D829F218DE;
-        Wed, 16 Oct 2019 21:57:46 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 690C121A4C;
+        Wed, 16 Oct 2019 21:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571263067;
-        bh=q1wAHGpEpuMOW0RNo+VIIgY/Vr19O8NYM/TfsXkvQaU=;
+        s=default; t=1571262925;
+        bh=yNitP2iKn20kPjUaPAMPUQgBIanvMDCJUVUCUUEFZbc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K7EBXigVtPviw025NI8eJ6oLLWsuaqgwqMuXFJ9iM944K5l1YzAmkMMtFVPezM1LM
-         qlJqPTYneF51O5oNNTHO+xE5eb60WOlBTlDj/aRilMN6xgsbeiURLXpwMiEZjKImwj
-         kZXiDtOJW9VLARN3JXXIpdtBF3XLU2u5EYqupca8=
+        b=mCNoPUJ1mBrJ9+YdPUtmz9p/KUnoJhQm2tnft5IgzOImhv5qNrqesEppam24S2DTb
+         GetzTDRg9oWqjcfv8O+vAqoIT/XnoeJmyfYbuuMDau+44xonIKRaRUChkCNc3D++tR
+         l2DwQcji87atWsMEZIp9WjFP7VAw4KWE7sVKDSFo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Meng Zhuo <mengzhuo1203@gmail.com>,
+        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
+        Huacai Chen <chenhc@lemote.com>,
         Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        linux-mips@vger.kernel.org, Paul Burton <paul.burton@mips.com>
-Subject: [PATCH 4.19 67/81] MIPS: elf_hwcap: Export userspace ASEs
-Date:   Wed, 16 Oct 2019 14:51:18 -0700
-Message-Id: <20191016214845.704568025@linuxfoundation.org>
+        linux-mips@vger.kernel.org
+Subject: [PATCH 4.9 85/92] MIPS: Disable Loongson MMI instructions for kernel build
+Date:   Wed, 16 Oct 2019 14:50:58 -0700
+Message-Id: <20191016214847.735987212@linuxfoundation.org>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191016214805.727399379@linuxfoundation.org>
-References: <20191016214805.727399379@linuxfoundation.org>
+In-Reply-To: <20191016214759.600329427@linuxfoundation.org>
+References: <20191016214759.600329427@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,89 +60,57 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Paul Burton <paul.burton@mips.com>
 
-commit 38dffe1e4dde1d3174fdce09d67370412843ebb5 upstream.
+commit 2f2b4fd674cadd8c6b40eb629e140a14db4068fd upstream.
 
-A Golang developer reported MIPS hwcap isn't reflecting instructions
-that the processor actually supported so programs can't apply optimized
-code at runtime.
+GCC 9.x automatically enables support for Loongson MMI instructions when
+using some -march= flags, and then errors out when -msoft-float is
+specified with:
 
-Thus we export the ASEs that can be used in userspace programs.
+  cc1: error: ‘-mloongson-mmi’ must be used with ‘-mhard-float’
 
-Reported-by: Meng Zhuo <mengzhuo1203@gmail.com>
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: linux-mips@vger.kernel.org
-Cc: Paul Burton <paul.burton@mips.com>
-Cc: <stable@vger.kernel.org> # 4.14+
+The kernel shouldn't be using these MMI instructions anyway, just as it
+doesn't use floating point instructions. Explicitly disable them in
+order to fix the build with GCC 9.x.
+
 Signed-off-by: Paul Burton <paul.burton@mips.com>
+Fixes: 3702bba5eb4f ("MIPS: Loongson: Add GCC 4.4 support for Loongson2E")
+Fixes: 6f7a251a259e ("MIPS: Loongson: Add basic Loongson 2F support")
+Fixes: 5188129b8c9f ("MIPS: Loongson-3: Improve -march option and move it to Platform")
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: stable@vger.kernel.org # v2.6.32+
+Cc: linux-mips@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/uapi/asm/hwcap.h |   11 +++++++++++
- arch/mips/kernel/cpu-probe.c       |   33 +++++++++++++++++++++++++++++++++
- 2 files changed, 44 insertions(+)
+ arch/mips/loongson64/Platform |    4 ++++
+ arch/mips/vdso/Makefile       |    1 +
+ 2 files changed, 5 insertions(+)
 
---- a/arch/mips/include/uapi/asm/hwcap.h
-+++ b/arch/mips/include/uapi/asm/hwcap.h
-@@ -6,5 +6,16 @@
- #define HWCAP_MIPS_R6		(1 << 0)
- #define HWCAP_MIPS_MSA		(1 << 1)
- #define HWCAP_MIPS_CRC32	(1 << 2)
-+#define HWCAP_MIPS_MIPS16	(1 << 3)
-+#define HWCAP_MIPS_MDMX     (1 << 4)
-+#define HWCAP_MIPS_MIPS3D   (1 << 5)
-+#define HWCAP_MIPS_SMARTMIPS (1 << 6)
-+#define HWCAP_MIPS_DSP      (1 << 7)
-+#define HWCAP_MIPS_DSP2     (1 << 8)
-+#define HWCAP_MIPS_DSP3     (1 << 9)
-+#define HWCAP_MIPS_MIPS16E2 (1 << 10)
-+#define HWCAP_LOONGSON_MMI  (1 << 11)
-+#define HWCAP_LOONGSON_EXT  (1 << 12)
-+#define HWCAP_LOONGSON_EXT2 (1 << 13)
+--- a/arch/mips/loongson64/Platform
++++ b/arch/mips/loongson64/Platform
+@@ -43,6 +43,10 @@ else
+       $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
+ endif
  
- #endif /* _UAPI_ASM_HWCAP_H */
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -2105,6 +2105,39 @@ void cpu_probe(void)
- 		elf_hwcap |= HWCAP_MIPS_MSA;
- 	}
- 
-+	if (cpu_has_mips16)
-+		elf_hwcap |= HWCAP_MIPS_MIPS16;
++# Some -march= flags enable MMI instructions, and GCC complains about that
++# support being enabled alongside -msoft-float. Thus explicitly disable MMI.
++cflags-y += $(call cc-option,-mno-loongson-mmi)
 +
-+	if (cpu_has_mdmx)
-+		elf_hwcap |= HWCAP_MIPS_MDMX;
-+
-+	if (cpu_has_mips3d)
-+		elf_hwcap |= HWCAP_MIPS_MIPS3D;
-+
-+	if (cpu_has_smartmips)
-+		elf_hwcap |= HWCAP_MIPS_SMARTMIPS;
-+
-+	if (cpu_has_dsp)
-+		elf_hwcap |= HWCAP_MIPS_DSP;
-+
-+	if (cpu_has_dsp2)
-+		elf_hwcap |= HWCAP_MIPS_DSP2;
-+
-+	if (cpu_has_dsp3)
-+		elf_hwcap |= HWCAP_MIPS_DSP3;
-+
-+	if (cpu_has_mips16e2)
-+		elf_hwcap |= HWCAP_MIPS_MIPS16E2;
-+
-+	if (cpu_has_loongson_mmi)
-+		elf_hwcap |= HWCAP_LOONGSON_MMI;
-+
-+	if (cpu_has_loongson_ext)
-+		elf_hwcap |= HWCAP_LOONGSON_EXT;
-+
-+	if (cpu_has_loongson_ext2)
-+		elf_hwcap |= HWCAP_LOONGSON_EXT2;
-+
- 	if (cpu_has_vz)
- 		cpu_probe_vz(c);
- 
+ #
+ # Loongson Machines' Support
+ #
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -8,6 +8,7 @@ ccflags-vdso := \
+ 	$(filter -mmicromips,$(KBUILD_CFLAGS)) \
+ 	$(filter -march=%,$(KBUILD_CFLAGS)) \
+ 	$(filter -m%-float,$(KBUILD_CFLAGS)) \
++	$(filter -mno-loongson-%,$(KBUILD_CFLAGS)) \
+ 	-D__VDSO__
+ cflags-vdso := $(ccflags-vdso) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
 
 

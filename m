@@ -2,164 +2,106 @@ Return-Path: <SRS0=Js7N=YK=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 65333ECE58D
-	for <linux-mips@archiver.kernel.org>; Thu, 17 Oct 2019 17:48:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2244DECE58E
+	for <linux-mips@archiver.kernel.org>; Thu, 17 Oct 2019 18:36:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 3F32B2089C
-	for <linux-mips@archiver.kernel.org>; Thu, 17 Oct 2019 17:48:22 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E1A2221835
+	for <linux-mips@archiver.kernel.org>; Thu, 17 Oct 2019 18:36:01 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Hpof5+Pg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UHG/4bLF"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440832AbfJQRqg (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 17 Oct 2019 13:46:36 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:54488 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727794AbfJQRqg (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 17 Oct 2019 13:46:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
-        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=FX04uJGNdq/Yp5y2MJBzjZbPxUQfO+iCaj0twVF6zA4=; b=Hpof5+PgCEN69oEsWdFN1H2LS4
-        exyt1cWF9c2ijgagC2J3+PBaBiaVIUbCA3O+3PoKcyUOXgA921+H2wQ2bdIi7W8FtYuTF5yY0FVrT
-        4RZQ0CPQ3Je2a0MLuAYWjtzdnM+sx8W9l3gpha6FNhPatSkF2JDrLAljZfqyH8H+2idZU341lObe2
-        7cSRfey1zSYpkrub7JjcpxpWWzxRoxSs0TWTdCrk+MUUkpsGnS70V6bneX1eodx2Mq9o1NxbphmAN
-        m7NcvUJ3c7eHZT1uft9rs7OveIsuZodzWGjDPnV39m9gIXALdwW6wahActtOsDjdetmaP7grbP2fe
-        0W/jqNuw==;
-Received: from [2001:4bb8:18c:d7b:c70:4a89:bc61:3] (helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1iL9ql-0005fL-Vc; Thu, 17 Oct 2019 17:46:12 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org
-Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-mtd@lists.infradead.org, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 06/21] nios2: remove __ioremap
-Date:   Thu, 17 Oct 2019 19:45:39 +0200
-Message-Id: <20191017174554.29840-7-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191017174554.29840-1-hch@lst.de>
-References: <20191017174554.29840-1-hch@lst.de>
+        id S2438937AbfJQSgB (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 17 Oct 2019 14:36:01 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:33263 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2438924AbfJQSgB (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 17 Oct 2019 14:36:01 -0400
+Received: by mail-wr1-f66.google.com with SMTP id b9so3520070wrs.0;
+        Thu, 17 Oct 2019 11:35:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=L/172PFesHWuvzNopt4c4XlSQQptfEWlNlsUsPCP8v8=;
+        b=UHG/4bLFtFCzmfzkVGc2ImqhRoK5hPPugYe10a7h/AHV34r//c3q8LQl4Uj67cTlbN
+         JoCk/UwGu+U8SRK2B1kbvqi4b1zjVtdw6qbWArTZsOG4XLgW34gTamVTiIoRw5JfAow7
+         o/7y+KYslgzzN/Vs8xkqNYoxXo8S98QVbnQry/NnNc9kdsybo+1TqjbpWc0156S9NjE/
+         QPp2znoHrt5f62rqIbsgH6NkXL6su3ENXfz9DmK8TQPazqy72sTIaisWe50NqX5JsEg6
+         Hfd4PuerKUUD/Pf5A8rdUty3wYr1lW+daPacXsvGVJ3/aOUhHtCLAFGlp46QbmB+a3GN
+         IFjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=L/172PFesHWuvzNopt4c4XlSQQptfEWlNlsUsPCP8v8=;
+        b=HiYL7h45vzGsQQ3790sHprLwSnZM/+wG3N+7iJSNRrO+II9lFf/fWFd5wKAv0bOEvA
+         zPQX+373akAhichskeG3maRRTGb92xUTkN0nrJyq2AyJJczih0YYN5SXY5/sUdWKhHei
+         rMRthONEUu17OT8iXNUlW5Cznt9pt1ZENiiVFIRUt2sAQ6qRPFDF+f1hN6u+nNwpEyvX
+         bxJ/3epNx1FNJ6RKimUy9vQTJvV9GsJGxsUt4HO3kSxOk9T/7Z3CEy6rj6FnmYeraOGO
+         I/wmEK/oghptcEd6BDcwAsHwKh/HlF5oLKQfglP9HghVx9QK99HdU1ZxUl+R0nuDzepm
+         R+aA==
+X-Gm-Message-State: APjAAAWPEaylYRwu4IygTC1S+/BKDsDL21ATcUbm+I9+eLxIcOpLrswD
+        fbjBZaLFA8HF8Bmkd69dj3qDTTDf
+X-Google-Smtp-Source: APXvYqxnhdYQusvYfFeUZHFuap0s7BvTLgqmJZXqKtYnH7Ct6SqR++6A5hhIRnW3QcZVratWlK/KXQ==
+X-Received: by 2002:adf:ee81:: with SMTP id b1mr3923610wro.58.1571337358592;
+        Thu, 17 Oct 2019 11:35:58 -0700 (PDT)
+Received: from [10.230.29.119] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id a14sm2540026wmm.44.2019.10.17.11.35.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Oct 2019 11:35:57 -0700 (PDT)
+Subject: Re: [PATCH v1 4/4] net: dsa: add support for Atheros AR9331 build-in
+ switch
+To:     Oleksij Rempel <o.rempel@pengutronix.de>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Chris Snook <chris.snook@gmail.com>,
+        James Hogan <jhogan@kernel.org>,
+        Jay Cliburn <jcliburn@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Vivien Didelot <vivien.didelot@gmail.com>
+Cc:     Pengutronix Kernel Team <kernel@pengutronix.de>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-mips@vger.kernel.org
+References: <20191014061549.3669-1-o.rempel@pengutronix.de>
+ <20191014061549.3669-5-o.rempel@pengutronix.de>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <2ad26bdc-e099-ded6-1337-5793aba0958d@gmail.com>
+Date:   Thu, 17 Oct 2019 11:35:48 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20191014061549.3669-5-o.rempel@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The cacheflag argument to __ioremap is always 0, so just implement
-ioremap directly.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/nios2/include/asm/io.h | 20 ++++----------------
- arch/nios2/mm/ioremap.c     | 17 +++--------------
- 2 files changed, 7 insertions(+), 30 deletions(-)
 
-diff --git a/arch/nios2/include/asm/io.h b/arch/nios2/include/asm/io.h
-index 9010243077ab..74ab34aa6731 100644
---- a/arch/nios2/include/asm/io.h
-+++ b/arch/nios2/include/asm/io.h
-@@ -25,29 +25,17 @@
- #define writew_relaxed(x, addr)	writew(x, addr)
- #define writel_relaxed(x, addr)	writel(x, addr)
- 
--extern void __iomem *__ioremap(unsigned long physaddr, unsigned long size,
--			unsigned long cacheflag);
-+void __iomem *ioremap(unsigned long physaddr, unsigned long size);
- extern void __iounmap(void __iomem *addr);
- 
--static inline void __iomem *ioremap(unsigned long physaddr, unsigned long size)
--{
--	return __ioremap(physaddr, size, 0);
--}
--
--static inline void __iomem *ioremap_nocache(unsigned long physaddr,
--						unsigned long size)
--{
--	return __ioremap(physaddr, size, 0);
--}
--
- static inline void iounmap(void __iomem *addr)
- {
- 	__iounmap(addr);
- }
- 
--#define ioremap_nocache ioremap_nocache
--#define ioremap_wc ioremap_nocache
--#define ioremap_wt ioremap_nocache
-+#define ioremap_nocache ioremap
-+#define ioremap_wc ioremap
-+#define ioremap_wt ioremap
- 
- /* Pages to physical address... */
- #define page_to_phys(page)	virt_to_phys(page_to_virt(page))
-diff --git a/arch/nios2/mm/ioremap.c b/arch/nios2/mm/ioremap.c
-index 3a28177a01eb..7a1a27f3daa3 100644
---- a/arch/nios2/mm/ioremap.c
-+++ b/arch/nios2/mm/ioremap.c
-@@ -112,8 +112,7 @@ static int remap_area_pages(unsigned long address, unsigned long phys_addr,
- /*
-  * Map some physical address range into the kernel address space.
-  */
--void __iomem *__ioremap(unsigned long phys_addr, unsigned long size,
--			unsigned long cacheflag)
-+void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
- {
- 	struct vm_struct *area;
- 	unsigned long offset;
-@@ -139,15 +138,6 @@ void __iomem *__ioremap(unsigned long phys_addr, unsigned long size,
- 				return NULL;
- 	}
- 
--	/*
--	 * Map uncached objects in the low part of address space to
--	 * CONFIG_NIOS2_IO_REGION_BASE
--	 */
--	if (IS_MAPPABLE_UNCACHEABLE(phys_addr) &&
--	    IS_MAPPABLE_UNCACHEABLE(last_addr) &&
--	    !(cacheflag & _PAGE_CACHED))
--		return (void __iomem *)(CONFIG_NIOS2_IO_REGION_BASE + phys_addr);
--
- 	/* Mappings have to be page-aligned */
- 	offset = phys_addr & ~PAGE_MASK;
- 	phys_addr &= PAGE_MASK;
-@@ -158,14 +148,13 @@ void __iomem *__ioremap(unsigned long phys_addr, unsigned long size,
- 	if (!area)
- 		return NULL;
- 	addr = area->addr;
--	if (remap_area_pages((unsigned long) addr, phys_addr, size,
--		cacheflag)) {
-+	if (remap_area_pages((unsigned long) addr, phys_addr, size, 0)) {
- 		vunmap(addr);
- 		return NULL;
- 	}
- 	return (void __iomem *) (offset + (char *)addr);
- }
--EXPORT_SYMBOL(__ioremap);
-+EXPORT_SYMBOL(ioremap);
- 
- /*
-  * __iounmap unmaps nearly everything, so be careful
+On 10/13/2019 11:15 PM, Oleksij Rempel wrote:
+> Provide basic support for Atheros AR9331 build-in switch. So far it
+> works as port multiplexer without any hardware offloading support.
+
+I glanced through the functional parts of the code, and it looks pretty
+straight forward, since there is no offloading done so far, do you plan
+on adding bridge offload eventually if nothing more?
+
+When you submit v2, I would suggest splitting the tagger code from the
+switch driver code, just to make them easier to review.
+
+Thanks!
 -- 
-2.20.1
-
+Florian

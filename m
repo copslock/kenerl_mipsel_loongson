@@ -2,165 +2,121 @@ Return-Path: <SRS0=Js7N=YK=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6313ECE58E
-	for <linux-mips@archiver.kernel.org>; Thu, 17 Oct 2019 11:36:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C2CBDECE58D
+	for <linux-mips@archiver.kernel.org>; Thu, 17 Oct 2019 17:46:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 971E520659
-	for <linux-mips@archiver.kernel.org>; Thu, 17 Oct 2019 11:36:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9CFE621925
+	for <linux-mips@archiver.kernel.org>; Thu, 17 Oct 2019 17:46:06 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iE6P0o04"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="RjRieJd8"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391191AbfJQLgq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 17 Oct 2019 07:36:46 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:38492 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391251AbfJQLgq (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 17 Oct 2019 07:36:46 -0400
-Received: by mail-oi1-f194.google.com with SMTP id m16so1847163oic.5
-        for <linux-mips@vger.kernel.org>; Thu, 17 Oct 2019 04:36:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ek2+c1gCnkTxEM4APFDQa44Mx9QjBoPczi35Tjcy5EY=;
-        b=iE6P0o043pzZI0I+i9GA6LZMTbL9fxZUIPH9LDIEgHhMyjDd7JKvpFB8aMurQ8eE1+
-         XEV7iTOoVAqumk4RwoUqIKcd8cyXh1jQlnLeysieMQn5uPn3sSOtfyKQtmTvxZG9MTuI
-         ezBLdO5qjaoGPbwrTiWrdl7jys0uDlRf3RcBU80ItZ1c+4axF2asWmDtx5XnBigxDHvE
-         l2mKnTEuRtmj40k4L3pED0n9SPOs2cjYYIMWqV3yZo5NOCE9+JZbfjt4XyqGiUDBXefN
-         PTnJ3T7HAlhZCRzz2GDZLFmhqtGgfPQmGv6aaKyVyt56A3ogZahablhYyoF6yWkfIGgS
-         W/Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ek2+c1gCnkTxEM4APFDQa44Mx9QjBoPczi35Tjcy5EY=;
-        b=QP4A/exJCV8RsyWwuJF73rDGwtl4+QwBAPvIL6wsTfQGhDnqb51jXll4p5eForUHhY
-         hcbXpQz7+3FdvTLlEMhFssYLRH8wA86aUeExDUXND83SHEHTVTP/vcR2ETJ1Q2vN6RWy
-         iaLqooqGPmCEzFvDdGtiA1j1QNjD9YdbRPIQYabjkJuCloQTkrBmkrjn2i8U7/0HuGV5
-         mrDLlQaaLfYVMNziloQZ914NhQ3FxJzwbAUJ7+e62bI0WoNzC+WLHgCERjGmf7He4DEn
-         BH4qop4MyBf8IZUCsAZhej6XemfKfrHqgWtd286hxKxigXytdn9oT60rA8ydB/pJNy/7
-         /xJQ==
-X-Gm-Message-State: APjAAAXucVGPTxvHCI+z7Q3oVrJ3du7sv4efECBmfIX81AU5/8N5yYWn
-        ks6UHAIbW1Ywv/V3eouKhJY++wcbUF4bptBFVaw=
-X-Google-Smtp-Source: APXvYqymEtzfglS3sll2XGoZy7Jy+Hh+ixoRUBQy3Pd9Cj1T7S7G5Mn2LcRcU8DFm3CPbj1MzzMR0aVY495z9Ub7zUY=
-X-Received: by 2002:aca:d44e:: with SMTP id l75mr2809435oig.44.1571312203428;
- Thu, 17 Oct 2019 04:36:43 -0700 (PDT)
+        id S2440764AbfJQRqG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 17 Oct 2019 13:46:06 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:52566 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2440688AbfJQRqF (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 17 Oct 2019 13:46:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
+        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=LVEPu9/s1693dWfYlkD3Fqnhr0FkMtGhuRv/aJrvhOg=; b=RjRieJd82TpPK9jRpIQFlwUQn8
+        rXPon9JuYUTZmAL1n9JR2nFjDASe7YxIYzEgRNyPtsyXMNApyap2c3pldQe89O0UfWLoJ4sAbFUYE
+        yZFJqWKO35Vs7y7rWCsospb60FEjg9xxZyW/mCPccwxfH7qilMgMbY/A3IQRzjr/Ba13SUirLL73V
+        JM+jcEr6RD+KtbH1A7hv86+6wW1A7zez/feRzYtKgaVDp8Hp8W+h2pUq62Cx0Q/DeJXyVj+ee6eQH
+        2FtyfR8VKesOj1hdWsKfZ5DX/5o1uzAMjExm0qBhF/Fce5kYtW4LLLmh36+5rSFLWUWNavpjBNHCa
+        sRP3HyLg==;
+Received: from [2001:4bb8:18c:d7b:c70:4a89:bc61:3] (helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1iL9qb-0005Rn-DA; Thu, 17 Oct 2019 17:46:01 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org
+Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-mtd@lists.infradead.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 02/21] unicore32: remove ioremap_cached
+Date:   Thu, 17 Oct 2019 19:45:35 +0200
+Message-Id: <20191017174554.29840-3-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191017174554.29840-1-hch@lst.de>
+References: <20191017174554.29840-1-hch@lst.de>
 MIME-Version: 1.0
-References: <CAMhs-H93MvRBPpR2ra33wf667V_wyDmQGWY0n_rB=puq_aBGog@mail.gmail.com>
- <87v9sopd5f.fsf@notabene.neil.brown.name> <CAMhs-H9p7aLah05ua5uRJMmLWjqq4DvnYsFVv6qGBaQcuQ2nVQ@mail.gmail.com>
-In-Reply-To: <CAMhs-H9p7aLah05ua5uRJMmLWjqq4DvnYsFVv6qGBaQcuQ2nVQ@mail.gmail.com>
-From:   Sergio Paracuellos <sergio.paracuellos@gmail.com>
-Date:   Thu, 17 Oct 2019 13:36:32 +0200
-Message-ID: <CAMhs-H8e7zmnyaQ5XgxjVfZSjzfWd7BN7__1H8th_LTGk2AHYA@mail.gmail.com>
-Subject: Re: PCI support for SOC_MT7621
-To:     NeilBrown <neil@brown.name>
-Cc:     hauke@hauke-m.de, paul.burton@mips.com, linux-mips@vger.kernel.org,
-        ralf@linux-mips.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, Oct 17, 2019 at 8:12 AM Sergio Paracuellos
-<sergio.paracuellos@gmail.com> wrote:
->
-> Hi Neil,
->
-> On Wed, Oct 16, 2019 at 11:57 PM NeilBrown <neil@brown.name> wrote:
-> >
-> > On Wed, Oct 16 2019, Sergio Paracuellos wrote:
-> >
-> > > Hi all,
-> > >
-> > > I have a concern about commit:
-> > >
-> > > c4d48cf5e2f0 ("MIPS: ralink: deactivate PCI support for SOC_MT7621")
-> > >
-> > > This commit make a regression for my kernel configuration for gnubee
-> > > board which is mt7621 SOC based and also has PCI. With this applied
-> > > PCI_DRIVERS_GENERIC is not selectable anymore and it becomes into a
-> > > PCI_DRIVERS_LEGACY configuration making impossible to compile
-> > > mt7621-pci driver for this board.
-> > >
-> > > I think this should be reverted. Am I missing something here?
-> >
-> > The commit reports a build error without the patch, and we don't want
-> > that.
->
-> I didn't understand properly the commit message. Yes, of course we
-> don't want a build
-> fail :).
->
-> > Maybe change the
-> >   select HAVE_PCI
-> > to
-> >   select HAVE_PCI if STAGING
-> > or
-> >   select HAVE_PCI if PCI_MT7621
->
-> I think the second one could be more accurate in this case.
+No users of ioremap_cached are left, remove it.
 
-Actually I tested this two changes with my current configuration.
-PCI_MT7621 depends on PCI so the second one gets into a recursive
-dependency problem. We can skip depends on PCI and only select
-PCI_DRIVERS_GENERIC in mt7621_pci Kconfig file to avoid this. The
-following change works,  but I don't know if this is the correct thing
-to do:
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ arch/unicore32/include/asm/io.h | 4 +---
+ arch/unicore32/mm/ioremap.c     | 8 --------
+ 2 files changed, 1 insertion(+), 11 deletions(-)
 
-$ git diff arch/mips/ralink/Kconfig drivers/staging/mt7621-pci/Kconfig
-diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
-index 1434fa60f3db..94e9ce994494 100644
---- a/arch/mips/ralink/Kconfig
-+++ b/arch/mips/ralink/Kconfig
-@@ -51,6 +51,7 @@ choice
-                select MIPS_GIC
-                select COMMON_CLK
-                select CLKSRC_MIPS_GIC
-+               select HAVE_PCI if PCI_MT7621
- endchoice
+diff --git a/arch/unicore32/include/asm/io.h b/arch/unicore32/include/asm/io.h
+index c71aa4b95996..4b460e01acfa 100644
+--- a/arch/unicore32/include/asm/io.h
++++ b/arch/unicore32/include/asm/io.h
+@@ -18,10 +18,9 @@
+ #include <asm-generic/io.h>
+ 
+ /*
+- * __uc32_ioremap and __uc32_ioremap_cached takes CPU physical address.
++ * __uc32_ioremap takes CPU physical address.
+  */
+ extern void __iomem *__uc32_ioremap(unsigned long, size_t);
+-extern void __iomem *__uc32_ioremap_cached(unsigned long, size_t);
+ extern void __uc32_iounmap(volatile void __iomem *addr);
+ 
+ /*
+@@ -32,7 +31,6 @@ extern void __uc32_iounmap(volatile void __iomem *addr);
+  *
+  */
+ #define ioremap(cookie, size)		__uc32_ioremap(cookie, size)
+-#define ioremap_cached(cookie, size)	__uc32_ioremap_cached(cookie, size)
+ #define ioremap_nocache(cookie, size)	__uc32_ioremap(cookie, size)
+ #define iounmap(cookie)			__uc32_iounmap(cookie)
+ 
+diff --git a/arch/unicore32/mm/ioremap.c b/arch/unicore32/mm/ioremap.c
+index cf6d656f240c..46a64bd6156a 100644
+--- a/arch/unicore32/mm/ioremap.c
++++ b/arch/unicore32/mm/ioremap.c
+@@ -220,14 +220,6 @@ __uc32_ioremap(unsigned long phys_addr, size_t size)
+ }
+ EXPORT_SYMBOL(__uc32_ioremap);
+ 
+-void __iomem *
+-__uc32_ioremap_cached(unsigned long phys_addr, size_t size)
+-{
+-	return __uc32_ioremap_caller(phys_addr, size, MT_DEVICE_CACHED,
+-			__builtin_return_address(0));
+-}
+-EXPORT_SYMBOL(__uc32_ioremap_cached);
+-
+ void __uc32_iounmap(volatile void __iomem *io_addr)
+ {
+ 	void *addr = (void *)(PAGE_MASK & (unsigned long)io_addr);
+-- 
+2.20.1
 
- choice
-diff --git a/drivers/staging/mt7621-pci/Kconfig
-b/drivers/staging/mt7621-pci/Kconfig
-index af928b75a940..ce58042f2f21 100644
---- a/drivers/staging/mt7621-pci/Kconfig
-+++ b/drivers/staging/mt7621-pci/Kconfig
-@@ -2,7 +2,6 @@
- config PCI_MT7621
-        tristate "MediaTek MT7621 PCI Controller"
-        depends on RALINK
--       depends on PCI
-        select PCI_DRIVERS_GENERIC
-        help
-          This selects a driver for the MediaTek MT7621 PCI Controller.
-
-In the other hand, the "select HAVE_PCI if STAGING" one works as it is.
-
-Thanks,
-    Sergio Paracuellos
->
-> >
-> > Hauke: do either of those fix your compile error?
-> >
->
-> If so, I don't have any problem to send a patch with this fixed if you
-> are busy. Just let me know.
->
-> > Thanks,
-> > NeilBrown
->
-> Best regards,
->     Sergio Paracuellos
-> >
-> >
-> > >
-> > > Thanks in advance for your time.
-> > >
-> > > Best regards,
-> > >     Sergio Paracuellos

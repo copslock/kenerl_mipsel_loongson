@@ -2,40 +2,40 @@ Return-Path: <SRS0=Js7N=YK=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+X-Spam-Status: No, score=-9.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB582ECE58D
-	for <linux-mips@archiver.kernel.org>; Thu, 17 Oct 2019 17:46:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 960F6FA372A
+	for <linux-mips@archiver.kernel.org>; Thu, 17 Oct 2019 17:46:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C597E2089C
-	for <linux-mips@archiver.kernel.org>; Thu, 17 Oct 2019 17:46:24 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 732A521D7D
+	for <linux-mips@archiver.kernel.org>; Thu, 17 Oct 2019 17:46:35 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="QSTEOTcl"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="b9du5QRg"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437050AbfJQRqE (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 17 Oct 2019 13:46:04 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:52462 "EHLO
+        id S2437065AbfJQRqb (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 17 Oct 2019 13:46:31 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:54256 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389827AbfJQRqD (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 17 Oct 2019 13:46:03 -0400
+        with ESMTP id S1727794AbfJQRqb (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 17 Oct 2019 13:46:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=xCRQFy9+IPozuA6foR1LSQETFb0B/WIEsA+BjHPyM30=; b=QSTEOTclGysuQmJmkIo0siPhK
-        /pLUUoz+i79TA+VG6nSlISLGCLkIr1ggrDZvwpQ3NLEg2QUFoisPbZwaVnxaG5RDV8OjPBPKoCVdh
-        tfOsZTOmTulSBDEkEOjLWPRM099VRngsLVn0kVNc3mZdqizosIMTpCNj/RDDgkVqS/GifxjwsRaqP
-        J+Qjadf6dtwYvxkn7ev6qVAfQliw55xpUjhcCgKVqqUPIFO6BH6iBpmm8fYCRFRgPGB4MIxI2E9on
-        RxttYwCplOf4tQOQpkPNU8QczjCt5DUUHhczA9nf9o/yof+J21QHemhfr90FGfBiGTUmrEb/M6V5p
-        dd9W3DXFw==;
+        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
+        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=ZcYpG77DrI4zIeJSB2UM1Pr1UMrxQ6cFx59Cqt/5V3Q=; b=b9du5QRgW+WmDcQUheOwDZ7nov
+        NQgC3ouXuEYzjC5Ahka0oGzf6OBZXNP/TIGQpgQJOmTH8DPD9apYROqFk209osC824xYnsBAZU5H2
+        YI+mTl3djs9VFFa7ysvUctY4mn7EN/CAU5gMJviy52CRIX+80a2CnmS56H/5F8TDicrXBTl963fCJ
+        ZUBW9YC7oJ3U7j2XVQh47GMwddnkjIfAE+xz/ydj1gQtWcBq+jxWbg3a5NmnwmlkbZXKgJcUVa1Hi
+        clmCx4rzZaIa6eccsJBdO6G/hwBI7ZvD3J9sn6K6Z/YGz7gB3RxXJoMiRj6vSm+88Va4dk+ZSDmtT
+        pMyHX9VQ==;
 Received: from [2001:4bb8:18c:d7b:c70:4a89:bc61:3] (helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1iL9qW-0005RL-Hy; Thu, 17 Oct 2019 17:45:56 +0000
+        id 1iL9qg-0005ZM-EJ; Thu, 17 Oct 2019 17:46:06 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
         Michal Simek <monstr@monstr.eu>,
@@ -52,10 +52,12 @@ Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
         sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         linux-mtd@lists.infradead.org, linux-arch@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: generic ioremap (and lots of cleanups) v2
-Date:   Thu, 17 Oct 2019 19:45:33 +0200
-Message-Id: <20191017174554.29840-1-hch@lst.de>
+Subject: [PATCH 04/21] hexagon: clean up ioremap
+Date:   Thu, 17 Oct 2019 19:45:37 +0200
+Message-Id: <20191017174554.29840-5-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191017174554.29840-1-hch@lst.de>
+References: <20191017174554.29840-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
@@ -64,25 +66,65 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi all,
+Use ioremap as the main implemented function, and defined
+ioremap_nocache to it as a deprecated alias.
 
-the last patches in this series add a generic ioremap implementation,
-and switch our 3 most recent and thus most tidy architeture ports over
-to use it.  With a little work and an additional arch hook or two the
-implementation should be able to eventually cover more than half of
-our ports.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ arch/hexagon/include/asm/io.h       | 11 ++---------
+ arch/hexagon/kernel/hexagon_ksyms.c |  2 +-
+ arch/hexagon/mm/ioremap.c           |  2 +-
+ 3 files changed, 4 insertions(+), 11 deletions(-)
 
-The patches before that clean up various lose ends in the ioremap
-and iounmap implementations.
+diff --git a/arch/hexagon/include/asm/io.h b/arch/hexagon/include/asm/io.h
+index ba1a444d55b3..89537dc1cf97 100644
+--- a/arch/hexagon/include/asm/io.h
++++ b/arch/hexagon/include/asm/io.h
+@@ -171,16 +171,9 @@ static inline void writel(u32 data, volatile void __iomem *addr)
+ #define writew_relaxed __raw_writew
+ #define writel_relaxed __raw_writel
+ 
+-/*
+- * Need an mtype somewhere in here, for cache type deals?
+- * This is probably too long for an inline.
+- */
+-void __iomem *ioremap_nocache(unsigned long phys_addr, unsigned long size);
++void __iomem *ioremap(unsigned long phys_addr, unsigned long size);
++#define ioremap_nocache ioremap
+ 
+-static inline void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
+-{
+-	return ioremap_nocache(phys_addr, size);
+-}
+ 
+ static inline void iounmap(volatile void __iomem *addr)
+ {
+diff --git a/arch/hexagon/kernel/hexagon_ksyms.c b/arch/hexagon/kernel/hexagon_ksyms.c
+index cf8974beb500..b3dbb472572e 100644
+--- a/arch/hexagon/kernel/hexagon_ksyms.c
++++ b/arch/hexagon/kernel/hexagon_ksyms.c
+@@ -20,7 +20,7 @@ EXPORT_SYMBOL(__vmgetie);
+ EXPORT_SYMBOL(__vmsetie);
+ EXPORT_SYMBOL(__vmyield);
+ EXPORT_SYMBOL(empty_zero_page);
+-EXPORT_SYMBOL(ioremap_nocache);
++EXPORT_SYMBOL(ioremap);
+ EXPORT_SYMBOL(memcpy);
+ EXPORT_SYMBOL(memset);
+ 
+diff --git a/arch/hexagon/mm/ioremap.c b/arch/hexagon/mm/ioremap.c
+index 77d8e1e69e9b..b103d83b5fbb 100644
+--- a/arch/hexagon/mm/ioremap.c
++++ b/arch/hexagon/mm/ioremap.c
+@@ -9,7 +9,7 @@
+ #include <linux/vmalloc.h>
+ #include <linux/mm.h>
+ 
+-void __iomem *ioremap_nocache(unsigned long phys_addr, unsigned long size)
++void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
+ {
+ 	unsigned long last_addr, addr;
+ 	unsigned long offset = phys_addr & ~PAGE_MASK;
+-- 
+2.20.1
 
-A git tree is also available here:
-
-    git://git.infradead.org/users/hch/misc.git generic-ioremap
-
-Gitweb:
-
-    http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/generic-ioremap
-
-Changes since v1:
- - dropped various patches already merged
- - keep the parts of the parisc EISA hack that are still needed

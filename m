@@ -1,116 +1,124 @@
-Return-Path: <SRS0=Eolf=YJ=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=Js7N=YK=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1CB9ECE599
-	for <linux-mips@archiver.kernel.org>; Wed, 16 Oct 2019 22:15:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC345FA372B
+	for <linux-mips@archiver.kernel.org>; Thu, 17 Oct 2019 06:12:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 88A38207FF
-	for <linux-mips@archiver.kernel.org>; Wed, 16 Oct 2019 22:15:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1571264122;
-	bh=yNitP2iKn20kPjUaPAMPUQgBIanvMDCJUVUCUUEFZbc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=Cm5haNtyjtuLkzkK2a+mvfJ7oXOb2zG1arv99XO3nY3dbKtEQxqj1oxzftl8AAew/
-	 WEojEMB8QvK42+jZOWM8kxgy7yQKxL/M7NnvI6yH4KH5wKQebOryjdVGHki9Q/syLR
-	 tx4kAEMylkaIFPhhvm9dbmb0GGlGUFCtlvhC5tQ0=
+	by mail.kernel.org (Postfix) with ESMTP id 7E20420854
+	for <linux-mips@archiver.kernel.org>; Thu, 17 Oct 2019 06:12:47 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m4zmf+hZ"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390292AbfJPVz0 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 16 Oct 2019 17:55:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46054 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733200AbfJPVz0 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 16 Oct 2019 17:55:26 -0400
-Received: from localhost (unknown [192.55.54.58])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 690C121A4C;
-        Wed, 16 Oct 2019 21:55:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571262925;
-        bh=yNitP2iKn20kPjUaPAMPUQgBIanvMDCJUVUCUUEFZbc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mCNoPUJ1mBrJ9+YdPUtmz9p/KUnoJhQm2tnft5IgzOImhv5qNrqesEppam24S2DTb
-         GetzTDRg9oWqjcfv8O+vAqoIT/XnoeJmyfYbuuMDau+44xonIKRaRUChkCNc3D++tR
-         l2DwQcji87atWsMEZIp9WjFP7VAw4KWE7sVKDSFo=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        linux-mips@vger.kernel.org
-Subject: [PATCH 4.9 85/92] MIPS: Disable Loongson MMI instructions for kernel build
-Date:   Wed, 16 Oct 2019 14:50:58 -0700
-Message-Id: <20191016214847.735987212@linuxfoundation.org>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191016214759.600329427@linuxfoundation.org>
-References: <20191016214759.600329427@linuxfoundation.org>
-User-Agent: quilt/0.66
+        id S2406923AbfJQGMr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 17 Oct 2019 02:12:47 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:33665 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404742AbfJQGMr (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 17 Oct 2019 02:12:47 -0400
+Received: by mail-oi1-f195.google.com with SMTP id a15so1191994oic.0
+        for <linux-mips@vger.kernel.org>; Wed, 16 Oct 2019 23:12:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6zGP7XWO1mWnff+KUL0g9XkyMVILW7Y0K8/uWlCOBz0=;
+        b=m4zmf+hZVqXy9bdeZxqO1dlB7xhjjv6vvTkzJNHb+PhFPQkonyosorHPAaOlhziD5F
+         pXeY349JIdUKXFmJVc51x1SpJHcWHqiIG8+ERzEYIdUtNDRKEh39nlw/6bvVsSieMWbw
+         OeRKWkiNZfG078VpL6/OrLBAWdCLH23mDwGR8wVMy4xGwladaviLHstWDUXjCvOkJCMx
+         Hqk138seU3eDQPBoVoqIYiRIh8RTJZhvYuXMMXsr8fa6LgH8OBc0RTibrhd9ulo+A7Gg
+         LIJbtG1I2xHfCfwhU+F28EP5dTIpjoYpM25cGFjXfC5RbxIYicew4UQr+nK9AaTnmMVq
+         lwIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6zGP7XWO1mWnff+KUL0g9XkyMVILW7Y0K8/uWlCOBz0=;
+        b=eeThs3sSFB2RlXPXr+5GyaZFSLTGhA0mAJCMfREEA2JMTZalSNQDlAfDX5cP0dptwc
+         zO4pYpzgP2mnXhHibXKku15353Rv0M2nQL0yFueHZ+hJ6xJCfrdmqOolxZBpV7SiGoae
+         ta4qSPZTyaQAoYj0dn1mURRalLPz9j1CHi+V5n/XgsujAx0wDj2Hz32AogWftIv3aNQo
+         PITwGv4Iny8MXYDDsgM3Q4XrykTXJ27TIg4ng6fwaNC9UQDcyFnE074mH2jf6bGSlneg
+         xNxAcRNlM/hxXms2MSjDFR11eY9q47X5jr025PinFdOSK++dSgCT+hS7Q7rGvUVfDP65
+         Wi8w==
+X-Gm-Message-State: APjAAAWbrCtfk6zs/yCORQ24jROfCVd13JIokezusT1rncJ+0o4MLoun
+        mYudLcAvi55SEVLrcxjIk1c28AFIugV+geOE7ehW0BcH
+X-Google-Smtp-Source: APXvYqwG67dZ/Du1xu6ACwT4FqZdAGw62Lk/iu6mBeGcJGqRwrIjOmAJYqtneFpE6ubJA/mJO8PHGiT9ld2xOWcAenQ=
+X-Received: by 2002:aca:ab86:: with SMTP id u128mr1782866oie.29.1571292766182;
+ Wed, 16 Oct 2019 23:12:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <CAMhs-H93MvRBPpR2ra33wf667V_wyDmQGWY0n_rB=puq_aBGog@mail.gmail.com>
+ <87v9sopd5f.fsf@notabene.neil.brown.name>
+In-Reply-To: <87v9sopd5f.fsf@notabene.neil.brown.name>
+From:   Sergio Paracuellos <sergio.paracuellos@gmail.com>
+Date:   Thu, 17 Oct 2019 08:12:35 +0200
+Message-ID: <CAMhs-H9p7aLah05ua5uRJMmLWjqq4DvnYsFVv6qGBaQcuQ2nVQ@mail.gmail.com>
+Subject: Re: PCI support for SOC_MT7621
+To:     NeilBrown <neil@brown.name>
+Cc:     hauke@hauke-m.de, paul.burton@mips.com, linux-mips@vger.kernel.org,
+        ralf@linux-mips.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Paul Burton <paul.burton@mips.com>
+Hi Neil,
 
-commit 2f2b4fd674cadd8c6b40eb629e140a14db4068fd upstream.
+On Wed, Oct 16, 2019 at 11:57 PM NeilBrown <neil@brown.name> wrote:
+>
+> On Wed, Oct 16 2019, Sergio Paracuellos wrote:
+>
+> > Hi all,
+> >
+> > I have a concern about commit:
+> >
+> > c4d48cf5e2f0 ("MIPS: ralink: deactivate PCI support for SOC_MT7621")
+> >
+> > This commit make a regression for my kernel configuration for gnubee
+> > board which is mt7621 SOC based and also has PCI. With this applied
+> > PCI_DRIVERS_GENERIC is not selectable anymore and it becomes into a
+> > PCI_DRIVERS_LEGACY configuration making impossible to compile
+> > mt7621-pci driver for this board.
+> >
+> > I think this should be reverted. Am I missing something here?
+>
+> The commit reports a build error without the patch, and we don't want
+> that.
 
-GCC 9.x automatically enables support for Loongson MMI instructions when
-using some -march= flags, and then errors out when -msoft-float is
-specified with:
+I didn't understand properly the commit message. Yes, of course we
+don't want a build
+fail :).
 
-  cc1: error: ‘-mloongson-mmi’ must be used with ‘-mhard-float’
+> Maybe change the
+>   select HAVE_PCI
+> to
+>   select HAVE_PCI if STAGING
+> or
+>   select HAVE_PCI if PCI_MT7621
 
-The kernel shouldn't be using these MMI instructions anyway, just as it
-doesn't use floating point instructions. Explicitly disable them in
-order to fix the build with GCC 9.x.
+I think the second one could be more accurate in this case.
 
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Fixes: 3702bba5eb4f ("MIPS: Loongson: Add GCC 4.4 support for Loongson2E")
-Fixes: 6f7a251a259e ("MIPS: Loongson: Add basic Loongson 2F support")
-Fixes: 5188129b8c9f ("MIPS: Loongson-3: Improve -march option and move it to Platform")
-Cc: Huacai Chen <chenhc@lemote.com>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: stable@vger.kernel.org # v2.6.32+
-Cc: linux-mips@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>
+> Hauke: do either of those fix your compile error?
+>
 
----
- arch/mips/loongson64/Platform |    4 ++++
- arch/mips/vdso/Makefile       |    1 +
- 2 files changed, 5 insertions(+)
+If so, I don't have any problem to send a patch with this fixed if you
+are busy. Just let me know.
 
---- a/arch/mips/loongson64/Platform
-+++ b/arch/mips/loongson64/Platform
-@@ -43,6 +43,10 @@ else
-       $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
- endif
- 
-+# Some -march= flags enable MMI instructions, and GCC complains about that
-+# support being enabled alongside -msoft-float. Thus explicitly disable MMI.
-+cflags-y += $(call cc-option,-mno-loongson-mmi)
-+
- #
- # Loongson Machines' Support
- #
---- a/arch/mips/vdso/Makefile
-+++ b/arch/mips/vdso/Makefile
-@@ -8,6 +8,7 @@ ccflags-vdso := \
- 	$(filter -mmicromips,$(KBUILD_CFLAGS)) \
- 	$(filter -march=%,$(KBUILD_CFLAGS)) \
- 	$(filter -m%-float,$(KBUILD_CFLAGS)) \
-+	$(filter -mno-loongson-%,$(KBUILD_CFLAGS)) \
- 	-D__VDSO__
- cflags-vdso := $(ccflags-vdso) \
- 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
+> Thanks,
+> NeilBrown
 
-
+Best regards,
+    Sergio Paracuellos
+>
+>
+> >
+> > Thanks in advance for your time.
+> >
+> > Best regards,
+> >     Sergio Paracuellos

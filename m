@@ -2,85 +2,68 @@ Return-Path: <SRS0=V1LD=YM=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.0 required=3.0 tests=DATE_IN_PAST_12_24,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 95A64CA9EAC
-	for <linux-mips@archiver.kernel.org>; Sat, 19 Oct 2019 10:01:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDE7ECA9EAC
+	for <linux-mips@archiver.kernel.org>; Sat, 19 Oct 2019 10:09:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6C933222CC
-	for <linux-mips@archiver.kernel.org>; Sat, 19 Oct 2019 10:01:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 97492222C2
+	for <linux-mips@archiver.kernel.org>; Sat, 19 Oct 2019 10:09:19 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=zoho.com header.i=zhouyanjie@zoho.com header.b="tLNICXL2"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725294AbfJSKBs (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 19 Oct 2019 06:01:48 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59086 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725283AbfJSKBs (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 19 Oct 2019 06:01:48 -0400
-Received: from [5.158.153.52] (helo=nanos.tec.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1iLlYH-0004Fy-IZ; Sat, 19 Oct 2019 12:01:37 +0200
-Date:   Sat, 19 Oct 2019 12:01:32 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Huacai Chen <chenhc@lemote.com>
-cc:     Andy Lutomirski <luto@kernel.org>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Paul Burton <paul.burton@mips.com>,
-        "open list:MIPS" <linux-mips@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH] lib/vdso: Use __arch_use_vsyscall() to indicate
- fallback
-In-Reply-To: <CAAhV-H6VkW5-hMOrzAQeyHT4pYGExZR6eTRbPHSPK50GAkigCw@mail.gmail.com>
-Message-ID: <alpine.DEB.2.21.1910191156240.2098@nanos.tec.linutronix.de>
-References: <1571367619-13573-1-git-send-email-chenhc@lemote.com> <CALCETrWXRgkQOJGRqa_sOLAG2zhjsEX6b86T2VTsNYN9ECRrtA@mail.gmail.com> <CAAhV-H6VkW5-hMOrzAQeyHT4pYGExZR6eTRbPHSPK50GAkigCw@mail.gmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        id S1725802AbfJSKJT (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 19 Oct 2019 06:09:19 -0400
+Received: from sender4-pp-o94.zoho.com ([136.143.188.94]:25470 "EHLO
+        sender4-pp-o94.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725283AbfJSKJT (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 19 Oct 2019 06:09:19 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1571479746; cv=none; 
+        d=zohomail.com; s=zohoarc; 
+        b=VYWEkVUxzQsMvEpvVJp6tvF1x3aj4gwASVCAIC1y9BSAduwHCOgufuaJmdAmxOAtsExv3XemkuC1dEBOnRU+zwfcPCgl861K2YEk7gyokcTqzZB/SWIvG/XHux8Fk0E9hMTQlgYqNV7ivzaGZMq3nlQfFaBQTizDgKBOp7zBdcw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+        t=1571479746; h=Cc:Date:From:Message-ID:Subject:To; 
+        bh=dvfTK6kVeJKRxeJGL61f1+aGjYpZxdw1hrHuyx+0Vcs=; 
+        b=GMvKYpo5rvJJg70Et6aU5X1aBDT24Q3h9HGyNhBMBcpBf+1rx2azJtg0mgLtAo8kddxX0XWu72e8VPDhG47gFmfdlxbWTR6a4iE2eiQX30OUdBq77Q5vmwkZrxGmDVbcUGwL3H9kh34wW2MRRCGy2Uzfpoqm+mol3TyfJ7wzIkM=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+        dkim=pass  header.i=zoho.com;
+        spf=pass  smtp.mailfrom=zhouyanjie@zoho.com;
+        dmarc=pass header.from=<zhouyanjie@zoho.com> header.from=<zhouyanjie@zoho.com>
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; 
+  s=zapps768; d=zoho.com; 
+  h=from:to:cc:subject:date:message-id; 
+  b=TKWoavtXZ8e7ugaswr75mdJSrk8Rv7fFczhyYV8chR7WjhDOKD6lQHLIaFeAf9jRNRVtfzACj0QO
+    +qwghgRI2DNqA8iBVaZ5/nJrBqr5hMIFCG2E8ROeQrsjbaczHhdy  
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1571479746;
+        s=zm2019; d=zoho.com; i=zhouyanjie@zoho.com;
+        h=From:To:Cc:Subject:Date:Message-Id; l=128;
+        bh=dvfTK6kVeJKRxeJGL61f1+aGjYpZxdw1hrHuyx+0Vcs=;
+        b=tLNICXL2wdI88TP2i8QjwRS9WNFl9aLUcYWrmryrO/0V9MtgHFExfwbOEoaeglBl
+        md/XjmLYafs9nyFl7xgwtiWFhGAYkCs8gclRkfIPlVQ+fQYY3Qi/xH7R/EMmCAcj6lk
+        1X7OKWwzeTi7sd/ZVy4Zs3DqoN35qxz2axsivewg=
+Received: from localhost.localdomain (171.221.113.199 [171.221.113.199]) by mx.zohomail.com
+        with SMTPS id 1571479745260262.45412969470283; Sat, 19 Oct 2019 03:09:05 -0700 (PDT)
+From:   Zhou Yanjie <zhouyanjie@zoho.com>
+To:     linux-mips@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org,
+        paul.burton@mips.com, sboyd@kernel.org, mark.rutland@arm.com,
+        syq@debian.org, mturquette@baylibre.com, paul@crapouillou.net
+Subject: clk: X1000: Add support for the X1000.
+Date:   Sat, 19 Oct 2019 01:50:04 +0800
+Message-Id: <1571421006-12771-1-git-send-email-zhouyanjie@zoho.com>
+X-Mailer: git-send-email 2.7.4
+X-ZohoMailClient: External
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Sat, 19 Oct 2019, Huacai Chen wrote:
-> On Fri, Oct 18, 2019 at 11:15 AM Andy Lutomirski <luto@kernel.org> wrote:
-> >
-> > On Thu, Oct 17, 2019 at 7:57 PM Huacai Chen <chenhc@lemote.com> wrote:
-> > >
-> > > In do_hres(), we currently use whether the return value of __arch_get_
-> > > hw_counter() is negtive to indicate fallback, but this is not a good
-> > > idea. Because:
-> > >
-> > > 1, ARM64 returns ULL_MAX but MIPS returns 0 when clock_mode is invalid;
-> > > 2, For a 64bit counter, a "negtive" value of counter is actually valid.
-> >
-> > s/negtive/negative
-> >
-> > What's the actual bug?  Is it that MIPS is returning 0 but the check
-> > is < 0?  Sounds like MIPS should get fixed.
-> My original bug is what Vincenzo said, MIPS has a boot failure if no
-> valid clock_mode, and surely MIPS need to fix. However, when I try to
-> fix it, I found that clock_getres() has another problem, because
-> __cvdso_clock_getres_common() get vd[CS_HRES_COARSE].hrtimer_res, but
-> hrtimer_res is set in update_vdso_data() which relies on
-> __arch_use_vsyscall().
+1.Add the clock bindings for X1000 from Ingenic.
+2.Add support for the clocks provided by the CGU in the
+  Ingenic X1000 SoC.
 
-__arch_use_vsyscall() is a pointless exercise TBH. The VDSO data should be
-updated unconditionally so all the trivial interfaces like time() and
-getres() just work independently of the functions which depend on the
-underlying clocksource.
 
-This functions have a fallback operation already:
-
-Let __arch_get_hw_counter() return U64_MAX and the syscall fallback is
-invoked.
-
-__arch_use_vsyscall() should just be removed.
-
-Thanks,
-
-	tglx

@@ -4,101 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4614CA9EA0
-	for <linux-mips@archiver.kernel.org>; Fri, 18 Oct 2019 22:25:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32AF4CA9EA0
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Oct 2019 22:38:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9DE85222D4
-	for <linux-mips@archiver.kernel.org>; Fri, 18 Oct 2019 22:25:41 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F041020679
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Oct 2019 22:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1571437541;
-	bh=aegePsCGy2VO/H5hhQQ8jO5KqxsWMEzetylC96FYYSU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=Hhi7Wi3561eTLMxhnd/7FJDHyrxFnjL+mvNAcRDqLAslCrPKQsZv5g8eXAadO7M8b
-	 35aASzroH54ireaWrZ9rsG03W6KZ6e2fx2sNlMLH7QmMrqmbyZ9PWJCEsBwRs+lbYj
-	 NJ5s7pm9ITkrbSlGMgtO2uajTHxJvESx+n0Jsxn8=
+	s=default; t=1571438327;
+	bh=jM4Goa48/057ifaOVHH6TbSxGZjYLqGFPU3PfO6Pz7Q=;
+	h=From:To:Cc:Subject:Date:List-ID:From;
+	b=VZwVGFkmyQfupxG6gtu/eDR2M3zDLLhHyF1hwNcEV0LJIVGlQzj0AKoqufwAP2fsY
+	 /vYF8u67YrHTL5Fz7iZk5qoh04KIeXDDqp+EKa6+XCZY7g2HQNxOImnLZZg5MsMhKA
+	 6LGIYoXO0XanvpbOqbWSOzzR0zC7ZKsMALgNr05A=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728337AbfJRWEd (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 18 Oct 2019 18:04:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36204 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728300AbfJRWEd (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 18 Oct 2019 18:04:33 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3D80B222C6;
-        Fri, 18 Oct 2019 22:04:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571436272;
-        bh=aegePsCGy2VO/H5hhQQ8jO5KqxsWMEzetylC96FYYSU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kCV92dt+PWwTaQ1LW2JVAmVug0qJ3I7xhWReUFIV08buFa2TouvaodaWY4Qze0RMY
-         JwbgQyb2vnzR8hOhWsKNxztrx9MhlEmU8zlAcXXyY+7wXJu/VVWakemsm5xI869Rwd
-         jWYZsGjLrwbhbUXwXe7pfjanYAopA1/jNufKJoug=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>, linux-mips@linux-mips.org
-Subject: [PATCH AUTOSEL 5.3 51/89] MIPS: include: Mark __cmpxchg as __always_inline
-Date:   Fri, 18 Oct 2019 18:02:46 -0400
-Message-Id: <20191018220324.8165-51-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191018220324.8165-1-sashal@kernel.org>
-References: <20191018220324.8165-1-sashal@kernel.org>
+        id S1729993AbfJRWiq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 18 Oct 2019 18:38:46 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:39025 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727137AbfJRWiq (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 18 Oct 2019 18:38:46 -0400
+Received: by mail-pg1-f196.google.com with SMTP id p12so4112556pgn.6;
+        Fri, 18 Oct 2019 15:38:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yo3S+hyfYKNq/ZHf33K0uVY+A7IKQznZapvdjy8vwIw=;
+        b=ntD345JbaLKBRwJkiehtaJ+5h15cGRATFeL0h2JRKMXVU0wys+/gAbvUQ9xmru0Lpx
+         37sPP3etbeaBdetKGAz5Z5D/PHNzvllj9H91MdlX4xFuohw/p04Ro1CSkXZiDHJ8j+1w
+         cIVLFz018rZdhvny+rijj8LYeT+g+3ZRFom8+x/SzvbzBYVudBV2gdg7jbF454C0UbtS
+         /OcvRbxFu43sKIqJC2XuX5dRJznFV5EDSCfJ7EKzga+Rd308n5n9OLrBTkqUhhLfdEG3
+         FmuzXAeKLQ7PAJhecSj8n88tJQYeMYz/ZjIw/ZHUbouTMBj6MFJxLIFKssVzMtRYqTau
+         8zjQ==
+X-Gm-Message-State: APjAAAXQGRVKabDFf2msKUWuxlsG9GNOIA4IfGwV7sWez38vrE574NnA
+        OgfyQTyVLcOofhmo9Ts7uHw7ah3J0S5ljQ==
+X-Google-Smtp-Source: APXvYqzzjgItKlolv09ZwT2ybx7wwdoH99Swk8FdqieTY03YFdpM0U0kcWZ1GZ2I5B6cvy4hNJKqhg==
+X-Received: by 2002:a63:cf11:: with SMTP id j17mr12491485pgg.236.1571438324929;
+        Fri, 18 Oct 2019 15:38:44 -0700 (PDT)
+Received: from localhost ([2601:646:8a00:9810:5af3:56d9:f882:39d4])
+        by smtp.gmail.com with ESMTPSA id g4sm7130048pfo.33.2019.10.18.15.38.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Oct 2019 15:38:44 -0700 (PDT)
+From:   Paul Burton <paulburton@kernel.org>
+To:     linux-mips@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Paul Burton <paulburton@kernel.org>,
+        Dmitry Korotin <dkorotin@wavecomp.com>, stable@vger.kernel.org
+Subject: [PATCH] MIPS: tlbex: Fix build_restore_pagemask KScratch restore
+Date:   Fri, 18 Oct 2019 15:38:48 -0700
+Message-Id: <20191018223848.1128468-1-paulburton@kernel.org>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+build_restore_pagemask() will restore the value of register $1/$at when
+its restore_scratch argument is non-zero, and aims to do so by filling a
+branch delay slot. Commit 0b24cae4d535 ("MIPS: Add missing EHB in mtc0
+-> mfc0 sequence.") added an EHB instruction (Execution Hazard Barrier)
+prior to restoring $1 from a KScratch register, in order to resolve a
+hazard that can result in stale values of the KScratch register being
+observed. In particular, P-class CPUs from MIPS with out of order
+execution pipelines such as the P5600 & P6600 are affected.
 
-[ Upstream commit 88356d09904bc606182c625575237269aeece22e ]
+Unfortunately this EHB instruction was inserted in the branch delay slot
+causing the MFC0 instruction which performs the restoration to no longer
+execute along with the branch. The result is that the $1 register isn't
+actually restored, ie. the TLB refill exception handler clobbers it -
+which is exactly the problem the EHB is meant to avoid for the P-class
+CPUs.
 
-Commit ac7c3e4ff401 ("compiler: enable CONFIG_OPTIMIZE_INLINING
-forcibly") allows compiler to uninline functions marked as 'inline'.
-In cace of cmpxchg this would cause to reference function
-__cmpxchg_called_with_bad_pointer, which is a error case
-for catching bugs and will not happen for correct code, if
-__cmpxchg is inlined.
+Similarly build_get_pgd_vmalloc() will restore the value of $1/$at when
+its mode argument equals refill_scratch, and suffers from the same
+problem.
 
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
-[paul.burton@mips.com: s/__cmpxchd/__cmpxchg in subject]
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: linux-mips@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by in both cases moving the EHB earlier in the emitted code.
+There's no reason it needs to immediately precede the MFC0 - it simply
+needs to be between the MTC0 & MFC0.
+
+This bug only affects Cavium Octeon systems which use
+build_fast_tlb_refill_handler().
+
+Signed-off-by: Paul Burton <paulburton@kernel.org>
+Fixes: 0b24cae4d535 ("MIPS: Add missing EHB in mtc0 -> mfc0 sequence.")
+Cc: Dmitry Korotin <dkorotin@wavecomp.com>
+Cc: stable@vger.kernel.org # v3.15+
 ---
- arch/mips/include/asm/cmpxchg.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/mips/mm/tlbex.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/include/asm/cmpxchg.h b/arch/mips/include/asm/cmpxchg.h
-index c8a47d18f6288..319522fa3a45e 100644
---- a/arch/mips/include/asm/cmpxchg.h
-+++ b/arch/mips/include/asm/cmpxchg.h
-@@ -153,8 +153,9 @@ static inline unsigned long __xchg(volatile void *ptr, unsigned long x,
- extern unsigned long __cmpxchg_small(volatile void *ptr, unsigned long old,
- 				     unsigned long new, unsigned int size);
- 
--static inline unsigned long __cmpxchg(volatile void *ptr, unsigned long old,
--				      unsigned long new, unsigned int size)
-+static __always_inline
-+unsigned long __cmpxchg(volatile void *ptr, unsigned long old,
-+			unsigned long new, unsigned int size)
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index e01cb33bfa1a..41bb91f05688 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -653,6 +653,13 @@ static void build_restore_pagemask(u32 **p, struct uasm_reloc **r,
+ 				   int restore_scratch)
  {
- 	switch (size) {
- 	case 1:
+ 	if (restore_scratch) {
++		/*
++		 * Ensure the MFC0 below observes the value written to the
++		 * KScratch register by the prior MTC0.
++		 */
++		if (scratch_reg >= 0)
++			uasm_i_ehb(p);
++
+ 		/* Reset default page size */
+ 		if (PM_DEFAULT_MASK >> 16) {
+ 			uasm_i_lui(p, tmp, PM_DEFAULT_MASK >> 16);
+@@ -667,12 +674,10 @@ static void build_restore_pagemask(u32 **p, struct uasm_reloc **r,
+ 			uasm_i_mtc0(p, 0, C0_PAGEMASK);
+ 			uasm_il_b(p, r, lid);
+ 		}
+-		if (scratch_reg >= 0) {
+-			uasm_i_ehb(p);
++		if (scratch_reg >= 0)
+ 			UASM_i_MFC0(p, 1, c0_kscratch(), scratch_reg);
+-		} else {
++		else
+ 			UASM_i_LW(p, 1, scratchpad_offset(0), 0);
+-		}
+ 	} else {
+ 		/* Reset default page size */
+ 		if (PM_DEFAULT_MASK >> 16) {
+@@ -921,6 +926,10 @@ build_get_pgd_vmalloc64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
+ 	}
+ 	if (mode != not_refill && check_for_high_segbits) {
+ 		uasm_l_large_segbits_fault(l, *p);
++
++		if (mode == refill_scratch && scratch_reg >= 0)
++			uasm_i_ehb(p);
++
+ 		/*
+ 		 * We get here if we are an xsseg address, or if we are
+ 		 * an xuseg address above (PGDIR_SHIFT+PGDIR_BITS) boundary.
+@@ -939,12 +948,10 @@ build_get_pgd_vmalloc64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
+ 		uasm_i_jr(p, ptr);
+ 
+ 		if (mode == refill_scratch) {
+-			if (scratch_reg >= 0) {
+-				uasm_i_ehb(p);
++			if (scratch_reg >= 0)
+ 				UASM_i_MFC0(p, 1, c0_kscratch(), scratch_reg);
+-			} else {
++			else
+ 				UASM_i_LW(p, 1, scratchpad_offset(0), 0);
+-			}
+ 		} else {
+ 			uasm_i_nop(p);
+ 		}
 -- 
-2.20.1
+2.23.0
 

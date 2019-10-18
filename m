@@ -2,94 +2,93 @@ Return-Path: <SRS0=YN1v=YL=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 52752CA9EA0
-	for <linux-mips@archiver.kernel.org>; Fri, 18 Oct 2019 22:11:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 39FCECA9EAB
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Oct 2019 22:13:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 1D48620854
-	for <linux-mips@archiver.kernel.org>; Fri, 18 Oct 2019 22:11:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 011DB20854
+	for <linux-mips@archiver.kernel.org>; Fri, 18 Oct 2019 22:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1571436694;
-	bh=DuplhoRQredmAuojEW6TUPC1yPAM/K2dTnu2HW9tcM4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=oKBueT8FoNqwqP7vpzv9EFCi+RkNpSqeU9sYujx35IPwMp/z8hp1Ibxqsbjdpv1Th
-	 PvcmY/HutBgoWhiOkDjMTJ8kZMW0bBRoGjwapxAPOQaDK59id26umFZOBDa/uhL+CM
-	 KpukyOBFXb5jtEwcg8iJBKbCgiTYjLB2Xxk+AlOg=
+	s=default; t=1571436790;
+	bh=qtv9h+m7YbhoXKnIAaWLxWoNCZHkolR7CUl1IzvIhxM=;
+	h=Date:From:To:CC:CC:CC:Subject:References:In-Reply-To:List-ID:
+	 From;
+	b=IgXcbBWukoSr5411ggGoAs6EeNlAgPxhyAzId+N3iqIC7E9E4hX2xnHcwXlj3DnjL
+	 POkLvpUHudX1PXVonk4rB8TXmtIKLTqYW9ymheYxp/vzJ6LWR/PMJJvn+7PoE9UNlb
+	 UkLyCsrPona3Uxk/iz4cWF5wy5Wpth4L4wh3h9KM=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390450AbfJRWKg (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 18 Oct 2019 18:10:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43566 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390417AbfJRWKg (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 18 Oct 2019 18:10:36 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AE65A2248A;
-        Fri, 18 Oct 2019 22:10:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571436635;
-        bh=DuplhoRQredmAuojEW6TUPC1yPAM/K2dTnu2HW9tcM4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Aq77ZbIssFOVb3HNsZMeVE+0afuHXkmjw443EA8iv/vza7c9tzYIR1IaiALPAuXaA
-         Q5asNN91udoV28AXcHeO7nVMx/T6iqk0U/qOM5fj2rds2zJ//NXxr2MjnTdkcXM7W6
-         2O5R+h9OMOgJhMe5xQbvU8vmHIyOzuf3lSwX2g4k=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>, linux-mips@linux-mips.org
-Subject: [PATCH AUTOSEL 4.4 18/21] MIPS: fw: sni: Fix out of bounds init of o32 stack
-Date:   Fri, 18 Oct 2019 18:10:04 -0400
-Message-Id: <20191018221007.10851-18-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191018221007.10851-1-sashal@kernel.org>
-References: <20191018221007.10851-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+        id S2391900AbfJRWNJ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 18 Oct 2019 18:13:09 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:43728 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389659AbfJRWNI (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 18 Oct 2019 18:13:08 -0400
+Received: by mail-pg1-f195.google.com with SMTP id i32so4071811pgl.10
+        for <linux-mips@vger.kernel.org>; Fri, 18 Oct 2019 15:13:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:date:from:to:cc:cc:cc:subject
+         :references:in-reply-to;
+        bh=sr3QEcA3GgbqmcHwvh+Z+2ViZkXbU6OBPmKTa4Kdh54=;
+        b=kcNlL9vmMqJCPFzcyCrqECrkjFLlsUG4KrkpVmVo5K+MJOyv347UEW3jolCgE+I3EL
+         AqtpyHmnJEjZau5As22JugBDqkRCL9sMZPlR5yp01t9TbhwYEU/2BM7rU57i7Lszvyh1
+         MVmbulp2ssBRdjkNgJueDc9Bs3l+3U4SZY4j/D/wWH7NrxrMGSlC1vjm6CRtfiMhT3l2
+         w8ssSR7T7fHoA9OxJ5OrRB0H56CRa4XDi5pMHImX/IvlXxw3d9d4LeSddsZp672woKaB
+         Sjxc0Ro6b/TDzE8Sb1am2cPrL7u8xN6ZKWDPkFzFbfpA6X1gfPNCjQ51eBcylHFWoxgm
+         y4Uw==
+X-Gm-Message-State: APjAAAUC/bUJ8d42h1H2DG36buJIkHLQvu7klo5tKCRanrbUCb9pUF8A
+        3nnyxhgI7lXUdaXQ/e/ELkM+Wah/xTI=
+X-Google-Smtp-Source: APXvYqwFHed22KJ6gNBnvH5Yve3z/t81DbdCa7zJk3vIPJnx0GwLKS8oU239J0UbK5J/x1JrXCCYHw==
+X-Received: by 2002:aa7:9a0c:: with SMTP id w12mr9175579pfj.81.1571436787831;
+        Fri, 18 Oct 2019 15:13:07 -0700 (PDT)
+Received: from localhost ([172.58.38.188])
+        by smtp.gmail.com with ESMTPSA id y129sm5772499pgb.28.2019.10.18.15.13.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Oct 2019 15:13:07 -0700 (PDT)
+Message-ID: <5daa38f3.1c69fb81.bba20.f8ab@mx.google.com>
+Date:   Fri, 18 Oct 2019 15:13:05 -0700
+From:   Paul Burton <paulburton@kernel.org>
+To:     Vincenzo Frascino <vincenzo.frascino@arm.com>
+CC:     linux-mips@vger.kernel.org
+CC:     pburton@wavecomp.com, mbizon@freebox.fr, vincenzo.frascino@arm.com
+CC:     linux-mips@vger.kernel.org
+Subject: Re: [PATCH] mips: vdso: Fix __arch_get_hw_counter()
+References:  <20191016134024.46671-1-vincenzo.frascino@arm.com>
+In-Reply-To:  <20191016134024.46671-1-vincenzo.frascino@arm.com>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Hello,
 
-[ Upstream commit efcb529694c3b707dc0471b312944337ba16e4dd ]
+Vincenzo Frascino wrote:
+> On some MIPS variants (e.g. MIPS r1), vDSO clock_mode is set to
+> VDSO_CLOCK_NONE.
+> 
+> When VDSO_CLOCK_NONE is set the expected kernel behavior is to fallback
+> on syscalls. To do that the generic vDSO library expects UULONG_MAX as
+> return value of __arch_get_hw_counter().
+> 
+> Fix __arch_get_hw_counter() on MIPS defining a __VDSO_USE_SYSCALL case
+> that addressed the described scenario.
 
-Use ARRAY_SIZE to caluculate the top of the o32 stack.
+Applied to mips-fixes.
 
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: linux-mips@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/mips/fw/sni/sniprom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> commit 8a1bef4193e8
+> https://git.kernel.org/mips/c/8a1bef4193e8
+> 
+> Reported-by: Maxime Bizon <mbizon@freebox.fr>
+> Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
+> Tested-by: Maxime Bizon <mbizon@freebox.fr>
+> Signed-off-by: Paul Burton <paulburton@kernel.org>
 
-diff --git a/arch/mips/fw/sni/sniprom.c b/arch/mips/fw/sni/sniprom.c
-index 6aa264b9856ac..7c6151d412bd7 100644
---- a/arch/mips/fw/sni/sniprom.c
-+++ b/arch/mips/fw/sni/sniprom.c
-@@ -42,7 +42,7 @@
- 
- /* O32 stack has to be 8-byte aligned. */
- static u64 o32_stk[4096];
--#define O32_STK	  &o32_stk[sizeof(o32_stk)]
-+#define O32_STK	  (&o32_stk[ARRAY_SIZE(o32_stk)])
- 
- #define __PROM_O32(fun, arg) fun arg __asm__(#fun); \
- 				     __asm__(#fun " = call_o32")
--- 
-2.20.1
+Thanks,
+    Paul
 
+[ This message was auto-generated; if you believe anything is incorrect
+  then please email paulburton@kernel.org to report it. ]

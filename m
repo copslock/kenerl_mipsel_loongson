@@ -2,191 +2,85 @@ Return-Path: <SRS0=V1LD=YM=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.5 required=3.0 tests=DATE_IN_PAST_12_24,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-2.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 116B8CA9EAB
-	for <linux-mips@archiver.kernel.org>; Sat, 19 Oct 2019 09:13:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 95A64CA9EAC
+	for <linux-mips@archiver.kernel.org>; Sat, 19 Oct 2019 10:01:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id CDB0B222D1
-	for <linux-mips@archiver.kernel.org>; Sat, 19 Oct 2019 09:13:07 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=zoho.com header.i=zhouyanjie@zoho.com header.b="lBOY46KT"
+	by mail.kernel.org (Postfix) with ESMTP id 6C933222CC
+	for <linux-mips@archiver.kernel.org>; Sat, 19 Oct 2019 10:01:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728581AbfJSJNH (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 19 Oct 2019 05:13:07 -0400
-Received: from sender4-pp-o94.zoho.com ([136.143.188.94]:25408 "EHLO
-        sender4-pp-o94.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728576AbfJSJNH (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 19 Oct 2019 05:13:07 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1571476359; cv=none; 
-        d=zohomail.com; s=zohoarc; 
-        b=m3d0u3qP4oNi3v+fMNa6jESURQm/++vNAIq0yiEVB+2rkYgM6/OqvpeuRQAzkY36K5egtZgXHlEjBkwgR3Y8Dnl+bkg5q4AwpvPmrtojiS2b+8JlUvkv3/OibF5HJaUfXOgwKhDL8DGnAmJlb7kyJCDpbzPhu20VfAu7V6ICq5o=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-        t=1571476359; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=c1LHMbjebCq/p3Q155rI1KuvyuVAzusZr5to+xYs/3Y=; 
-        b=QrXmWfFLUs4BridPXlNzFzLXNd9VvhFO3XJF3lq61ZPTlpTuGfO6IIcyEShePM+2MQqK19yvcl/Ptu5BtsJURziemN3dkDooQ+I1Q6SBBdVC4Jw1yE4Ja02jpk9JN7xIGSXK6grdHVPj5Es90Q0XFAIqPntC4Pomnqsw+1mFDvE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-        dkim=pass  header.i=zoho.com;
-        spf=pass  smtp.mailfrom=zhouyanjie@zoho.com;
-        dmarc=pass header.from=<zhouyanjie@zoho.com> header.from=<zhouyanjie@zoho.com>
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; 
-  s=zapps768; d=zoho.com; 
-  h=subject:to:references:cc:from:message-id:date:user-agent:mime-version:in-reply-to:content-type; 
-  b=cELFXnRKTQMsh/d7U6m9uSQj1zZL1r3EQ0Bj+IQ+NQ54Fq//zg5tJTdDx0T1wR0ANa02B0X2CnE7
-    z3t5UwGUy5kWt4cH1USKiRjtUOlMyA4yf/DyIupa2PPLskAKqUqA  
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1571476359;
-        s=zm2019; d=zoho.com; i=zhouyanjie@zoho.com;
-        h=Subject:To:References:Cc:From:Message-ID:Date:MIME-Version:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        l=3710; bh=c1LHMbjebCq/p3Q155rI1KuvyuVAzusZr5to+xYs/3Y=;
-        b=lBOY46KTxJ0ked4LpLHBvpFqWSIZ+FXjk63gMf8WxKuj+tif6kmawyqa8jZmKjQd
-        OTRYBhw0IwRUgCrNN6krcJBQV4PD0Hk0NXu4zWBkLUNxWOJaDoF7+X+pRK9kxTsEksc
-        YSOxHMU0FaJMzpzULwnvU8pshbi32oJOUXDBe8MU=
-Received: from [192.168.10.218] (171.221.113.199 [171.221.113.199]) by mx.zohomail.com
-        with SMTPS id 1571476358155716.0469073276595; Sat, 19 Oct 2019 02:12:38 -0700 (PDT)
-Subject: Re: [PATCH 6/6 v2] MMC: JZ4740: Add support for LPM.
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>
-References: <1567669089-88693-1-git-send-email-zhouyanjie@zoho.com>
- <1570857203-49192-1-git-send-email-zhouyanjie@zoho.com>
- <1570857203-49192-7-git-send-email-zhouyanjie@zoho.com>
- <CAPDyKFo9juNmf6hrcBjzOprS6GwzAPBq8y3ReGu=ry+MdxT9Bg@mail.gmail.com>
-Cc:     linux-mips@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        id S1725294AbfJSKBs (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 19 Oct 2019 06:01:48 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59086 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725283AbfJSKBs (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sat, 19 Oct 2019 06:01:48 -0400
+Received: from [5.158.153.52] (helo=nanos.tec.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1iLlYH-0004Fy-IZ; Sat, 19 Oct 2019 12:01:37 +0200
+Date:   Sat, 19 Oct 2019 12:01:32 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Huacai Chen <chenhc@lemote.com>
+cc:     Andy Lutomirski <luto@kernel.org>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        stable <stable@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
         Paul Burton <paul.burton@mips.com>,
-        Mark Rutland <mark.rutland@arm.com>, syq@debian.org,
-        Linus Walleij <linus.walleij@linaro.org>, armijn@tjaldur.nl,
-        Thomas Gleixner <tglx@linutronix.de>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Mathieu Malaterre <malat@debian.org>,
-        Ezequiel Garcia <ezequiel@collabora.com>
-From:   Zhou Yanjie <zhouyanjie@zoho.com>
-Message-ID: <5DA9EE2F.4030603@zoho.com>
-Date:   Sat, 19 Oct 2019 00:54:07 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.8.0
+        "open list:MIPS" <linux-mips@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH] lib/vdso: Use __arch_use_vsyscall() to indicate
+ fallback
+In-Reply-To: <CAAhV-H6VkW5-hMOrzAQeyHT4pYGExZR6eTRbPHSPK50GAkigCw@mail.gmail.com>
+Message-ID: <alpine.DEB.2.21.1910191156240.2098@nanos.tec.linutronix.de>
+References: <1571367619-13573-1-git-send-email-chenhc@lemote.com> <CALCETrWXRgkQOJGRqa_sOLAG2zhjsEX6b86T2VTsNYN9ECRrtA@mail.gmail.com> <CAAhV-H6VkW5-hMOrzAQeyHT4pYGExZR6eTRbPHSPK50GAkigCw@mail.gmail.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-In-Reply-To: <CAPDyKFo9juNmf6hrcBjzOprS6GwzAPBq8y3ReGu=ry+MdxT9Bg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Uffe,
+On Sat, 19 Oct 2019, Huacai Chen wrote:
+> On Fri, Oct 18, 2019 at 11:15 AM Andy Lutomirski <luto@kernel.org> wrote:
+> >
+> > On Thu, Oct 17, 2019 at 7:57 PM Huacai Chen <chenhc@lemote.com> wrote:
+> > >
+> > > In do_hres(), we currently use whether the return value of __arch_get_
+> > > hw_counter() is negtive to indicate fallback, but this is not a good
+> > > idea. Because:
+> > >
+> > > 1, ARM64 returns ULL_MAX but MIPS returns 0 when clock_mode is invalid;
+> > > 2, For a 64bit counter, a "negtive" value of counter is actually valid.
+> >
+> > s/negtive/negative
+> >
+> > What's the actual bug?  Is it that MIPS is returning 0 but the check
+> > is < 0?  Sounds like MIPS should get fixed.
+> My original bug is what Vincenzo said, MIPS has a boot failure if no
+> valid clock_mode, and surely MIPS need to fix. However, when I try to
+> fix it, I found that clock_getres() has another problem, because
+> __cvdso_clock_getres_common() get vd[CS_HRES_COARSE].hrtimer_res, but
+> hrtimer_res is set in update_vdso_data() which relies on
+> __arch_use_vsyscall().
 
-On 2019=E5=B9=B410=E6=9C=8818=E6=97=A5 16:52, Ulf Hansson wrote:
-> On Sat, 12 Oct 2019 at 07:19, Zhou Yanjie <zhouyanjie@zoho.com> wrote:
->> add support for low power mode of Ingenic's MMC/SD Controller.
->>
->> Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
-> I couldn't find a proper coverletter for the series, please provide
-> that next time as it really helps review.
+__arch_use_vsyscall() is a pointless exercise TBH. The VDSO data should be
+updated unconditionally so all the trivial interfaces like time() and
+getres() just work independently of the functions which depend on the
+underlying clocksource.
 
-I'm sorry, maybe some problems with my git send-email cause cover
-later not to be sent out, next time I will pay attention to this problem.
+This functions have a fallback operation already:
 
-> Additionally, it seems like
-> you forgot to change the prefix of the patches to "mmc: jz4740" (or at
-> least you chosed upper case letters), but I will take care of that
-> this time. So, I have applied the series for next, thanks!
+Let __arch_get_hw_counter() return U64_MAX and the syscall fallback is
+invoked.
 
-I'm very sorry, I have misunderstood, before I thought jz4740 as a proper
-noun needs to be capitalized, I will pay attention to this next time.
+__arch_use_vsyscall() should just be removed.
 
->
-> I also have a general question. Should we perhaps rename the driver
-> from jz4740_mmc.c to ingenic.c (and the file for the DT bindings, the
-> Kconfig, etc), as that seems like a more appropriate name? No?
+Thanks,
 
-I am very much in favor of this proposal. Now jz4740_mmc.c is not only used
-for the JZ4740 processor, it is also used for JZ4725, JZ4760, JZ4770, JZ478=
-0
-and X1000, and now Ingenic's processor is no longer named after JZ47xx,
-it is divided into three product lines: M, T, and X. It is easy to cause=20
-some
-misunderstandings by using jz4740_mmc.c. At the same time, I think that
-some register names also need to be adjusted. For example, the STLPPL
-register name has only appeared in JZ4730 and JZ4740, and this register
-in all subsequent processors is called CTRL. This time I was confused by
-the STLPPL when I added drivers for the JZ4760's and X1000's LPM.
-
-I also can send a patch to rename it if you need.
-
-Best regards!
-
->
-> Kind regards
-> Uffe
->
->
->> ---
->>   drivers/mmc/host/jz4740_mmc.c | 23 +++++++++++++++++++++++
->>   1 file changed, 23 insertions(+)
->>
->> diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc=
-.c
->> index 44a04fe..4cbe7fb 100644
->> --- a/drivers/mmc/host/jz4740_mmc.c
->> +++ b/drivers/mmc/host/jz4740_mmc.c
->> @@ -43,6 +43,7 @@
->>   #define JZ_REG_MMC_RESP_FIFO   0x34
->>   #define JZ_REG_MMC_RXFIFO      0x38
->>   #define JZ_REG_MMC_TXFIFO      0x3C
->> +#define JZ_REG_MMC_LPM         0x40
->>   #define JZ_REG_MMC_DMAC                0x44
->>
->>   #define JZ_MMC_STRPCL_EXIT_MULTIPLE BIT(7)
->> @@ -102,6 +103,12 @@
->>   #define JZ_MMC_DMAC_DMA_SEL BIT(1)
->>   #define JZ_MMC_DMAC_DMA_EN BIT(0)
->>
->> +#define        JZ_MMC_LPM_DRV_RISING BIT(31)
->> +#define        JZ_MMC_LPM_DRV_RISING_QTR_PHASE_DLY BIT(31)
->> +#define        JZ_MMC_LPM_DRV_RISING_1NS_DLY BIT(30)
->> +#define        JZ_MMC_LPM_SMP_RISING_QTR_OR_HALF_PHASE_DLY BIT(29)
->> +#define        JZ_MMC_LPM_LOW_POWER_MODE_EN BIT(0)
->> +
->>   #define JZ_MMC_CLK_RATE 24000000
->>
->>   enum jz4740_mmc_version {
->> @@ -860,6 +867,22 @@ static int jz4740_mmc_set_clock_rate(struct jz4740_=
-mmc_host *host, int rate)
->>          }
->>
->>          writew(div, host->base + JZ_REG_MMC_CLKRT);
->> +
->> +       if (real_rate > 25000000) {
->> +               if (host->version >=3D JZ_MMC_X1000) {
->> +                       writel(JZ_MMC_LPM_DRV_RISING_QTR_PHASE_DLY |
->> +                                  JZ_MMC_LPM_SMP_RISING_QTR_OR_HALF_PHA=
-SE_DLY |
->> +                                  JZ_MMC_LPM_LOW_POWER_MODE_EN,
->> +                                  host->base + JZ_REG_MMC_LPM);
->> +               } else if (host->version >=3D JZ_MMC_JZ4760) {
->> +                       writel(JZ_MMC_LPM_DRV_RISING |
->> +                                  JZ_MMC_LPM_LOW_POWER_MODE_EN,
->> +                                  host->base + JZ_REG_MMC_LPM);
->> +               } else if (host->version >=3D JZ_MMC_JZ4725B)
->> +                       writel(JZ_MMC_LPM_LOW_POWER_MODE_EN,
->> +                                  host->base + JZ_REG_MMC_LPM);
->> +       }
->> +
->>          return real_rate;
->>   }
->>
->> --
->> 2.7.4
->>
->>
-
-
-
+	tglx

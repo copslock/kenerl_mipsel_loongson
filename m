@@ -2,242 +2,134 @@ Return-Path: <SRS0=F5TX=YO=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2DF5CA9EBA
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Oct 2019 05:38:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C8D3CA9EB7
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Oct 2019 07:58:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id BDD1D214AE
-	for <linux-mips@archiver.kernel.org>; Mon, 21 Oct 2019 05:38:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4DA3821479
+	for <linux-mips@archiver.kernel.org>; Mon, 21 Oct 2019 07:58:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1571644724;
+	bh=HaNxatOx3Yl+LjuXNZSg9j6rwSnjKUPc8eLVmd61SU0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:List-ID:From;
+	b=rFk/uazdpa1kTwojOcP5lrGRy3u04ioYE6bC+AYuxvejpVJNTsdiTmiLo0wdyFyVG
+	 J3wOXx9CDeTQmFzIpTBd9QG1yIlGTpNyeCURk3VuSAb4C92Xg6AcRxmR3Zu0reoK6v
+	 pCg2f1tNqPOFvoGkYN8C8ElmGmC2jEA2eUKuF1Mk=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727150AbfJUFio (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 21 Oct 2019 01:38:44 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:46549 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727162AbfJUFi0 (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 21 Oct 2019 01:38:26 -0400
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1iMQOX-0001db-FG; Mon, 21 Oct 2019 07:38:17 +0200
-Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1iMQOS-0005B9-NT; Mon, 21 Oct 2019 07:38:12 +0200
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Andrew Lunn <andrew@lunn.ch>, Chris Snook <chris.snook@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        James Hogan <jhogan@kernel.org>,
-        Jay Cliburn <jcliburn@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-mips@vger.kernel.org, Russell King <linux@armlinux.org.uk>
-Subject: [PATCH v3 3/5] MIPS: ath79: ar9331: add ar9331-switch node
-Date:   Mon, 21 Oct 2019 07:38:09 +0200
-Message-Id: <20191021053811.19818-4-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191021053811.19818-1-o.rempel@pengutronix.de>
-References: <20191021053811.19818-1-o.rempel@pengutronix.de>
+        id S1727611AbfJUH6n (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 21 Oct 2019 03:58:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47006 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727239AbfJUH6n (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 21 Oct 2019 03:58:43 -0400
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 77CC5218AC;
+        Mon, 21 Oct 2019 07:58:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571644721;
+        bh=HaNxatOx3Yl+LjuXNZSg9j6rwSnjKUPc8eLVmd61SU0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=luHraHozlqKNUHwEUrw+p/CKnNkzg4GhLnRI3IQVw1ZUnmvt4Cwl7ABV+5EzHS34g
+         CqVlZgKrjSy7nsjEnaLPBzt8i8/jWykyodKl+iP31wL1BC0A++0dn8emaiIgMxVUqa
+         6AeBtKgvcbANkPSenLQVsuD5VltHn5JOl0JQoRvI=
+Received: by mail-wr1-f50.google.com with SMTP id e11so3977103wrv.4;
+        Mon, 21 Oct 2019 00:58:41 -0700 (PDT)
+X-Gm-Message-State: APjAAAV4W1flYsylqq7vFVqeS8VJ1GRc94UTgTHPcKHekPMu1UneTyX2
+        fiut8z6q/ojUxrW+GLZU26l8jt0rhpc0sk23yzg=
+X-Google-Smtp-Source: APXvYqzvF6HJCASpTMUMf7HweDv3Hno9oEAxiqhI3GBGEOPTWQrWQiETxVnKLeVHbQ3ma/xucSMvECIDZp2EBxJkKe8=
+X-Received: by 2002:adf:ebcb:: with SMTP id v11mr17344477wrn.24.1571644719802;
+ Mon, 21 Oct 2019 00:58:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@vger.kernel.org
+References: <20191017174554.29840-1-hch@lst.de> <20191017174554.29840-21-hch@lst.de>
+In-Reply-To: <20191017174554.29840-21-hch@lst.de>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Mon, 21 Oct 2019 15:58:28 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTQ_VeBfi1uaafgtp+uA2skq-w2px12ig=5QD1O9J+PgbA@mail.gmail.com>
+Message-ID: <CAJF2gTQ_VeBfi1uaafgtp+uA2skq-w2px12ig=5QD1O9J+PgbA@mail.gmail.com>
+Subject: Re: [PATCH 20/21] csky: remove ioremap_cache
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Michal Simek <monstr@monstr.eu>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-mtd@lists.infradead.org,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Add switch node supported by dsa ar9331 driver.
+Acked-by: Guo Ren <guoren@kernel.org>
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- arch/mips/boot/dts/qca/ar9331.dtsi           | 127 ++++++++++++++++++-
- arch/mips/boot/dts/qca/ar9331_dpt_module.dts |  13 ++
- 2 files changed, 139 insertions(+), 1 deletion(-)
+On Fri, Oct 18, 2019 at 1:47 AM Christoph Hellwig <hch@lst.de> wrote:
+>
+> No driver that can be used on csky uses ioremap_cache, and this
+> interface has been deprecated in favor of memremap.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  arch/csky/include/asm/io.h | 2 --
+>  arch/csky/mm/ioremap.c     | 7 -------
+>  2 files changed, 9 deletions(-)
+>
+> diff --git a/arch/csky/include/asm/io.h b/arch/csky/include/asm/io.h
+> index a4b9fb616faa..f572605d5ad5 100644
+> --- a/arch/csky/include/asm/io.h
+> +++ b/arch/csky/include/asm/io.h
+> @@ -36,13 +36,11 @@
+>  /*
+>   * I/O memory mapping functions.
+>   */
+> -extern void __iomem *ioremap_cache(phys_addr_t addr, size_t size);
+>  extern void __iomem *__ioremap(phys_addr_t addr, size_t size, pgprot_t prot);
+>  extern void iounmap(void *addr);
+>
+>  #define ioremap(addr, size)            __ioremap((addr), (size), pgprot_noncached(PAGE_KERNEL))
+>  #define ioremap_wc(addr, size)         __ioremap((addr), (size), pgprot_writecombine(PAGE_KERNEL))
+> -#define ioremap_cache                  ioremap_cache
+>
+>  #include <asm-generic/io.h>
+>
+> diff --git a/arch/csky/mm/ioremap.c b/arch/csky/mm/ioremap.c
+> index e13cd3497628..ae78256a56fd 100644
+> --- a/arch/csky/mm/ioremap.c
+> +++ b/arch/csky/mm/ioremap.c
+> @@ -44,13 +44,6 @@ void __iomem *__ioremap(phys_addr_t phys_addr, size_t size, pgprot_t prot)
+>  }
+>  EXPORT_SYMBOL(__ioremap);
+>
+> -void __iomem *ioremap_cache(phys_addr_t phys_addr, size_t size)
+> -{
+> -       return __ioremap_caller(phys_addr, size, PAGE_KERNEL,
+> -                               __builtin_return_address(0));
+> -}
+> -EXPORT_SYMBOL(ioremap_cache);
+> -
+>  void iounmap(void __iomem *addr)
+>  {
+>         vunmap((void *)((unsigned long)addr & PAGE_MASK));
+> --
+> 2.20.1
+>
 
-diff --git a/arch/mips/boot/dts/qca/ar9331.dtsi b/arch/mips/boot/dts/qca/ar9331.dtsi
-index e0f409dd6acf..84a177c0d053 100644
---- a/arch/mips/boot/dts/qca/ar9331.dtsi
-+++ b/arch/mips/boot/dts/qca/ar9331.dtsi
-@@ -158,6 +158,9 @@
- 			clocks = <&pll ATH79_CLK_AHB>, <&pll ATH79_CLK_AHB>;
- 			clock-names = "eth", "mdio";
- 
-+			phy-mode = "mii";
-+			phy-handle = <&phy_port4>;
-+
- 			status = "disabled";
- 		};
- 
-@@ -165,13 +168,135 @@
- 			compatible = "qca,ar9330-eth";
- 			reg = <0x1a000000 0x200>;
- 			interrupts = <5>;
--
- 			resets = <&rst 13>, <&rst 23>;
- 			reset-names = "mac", "mdio";
- 			clocks = <&pll ATH79_CLK_AHB>, <&pll ATH79_CLK_AHB>;
- 			clock-names = "eth", "mdio";
- 
-+			phy-mode = "gmii";
-+
- 			status = "disabled";
-+
-+			fixed-link {
-+				speed = <1000>;
-+				full-duplex;
-+			};
-+
-+			mdio {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				switch10: switch@10 {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					compatible = "qca,ar9331-switch";
-+					reg = <0x10>;
-+					resets = <&rst 8>;
-+					reset-names = "switch";
-+
-+					interrupt-parent = <&miscintc>;
-+					interrupts = <12>;
-+
-+					interrupt-controller;
-+					#interrupt-cells = <1>;
-+
-+					ports {
-+						#address-cells = <1>;
-+						#size-cells = <0>;
-+
-+						switch_port0: port@0 {
-+							reg = <0x0>;
-+							label = "cpu";
-+							ethernet = <&eth1>;
-+
-+							phy-mode = "gmii";
-+
-+							fixed-link {
-+								speed = <1000>;
-+								full-duplex;
-+							};
-+						};
-+
-+						switch_port1: port@1 {
-+							reg = <0x1>;
-+							phy-handle = <&phy_port0>;
-+							phy-mode = "internal";
-+
-+							status = "disabled";
-+						};
-+
-+						switch_port2: port@2 {
-+							reg = <0x2>;
-+							phy-handle = <&phy_port1>;
-+							phy-mode = "internal";
-+
-+							status = "disabled";
-+						};
-+
-+						switch_port3: port@3 {
-+							reg = <0x3>;
-+							phy-handle = <&phy_port2>;
-+							phy-mode = "internal";
-+
-+							status = "disabled";
-+						};
-+
-+						switch_port4: port@4 {
-+							reg = <0x4>;
-+							phy-handle = <&phy_port3>;
-+							phy-mode = "internal";
-+
-+							status = "disabled";
-+						};
-+
-+						switch_port5: port@5 {
-+							reg = <0x5>;
-+							phy-handle = <&phy_port4>;
-+							phy-mode = "internal";
-+
-+							status = "disabled";
-+						};
-+					};
-+
-+					mdio {
-+						#address-cells = <1>;
-+						#size-cells = <0>;
-+
-+						interrupt-parent = <&switch10>;
-+
-+						phy_port0: phy@0 {
-+							reg = <0x0>;
-+							interrupts = <0>;
-+							status = "disabled";
-+						};
-+
-+						phy_port1: phy@1 {
-+							reg = <0x1>;
-+							interrupts = <0>;
-+							status = "disabled";
-+						};
-+
-+						phy_port2: phy@2 {
-+							reg = <0x2>;
-+							interrupts = <0>;
-+							status = "disabled";
-+						};
-+
-+						phy_port3: phy@3 {
-+							reg = <0x3>;
-+							interrupts = <0>;
-+							status = "disabled";
-+						};
-+
-+						phy_port4: phy@4 {
-+							reg = <0x4>;
-+							interrupts = <0>;
-+							status = "disabled";
-+						};
-+					};
-+				};
-+			};
- 		};
- 
- 		usb: usb@1b000100 {
-diff --git a/arch/mips/boot/dts/qca/ar9331_dpt_module.dts b/arch/mips/boot/dts/qca/ar9331_dpt_module.dts
-index 77bab823eb3b..0f2b20044834 100644
---- a/arch/mips/boot/dts/qca/ar9331_dpt_module.dts
-+++ b/arch/mips/boot/dts/qca/ar9331_dpt_module.dts
-@@ -84,3 +84,16 @@
- &eth1 {
- 	status = "okay";
- };
-+
-+&switch_port1 {
-+	label = "lan0";
-+	status = "okay";
-+};
-+
-+&phy_port0 {
-+	status = "okay";
-+};
-+
-+&phy_port4 {
-+	status = "okay";
-+};
+
 -- 
-2.23.0
+Best Regards
+ Guo Ren
 
+ML: https://lore.kernel.org/linux-csky/

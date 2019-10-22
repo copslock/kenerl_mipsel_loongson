@@ -2,102 +2,93 @@ Return-Path: <SRS0=Z+4i=YP=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.3 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E8E6CA9EA0
-	for <linux-mips@archiver.kernel.org>; Tue, 22 Oct 2019 15:53:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CFACCA9EA0
+	for <linux-mips@archiver.kernel.org>; Tue, 22 Oct 2019 16:13:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 3AC32214B2
-	for <linux-mips@archiver.kernel.org>; Tue, 22 Oct 2019 15:53:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DD09521783
+	for <linux-mips@archiver.kernel.org>; Tue, 22 Oct 2019 16:13:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388636AbfJVPxa (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 22 Oct 2019 11:53:30 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:33732 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388212AbfJVPxa (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 22 Oct 2019 11:53:30 -0400
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 5E48A85540
-        for <linux-mips@vger.kernel.org>; Tue, 22 Oct 2019 15:53:30 +0000 (UTC)
-Received: by mail-wr1-f72.google.com with SMTP id v8so8467594wrt.16
-        for <linux-mips@vger.kernel.org>; Tue, 22 Oct 2019 08:53:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:openpgp:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=JG+rDaiZPjv/G30aIXSiabMNCIhXTu4D3139P64uM1U=;
-        b=bICJ9G99ahk1kaULSQ5yzmp17VpmvRr9P7442DA2iUp2YZ3WZN1NU3ENp0aYAsz345
-         XIqwYqaVUYG2+bT3xjxMup/OI21JMt51kdbsNBPsWdYl/AvZ5XbBmZnEiYw/OjxSUHV4
-         h5nPZMcFczpRec3dC9GyMZ0VZS4bpinDm7a7UAaaet8pk0mSILtWhReh5lZflpXiiAoM
-         rUgbPIOQh4tRJGsfg8M8xUaCn+vGZXnDL/yRNLiE0EnBrQbPI26bYpt2hYwx2YPRJpL5
-         aarA8ki1WSS1Ss4dmDNl9r0/oC/w3/O+BCjIrt2HQdGtuctQAlSGRqXCDO9EkK4ZsCm+
-         GxMw==
-X-Gm-Message-State: APjAAAVvqbBKNnLYxHg+ql0u8nyZDE6lRvX2i3Cf1xiDWJR7HXy161j/
-        i5KCBTDa6yhfJU7EiBSu6TmtmGG/dcfAwuw3SHilVE3ypf/Re7e4QsXFzDoPnaQPi3NLXTDyra/
-        e2feR821ZsSmilnCr36NRgA==
-X-Received: by 2002:a1c:c90c:: with SMTP id f12mr3515216wmb.97.1571759608919;
-        Tue, 22 Oct 2019 08:53:28 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqz6V+VvQ3ZIcj/uWsxd5zvt1LhKvigbB1GL0YOeGKZ2oispvsSJTapzUQJ7s70S4Bt0HGQCSQ==
-X-Received: by 2002:a1c:c90c:: with SMTP id f12mr3515188wmb.97.1571759608659;
-        Tue, 22 Oct 2019 08:53:28 -0700 (PDT)
-Received: from ?IPv6:2001:b07:6468:f312:c0e4:dcf4:b543:ce19? ([2001:b07:6468:f312:c0e4:dcf4:b543:ce19])
-        by smtp.gmail.com with ESMTPSA id t123sm24286579wma.40.2019.10.22.08.53.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Oct 2019 08:53:28 -0700 (PDT)
-Subject: Re: [PATCH v2 14/15] KVM: Terminate memslot walks via used_slots
-To:     Sean Christopherson <sean.j.christopherson@intel.com>
-Cc:     James Hogan <jhogan@kernel.org>,
-        Paul Mackerras <paulus@ozlabs.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Marc Zyngier <maz@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        James Morse <james.morse@arm.com>,
-        Julien Thierry <julien.thierry.kdev@gmail.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        linux-mips@vger.kernel.org, kvm-ppc@vger.kernel.org,
-        kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        kvmarm@lists.cs.columbia.edu, linux-kernel@vger.kernel.org
-References: <20191022003537.13013-1-sean.j.christopherson@intel.com>
- <20191022003537.13013-15-sean.j.christopherson@intel.com>
- <642f73ee-9425-0149-f4f4-f56be9ae5713@redhat.com>
- <20191022152827.GC2343@linux.intel.com>
- <625e511f-bd35-3b92-0c6d-550c10fc5827@redhat.com>
- <20191022155220.GD2343@linux.intel.com>
-From:   Paolo Bonzini <pbonzini@redhat.com>
-Openpgp: preference=signencrypt
-Message-ID: <5c61c094-ee32-4dcf-b3ae-092eba0159c5@redhat.com>
-Date:   Tue, 22 Oct 2019 17:53:27 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <20191022155220.GD2343@linux.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S2388761AbfJVQNW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 22 Oct 2019 12:13:22 -0400
+Received: from mx2.suse.de ([195.135.220.15]:59768 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1732188AbfJVQNW (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 22 Oct 2019 12:13:22 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id BE56BB384;
+        Tue, 22 Oct 2019 16:13:20 +0000 (UTC)
+From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 2/5] MIPS: SGI-IP27: move registering of smp ops into IP27 specific code
+Date:   Tue, 22 Oct 2019 18:13:12 +0200
+Message-Id: <20191022161315.4194-2-tbogendoerfer@suse.de>
+X-Mailer: git-send-email 2.16.4
+In-Reply-To: <20191022161315.4194-1-tbogendoerfer@suse.de>
+References: <20191022161315.4194-1-tbogendoerfer@suse.de>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On 22/10/19 17:52, Sean Christopherson wrote:
-> 
-> Anyways, I'm not at all opposed to adding comments, just want to make sure
-> I'm not forgetting something.  If it's ok with you, I'll comment the code
-> and/or functions and reply here to refine them without having to respin
-> the whole series.
+Calling register_smp_ops() in plat_mem_setup() is still early enough.
+So by doing this we could remove the ugly #ifdef CONFIG_SGI_IP27 in
+fw/arc/init.c.
 
-Yes, I agree this is better.
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+---
+ arch/mips/fw/arc/init.c          | 7 -------
+ arch/mips/sgi-ip27/ip27-common.h | 1 +
+ arch/mips/sgi-ip27/ip27-init.c   | 2 ++
+ 3 files changed, 3 insertions(+), 7 deletions(-)
 
-Paolo
+diff --git a/arch/mips/fw/arc/init.c b/arch/mips/fw/arc/init.c
+index 7b663455de6b..4ac6466a8872 100644
+--- a/arch/mips/fw/arc/init.c
++++ b/arch/mips/fw/arc/init.c
+@@ -54,11 +54,4 @@ void __init prom_init(void)
+ 	ArcRead(0, &c, 1, &cnt);
+ 	ArcEnterInteractiveMode();
+ #endif
+-#ifdef CONFIG_SGI_IP27
+-	{
+-		extern const struct plat_smp_ops ip27_smp_ops;
+-
+-		register_smp_ops(&ip27_smp_ops);
+-	}
+-#endif
+ }
+diff --git a/arch/mips/sgi-ip27/ip27-common.h b/arch/mips/sgi-ip27/ip27-common.h
+index e9e9f1dc8c20..3ffbcf9bfd41 100644
+--- a/arch/mips/sgi-ip27/ip27-common.h
++++ b/arch/mips/sgi-ip27/ip27-common.h
+@@ -5,5 +5,6 @@
+ 
+ extern void ip27_reboot_setup(void);
+ extern void hub_rt_clock_event_init(void);
++extern const struct plat_smp_ops ip27_smp_ops;
+ 
+ #endif /* __IP27_COMMON_H */
+diff --git a/arch/mips/sgi-ip27/ip27-init.c b/arch/mips/sgi-ip27/ip27-init.c
+index f48e2b3990f6..d160fb219d6d 100644
+--- a/arch/mips/sgi-ip27/ip27-init.c
++++ b/arch/mips/sgi-ip27/ip27-init.c
+@@ -120,6 +120,8 @@ void __init plat_mem_setup(void)
+ 	u64 p, e, n_mode;
+ 	nasid_t nid;
+ 
++	register_smp_ops(&ip27_smp_ops);
++
+ 	ip27_reboot_setup();
+ 
+ 	/*
+-- 
+2.16.4
+

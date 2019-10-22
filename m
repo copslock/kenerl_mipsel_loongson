@@ -2,127 +2,83 @@ Return-Path: <SRS0=Z+4i=YP=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D366CA9EAF
-	for <linux-mips@archiver.kernel.org>; Tue, 22 Oct 2019 00:37:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CF03CA9EAF
+	for <linux-mips@archiver.kernel.org>; Tue, 22 Oct 2019 01:30:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5DA6A2089E
-	for <linux-mips@archiver.kernel.org>; Tue, 22 Oct 2019 00:37:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 66E49214B2
+	for <linux-mips@archiver.kernel.org>; Tue, 22 Oct 2019 01:30:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730266AbfJVAfk (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 21 Oct 2019 20:35:40 -0400
-Received: from mga07.intel.com ([134.134.136.100]:35281 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727953AbfJVAfk (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 21 Oct 2019 20:35:40 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Oct 2019 17:35:38 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,325,1566889200"; 
-   d="scan'208";a="348897196"
-Received: from sjchrist-coffee.jf.intel.com ([10.54.74.41])
-  by orsmga004.jf.intel.com with ESMTP; 21 Oct 2019 17:35:38 -0700
-From:   Sean Christopherson <sean.j.christopherson@intel.com>
-To:     James Hogan <jhogan@kernel.org>,
-        Paul Mackerras <paulus@ozlabs.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Marc Zyngier <maz@kernel.org>
-Cc:     David Hildenbrand <david@redhat.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Sean Christopherson <sean.j.christopherson@intel.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        James Morse <james.morse@arm.com>,
-        Julien Thierry <julien.thierry.kdev@gmail.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        linux-mips@vger.kernel.org, kvm-ppc@vger.kernel.org,
-        kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        kvmarm@lists.cs.columbia.edu, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 00/15] KVM: Dynamically size memslot arrays
-Date:   Mon, 21 Oct 2019 17:35:22 -0700
-Message-Id: <20191022003537.13013-1-sean.j.christopherson@intel.com>
-X-Mailer: git-send-email 2.22.0
+        id S1728375AbfJVBaL convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 21 Oct 2019 21:30:11 -0400
+Received: from mail-il1-f193.google.com ([209.85.166.193]:42296 "EHLO
+        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727953AbfJVBaK (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 21 Oct 2019 21:30:10 -0400
+Received: by mail-il1-f193.google.com with SMTP id o16so5793638ilq.9
+        for <linux-mips@vger.kernel.org>; Mon, 21 Oct 2019 18:30:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Qku3pnEKE18eEF6bQlFQtxcJhcmkyU8XoJ67crRfYjM=;
+        b=Tv3Sj4zqNF58CJCLebIKe1z+rpqiW0DBiOfEhsWfQ8AQVnS5r4OZf1y/g8osJM1Q+8
+         0hFOq6okfnZ2qMwQqn/WlCJq1G0CnDJdMVPzbdfMN3a2GmHGeIrxfjkBqdhMQsmFZ3R8
+         MCLh48/TJHjWao6gKIxVPPvu21SthWuRwWLNJn72/ApqnwFuxIZGVkkT4ia+/BFZ3+3f
+         Jjdp6w/m0dG5ezAWRuSH2ce3elgiV1B1tjj1SWahKEhoO6TSySFHv799L55saj8YdWqy
+         BsXh005gWgCqkrq151jMfDHSI1ooHuUZRoOjiOyi/3QwDwzPDMFNc08NF1JDY+V6C/uv
+         +C4Q==
+X-Gm-Message-State: APjAAAWBePJUnOTEcrWA6DZmy6BA2Rs3rZbdeTa5ZZTMIS7lmdZUs2OJ
+        XvlPRpPqOE8yW5OanBpkTtur7rHawkOjAz+cGlbgzvrP
+X-Google-Smtp-Source: APXvYqw+gMcAI9soHCLGqt2CchvMKJC5gkbQ6QiYvAdgOgvdTWKGYtQjcv/bmBou9QP2J29racDaXMuBVjRL61f3oZo=
+X-Received: by 2002:a92:d6c2:: with SMTP id z2mr9847678ilp.270.1571707810043;
+ Mon, 21 Oct 2019 18:30:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20191020144318.18341-1-jiaxun.yang@flygoat.com>
+ <CAAhV-H49Gx4RXz1ahDcxd6zrSgcj74UjwN=xopC_YYutojP_0Q@mail.gmail.com> <AF48876C-308C-46AD-B7B4-77BFA2413EDE@flygoat.com>
+In-Reply-To: <AF48876C-308C-46AD-B7B4-77BFA2413EDE@flygoat.com>
+From:   Huacai Chen <chenhc@lemote.com>
+Date:   Tue, 22 Oct 2019 09:35:38 +0800
+Message-ID: <CAAhV-H6iCHprEHRa2Do2QEQD+UkML=X=UwemR3OELXCrBhwv7w@mail.gmail.com>
+Subject: Re: [PATCH 0/5] MIPS: Loongson64: separate loongson2ef/loongson64 code
+To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc:     "open list:MIPS" <linux-mips@vger.kernel.org>,
+        Paul Burton <paul.burton@mips.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The end goal of this series is to dynamically size the memslot array so
-that KVM allocates memory based on the number of memslots in use, as
-opposed to unconditionally allocating memory for the maximum number of
-memslots.  On x86, each memslot consumes 88 bytes, and so with 2 address
-spaces of 512 memslots, each VM consumes ~90k bytes for the memslots.
-E.g. given a VM that uses a total of 30 memslots, dynamic sizing reduces
-the memory footprint from 90k to ~2.6k bytes.
+Hi, Jiaxun
 
-The changes required to support dynamic sizing are relatively small,
-e.g. are essentially contained in patches 12/13 and 13/13.  Patches 1-11
-clean up the memslot code, which has gotten quite crusy, especially
-__kvm_set_memory_region().  The clean up is likely not strictly necessary
-to switch to dynamic sizing, but I didn't have a remotely reasonable
-level of confidence in the correctness of the dynamic sizing without first
-doing the clean up.
+On Mon, Oct 21, 2019 at 11:56 AM Jiaxun Yang <jiaxun.yang@flygoat.com> wrote:
+>
+>
+>
+> 于 2019年10月21日 GMT+08:00 上午9:07:52, Huacai Chen <chenhc@lemote.com> 写到:
+> >Hi, Jiaxun,
+> >
+> >Can we just "retire" the Loongson-2E/2F support? Let 5.4-lts be the
+> >last version which support Loongson-2E/2F.
+> Hi Huacai,
+>
+> There are still a lot of Loongson-2F users. Please don't leave them alone.
+>
+> I'm still going to maintain these code. Although might not be very active.
+If Loongson-2E/2F block us to modernize Loongson64, let's just retire
+it; if it doesn't block us, we don't need to separate.
 
-Testing, especially non-x86 platforms, would be greatly appreciated.  The
-non-x86 changes are for all intents and purposes untested, e.g. I compile
-tested pieces of the code by copying them into x86, but that's it.  In
-theory, the vast majority of the functional changes are arch agnostic, in
-theory...
-
-v2:
-  - Split "Drop kvm_arch_create_memslot()" into three patches to move
-    minor functional changes to standalone patches [Janosch].
-  - Rebase to latest kvm/queue (f0574a1cea5b, "KVM: x86: fix ...")
-  - Collect an Acked-by and a Reviewed-by
-
-Sean Christopherson (15):
-  KVM: Reinstall old memslots if arch preparation fails
-  KVM: Don't free new memslot if allocation of said memslot fails
-  KVM: PPC: Move memslot memory allocation into prepare_memory_region()
-  KVM: x86: Allocate memslot resources during prepare_memory_region()
-  KVM: Drop kvm_arch_create_memslot()
-  KVM: Explicitly free allocated-but-unused dirty bitmap
-  KVM: Refactor error handling for setting memory region
-  KVM: Move setting of memslot into helper routine
-  KVM: Move memslot deletion to helper function
-  KVM: Simplify kvm_free_memslot() and all its descendents
-  KVM: Clean up local variable usage in __kvm_set_memory_region()
-  KVM: Provide common implementation for generic dirty log functions
-  KVM: Ensure validity of memslot with respect to kvm_get_dirty_log()
-  KVM: Terminate memslot walks via used_slots
-  KVM: Dynamically size memslot array based on number of used slots
-
- arch/mips/include/asm/kvm_host.h      |   2 +-
- arch/mips/kvm/mips.c                  |  68 +---
- arch/powerpc/include/asm/kvm_ppc.h    |  14 +-
- arch/powerpc/kvm/book3s.c             |  22 +-
- arch/powerpc/kvm/book3s_hv.c          |  36 +-
- arch/powerpc/kvm/book3s_pr.c          |  20 +-
- arch/powerpc/kvm/booke.c              |  17 +-
- arch/powerpc/kvm/powerpc.c            |  13 +-
- arch/s390/include/asm/kvm_host.h      |   2 +-
- arch/s390/kvm/kvm-s390.c              |  21 +-
- arch/x86/include/asm/kvm_page_track.h |   3 +-
- arch/x86/kvm/page_track.c             |  15 +-
- arch/x86/kvm/x86.c                    | 100 ++---
- include/linux/kvm_host.h              |  48 +--
- virt/kvm/arm/arm.c                    |  47 +--
- virt/kvm/arm/mmu.c                    |  18 +-
- virt/kvm/kvm_main.c                   | 546 ++++++++++++++++----------
- 17 files changed, 467 insertions(+), 525 deletions(-)
-
--- 
-2.22.0
-
+Huacai
+>
+>
+> >
+> >Huacai
+> >
+> --
+> Jiaxun Yang

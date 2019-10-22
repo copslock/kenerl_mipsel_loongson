@@ -6,27 +6,27 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8ED82CA9EB7
-	for <linux-mips@archiver.kernel.org>; Tue, 22 Oct 2019 02:01:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EA23DCA9EAF
+	for <linux-mips@archiver.kernel.org>; Tue, 22 Oct 2019 02:01:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6520421920
-	for <linux-mips@archiver.kernel.org>; Tue, 22 Oct 2019 02:01:29 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C6B9F207FC
+	for <linux-mips@archiver.kernel.org>; Tue, 22 Oct 2019 02:01:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387907AbfJVCBX (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 21 Oct 2019 22:01:23 -0400
+        id S2387638AbfJVB74 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 21 Oct 2019 21:59:56 -0400
 Received: from mga14.intel.com ([192.55.52.115]:61609 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387666AbfJVB75 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 21 Oct 2019 21:59:57 -0400
+        id S2387650AbfJVB74 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 21 Oct 2019 21:59:56 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Oct 2019 18:59:56 -0700
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Oct 2019 18:59:54 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.67,325,1566889200"; 
-   d="scan'208";a="196293886"
+   d="scan'208";a="196293875"
 Received: from sjchrist-coffee.jf.intel.com ([10.54.74.41])
-  by fmsmga008.fm.intel.com with ESMTP; 21 Oct 2019 18:59:56 -0700
+  by fmsmga008.fm.intel.com with ESMTP; 21 Oct 2019 18:59:54 -0700
 From:   Sean Christopherson <sean.j.christopherson@intel.com>
 To:     Marc Zyngier <maz@kernel.org>, James Hogan <jhogan@kernel.org>,
         Paul Mackerras <paulus@ozlabs.org>,
@@ -47,9 +47,9 @@ Cc:     James Morse <james.morse@arm.com>,
         linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
         linux-mips@vger.kernel.org, kvm-ppc@vger.kernel.org,
         kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 34/45] KVM: MIPS: Move .vcpu_setup() call to kvm_arch_vcpu_create()
-Date:   Mon, 21 Oct 2019 18:59:14 -0700
-Message-Id: <20191022015925.31916-35-sean.j.christopherson@intel.com>
+Subject: [PATCH 31/45] KVM: Unexport kvm_vcpu_cache and kvm_{un}init_vcpu()
+Date:   Mon, 21 Oct 2019 18:59:11 -0700
+Message-Id: <20191022015925.31916-32-sean.j.christopherson@intel.com>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20191022015925.31916-1-sean.j.christopherson@intel.com>
 References: <20191022015925.31916-1-sean.j.christopherson@intel.com>
@@ -60,50 +60,79 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Fold setup() into create() now that the two are called back-to-back by
-common KVM code.  This paves the way for removing kvm_arch_vcpu_setup().
-Note, there is no unwind function associated with kvm_arch_vcpu_setup(),
-i.e. no teardown path that also needs to be moved.
-
-No functional change intended.
+Unexport kvm_vcpu_cache and kvm_{un}init_vcpu() and make them static
+now that they are referenced only in kvm_main.c.
 
 Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 ---
- arch/mips/kvm/mips.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ include/linux/kvm_host.h | 4 ----
+ virt/kvm/kvm_main.c      | 9 +++------
+ 2 files changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index 92c9321b3f95..b3a4435af66b 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -386,8 +386,15 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
- 	vcpu->arch.last_sched_cpu = -1;
- 	vcpu->arch.last_exec_cpu = -1;
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 8559d0448d0b..c36379824408 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -157,8 +157,6 @@ static inline bool is_error_page(struct page *page)
+ #define KVM_USERSPACE_IRQ_SOURCE_ID		0
+ #define KVM_IRQFD_RESAMPLE_IRQ_SOURCE_ID	1
  
-+	/* Initial guest state */
-+	err = kvm_mips_callbacks->vcpu_setup(vcpu);
-+	if (err)
-+		goto out_free_commpage;
-+
- 	return 0;
+-extern struct kmem_cache *kvm_vcpu_cache;
+-
+ extern struct mutex kvm_lock;
+ extern struct list_head vm_list;
  
-+out_free_commpage:
-+	kfree(vcpu->arch.kseg0_commpage);
- out_free_gebase:
- 	kfree(gebase);
- out:
-@@ -1237,10 +1244,9 @@ int kvm_arch_vcpu_ioctl_translate(struct kvm_vcpu *vcpu,
- 	return 0;
+@@ -585,8 +583,6 @@ static inline int kvm_vcpu_get_idx(struct kvm_vcpu *vcpu)
+ 	      memslot < slots->memslots + KVM_MEM_SLOTS_NUM && memslot->npages;\
+ 		memslot++)
+ 
+-int kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id);
+-void kvm_vcpu_uninit(struct kvm_vcpu *vcpu);
+ void kvm_vcpu_destroy(struct kvm_vcpu *vcpu);
+ 
+ void vcpu_load(struct kvm_vcpu *vcpu);
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index fb526bd55664..1d84ae0e3893 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -103,8 +103,7 @@ static cpumask_var_t cpus_hardware_enabled;
+ static int kvm_usage_count;
+ static atomic_t hardware_enable_failed;
+ 
+-struct kmem_cache *kvm_vcpu_cache;
+-EXPORT_SYMBOL_GPL(kvm_vcpu_cache);
++static struct kmem_cache *kvm_vcpu_cache;
+ 
+ static __read_mostly struct preempt_ops kvm_preempt_ops;
+ 
+@@ -288,7 +287,7 @@ void kvm_reload_remote_mmus(struct kvm *kvm)
+ 	kvm_make_all_cpus_request(kvm, KVM_REQ_MMU_RELOAD);
  }
  
--/* Initial guest state */
- int kvm_arch_vcpu_setup(struct kvm_vcpu *vcpu)
+-int kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
++static int kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
  {
--	return kvm_mips_callbacks->vcpu_setup(vcpu);
-+	return 0;
+ 	struct page *page;
+ 	int r;
+@@ -326,9 +325,8 @@ int kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
+ fail:
+ 	return r;
  }
+-EXPORT_SYMBOL_GPL(kvm_vcpu_init);
  
- static void kvm_mips_set_c0_status(void)
+-void kvm_vcpu_uninit(struct kvm_vcpu *vcpu)
++static void kvm_vcpu_uninit(struct kvm_vcpu *vcpu)
+ {
+ 	/*
+ 	 * no need for rcu_read_lock as VCPU_RUN is the only place that
+@@ -339,7 +337,6 @@ void kvm_vcpu_uninit(struct kvm_vcpu *vcpu)
+ 	kvm_arch_vcpu_uninit(vcpu);
+ 	free_page((unsigned long)vcpu->run);
+ }
+-EXPORT_SYMBOL_GPL(kvm_vcpu_uninit);
+ 
+ void kvm_vcpu_destroy(struct kvm_vcpu *vcpu)
+ {
 -- 
 2.22.0
 

@@ -7,85 +7,134 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56B13CA9EA0
-	for <linux-mips@archiver.kernel.org>; Tue, 22 Oct 2019 16:13:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BF126CA9EA0
+	for <linux-mips@archiver.kernel.org>; Tue, 22 Oct 2019 16:13:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 284E521783
-	for <linux-mips@archiver.kernel.org>; Tue, 22 Oct 2019 16:13:45 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9E49821783
+	for <linux-mips@archiver.kernel.org>; Tue, 22 Oct 2019 16:13:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389259AbfJVQNW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        id S2389253AbfJVQNW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
         Tue, 22 Oct 2019 12:13:22 -0400
-Received: from mx2.suse.de ([195.135.220.15]:59776 "EHLO mx1.suse.de"
+Received: from mx2.suse.de ([195.135.220.15]:59766 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732197AbfJVQNW (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        id S1732118AbfJVQNW (ORCPT <rfc822;linux-mips@vger.kernel.org>);
         Tue, 22 Oct 2019 12:13:22 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id E8CAAB385;
+        by mx1.suse.de (Postfix) with ESMTP id BA110B383;
         Tue, 22 Oct 2019 16:13:20 +0000 (UTC)
 From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 3/5] MIPS: arc: remove unused stuff
-Date:   Tue, 22 Oct 2019 18:13:13 +0200
-Message-Id: <20191022161315.4194-3-tbogendoerfer@suse.de>
+Subject: [PATCH 1/5] MIPS: SGI-IP27: collect externs in new header file
+Date:   Tue, 22 Oct 2019 18:13:11 +0200
+Message-Id: <20191022161315.4194-1-tbogendoerfer@suse.de>
 X-Mailer: git-send-email 2.16.4
-In-Reply-To: <20191022161315.4194-1-tbogendoerfer@suse.de>
-References: <20191022161315.4194-1-tbogendoerfer@suse.de>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-remove unused _prom_envp and prom_argc macro.
+IP27 code has a few externs distributed over .c files. Collect them
+together into one commcon header file.
 
 Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 ---
- arch/mips/fw/arc/init.c         | 3 +--
- arch/mips/include/asm/sgialib.h | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ arch/mips/sgi-ip27/ip27-common.h | 9 +++++++++
+ arch/mips/sgi-ip27/ip27-init.c   | 4 ++--
+ arch/mips/sgi-ip27/ip27-reset.c  | 2 ++
+ arch/mips/sgi-ip27/ip27-smp.c    | 4 ++--
+ arch/mips/sgi-ip27/ip27-timer.c  | 2 ++
+ 5 files changed, 17 insertions(+), 4 deletions(-)
+ create mode 100644 arch/mips/sgi-ip27/ip27-common.h
 
-diff --git a/arch/mips/fw/arc/init.c b/arch/mips/fw/arc/init.c
-index 4ac6466a8872..c713292462aa 100644
---- a/arch/mips/fw/arc/init.c
-+++ b/arch/mips/fw/arc/init.c
-@@ -19,7 +19,7 @@
- /* Master romvec interface. */
- struct linux_romvec *romvec;
- int prom_argc;
--LONG *_prom_argv, *_prom_envp;
-+LONG *_prom_argv;
+diff --git a/arch/mips/sgi-ip27/ip27-common.h b/arch/mips/sgi-ip27/ip27-common.h
+new file mode 100644
+index 000000000000..e9e9f1dc8c20
+--- /dev/null
++++ b/arch/mips/sgi-ip27/ip27-common.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#ifndef __IP27_COMMON_H
++#define __IP27_COMMON_H
++
++extern void ip27_reboot_setup(void);
++extern void hub_rt_clock_event_init(void);
++
++#endif /* __IP27_COMMON_H */
+diff --git a/arch/mips/sgi-ip27/ip27-init.c b/arch/mips/sgi-ip27/ip27-init.c
+index 1dad799758c4..f48e2b3990f6 100644
+--- a/arch/mips/sgi-ip27/ip27-init.c
++++ b/arch/mips/sgi-ip27/ip27-init.c
+@@ -36,6 +36,8 @@
+ #include <asm/sn/sn0/ip27.h>
+ #include <asm/sn/mapped_kernel.h>
  
- #if defined(CONFIG_64BIT) && defined(CONFIG_FW_ARC32)
- /* stack for calling 32bit ARC prom */
-@@ -34,7 +34,6 @@ void __init prom_init(void)
++#include "ip27-common.h"
++
+ #define CPU_NONE		(cpuid_t)-1
  
- 	prom_argc = fw_arg0;
- 	_prom_argv = (LONG *) fw_arg1;
--	_prom_envp = (LONG *) fw_arg2;
+ static DECLARE_BITMAP(hub_init_mask, MAX_COMPACT_NODES);
+@@ -113,8 +115,6 @@ get_nasid(void)
+ 			 >> NSRI_NODEID_SHFT);
+ }
  
- 	if (pb->magic != 0x53435241) {
- 		printk(KERN_CRIT "Aieee, bad prom vector magic %08lx\n",
-diff --git a/arch/mips/include/asm/sgialib.h b/arch/mips/include/asm/sgialib.h
-index 21d17eb25ed8..40ab4ef0b1dc 100644
---- a/arch/mips/include/asm/sgialib.h
-+++ b/arch/mips/include/asm/sgialib.h
-@@ -17,12 +17,11 @@
- extern struct linux_romvec *romvec;
- extern int prom_argc;
+-extern void ip27_reboot_setup(void);
+-
+ void __init plat_mem_setup(void)
+ {
+ 	u64 p, e, n_mode;
+diff --git a/arch/mips/sgi-ip27/ip27-reset.c b/arch/mips/sgi-ip27/ip27-reset.c
+index c90228d0d4c2..74d078247e49 100644
+--- a/arch/mips/sgi-ip27/ip27-reset.c
++++ b/arch/mips/sgi-ip27/ip27-reset.c
+@@ -26,6 +26,8 @@
+ #include <asm/sn/gda.h>
+ #include <asm/sn/sn0/hub.h>
  
--extern LONG *_prom_argv, *_prom_envp;
-+extern LONG *_prom_argv;
++#include "ip27-common.h"
++
+ void machine_restart(char *command) __noreturn;
+ void machine_halt(void) __noreturn;
+ void machine_power_off(void) __noreturn;
+diff --git a/arch/mips/sgi-ip27/ip27-smp.c b/arch/mips/sgi-ip27/ip27-smp.c
+index 386702abe660..c38df7c62964 100644
+--- a/arch/mips/sgi-ip27/ip27-smp.c
++++ b/arch/mips/sgi-ip27/ip27-smp.c
+@@ -27,6 +27,8 @@
+ #include <asm/sn/sn0/hubio.h>
+ #include <asm/sn/sn0/ip27.h>
  
- /* A 32-bit ARC PROM pass arguments and environment as 32-bit pointer.
-    These macros take care of sign extension.  */
- #define prom_argv(index) ((char *) (long) _prom_argv[(index)])
--#define prom_argc(index) ((char *) (long) _prom_argc[(index)])
++#include "ip27-common.h"
++
+ /*
+  * Takes as first input the PROM assigned cpu id, and the kernel
+  * assigned cpu id as the second.
+@@ -147,8 +149,6 @@ static void ip27_init_cpu(void)
  
- extern int prom_flags;
+ static void ip27_smp_finish(void)
+ {
+-	extern void hub_rt_clock_event_init(void);
+-
+ 	hub_rt_clock_event_init();
+ 	local_irq_enable();
+ }
+diff --git a/arch/mips/sgi-ip27/ip27-timer.c b/arch/mips/sgi-ip27/ip27-timer.c
+index 9ca775465a91..d53a29070e12 100644
+--- a/arch/mips/sgi-ip27/ip27-timer.c
++++ b/arch/mips/sgi-ip27/ip27-timer.c
+@@ -38,6 +38,8 @@
+ #include <asm/sn/sn0/hubio.h>
+ #include <asm/pci/bridge.h>
  
++#include "ip27-common.h"
++
+ static int rt_next_event(unsigned long delta, struct clock_event_device *evt)
+ {
+ 	unsigned int cpu = smp_processor_id();
 -- 
 2.16.4
 

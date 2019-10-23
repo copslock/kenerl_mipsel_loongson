@@ -2,86 +2,101 @@ Return-Path: <SRS0=5TPM=YQ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E922CA9EB6
-	for <linux-mips@archiver.kernel.org>; Wed, 23 Oct 2019 09:40:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 58652CA9EB6
+	for <linux-mips@archiver.kernel.org>; Wed, 23 Oct 2019 15:26:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5E2A021D7B
-	for <linux-mips@archiver.kernel.org>; Wed, 23 Oct 2019 09:40:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2484B2173B
+	for <linux-mips@archiver.kernel.org>; Wed, 23 Oct 2019 15:26:29 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="u+/IVuEh"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403927AbfJWJkP (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 23 Oct 2019 05:40:15 -0400
-Received: from [217.140.110.172] ([217.140.110.172]:46342 "EHLO foss.arm.com"
-        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S2403840AbfJWJkO (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 23 Oct 2019 05:40:14 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7E4F91688;
-        Wed, 23 Oct 2019 02:39:56 -0700 (PDT)
-Received: from localhost (e113682-lin.copenhagen.arm.com [10.32.145.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 07AC83F718;
-        Wed, 23 Oct 2019 02:39:55 -0700 (PDT)
-Date:   Wed, 23 Oct 2019 11:39:54 +0200
-From:   Christoffer Dall <christoffer.dall@arm.com>
-To:     Sean Christopherson <sean.j.christopherson@intel.com>
-Cc:     James Hogan <jhogan@kernel.org>,
-        Paul Mackerras <paulus@ozlabs.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Marc Zyngier <maz@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Wanpeng Li <wanpengli@tencent.com>, kvm@vger.kernel.org,
-        David Hildenbrand <david@redhat.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Cornelia Huck <cohuck@redhat.com>, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        kvmarm@lists.cs.columbia.edu, Jim Mattson <jmattson@google.com>
-Subject: Re: [PATCH v2 00/15] KVM: Dynamically size memslot arrays
-Message-ID: <20191023093954.GH2652@e113682-lin.lund.arm.com>
-References: <20191022003537.13013-1-sean.j.christopherson@intel.com>
+        id S2392434AbfJWP02 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 23 Oct 2019 11:26:28 -0400
+Received: from forward106j.mail.yandex.net ([5.45.198.249]:38850 "EHLO
+        forward106j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732725AbfJWP02 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 23 Oct 2019 11:26:28 -0400
+Received: from mxback27o.mail.yandex.net (mxback27o.mail.yandex.net [IPv6:2a02:6b8:0:1a2d::78])
+        by forward106j.mail.yandex.net (Yandex) with ESMTP id E05E611A07DB;
+        Wed, 23 Oct 2019 18:26:25 +0300 (MSK)
+Received: from sas1-e6a95a338f12.qloud-c.yandex.net (sas1-e6a95a338f12.qloud-c.yandex.net [2a02:6b8:c08:37a4:0:640:e6a9:5a33])
+        by mxback27o.mail.yandex.net (nwsmtp/Yandex) with ESMTP id 2HHJc5qrXO-QP38MIjQ;
+        Wed, 23 Oct 2019 18:26:25 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1571844385;
+        bh=pXHgoFEZjIhQb6wtUSotGvV+HIzXvVjUqGHw8fCPev0=;
+        h=Subject:To:From:Cc:Date:Message-Id;
+        b=u+/IVuEhnzCVdq1vXEfZw6OMBYG/663au1LeoOd3cD0fFS7VoPpctMojVkXXsCzXb
+         TuxoPX7gORVdPRk5+Vgzrpk7pa9kZLZaalN0sG18v9va1xNR5ZA0KIuJDxnDyBF4pl
+         Ah9toa8pKyXk+GfZCwjnKl/732qUfKsfTjx8EVrI=
+Authentication-Results: mxback27o.mail.yandex.net; dkim=pass header.i=@flygoat.com
+Received: by sas1-e6a95a338f12.qloud-c.yandex.net (nwsmtp/Yandex) with ESMTPSA id U0vjoMzp4P-QEViFZBI;
+        Wed, 23 Oct 2019 18:26:17 +0300
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (Client certificate not present)
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     linux-mips@vger.kernel.org
+Cc:     paul.burton@mips.com, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] MIPS: elf_hwcap: Export microMIPS and vz
+Date:   Wed, 23 Oct 2019 23:25:51 +0800
+Message-Id: <20191023152551.10535-1-jiaxun.yang@flygoat.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191022003537.13013-1-sean.j.christopherson@intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, Oct 21, 2019 at 05:35:22PM -0700, Sean Christopherson wrote:
-> The end goal of this series is to dynamically size the memslot array so
-> that KVM allocates memory based on the number of memslots in use, as
-> opposed to unconditionally allocating memory for the maximum number of
-> memslots.  On x86, each memslot consumes 88 bytes, and so with 2 address
-> spaces of 512 memslots, each VM consumes ~90k bytes for the memslots.
-> E.g. given a VM that uses a total of 30 memslots, dynamic sizing reduces
-> the memory footprint from 90k to ~2.6k bytes.
-> 
-> The changes required to support dynamic sizing are relatively small,
-> e.g. are essentially contained in patches 12/13 and 13/13.  Patches 1-11
-> clean up the memslot code, which has gotten quite crusy, especially
-> __kvm_set_memory_region().  The clean up is likely not strictly necessary
-> to switch to dynamic sizing, but I didn't have a remotely reasonable
-> level of confidence in the correctness of the dynamic sizing without first
-> doing the clean up.
-> 
-> Testing, especially non-x86 platforms, would be greatly appreciated.  The
-> non-x86 changes are for all intents and purposes untested, e.g. I compile
-> tested pieces of the code by copying them into x86, but that's it.  In
-> theory, the vast majority of the functional changes are arch agnostic, in
-> theory...
+After further discussion with userland library develpoer,
+we addressed another two ASEs that can be used runtimely in programs.
 
-I've built this for arm/arm64, and I've ran my usual set of tests which
-pass fine.  I've also run the selftest framework's tests for the dirty
-logging and the migration loop test for arm64, and they pass fine.
+Export them in hwcap as well to benefit userspace programs.
 
-You can add my (for arm64):
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: <stable@vger.kernel.org> # 4.4+
+---
+ arch/mips/include/uapi/asm/hwcap.h | 2 ++
+ arch/mips/kernel/cpu-probe.c       | 7 ++++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-Tested-by: Christoffer Dall <christoffer.dall@arm.com>
+diff --git a/arch/mips/include/uapi/asm/hwcap.h b/arch/mips/include/uapi/asm/hwcap.h
+index 1ade1daa4921..e1a9bac62149 100644
+--- a/arch/mips/include/uapi/asm/hwcap.h
++++ b/arch/mips/include/uapi/asm/hwcap.h
+@@ -17,5 +17,7 @@
+ #define HWCAP_LOONGSON_MMI  (1 << 11)
+ #define HWCAP_LOONGSON_EXT  (1 << 12)
+ #define HWCAP_LOONGSON_EXT2 (1 << 13)
++#define HWCAP_MIPS_MICROMIPS (1 << 14)
++#define HWCAP_MIPS_VZ       (1 << 15)
+ 
+ #endif /* _UAPI_ASM_HWCAP_H */
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index f521cbf934e7..11e853d88aae 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -2213,8 +2213,13 @@ void cpu_probe(void)
+ 	if (cpu_has_loongson_ext2)
+ 		elf_hwcap |= HWCAP_LOONGSON_EXT2;
+ 
+-	if (cpu_has_vz)
++	if (cpu_has_mmips)
++		elf_hwcap |= HWCAP_MIPS_MICROMIPS;
++
++	if (cpu_has_vz) {
++		elf_hwcap |= HWCAP_MIPS_VZ;
+ 		cpu_probe_vz(c);
++	}
+ 
+ 	cpu_probe_vmbits(c);
+ 
+-- 
+2.23.0
+

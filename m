@@ -2,103 +2,99 @@ Return-Path: <SRS0=99me=YR=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_2 autolearn=unavailable autolearn_force=no version=3.4.0
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D7C4CA9EBC
-	for <linux-mips@archiver.kernel.org>; Thu, 24 Oct 2019 09:34:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30F89CA9EBB
+	for <linux-mips@archiver.kernel.org>; Thu, 24 Oct 2019 09:38:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 3CBA020684
-	for <linux-mips@archiver.kernel.org>; Thu, 24 Oct 2019 09:34:22 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 10C6121925
+	for <linux-mips@archiver.kernel.org>; Thu, 24 Oct 2019 09:38:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404261AbfJXJeV (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 24 Oct 2019 05:34:21 -0400
-Received: from 13.mo3.mail-out.ovh.net ([188.165.33.202]:50791 "EHLO
-        13.mo3.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732686AbfJXJeV (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 24 Oct 2019 05:34:21 -0400
-X-Greylist: delayed 8884 seconds by postgrey-1.27 at vger.kernel.org; Thu, 24 Oct 2019 05:34:21 EDT
-Received: from player737.ha.ovh.net (unknown [10.108.35.110])
-        by mo3.mail-out.ovh.net (Postfix) with ESMTP id 54E1E22C0C8
-        for <linux-mips@vger.kernel.org>; Thu, 24 Oct 2019 09:06:16 +0200 (CEST)
-Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net [82.253.208.248])
-        (Authenticated sender: groug@kaod.org)
-        by player737.ha.ovh.net (Postfix) with ESMTPSA id DFAA11E5A0F5;
-        Thu, 24 Oct 2019 07:05:28 +0000 (UTC)
-Date:   Thu, 24 Oct 2019 09:05:27 +0200
-From:   Greg Kurz <groug@kaod.org>
-To:     Sean Christopherson <sean.j.christopherson@intel.com>
-Cc:     Marc Zyngier <maz@kernel.org>, James Hogan <jhogan@kernel.org>,
-        Paul Mackerras <paulus@ozlabs.org>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Radim =?UTF-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        id S2438597AbfJXJh6 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 24 Oct 2019 05:37:58 -0400
+Received: from foss.arm.com ([217.140.110.172]:44444 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2438594AbfJXJh6 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 24 Oct 2019 05:37:58 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C656C492;
+        Thu, 24 Oct 2019 02:37:42 -0700 (PDT)
+Received: from e112269-lin.cambridge.arm.com (e112269-lin.cambridge.arm.com [10.1.194.43])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C52B33F71F;
+        Thu, 24 Oct 2019 02:37:39 -0700 (PDT)
+From:   Steven Price <steven.price@arm.com>
+To:     linux-mm@kvack.org
+Cc:     Steven Price <steven.price@arm.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
         James Morse <james.morse@arm.com>,
-        Julien Thierry <julien.thierry.kdev@gmail.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
-        linux-mips@vger.kernel.org, kvm-ppc@vger.kernel.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 02/45] KVM: PPC: Book3S PR: Free shared page if mmu
- initialization fails
-Message-ID: <20191024090527.6b73a3bc@bahia.lan>
-In-Reply-To: <20191022015925.31916-3-sean.j.christopherson@intel.com>
-References: <20191022015925.31916-1-sean.j.christopherson@intel.com>
-        <20191022015925.31916-3-sean.j.christopherson@intel.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        "Liang, Kan" <kan.liang@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org
+Subject: [PATCH v13 05/22] mips: mm: Add p?d_leaf() definitions
+Date:   Thu, 24 Oct 2019 10:36:59 +0100
+Message-Id: <20191024093716.49420-6-steven.price@arm.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191024093716.49420-1-steven.price@arm.com>
+References: <20191024093716.49420-1-steven.price@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 5577708138938931537
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrledtgdduudegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddm
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Mon, 21 Oct 2019 18:58:42 -0700
-Sean Christopherson <sean.j.christopherson@intel.com> wrote:
+walk_page_range() is going to be allowed to walk page tables other than
+those of user space. For this it needs to know when it has reached a
+'leaf' entry in the page tables. This information is provided by the
+p?d_leaf() functions/macros.
 
-> Explicitly free the shared page if kvmppc_mmu_init() fails during
-> kvmppc_core_vcpu_create(), as the page is freed only in
-> kvmppc_core_vcpu_free(), which is not reached via kvm_vcpu_uninit().
-> 
-> Fixes: 96bc451a15329 ("KVM: PPC: Introduce shared page")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
-> ---
+If _PAGE_HUGE is defined we can simply look for it. When not defined we
+can be confident that there are no leaf pages in existence and fall back
+on the generic implementation (added in a later patch) which returns 0.
 
-Reviewed-by: Greg Kurz <groug@kaod.org>
+CC: Ralf Baechle <ralf@linux-mips.org>
+CC: Paul Burton <paul.burton@mips.com>
+CC: James Hogan <jhogan@kernel.org>
+CC: linux-mips@vger.kernel.org
+Signed-off-by: Steven Price <steven.price@arm.com>
+Acked-by: Paul Burton <paul.burton@mips.com>
+---
+ arch/mips/include/asm/pgtable.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
->  arch/powerpc/kvm/book3s_pr.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
-> index cc65af8fe6f7..3f6ad3f58628 100644
-> --- a/arch/powerpc/kvm/book3s_pr.c
-> +++ b/arch/powerpc/kvm/book3s_pr.c
-> @@ -1769,10 +1769,12 @@ static struct kvm_vcpu *kvmppc_core_vcpu_create_pr(struct kvm *kvm,
->  
->  	err = kvmppc_mmu_init(vcpu);
->  	if (err < 0)
-> -		goto uninit_vcpu;
-> +		goto free_shared_page;
->  
->  	return vcpu;
->  
-> +free_shared_page:
-> +	free_page((unsigned long)vcpu->arch.shared);
->  uninit_vcpu:
->  	kvm_vcpu_uninit(vcpu);
->  free_shadow_vcpu:
+diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
+index f85bd5b15f51..fff392ea80c7 100644
+--- a/arch/mips/include/asm/pgtable.h
++++ b/arch/mips/include/asm/pgtable.h
+@@ -639,6 +639,11 @@ static inline pmd_t pmdp_huge_get_and_clear(struct mm_struct *mm,
+ 
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+ 
++#ifdef _PAGE_HUGE
++#define pmd_leaf(pmd)	((pmd_val(pmd) & _PAGE_HUGE) != 0)
++#define pud_leaf(pud)	((pud_val(pud) & _PAGE_HUGE) != 0)
++#endif
++
+ #define gup_fast_permitted(start, end)	(!cpu_has_dc_aliases)
+ 
+ #include <asm-generic/pgtable.h>
+-- 
+2.20.1
 

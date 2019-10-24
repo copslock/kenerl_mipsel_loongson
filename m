@@ -2,130 +2,101 @@ Return-Path: <SRS0=99me=YR=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22B18CA9EAF
-	for <linux-mips@archiver.kernel.org>; Thu, 24 Oct 2019 10:13:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7FA25CA9EAF
+	for <linux-mips@archiver.kernel.org>; Thu, 24 Oct 2019 10:18:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E653221872
-	for <linux-mips@archiver.kernel.org>; Thu, 24 Oct 2019 10:13:43 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=monstr-eu.20150623.gappssmtp.com header.i=@monstr-eu.20150623.gappssmtp.com header.b="cTWe2LNo"
+	by mail.kernel.org (Postfix) with ESMTP id 59A352166E
+	for <linux-mips@archiver.kernel.org>; Thu, 24 Oct 2019 10:18:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389425AbfJXKNn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 24 Oct 2019 06:13:43 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:39202 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391807AbfJXKNU (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 24 Oct 2019 06:13:20 -0400
-Received: by mail-wr1-f66.google.com with SMTP id a11so9308618wra.6
-        for <linux-mips@vger.kernel.org>; Thu, 24 Oct 2019 03:13:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=monstr-eu.20150623.gappssmtp.com; s=20150623;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=4e4CMe8f6py1Yt2lWLrn331C7GRW8uLQcBzyGRI9nf4=;
-        b=cTWe2LNoVh1mOyCENVn7zpGv3Jprre8rDXIaPx76j+yvm1hAVwpu6ypxuWj/UlDG97
-         I2oGLcNkL8BrxO7xHx2/ggo3DF85rMITBcd3ReMP4P9wlSe/Km4gkC2pZ+KiWQRbD1Ub
-         oUOBZe7O6NpUfMuls2FITbvA/QIqoL2gGBGoTs3Sn6F5kl9WU1rliddwVhPBlkqkn9m1
-         Lphmv7GnryVkgYA2cAn/Us7kHpjQ0Omkljg9UkRBs0ezBVER1StVBdwBnkO4Pzx7gs//
-         2BwDWL51kb6jgX/pMfJ4olGJpU45RWhG1faxx4yo1ZoMybOydnuSGIvh54WChKjDxe8h
-         lKFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=4e4CMe8f6py1Yt2lWLrn331C7GRW8uLQcBzyGRI9nf4=;
-        b=IyA2musjJeQsThUNzGd7nubQs7d8BTJC+hAB7iz5zuaUPpnr8S0xG06rxAUwVbO/+M
-         7PmXHCm79L4WIAvkfFdsAg/dqR6cR8fxTWV9hycJUMg9bkZOdIW75fU2NtBIh5ucQ3uv
-         XdeYIH+oHKnfvGzuB/l77sMylCbpfLKCLfI29gWUC3ujuWnVyCbFHY2i4C+vXV0z6khU
-         TKzyDcTCobnirA41d2nHUqyWZQKF02zgFvJpa1seAxb21pru2szoVCCmNz2Y3o2Evs4n
-         sv4e1498/Eqhdehy78AqVjaMhqxLCrXj/Zh1WSbVP6P0ZtomNr4f8Eqn+kaETHm73hxA
-         wDnA==
-X-Gm-Message-State: APjAAAXQokyHFRjTfu0/hah0zgtM23/Ikgi3mDgUccD718CuNYnVxwFC
-        h9TAbM4So69bJ2dOMBJRZqO86g==
-X-Google-Smtp-Source: APXvYqwcFnA4ofb/Q4g7Tcra8udIzZaJReC4T76gGILoFLWpLp7LWZeYpE1c6/ZFH9jYdiQyaQs7MQ==
-X-Received: by 2002:adf:92a5:: with SMTP id 34mr2881720wrn.337.1571911998458;
-        Thu, 24 Oct 2019 03:13:18 -0700 (PDT)
-Received: from localhost (nat-35.starnet.cz. [178.255.168.35])
-        by smtp.gmail.com with ESMTPSA id i3sm20429658wrw.69.2019.10.24.03.13.17
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 24 Oct 2019 03:13:17 -0700 (PDT)
-From:   Michal Simek <michal.simek@xilinx.com>
-To:     linux-kernel@vger.kernel.org, monstr@monstr.eu,
-        michal.simek@xilinx.com, git@xilinx.com, palmer@sifive.com,
-        hch@infradead.org, longman@redhat.com, helgaas@kernel.org
-Cc:     Paolo Bonzini <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
-        Jackie Liu <liuyun01@kylinos.cn>,
-        Wesley Terpstra <wesley@sifive.com>,
-        Firoz Khan <firoz.khan@linaro.org>, sparclinux@vger.kernel.org,
-        Ingo Molnar <mingo@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
-        James Hogan <jhogan@kernel.org>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        id S2393278AbfJXKSh (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 24 Oct 2019 06:18:37 -0400
+Received: from mx2.suse.de ([195.135.220.15]:34202 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2392678AbfJXKSh (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Thu, 24 Oct 2019 06:18:37 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 04F6BB4F1;
+        Thu, 24 Oct 2019 10:18:36 +0000 (UTC)
+From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
+To:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@mips.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-arm-kernel@lists.infradead.org,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        linux-snps-arc@lists.infradead.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Biggers <ebiggers@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linux-mips@vger.kernel.org,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 0/2] Enabling MSI for Microblaze
-Date:   Thu, 24 Oct 2019 12:13:10 +0200
-Message-Id: <cover.1571911976.git.michal.simek@xilinx.com>
-X-Mailer: git-send-email 2.17.1
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] MIPS: PCI: make phys_to_dma/dma_to_phys for pci-xtalk-bridge common
+Date:   Thu, 24 Oct 2019 12:18:28 +0200
+Message-Id: <20191024101829.12543-1-tbogendoerfer@suse.de>
+X-Mailer: git-send-email 2.16.4
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi,
+All platforms using pci-xtalk-bridge can share common phys_to_dma/
+dma_to_phys function. So we move it form ip27 specific file to
+pci-xtalk-bridge.c
 
-these two patches come from discussion with Christoph, Bjorn, Palmer and
-Waiman. The first patch was suggestion by Christoph here
-https://lore.kernel.org/linux-riscv/20191008154604.GA7903@infradead.org/
-The second part was discussed
-https://lore.kernel.org/linux-pci/mhng-5d9bcb53-225e-441f-86cc-b335624b3e7c@palmer-si-x1e/
-and
-https://lore.kernel.org/linux-pci/20191017181937.7004-1-palmer@sifive.com/
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+---
+ arch/mips/pci/pci-ip27.c         | 13 -------------
+ arch/mips/pci/pci-xtalk-bridge.c | 16 ++++++++++++++++
+ 2 files changed, 16 insertions(+), 13 deletions(-)
 
-Thanks,
-Michal
-
-
-Michal Simek (1):
-  asm-generic: Make msi.h a mandatory include/asm header
-
-Palmer Dabbelt (1):
-  pci: Default to PCI_MSI_IRQ_DOMAIN
-
- arch/arc/include/asm/Kbuild     | 1 -
- arch/arm/include/asm/Kbuild     | 1 -
- arch/arm64/include/asm/Kbuild   | 1 -
- arch/mips/include/asm/Kbuild    | 1 -
- arch/powerpc/include/asm/Kbuild | 1 -
- arch/riscv/include/asm/Kbuild   | 1 -
- arch/sparc/include/asm/Kbuild   | 1 -
- drivers/pci/Kconfig             | 2 +-
- include/asm-generic/Kbuild      | 1 +
- 9 files changed, 2 insertions(+), 8 deletions(-)
-
+diff --git a/arch/mips/pci/pci-ip27.c b/arch/mips/pci/pci-ip27.c
+index 0d2eb86e8a1e..8e26b120f994 100644
+--- a/arch/mips/pci/pci-ip27.c
++++ b/arch/mips/pci/pci-ip27.c
+@@ -14,19 +14,6 @@
+ #include <asm/sn/ioc3.h>
+ #include <asm/pci/bridge.h>
+ 
+-dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr)
+-{
+-	struct pci_dev *pdev = to_pci_dev(dev);
+-	struct bridge_controller *bc = BRIDGE_CONTROLLER(pdev->bus);
+-
+-	return bc->baddr + paddr;
+-}
+-
+-phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
+-{
+-	return dma_addr & ~(0xffUL << 56);
+-}
+-
+ #ifdef CONFIG_NUMA
+ int pcibus_to_node(struct pci_bus *bus)
+ {
+diff --git a/arch/mips/pci/pci-xtalk-bridge.c b/arch/mips/pci/pci-xtalk-bridge.c
+index 0dd5edb76cbb..b475cf5aef2f 100644
+--- a/arch/mips/pci/pci-xtalk-bridge.c
++++ b/arch/mips/pci/pci-xtalk-bridge.c
+@@ -22,6 +22,22 @@
+ #define CRC16_INIT	0
+ #define CRC16_VALID	0xb001
+ 
++/*
++ * Common phys<->dma mapping for platforms using pci xtalk bridge
++ */
++dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr)
++{
++	struct pci_dev *pdev = to_pci_dev(dev);
++	struct bridge_controller *bc = BRIDGE_CONTROLLER(pdev->bus);
++
++	return bc->baddr + paddr;
++}
++
++phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t dma_addr)
++{
++	return dma_addr & ~(0xffUL << 56);
++}
++
+ /*
+  * Most of the IOC3 PCI config register aren't present
+  * we emulate what is needed for a normal PCI enumeration
 -- 
-2.17.1
+2.16.4
 

@@ -2,111 +2,218 @@ Return-Path: <SRS0=99me=YR=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.6 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AF4B0CA9EAF
-	for <linux-mips@archiver.kernel.org>; Thu, 24 Oct 2019 06:32:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5ED64CA9EBB
+	for <linux-mips@archiver.kernel.org>; Thu, 24 Oct 2019 07:15:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 71D7920679
-	for <linux-mips@archiver.kernel.org>; Thu, 24 Oct 2019 06:32:17 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="Jkj5bEaw"
+	by mail.kernel.org (Postfix) with ESMTP id 2F1362166E
+	for <linux-mips@archiver.kernel.org>; Thu, 24 Oct 2019 07:15:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408552AbfJXGcR (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 24 Oct 2019 02:32:17 -0400
-Received: from forward101j.mail.yandex.net ([5.45.198.241]:44064 "EHLO
-        forward101j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2404377AbfJXGcR (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 24 Oct 2019 02:32:17 -0400
-Received: from mxback27o.mail.yandex.net (mxback27o.mail.yandex.net [IPv6:2a02:6b8:0:1a2d::78])
-        by forward101j.mail.yandex.net (Yandex) with ESMTP id 411611BE0125;
-        Thu, 24 Oct 2019 09:32:14 +0300 (MSK)
-Received: from iva3-3f75f35f86d4.qloud-c.yandex.net (iva3-3f75f35f86d4.qloud-c.yandex.net [2a02:6b8:c0c:498f:0:640:3f75:f35f])
-        by mxback27o.mail.yandex.net (nwsmtp/Yandex) with ESMTP id KoqmSK881M-WDqGriqt;
-        Thu, 24 Oct 2019 09:32:14 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1571898734;
-        bh=ZEMULDmi68Ln7bpVQGgkzmUAobTz0pq0naePIbMZshw=;
-        h=From:To:Subject:CC:References:Date:In-Reply-To:Message-ID;
-        b=Jkj5bEawIxahuU705QS8Z8hrrCUw2eVLeO7jBWuH2jEv2UO1Xr0DuOlmyxionWD69
-         4v1+pTmSfrbCqi6xZlcy+Wrmk9Z+poul0fahxqmaDuQ3P6Orwe6G7pVDxdT0fWmD9k
-         ueRYrxN0iNAkypt62u/4/DwrlVyZ/dPhd7N8Qhnw=
-Authentication-Results: mxback27o.mail.yandex.net; dkim=pass header.i=@flygoat.com
-Received: by iva3-3f75f35f86d4.qloud-c.yandex.net (nwsmtp/Yandex) with ESMTPSA id ioVuZtsd54-WC0CN0fH;
-        Thu, 24 Oct 2019 09:32:12 +0300
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client certificate not present)
-Date:   Thu, 24 Oct 2019 14:32:05 +0800
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20191024040624.eezpuusvhujfffud@lantea.localdomain>
-References: <20191023152551.10535-1-jiaxun.yang@flygoat.com> <20191024040624.eezpuusvhujfffud@lantea.localdomain>
+        id S2437947AbfJXHPi (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 24 Oct 2019 03:15:38 -0400
+Received: from mout-p-102.mailbox.org ([80.241.56.152]:11570 "EHLO
+        mout-p-102.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2437940AbfJXHPh (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 24 Oct 2019 03:15:37 -0400
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:105:465:1:2:0])
+        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        (No client certificate requested)
+        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 46zJFS55d2zKmhs;
+        Thu, 24 Oct 2019 09:06:36 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+        by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173]) (amavisd-new, port 10030)
+        with ESMTP id DAIjq9oYK49d; Thu, 24 Oct 2019 09:06:30 +0200 (CEST)
+Date:   Thu, 24 Oct 2019 18:06:04 +1100
+From:   Aleksa Sarai <cyphar@cyphar.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
+        David Drysdale <drysdale@google.com>,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Christian Brauner <christian@brauner.io>,
+        Aleksa Sarai <asarai@suse.de>,
+        Linux Containers <containers@lists.linux-foundation.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        GNU C Library <libc-alpha@sourceware.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        linux-ia64@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v14 2/6] namei: LOOKUP_IN_ROOT: chroot-like path
+ resolution
+Message-ID: <20191024070604.howuh6x6qrzd5jsm@yavin.dot.cyphar.com>
+References: <20191010054140.8483-1-cyphar@cyphar.com>
+ <20191010054140.8483-3-cyphar@cyphar.com>
+ <CAHk-=wh8L50f31vW8BwRUXhLiq3eoCQ3tg8ER4Yp2dzuU1w5rQ@mail.gmail.com>
+ <20191012040815.gnc43cfmo5mnv67u@yavin.dot.cyphar.com>
+ <20191012041541.milbmfbjpj5bcl5a@yavin.dot.cyphar.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] MIPS: elf_hwcap: Export microMIPS and vz
-To:     Paul Burton <paulburton@kernel.org>
-CC:     linux-mips@vger.kernel.org, paul.burton@mips.com,
-        stable@vger.kernel.org
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-Message-ID: <B1A8B4BF-FF80-4E6D-9B4F-8E45B0EF5FE5@flygoat.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="i56sxfhksaspu3tw"
+Content-Disposition: inline
+In-Reply-To: <20191012041541.milbmfbjpj5bcl5a@yavin.dot.cyphar.com>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
 
+--i56sxfhksaspu3tw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-=E4=BA=8E 2019=E5=B9=B410=E6=9C=8824=E6=97=A5 GMT+08:00 =E4=B8=8B=E5=8D=88=
-12:06:24, Paul Burton <paulburton@kernel=2Eorg> =E5=86=99=E5=88=B0:
->Hi Jiaxun,
->
->On Wed, Oct 23, 2019 at 11:25:51PM +0800, Jiaxun Yang wrote:
->> After further discussion with userland library develpoer,
->> we addressed another two ASEs that can be used runtimely in programs=2E
->>=20
->> Export them in hwcap as well to benefit userspace programs=2E
->>=20
->> Signed-off-by: Jiaxun Yang <jiaxun=2Eyang@flygoat=2Ecom>
->> Cc: <stable@vger=2Ekernel=2Eorg> # 4=2E4+
->> ---
->>  arch/mips/include/uapi/asm/hwcap=2Eh | 2 ++
->>  arch/mips/kernel/cpu-probe=2Ec       | 7 ++++++-
->>  2 files changed, 8 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/arch/mips/include/uapi/asm/hwcap=2Eh
->b/arch/mips/include/uapi/asm/hwcap=2Eh
->> index 1ade1daa4921=2E=2Ee1a9bac62149 100644
->> --- a/arch/mips/include/uapi/asm/hwcap=2Eh
->> +++ b/arch/mips/include/uapi/asm/hwcap=2Eh
->> @@ -17,5 +17,7 @@
->>  #define HWCAP_LOONGSON_MMI  (1 << 11)
->>  #define HWCAP_LOONGSON_EXT  (1 << 12)
->>  #define HWCAP_LOONGSON_EXT2 (1 << 13)
->> +#define HWCAP_MIPS_MICROMIPS (1 << 14)
->> +#define HWCAP_MIPS_VZ       (1 << 15)
->
->What's the motivation for exposing VZ? Userland can't actually use it
->without something like KVM, which already exposes a means of detecting
->whether VZ is supported (try the creating a VM of type KVM_VM_MIPS_VZ &
->see if it works)=2E I'm not sure what userland would be able to do with
->this information in AT_HWCAP
+On 2019-10-12, Aleksa Sarai <cyphar@cyphar.com> wrote:
+> On 2019-10-12, Aleksa Sarai <cyphar@cyphar.com> wrote:
+> > On 2019-10-10, Linus Torvalds <torvalds@linux-foundation.org> wrote:
+> > > On Wed, Oct 9, 2019 at 10:42 PM Aleksa Sarai <cyphar@cyphar.com> wrot=
+e:
+> > > >
+> > > > --- a/fs/namei.c
+> > > > +++ b/fs/namei.c
+> > > > @@ -2277,6 +2277,11 @@ static const char *path_init(struct nameidat=
+a *nd, unsigned flags)
+> > > >
+> > > >         nd->m_seq =3D read_seqbegin(&mount_lock);
+> > > >
+> > > > +       /* LOOKUP_IN_ROOT treats absolute paths as being relative-t=
+o-dirfd. */
+> > > > +       if (flags & LOOKUP_IN_ROOT)
+> > > > +               while (*s =3D=3D '/')
+> > > > +                       s++;
+> > > > +
+> > > >         /* Figure out the starting path and root (if needed). */
+> > > >         if (*s =3D=3D '/') {
+> > > >                 error =3D nd_jump_root(nd);
+> > >=20
+> > > Hmm. Wouldn't this make more sense all inside the if (*s =3D- '/') te=
+st?
+> > > That way if would be where we check for "should we start at the root",
+> > > which seems to make more sense conceptually.
+> >=20
+> > I don't really agree (though I do think that both options are pretty
+> > ugly). Doing it before the block makes it clear that absolute paths are
+> > just treated relative-to-dirfd -- doing it inside the block makes it
+> > look more like "/" is a special-case for nd_jump_root(). And while that
+>=20
+> Sorry, I meant "special-case for LOOKUP_IN_ROOT".
+>=20
+> > is somewhat true, this is just a side-effect of making the code more
+> > clean -- my earlier versions reworked the dirfd handling to always grab
+> > nd->root first if LOOKUP_IS_SCOPED. I switched to this method based on
+> > Al's review.
+> >=20
+> > In fairness, I do agree that the lonely while loop looks ugly.
+>=20
+> And with the old way I did it (where we grabbed nd->root first) the
+> semantics were slightly more clear -- stripping leading "/"s doesn't
+> really look as "clearly obvious" as grabbing nd->root beforehand and
+> treating "/"s normally. But the code was also needlessly more complex.
+>=20
+> > > That test for '/' currently has a "} else if (..)", but that's
+> > > pointless since it ends with a "return" anyway. So the "else" logic is
+> > > just noise.
+> >=20
+> > This depends on the fact that LOOKUP_BENEATH always triggers -EXDEV for
+> > nd_jump_root() -- if we ever add another "scoped lookup" flag then the
+> > logic will have to be further reworked.
+> >=20
+> > (It should be noted that the new version doesn't always end with a
+> > "return", but you could change it to act that way given the above
+> > assumption.)
+> >=20
+> > > And if you get rid of the unnecessary else, moving the LOOKUP_IN_ROOT
+> > > inside the if-statement works fine.
+> > >=20
+> > > So this could be something like
+> > >=20
+> > >     --- a/fs/namei.c
+> > >     +++ b/fs/namei.c
+> > >     @@ -2194,11 +2196,19 @@ static const char *path_init(struct
+> > > nameidata *nd, unsigned flags)
+> > >=20
+> > >         nd->m_seq =3D read_seqbegin(&mount_lock);
+> > >         if (*s =3D=3D '/') {
+> > >     -           set_root(nd);
+> > >     -           if (likely(!nd_jump_root(nd)))
+> > >     -                   return s;
+> > >     -           return ERR_PTR(-ECHILD);
+> > >     -   } else if (nd->dfd =3D=3D AT_FDCWD) {
+> > >     +           /* LOOKUP_IN_ROOT treats absolute paths as being
+> > > relative-to-dirfd. */
+> > >     +           if (!(flags & LOOKUP_IN_ROOT)) {
+> > >     +                   set_root(nd);
+> > >     +                   if (likely(!nd_jump_root(nd)))
+> > >     +                           return s;
+> > >     +                   return ERR_PTR(-ECHILD);
+> > >     +           }
+> > >     +
+> > >     +           /* Skip initial '/' for LOOKUP_IN_ROOT */
+> > >     +           do { s++; } while (*s =3D=3D '/');
+> > >     +   }
+> > >     +
+> > >     +   if (nd->dfd =3D=3D AT_FDCWD) {
+> > >                 if (flags & LOOKUP_RCU) {
+> > >                         struct fs_struct *fs =3D current->fs;
+> > >                         unsigned seq;
+> > >=20
+> > > instead. The patch ends up slightly bigger (due to the re-indentation)
+> > > but now it handles all the "start at root" in the same place. Doesn't
+> > > that make sense?
+> >=20
+> > It is correct (though I'd need to clean it up a bit to handle
+> > nd_jump_root() correctly), and if you really would like me to change it
+> > I will -- but I just don't agree that it's cleaner.
 
-Hi Paul,
-
-Well, that was preposed by a kvm developer from Loongson=2E They want to u=
-se it to implement CPU_AUTOPROBE and load required modules automatically=2E
-
-As they said they will submit KVM support to mainline later, I'm just occu=
-pied a place for them=2E
-
-Out of tree commit:
-
-http://cgit=2Eloongnix=2Eorg/cgit/linux-3=2E10/commit/?id=3D4db9301cca3b49=
-358d46fd0da67c01ab2ae4a3e3
+Linus, did you still want me to make your proposed change?
 
 --=20
-Jiaxun Yang
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
+
+--i56sxfhksaspu3tw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXbFNWQAKCRCdlLljIbnQ
+Ert5AP0aC5CrGCVvHOpelKBjUDOS5duq76VaVyiiUWcy3eeeFwD/aQEQPqkGREqr
+5Lo0df+nvE9H+89b7vJGbcaEZNxkTQc=
+=rtfF
+-----END PGP SIGNATURE-----
+
+--i56sxfhksaspu3tw--

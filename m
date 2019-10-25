@@ -2,121 +2,223 @@ Return-Path: <SRS0=PFn9=YS=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 965F8CA9EA0
-	for <linux-mips@archiver.kernel.org>; Fri, 25 Oct 2019 05:53:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66A7ACA9EA0
+	for <linux-mips@archiver.kernel.org>; Fri, 25 Oct 2019 06:10:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6DA1921D81
-	for <linux-mips@archiver.kernel.org>; Fri, 25 Oct 2019 05:53:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 31485222C1
+	for <linux-mips@archiver.kernel.org>; Fri, 25 Oct 2019 06:10:50 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=lca.pw header.i=@lca.pw header.b="Zqxn3o9y"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=monstr-eu.20150623.gappssmtp.com header.i=@monstr-eu.20150623.gappssmtp.com header.b="zzYtYLOA"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393801AbfJYFxE (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 25 Oct 2019 01:53:04 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:37502 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2393069AbfJYFxD (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 25 Oct 2019 01:53:03 -0400
-Received: by mail-qk1-f195.google.com with SMTP id u184so712048qkd.4
-        for <linux-mips@vger.kernel.org>; Thu, 24 Oct 2019 22:53:01 -0700 (PDT)
+        id S2394265AbfJYGKt (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 25 Oct 2019 02:10:49 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:53155 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2394258AbfJYGKt (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 25 Oct 2019 02:10:49 -0400
+Received: by mail-wm1-f66.google.com with SMTP id p21so706349wmg.2
+        for <linux-mips@vger.kernel.org>; Thu, 24 Oct 2019 23:10:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lca.pw; s=google;
-        h=content-transfer-encoding:from:mime-version:subject:date:message-id
-         :references:cc:in-reply-to:to;
-        bh=1iOcwXtGM80ggiAcn0tWj6rY4y3FXj3/K8+9W6cybNQ=;
-        b=Zqxn3o9ynPwH66+Qcr9vdGz6gSYyudkpi+Z2Oz0jbhfPz7rA3PabNWQQCma5I+yARn
-         eBlST1wXQLW765R9cjQEb7jShJbR5OSNoXMUXkknkPBFMVf5yWXTtaUsuk9Rd2PxzAmh
-         q2AJBIMYQ1hbRT2IEgL/DenzigssaRzaLPngNDd0uNGZNn5VPmHDNtWOe5i7LU6gxGms
-         DG+cRAyxM2Yo5dTFUbyEjy/oXZ60fHMnjOKMvqPhtEVeXP3HjJ0d5mzbSpqHawcBlByH
-         TzKbaZfTQCyPdzEsLR/gqo/nNF6hyedXePJbHFV1sF38FX0OXhfyWuYjlDSDd9K5Iode
-         sxFQ==
+        d=monstr-eu.20150623.gappssmtp.com; s=20150623;
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
+         :in-reply-to:references;
+        bh=uWiWxErdRMMLHHjR/c8XGPvGCm/y5XCfMYSfjIKUt48=;
+        b=zzYtYLOAGTmLrDjZxVJ1oV68o9MLxYIKpQIwjjNho8In9CqNa+RBmFqt6WJS5VH6ky
+         0E3fmVeX0tHtaIK8Kzcog+3iF8frzP/x07IOH/VmeUCy1cBRdIotHeVKhX4kKv2DZn5G
+         6zW9PMgSXPROB1g09pOK+67a75srYkh4BaKqhdf/HifoLhifkTMBUYzU70CsVh1k1SH/
+         knjEIKzmVbCdTLV5AOPBtwAFm35DvKJtFVAvirWZbUZEI4HbgOzGNjgZEFsqgPZCWltI
+         21fHJTPW/emVJgb/BdwXBSmvEw4oC9SGnMe20xYYtn9pNyGJPZNz1q6P7uRBp5sefFNq
+         +CrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:content-transfer-encoding:from:mime-version
-         :subject:date:message-id:references:cc:in-reply-to:to;
-        bh=1iOcwXtGM80ggiAcn0tWj6rY4y3FXj3/K8+9W6cybNQ=;
-        b=iS5i15RaD6ingtdKyYEKQgOBWBMIMxV5S8h1Oj4EKwlhWKRr5IuGDlaWfyhMzUmC9T
-         flphhR5jNih70QXrqBU2f3vLTancIqZAUnP4aMjvWXkQjPfYwttUvyHMvRyWkm10a85b
-         HWijvcPMqzA0j8mFyvZrJPYplnasrkzr9v7z3HvrKKxDK98a+6jZfvSa561EkIILvqGW
-         0a0rOfGIDs2zYgQVrIQ1BzZtDGkT7yaHa6uW7g7+8dImGvKIlCorg/9tOYKTJvhQSydV
-         8PRfNPCc0w4ytPtXiksZYUvOsPz/G43aRRDtGwPrvFAX5Grlik5gDqHnrZesqOXGpdBa
-         MlHQ==
-X-Gm-Message-State: APjAAAV7EfWKHikf5zqkcoPeTRjkh3dS2Fq4WzKKx8kJLdu8kis20Pyz
-        dtH6dMfizaaiH8ETtIXn4DwXfA==
-X-Google-Smtp-Source: APXvYqx2Df+s9byE/wNVstFnjLEksyrVQg6dm5A3OEDXYMZmbJ9PH0J1MBt8U1ezq/VXB9h6sxXS6Q==
-X-Received: by 2002:a05:620a:a8d:: with SMTP id v13mr1326244qkg.113.1571982780765;
-        Thu, 24 Oct 2019 22:53:00 -0700 (PDT)
-Received: from [10.250.15.239] ([76.191.34.78])
-        by smtp.gmail.com with ESMTPSA id e12sm517936qth.55.2019.10.24.22.52.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Oct 2019 22:53:00 -0700 (PDT)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-From:   Qian Cai <cai@lca.pw>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH V7] mm/debug: Add tests validating architecture page table helpers
-Date:   Fri, 25 Oct 2019 01:52:59 -0400
-Message-Id: <69256008-2235-4AF1-A3BA-0146C82CCB93@lca.pw>
-References: <ccdd4f7a-c7dc-ca10-d30c-0bc05c7136c7@arm.com>
-Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <Mark.Rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :in-reply-to:references:in-reply-to:references;
+        bh=uWiWxErdRMMLHHjR/c8XGPvGCm/y5XCfMYSfjIKUt48=;
+        b=pvbEw4d8C0SE2lDQK7qrXKlx7ygwad8oBipIeyLvwMdAlVNI1b/uxX84+zP9TvdN3o
+         RPTOj8XbiwNNNV0TV7PRI1u8PtY0/K6dVsL4b5aVTLFq6PNAFG4JbCFht2Kuv9CRPxy+
+         hsJ+TDibzFa/fu+zGyib8a1qNMzitUKp27BdkgXXLpLsv4fefjmv6eLPbDkYnUpVxfvS
+         fkiyOD2H2KbFWuYzCpb9QAOWmN5VqUPBe8sw6F0NcUUiV4n7xvitRkp/0YYm+j7wgBdr
+         hA3vYKBe5HXwR8+uJULc7Gf9J5l7KAtL48wgPZnYBP8UUp6OKADHZh7ZsPUbVLS7WAdO
+         RNVg==
+X-Gm-Message-State: APjAAAVTDcWAZK5KWspy7gZZMlLXOEqJZJxILyoq/ScESGRQZA3WRbNb
+        ShCHzwZISqNU6/Iypb6TQ4ip2XRpr1skNiU0
+X-Google-Smtp-Source: APXvYqwgxAXHmre1oWEJ/a7vzytaYe1IDcJD7hrzF5+5MuN10Is+qMeW/NqxeqeZZL+RLDdsD2vnXw==
+X-Received: by 2002:a7b:c208:: with SMTP id x8mr1552381wmi.87.1571983846536;
+        Thu, 24 Oct 2019 23:10:46 -0700 (PDT)
+Received: from localhost (nat-35.starnet.cz. [178.255.168.35])
+        by smtp.gmail.com with ESMTPSA id f6sm1436717wrm.61.2019.10.24.23.10.45
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 24 Oct 2019 23:10:45 -0700 (PDT)
+From:   Michal Simek <michal.simek@xilinx.com>
+To:     linux-kernel@vger.kernel.org, monstr@monstr.eu,
+        michal.simek@xilinx.com, git@xilinx.com, palmer@sifive.com,
+        hch@infradead.org, longman@redhat.com, helgaas@kernel.org
+Cc:     Arnd Bergmann <arnd@arndb.de>, Jackie Liu <liuyun01@kylinos.cn>,
+        Wesley Terpstra <wesley@sifive.com>,
+        Firoz Khan <firoz.khan@linaro.org>, sparclinux@vger.kernel.org,
         Ingo Molnar <mingo@kernel.org>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <ccdd4f7a-c7dc-ca10-d30c-0bc05c7136c7@arm.com>
-To:     Anshuman Khandual <Anshuman.Khandual@arm.com>
-X-Mailer: iPhone Mail (17A878)
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
+        James Hogan <jhogan@kernel.org>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        linux-snps-arc@lists.infradead.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Biggers <ebiggers@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linux-mips@vger.kernel.org,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 1/2] asm-generic: Make msi.h a mandatory include/asm header
+Date:   Fri, 25 Oct 2019 08:10:37 +0200
+Message-Id: <c991669e29a79b1a8e28c3b4b3a125801a693de8.1571983829.git.michal.simek@xilinx.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <cover.1571983829.git.michal.simek@xilinx.com>
+References: <cover.1571983829.git.michal.simek@xilinx.com>
+In-Reply-To: <cover.1571983829.git.michal.simek@xilinx.com>
+References: <cover.1571983829.git.michal.simek@xilinx.com>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
+msi.h is generic for all architectures except of x86 which has own version.
+Enabling MSI by including msi.h to architecture Kbuild is just additional
+step which doesn't need to be done.
+The patch was created based on request to enable MSI for Microblaze.
 
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+Acked-by: Waiman Long <longman@redhat.com>
+Acked-by: Paul Walmsley <paul.walmsley@sifive.com> # arch/riscv
+Tested-by: Paul Walmsley <paul.walmsley@sifive.com> # build only, rv32/rv64
+Reviewed-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
 
-> On Oct 24, 2019, at 11:45 PM, Anshuman Khandual <Anshuman.Khandual@arm.com=
-> wrote:
->=20
-> Nothing specific. But just tested this with x86 defconfig with relevant co=
-nfigs
-> which are required for this test. Not sure if it involved W=3D1.
+Changes in v2:
+- Fix typo in commit message s/expect/except/ - Reported-by: Masahiro
 
-No, it will not. It needs to run like,
+https://lore.kernel.org/linux-riscv/20191008154604.GA7903@infradead.org/
+---
+ arch/arc/include/asm/Kbuild     | 1 -
+ arch/arm/include/asm/Kbuild     | 1 -
+ arch/arm64/include/asm/Kbuild   | 1 -
+ arch/mips/include/asm/Kbuild    | 1 -
+ arch/powerpc/include/asm/Kbuild | 1 -
+ arch/riscv/include/asm/Kbuild   | 1 -
+ arch/sparc/include/asm/Kbuild   | 1 -
+ include/asm-generic/Kbuild      | 1 +
+ 8 files changed, 1 insertion(+), 7 deletions(-)
 
-make W=3D1 -j 64 2>/tmp/warns=
+diff --git a/arch/arc/include/asm/Kbuild b/arch/arc/include/asm/Kbuild
+index 393d4f5e1450..1b505694691e 100644
+--- a/arch/arc/include/asm/Kbuild
++++ b/arch/arc/include/asm/Kbuild
+@@ -17,7 +17,6 @@ generic-y += local64.h
+ generic-y += mcs_spinlock.h
+ generic-y += mm-arch-hooks.h
+ generic-y += mmiowb.h
+-generic-y += msi.h
+ generic-y += parport.h
+ generic-y += percpu.h
+ generic-y += preempt.h
+diff --git a/arch/arm/include/asm/Kbuild b/arch/arm/include/asm/Kbuild
+index 68ca86f85eb7..fa579b23b4df 100644
+--- a/arch/arm/include/asm/Kbuild
++++ b/arch/arm/include/asm/Kbuild
+@@ -12,7 +12,6 @@ generic-y += local.h
+ generic-y += local64.h
+ generic-y += mm-arch-hooks.h
+ generic-y += mmiowb.h
+-generic-y += msi.h
+ generic-y += parport.h
+ generic-y += preempt.h
+ generic-y += seccomp.h
+diff --git a/arch/arm64/include/asm/Kbuild b/arch/arm64/include/asm/Kbuild
+index 98a5405c8558..bd23f87d6c55 100644
+--- a/arch/arm64/include/asm/Kbuild
++++ b/arch/arm64/include/asm/Kbuild
+@@ -16,7 +16,6 @@ generic-y += local64.h
+ generic-y += mcs_spinlock.h
+ generic-y += mm-arch-hooks.h
+ generic-y += mmiowb.h
+-generic-y += msi.h
+ generic-y += qrwlock.h
+ generic-y += qspinlock.h
+ generic-y += serial.h
+diff --git a/arch/mips/include/asm/Kbuild b/arch/mips/include/asm/Kbuild
+index c8b595c60910..61b0fc2026e6 100644
+--- a/arch/mips/include/asm/Kbuild
++++ b/arch/mips/include/asm/Kbuild
+@@ -13,7 +13,6 @@ generic-y += irq_work.h
+ generic-y += local64.h
+ generic-y += mcs_spinlock.h
+ generic-y += mm-arch-hooks.h
+-generic-y += msi.h
+ generic-y += parport.h
+ generic-y += percpu.h
+ generic-y += preempt.h
+diff --git a/arch/powerpc/include/asm/Kbuild b/arch/powerpc/include/asm/Kbuild
+index 64870c7be4a3..17726f2e46de 100644
+--- a/arch/powerpc/include/asm/Kbuild
++++ b/arch/powerpc/include/asm/Kbuild
+@@ -10,4 +10,3 @@ generic-y += local64.h
+ generic-y += mcs_spinlock.h
+ generic-y += preempt.h
+ generic-y += vtime.h
+-generic-y += msi.h
+diff --git a/arch/riscv/include/asm/Kbuild b/arch/riscv/include/asm/Kbuild
+index 16970f246860..1efaeddf1e4b 100644
+--- a/arch/riscv/include/asm/Kbuild
++++ b/arch/riscv/include/asm/Kbuild
+@@ -22,7 +22,6 @@ generic-y += kvm_para.h
+ generic-y += local.h
+ generic-y += local64.h
+ generic-y += mm-arch-hooks.h
+-generic-y += msi.h
+ generic-y += percpu.h
+ generic-y += preempt.h
+ generic-y += sections.h
+diff --git a/arch/sparc/include/asm/Kbuild b/arch/sparc/include/asm/Kbuild
+index b6212164847b..62de2eb2773d 100644
+--- a/arch/sparc/include/asm/Kbuild
++++ b/arch/sparc/include/asm/Kbuild
+@@ -18,7 +18,6 @@ generic-y += mcs_spinlock.h
+ generic-y += mm-arch-hooks.h
+ generic-y += mmiowb.h
+ generic-y += module.h
+-generic-y += msi.h
+ generic-y += preempt.h
+ generic-y += serial.h
+ generic-y += trace_clock.h
+diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+index adff14fcb8e4..ddfee1bd9dc1 100644
+--- a/include/asm-generic/Kbuild
++++ b/include/asm-generic/Kbuild
+@@ -4,4 +4,5 @@
+ # (This file is not included when SRCARCH=um since UML borrows several
+ # asm headers from the host architecutre.)
+ 
++mandatory-y += msi.h
+ mandatory-y += simd.h
+-- 
+2.17.1
+

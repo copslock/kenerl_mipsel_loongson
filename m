@@ -2,56 +2,53 @@ Return-Path: <SRS0=J4Li=YU=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+X-Spam-Status: No, score=-7.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 484A6CA9EBD
-	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:12:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CB155CA9EBC
+	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:13:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 10D37222CE
-	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:12:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9D6B521850
+	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1572210768;
-	bh=qhJM50bxO+MG7WrkXdo6i8sZ/JZEPykOMKFr88gZ6t8=;
+	s=default; t=1572210787;
+	bh=OxtsmDZcRyjTy/TwgnZe5iInYm/ARc+kAq5vsnT/P2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=afb60f5qB/rOSL09/S8e60e0+XZQeOUwe3TO06+KrmtJ/gz+SOR7QMIOWlMtWoAkc
-	 tad1x3HnQGJs4hOQH/OXCBhCCZMb4ah/1rVsfVxH8cvX9R4rsMrhHjuS62OaeR7+47
-	 NtrGC7BUQjKLDu3XqRcwrp1z+nLvfi4hWFYR45ZI=
+	b=TCTXPUF5N/NTFWxwsnyBl4gMGl+r3fN4ttuJTZOlEwreX8tR9PjpHXwCmBz5k2LsQ
+	 qjmDXFURzf38tPtuRia90TkFj4TN2nc9dF2UF4zOvo9ncm9Xj+hBea6s3EQ0Ak2/vx
+	 CiZK3Z6AkzfbhzHmeoWB2b+5PAwetHsuOVOOB9Zs=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730106AbfJ0VMr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 27 Oct 2019 17:12:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59684 "EHLO mail.kernel.org"
+        id S1730153AbfJ0VNF (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 27 Oct 2019 17:13:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60078 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728695AbfJ0VMq (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sun, 27 Oct 2019 17:12:46 -0400
+        id S1730174AbfJ0VNE (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sun, 27 Oct 2019 17:13:04 -0400
 Received: from localhost (100.50.158.77.rev.sfr.net [77.158.50.100])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 96339208C0;
-        Sun, 27 Oct 2019 21:12:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A13FA205C9;
+        Sun, 27 Oct 2019 21:13:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572210766;
-        bh=qhJM50bxO+MG7WrkXdo6i8sZ/JZEPykOMKFr88gZ6t8=;
+        s=default; t=1572210783;
+        bh=OxtsmDZcRyjTy/TwgnZe5iInYm/ARc+kAq5vsnT/P2M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rNHzLkFCoifjGz4WHdK0Nqx9FZWTDGK6sil2IbLjyQnyhP3HdczuwO3KhmJika3je
-         g/6q2gKKR6F91RCq/a4xuSySJQaB7oWa9F1JQIXfgjz/ZpS3eykvtLxxqO/lSCDdIj
-         E5W4gxVpXRJWfQS0mlw+MTja3H7R3XC9nvbgR/Og=
+        b=dpl9nj8a7K2H1ULjIqcBtEI0GFzxfmgHQNZF8fnmnhvX+lKJuUa2s5agZXQGih4Om
+         LUQfYdLv6o4ji/QbeJWKxKt4E/MqbKahHVlCzbxP/a7mtACbwAOSycUMHS6pJjhMY3
+         bOICW1Vqg8taIr2BKN0YPCaJy6aaCKl/FOh5gqpo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Oleksij Rempel <o.rempel@pengutronix.de>,
-        Paul Burton <paul.burton@mips.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, devicetree@vger.kernel.org,
-        linux-mips@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 10/93] MIPS: dts: ar9331: fix interrupt-controller size
-Date:   Sun, 27 Oct 2019 22:00:22 +0100
-Message-Id: <20191027203254.069647999@linuxfoundation.org>
+        stable@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Paul Burton <paul.burton@mips.com>, chenhc@lemote.com,
+        ralf@linux-mips.org, jhogan@kernel.org, linux-mips@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 16/93] mips: Loongson: Fix the link time qualifier of serial_exit()
+Date:   Sun, 27 Oct 2019 22:00:28 +0100
+Message-Id: <20191027203255.107174272@linuxfoundation.org>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191027203251.029297948@linuxfoundation.org>
 References: <20191027203251.029297948@linuxfoundation.org>
@@ -64,40 +61,39 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 0889d07f3e4b171c453b2aaf2b257f9074cdf624 ]
+[ Upstream commit 25b69a889b638b0b7e51e2c4fe717a66bec0e566 ]
 
-It is two registers each of 4 byte.
+'exit' functions should be marked as __exit, not __init.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Fixes: 85cc028817ef ("mips: make loongsoon serial driver explicitly modular")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: devicetree@vger.kernel.org
+Cc: chenhc@lemote.com
+Cc: ralf@linux-mips.org
+Cc: jhogan@kernel.org
 Cc: linux-mips@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/qca/ar9331.dtsi | 2 +-
+ arch/mips/loongson64/common/serial.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/boot/dts/qca/ar9331.dtsi b/arch/mips/boot/dts/qca/ar9331.dtsi
-index 2bae201aa3651..1c7bf11f8450b 100644
---- a/arch/mips/boot/dts/qca/ar9331.dtsi
-+++ b/arch/mips/boot/dts/qca/ar9331.dtsi
-@@ -99,7 +99,7 @@
+diff --git a/arch/mips/loongson64/common/serial.c b/arch/mips/loongson64/common/serial.c
+index ffefc1cb26121..98c3a7feb10f8 100644
+--- a/arch/mips/loongson64/common/serial.c
++++ b/arch/mips/loongson64/common/serial.c
+@@ -110,7 +110,7 @@ static int __init serial_init(void)
+ }
+ module_init(serial_init);
  
- 			miscintc: interrupt-controller@18060010 {
- 				compatible = "qca,ar7240-misc-intc";
--				reg = <0x18060010 0x4>;
-+				reg = <0x18060010 0x8>;
- 
- 				interrupt-parent = <&cpuintc>;
- 				interrupts = <6>;
+-static void __init serial_exit(void)
++static void __exit serial_exit(void)
+ {
+ 	platform_device_unregister(&uart8250_device);
+ }
 -- 
 2.20.1
 

@@ -7,51 +7,47 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AD63CA9EAF
-	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:35:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 173B7CA9EAF
+	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:35:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E15A220679
-	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:35:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D992820679
+	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1572212122;
-	bh=qfCF2CBKHLavLO5gpk2z0LNY6BLuAcfk78Lkz8xYQFc=;
+	s=default; t=1572212157;
+	bh=kuX5mAEoLi/OrgOw1uhIk96xDrHkNVQQCDF2B474aFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=2kpxam+nOri0zRelFK3GXcGEFjLpYjXBTCIGkej5TxNJU9RDuiLXSZPpmB824e6Wb
-	 f5tZ1F82lg+g7Z0RLSPzdQOX5u4sj6DvCbyZl0YBudMCWtYq9cOPjeVoG/XSttwSV6
-	 MsQWMJUDYxHktR78u/a6bAtYg188ALCevTYvxQdE=
+	b=C9Pp42xi6SqVRNWZqSMOGc5bIrEQ6e4GVo2k3FeRpVyYQ6E0H24DMjyYBD1iq+4vP
+	 W2kcTdh1jxZJopbgLWmo96RW46087+yYe6b9/clfVM3ndOAqRQcQPFeEWVDJ6SuOwG
+	 /3rI18DNK7wVtsmwd/2cDdGpuulBVGoZRmrTUjiw=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728808AbfJ0VJG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 27 Oct 2019 17:09:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55386 "EHLO mail.kernel.org"
+        id S1729297AbfJ0VH4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 27 Oct 2019 17:07:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54046 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728951AbfJ0VJD (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sun, 27 Oct 2019 17:09:03 -0400
+        id S1729292AbfJ0VHz (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sun, 27 Oct 2019 17:07:55 -0400
 Received: from localhost (100.50.158.77.rev.sfr.net [77.158.50.100])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 08B5A20B7C;
-        Sun, 27 Oct 2019 21:09:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0BA8F20B7C;
+        Sun, 27 Oct 2019 21:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572210542;
-        bh=qfCF2CBKHLavLO5gpk2z0LNY6BLuAcfk78Lkz8xYQFc=;
+        s=default; t=1572210474;
+        bh=kuX5mAEoLi/OrgOw1uhIk96xDrHkNVQQCDF2B474aFM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LHV/LWQHSZKtYdJpI7x12mHZjqLcCNVmGKcBc5GTFQynFwMLLwH8VchJC6CBjHfH7
-         la7WtoTVV09El6uCF/gK9/MxYICvlblo1BIS3qyTHO8HA7uOoHH+G6oqi2peH8VsnE
-         q9j3w/xK5Vq55XZOJw/V1vwWM5o+1w8EBXKgYI6Q=
+        b=gny+0+SXTkJFBh6rgXxnSz6/vKTyRKzkrlfQd8wpkPsw2I6j87EltTCnM9LwLy7hf
+         jVlDwRCPHfoDU1nNLWHzIls65WfudfPetC+4VV+WB4Bh70r54nn+nkgMIDaz+t6VVe
+         jUI0C1cmyQEHjcnr1aOs9HmHz26La5hqiQG5yEqs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Oleksij Rempel <o.rempel@pengutronix.de>,
-        Paul Burton <paul.burton@mips.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, devicetree@vger.kernel.org,
-        linux-mips@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 008/119] MIPS: dts: ar9331: fix interrupt-controller size
-Date:   Sun, 27 Oct 2019 21:59:45 +0100
-Message-Id: <20191027203301.560229650@linuxfoundation.org>
+        stable@vger.kernel.org, Meng Zhuo <mengzhuo1203@gmail.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        linux-mips@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 027/119] MIPS: elf_hwcap: Export userspace ASEs
+Date:   Sun, 27 Oct 2019 22:00:04 +0100
+Message-Id: <20191027203308.417745883@linuxfoundation.org>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191027203259.948006506@linuxfoundation.org>
 References: <20191027203259.948006506@linuxfoundation.org>
@@ -64,40 +60,93 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 0889d07f3e4b171c453b2aaf2b257f9074cdf624 ]
+[ Upstream commit 38dffe1e4dde1d3174fdce09d67370412843ebb5 ]
 
-It is two registers each of 4 byte.
+A Golang developer reported MIPS hwcap isn't reflecting instructions
+that the processor actually supported so programs can't apply optimized
+code at runtime.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: devicetree@vger.kernel.org
+Thus we export the ASEs that can be used in userspace programs.
+
+Reported-by: Meng Zhuo <mengzhuo1203@gmail.com>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 Cc: linux-mips@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: <stable@vger.kernel.org> # 4.14+
+Signed-off-by: Paul Burton <paul.burton@mips.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/qca/ar9331.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/include/uapi/asm/hwcap.h | 11 ++++++++++
+ arch/mips/kernel/cpu-probe.c       | 33 ++++++++++++++++++++++++++++++
+ 2 files changed, 44 insertions(+)
 
-diff --git a/arch/mips/boot/dts/qca/ar9331.dtsi b/arch/mips/boot/dts/qca/ar9331.dtsi
-index efd5f07222060..39b6269610d41 100644
---- a/arch/mips/boot/dts/qca/ar9331.dtsi
-+++ b/arch/mips/boot/dts/qca/ar9331.dtsi
-@@ -99,7 +99,7 @@
+diff --git a/arch/mips/include/uapi/asm/hwcap.h b/arch/mips/include/uapi/asm/hwcap.h
+index 600ad8fd68356..2475294c3d185 100644
+--- a/arch/mips/include/uapi/asm/hwcap.h
++++ b/arch/mips/include/uapi/asm/hwcap.h
+@@ -5,5 +5,16 @@
+ /* HWCAP flags */
+ #define HWCAP_MIPS_R6		(1 << 0)
+ #define HWCAP_MIPS_MSA		(1 << 1)
++#define HWCAP_MIPS_MIPS16	(1 << 3)
++#define HWCAP_MIPS_MDMX     (1 << 4)
++#define HWCAP_MIPS_MIPS3D   (1 << 5)
++#define HWCAP_MIPS_SMARTMIPS (1 << 6)
++#define HWCAP_MIPS_DSP      (1 << 7)
++#define HWCAP_MIPS_DSP2     (1 << 8)
++#define HWCAP_MIPS_DSP3     (1 << 9)
++#define HWCAP_MIPS_MIPS16E2 (1 << 10)
++#define HWCAP_LOONGSON_MMI  (1 << 11)
++#define HWCAP_LOONGSON_EXT  (1 << 12)
++#define HWCAP_LOONGSON_EXT2 (1 << 13)
  
- 			miscintc: interrupt-controller@18060010 {
- 				compatible = "qca,ar7240-misc-intc";
--				reg = <0x18060010 0x4>;
-+				reg = <0x18060010 0x8>;
+ #endif /* _UAPI_ASM_HWCAP_H */
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 3007ae1bb616a..c38cd62879f4e 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -2080,6 +2080,39 @@ void cpu_probe(void)
+ 		elf_hwcap |= HWCAP_MIPS_MSA;
+ 	}
  
- 				interrupt-parent = <&cpuintc>;
- 				interrupts = <6>;
++	if (cpu_has_mips16)
++		elf_hwcap |= HWCAP_MIPS_MIPS16;
++
++	if (cpu_has_mdmx)
++		elf_hwcap |= HWCAP_MIPS_MDMX;
++
++	if (cpu_has_mips3d)
++		elf_hwcap |= HWCAP_MIPS_MIPS3D;
++
++	if (cpu_has_smartmips)
++		elf_hwcap |= HWCAP_MIPS_SMARTMIPS;
++
++	if (cpu_has_dsp)
++		elf_hwcap |= HWCAP_MIPS_DSP;
++
++	if (cpu_has_dsp2)
++		elf_hwcap |= HWCAP_MIPS_DSP2;
++
++	if (cpu_has_dsp3)
++		elf_hwcap |= HWCAP_MIPS_DSP3;
++
++	if (cpu_has_loongson_mmi)
++		elf_hwcap |= HWCAP_LOONGSON_MMI;
++
++	if (cpu_has_loongson_mmi)
++		elf_hwcap |= HWCAP_LOONGSON_CAM;
++
++	if (cpu_has_loongson_ext)
++		elf_hwcap |= HWCAP_LOONGSON_EXT;
++
++	if (cpu_has_loongson_ext)
++		elf_hwcap |= HWCAP_LOONGSON_EXT2;
++
+ 	if (cpu_has_vz)
+ 		cpu_probe_vz(c);
+ 
 -- 
 2.20.1
 

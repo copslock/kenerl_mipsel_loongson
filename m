@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DA3D1CA9EAF
-	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:35:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3B94CA9EBD
+	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:36:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id A7CD520679
-	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:35:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6BA0720679
+	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1572212159;
-	bh=eou04PjLENAoWI783C03L1MqFmKysnwxu0zSh56ekWQ=;
+	s=default; t=1572212218;
+	bh=OxtsmDZcRyjTy/TwgnZe5iInYm/ARc+kAq5vsnT/P2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=QYvGBCtcrtWw2eWf7MGsoTAlISfX3JNJkyo25si3pK3ltVkjuWAid5fWVWGXPEaXM
-	 MI3XVvYFvkuDjHJ5+I6VYM1q8nzEtCyYUDwb2LhnfqR/lyl8u2kgfZlzbKixvfk79H
-	 ki/6iPlEZ3kiS29m5Q/awQfFN8mIMzTKs1boEg2I=
+	b=CL8Q4vBvoz4TwZ61xTSTyZ8iBI3aBvRy2P7yEkR+9RATJm/qW8VgaS44sjfA5kEtb
+	 LcNyNY73hXZ1VqRbxOvDek/QamSmj0hkPW1f+7xJ47cZ51g9CRp9PPiyp58e7LFbE/
+	 a189WQ1/9EvExSmByRy5xqoFrB3HwtE5fm9KYQpg=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729285AbfJ0VHx (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 27 Oct 2019 17:07:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53960 "EHLO mail.kernel.org"
+        id S1728959AbfJ0VGD (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 27 Oct 2019 17:06:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51902 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729280AbfJ0VHx (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sun, 27 Oct 2019 17:07:53 -0400
+        id S1728953AbfJ0VGB (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sun, 27 Oct 2019 17:06:01 -0400
 Received: from localhost (100.50.158.77.rev.sfr.net [77.158.50.100])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E8FB720873;
-        Sun, 27 Oct 2019 21:07:50 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E51D72064A;
+        Sun, 27 Oct 2019 21:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572210471;
-        bh=eou04PjLENAoWI783C03L1MqFmKysnwxu0zSh56ekWQ=;
+        s=default; t=1572210360;
+        bh=OxtsmDZcRyjTy/TwgnZe5iInYm/ARc+kAq5vsnT/P2M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eRvIaNj3DiSrbEtnetnvx+Ne82fmuybtIxlDn/QjmyRqNZm9w9otrLOUJGaDyO471
-         HPtT3Tla/XVJ7tDb9uq3nm5BPOleqD3OolTuJmeY+5dBiFQ3qf5xyblzKqJ51MhL6M
-         j8PkGX6rWaisavfCnxdTyl+wQ+sMWIoDaiTdVumY=
+        b=lCbbvut3chEVoMjudo89kidpSLFIKEKI7AYQloYzdmA8wyf0itkG0K27tS6jnVPVD
+         s+QFOKatAPIB1yusKLTxofJKfGEHliCw2SxlTwYHV3Ysc0tIv74i+VarYLt2b3SI04
+         MwcKXn0hA+e5q9lyfG9pB41L6a9BVI+UABz/qD8c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Yunqiang Su <ysu@wavecomp.com>,
-        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 026/119] MIPS: Treat Loongson Extensions as ASEs
-Date:   Sun, 27 Oct 2019 22:00:03 +0100
-Message-Id: <20191027203307.946766238@linuxfoundation.org>
+        stable@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Paul Burton <paul.burton@mips.com>, chenhc@lemote.com,
+        ralf@linux-mips.org, jhogan@kernel.org, linux-mips@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.9 09/49] mips: Loongson: Fix the link time qualifier of serial_exit()
+Date:   Sun, 27 Oct 2019 22:00:47 +0100
+Message-Id: <20191027203124.984763077@linuxfoundation.org>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191027203259.948006506@linuxfoundation.org>
-References: <20191027203259.948006506@linuxfoundation.org>
+In-Reply-To: <20191027203119.468466356@linuxfoundation.org>
+References: <20191027203119.468466356@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,113 +61,39 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit d2f965549006acb865c4638f1f030ebcefdc71f6 ]
+[ Upstream commit 25b69a889b638b0b7e51e2c4fe717a66bec0e566 ]
 
-Recently, binutils had split Loongson-3 Extensions into four ASEs:
-MMI, CAM, EXT, EXT2. This patch do the samething in kernel and expose
-them in cpuinfo so applications can probe supported ASEs at runtime.
+'exit' functions should be marked as __exit, not __init.
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: Huacai Chen <chenhc@lemote.com>
-Cc: Yunqiang Su <ysu@wavecomp.com>
-Cc: stable@vger.kernel.org # v4.14+
+Fixes: 85cc028817ef ("mips: make loongsoon serial driver explicitly modular")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: chenhc@lemote.com
+Cc: ralf@linux-mips.org
+Cc: jhogan@kernel.org
 Cc: linux-mips@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/cpu-features.h | 16 ++++++++++++++++
- arch/mips/include/asm/cpu.h          |  4 ++++
- arch/mips/kernel/cpu-probe.c         |  4 ++++
- arch/mips/kernel/proc.c              |  4 ++++
- 4 files changed, 28 insertions(+)
+ arch/mips/loongson64/common/serial.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 721b698bfe3cf..1befd483d5a3b 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -348,6 +348,22 @@
- #define cpu_has_dsp3		(cpu_data[0].ases & MIPS_ASE_DSP3)
- #endif
+diff --git a/arch/mips/loongson64/common/serial.c b/arch/mips/loongson64/common/serial.c
+index ffefc1cb26121..98c3a7feb10f8 100644
+--- a/arch/mips/loongson64/common/serial.c
++++ b/arch/mips/loongson64/common/serial.c
+@@ -110,7 +110,7 @@ static int __init serial_init(void)
+ }
+ module_init(serial_init);
  
-+#ifndef cpu_has_loongson_mmi
-+#define cpu_has_loongson_mmi		__ase(MIPS_ASE_LOONGSON_MMI)
-+#endif
-+
-+#ifndef cpu_has_loongson_cam
-+#define cpu_has_loongson_cam		__ase(MIPS_ASE_LOONGSON_CAM)
-+#endif
-+
-+#ifndef cpu_has_loongson_ext
-+#define cpu_has_loongson_ext		__ase(MIPS_ASE_LOONGSON_EXT)
-+#endif
-+
-+#ifndef cpu_has_loongson_ext2
-+#define cpu_has_loongson_ext2		__ase(MIPS_ASE_LOONGSON_EXT2)
-+#endif
-+
- #ifndef cpu_has_mipsmt
- #define cpu_has_mipsmt		(cpu_data[0].ases & MIPS_ASE_MIPSMT)
- #endif
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index d39324c4adf13..a6fdf13585916 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -433,5 +433,9 @@ enum cpu_type_enum {
- #define MIPS_ASE_MSA		0x00000100 /* MIPS SIMD Architecture */
- #define MIPS_ASE_DSP3		0x00000200 /* Signal Processing ASE Rev 3*/
- #define MIPS_ASE_MIPS16E2	0x00000400 /* MIPS16e2 */
-+#define MIPS_ASE_LOONGSON_MMI	0x00000800 /* Loongson MultiMedia extensions Instructions */
-+#define MIPS_ASE_LOONGSON_CAM	0x00001000 /* Loongson CAM */
-+#define MIPS_ASE_LOONGSON_EXT	0x00002000 /* Loongson EXTensions */
-+#define MIPS_ASE_LOONGSON_EXT2	0x00004000 /* Loongson EXTensions R2 */
- 
- #endif /* _ASM_CPU_H */
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index cf3fd549e16d0..3007ae1bb616a 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1478,6 +1478,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 			__cpu_name[cpu] = "ICT Loongson-3";
- 			set_elf_platform(cpu, "loongson3a");
- 			set_isa(c, MIPS_CPU_ISA_M64R1);
-+			c->ases |= (MIPS_ASE_LOONGSON_MMI | MIPS_ASE_LOONGSON_EXT);
- 			break;
- 		case PRID_REV_LOONGSON3B_R1:
- 		case PRID_REV_LOONGSON3B_R2:
-@@ -1485,6 +1486,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 			__cpu_name[cpu] = "ICT Loongson-3";
- 			set_elf_platform(cpu, "loongson3b");
- 			set_isa(c, MIPS_CPU_ISA_M64R1);
-+			c->ases |= (MIPS_ASE_LOONGSON_MMI | MIPS_ASE_LOONGSON_EXT);
- 			break;
- 		}
- 
-@@ -1845,6 +1847,8 @@ static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu)
- 		decode_configs(c);
- 		c->options |= MIPS_CPU_FTLB | MIPS_CPU_TLBINV | MIPS_CPU_LDPTE;
- 		c->writecombine = _CACHE_UNCACHED_ACCELERATED;
-+		c->ases |= (MIPS_ASE_LOONGSON_MMI | MIPS_ASE_LOONGSON_CAM |
-+			MIPS_ASE_LOONGSON_EXT | MIPS_ASE_LOONGSON_EXT2);
- 		break;
- 	default:
- 		panic("Unknown Loongson Processor ID!");
-diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
-index b2de408a259e4..f8d36710cd581 100644
---- a/arch/mips/kernel/proc.c
-+++ b/arch/mips/kernel/proc.c
-@@ -124,6 +124,10 @@ static int show_cpuinfo(struct seq_file *m, void *v)
- 	if (cpu_has_eva)	seq_printf(m, "%s", " eva");
- 	if (cpu_has_htw)	seq_printf(m, "%s", " htw");
- 	if (cpu_has_xpa)	seq_printf(m, "%s", " xpa");
-+	if (cpu_has_loongson_mmi)	seq_printf(m, "%s", " loongson-mmi");
-+	if (cpu_has_loongson_cam)	seq_printf(m, "%s", " loongson-cam");
-+	if (cpu_has_loongson_ext)	seq_printf(m, "%s", " loongson-ext");
-+	if (cpu_has_loongson_ext2)	seq_printf(m, "%s", " loongson-ext2");
- 	seq_printf(m, "\n");
- 
- 	if (cpu_has_mmips) {
+-static void __init serial_exit(void)
++static void __exit serial_exit(void)
+ {
+ 	platform_device_unregister(&uart8250_device);
+ }
 -- 
 2.20.1
 

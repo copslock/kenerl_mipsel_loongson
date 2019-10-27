@@ -2,152 +2,153 @@ Return-Path: <SRS0=J4Li=YU=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 426B8C47E49
-	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 15:42:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 47E9ACA9EAF
+	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:02:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 16C1D21D7F
-	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 15:42:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1714520B7C
+	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:02:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1572210158;
+	bh=yJSJj+ITuIJKMs7+vc2CHCVTSpYCGIZ3tQbBjXT/Olk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=h4XjZeUOFzQaAJmSgZE9UXweLEyCnOGypzKla9aqrZwrFKzsRTaFzBORqbXpgxeRU
+	 1VSP7KWmmecCYCOM1Ca5fhGzNGa2xHCevKAzUlLHn914Ch8sUSKRRaRFbCOLaE9uVk
+	 wnHuveIj16MpfZPYzdIyLz0BgOzm7bxWPpUP7VaM=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727560AbfJ0Pl4 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 27 Oct 2019 11:41:56 -0400
-Received: from mout-p-201.mailbox.org ([80.241.56.171]:27440 "EHLO
-        mout-p-201.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727056AbfJ0Plz (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sun, 27 Oct 2019 11:41:55 -0400
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:105:465:1:2:0])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        id S1728077AbfJ0VCh (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 27 Oct 2019 17:02:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47614 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727099AbfJ0VCh (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sun, 27 Oct 2019 17:02:37 -0400
+Received: from localhost (100.50.158.77.rev.sfr.net [77.158.50.100])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 471MXZ3cz5zQl8s;
-        Sun, 27 Oct 2019 16:41:50 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter01.heinlein-hosting.de (spamfilter01.heinlein-hosting.de [80.241.56.115]) (amavisd-new, port 10030)
-        with ESMTP id HKUBceS7i6hF; Sun, 27 Oct 2019 16:41:40 +0100 (CET)
-Date:   Mon, 28 Oct 2019 02:41:15 +1100
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
-        David Drysdale <drysdale@google.com>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Christian Brauner <christian@brauner.io>,
-        Aleksa Sarai <asarai@suse.de>,
-        Linux Containers <containers@lists.linux-foundation.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        GNU C Library <libc-alpha@sourceware.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        linux-ia64@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH RESEND v14 2/6] namei: LOOKUP_IN_ROOT: chroot-like path
- resolution
-Message-ID: <20191027154115.ex55njkysey4m6pu@yavin.dot.cyphar.com>
-References: <20191026185700.10708-1-cyphar@cyphar.com>
- <20191026185700.10708-3-cyphar@cyphar.com>
- <CAHk-=wjPPWvm5_eR4uaHJaU1isTUk-4iXQV3Z2Px9A+w6j2nHg@mail.gmail.com>
+        by mail.kernel.org (Postfix) with ESMTPSA id 7442D208C0;
+        Sun, 27 Oct 2019 21:02:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1572210155;
+        bh=yJSJj+ITuIJKMs7+vc2CHCVTSpYCGIZ3tQbBjXT/Olk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=bPdlCma7AuZ+pgwjp1tYLFrFWYMcZtdmPj8QixgX61VKzNBCk6sa+rW27rjFLhaBc
+         1BmNzAtJDLngTjVxEM+c2qzzrqGEdh9yX+Nh2qu4H0W4drSx/gJCtHUf2byKPycNKG
+         cp2YKG1erVbYOLuvUGcO4l0p02Js6GHJWRvf7K5E=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Yunqiang Su <ysu@wavecomp.com>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.4 10/41] MIPS: Treat Loongson Extensions as ASEs
+Date:   Sun, 27 Oct 2019 22:00:48 +0100
+Message-Id: <20191027203108.485466107@linuxfoundation.org>
+X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20191027203056.220821342@linuxfoundation.org>
+References: <20191027203056.220821342@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="x254sstnuxqz6cbi"
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wjPPWvm5_eR4uaHJaU1isTUk-4iXQV3Z2Px9A+w6j2nHg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
---x254sstnuxqz6cbi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[ Upstream commit d2f965549006acb865c4638f1f030ebcefdc71f6 ]
 
-On 2019-10-27, Linus Torvalds <torvalds@linux-foundation.org> wrote:
-> On Sat, Oct 26, 2019 at 2:58 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
-> >
-> > +       /* LOOKUP_IN_ROOT treats absolute paths as being relative-to-di=
-rfd. */
-> > +       if (flags & LOOKUP_IN_ROOT)
-> > +               while (*s =3D=3D '/')
-> > +                       s++;
-> > +
-> >         /* Figure out the starting path and root (if needed). */
-> >         if (*s =3D=3D '/') {
-> >                 error =3D nd_jump_root(nd);
->=20
-> So I'm still hung up on this.
->=20
-> I guess I can't help it, but I look at the above, and it makes me go
-> "whoever wrote those tests wasn't thinking".
->=20
-> It just annoys me how it tests for '/' completely unnecessarily.
->=20
-> If LOOKUP_IN_ROOT is true, we know the subsequent test for '/' is not
-> going to match, because we just removed it. So I look at that code and
-> go "that code is doing stupid things".
+Recently, binutils had split Loongson-3 Extensions into four ASEs:
+MMI, CAM, EXT, EXT2. This patch do the samething in kernel and expose
+them in cpuinfo so applications can probe supported ASEs at runtime.
 
-Okay, fair enough.
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Huacai Chen <chenhc@lemote.com>
+Cc: Yunqiang Su <ysu@wavecomp.com>
+Cc: stable@vger.kernel.org # v4.14+
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: linux-mips@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/mips/include/asm/cpu-features.h | 8 ++++++++
+ arch/mips/include/asm/cpu.h          | 2 ++
+ arch/mips/kernel/cpu-probe.c         | 2 ++
+ arch/mips/kernel/proc.c              | 2 ++
+ 4 files changed, 14 insertions(+)
 
-> That's why I suggested moving the LOOKUP_IN_ROOT check inside the '/' tes=
-t.
->=20
-> Alternatively, just make the logic be
->=20
->         if (flags & LOOKUP_IN_ROOT) {
->                .. remove '/'s ...
->         } else if (*s =3D=3D '/') {
->                 .. handl;e root ..
->=20
-> and remove the next "else" clause
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index d1e04c943f5f7..ff60510357f63 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -307,6 +307,14 @@
+ #define cpu_has_dsp2		(cpu_data[0].ases & MIPS_ASE_DSP2P)
+ #endif
+ 
++#ifndef cpu_has_loongson_mmi
++#define cpu_has_loongson_mmi		__ase(MIPS_ASE_LOONGSON_MMI)
++#endif
++
++#ifndef cpu_has_loongson_ext
++#define cpu_has_loongson_ext		__ase(MIPS_ASE_LOONGSON_EXT)
++#endif
++
+ #ifndef cpu_has_mipsmt
+ #define cpu_has_mipsmt		(cpu_data[0].ases & MIPS_ASE_MIPSMT)
+ #endif
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 82ad15f110492..08cb7a5661d07 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -399,5 +399,7 @@ enum cpu_type_enum {
+ #define MIPS_ASE_DSP2P		0x00000040 /* Signal Processing ASE Rev 2 */
+ #define MIPS_ASE_VZ		0x00000080 /* Virtualization ASE */
+ #define MIPS_ASE_MSA		0x00000100 /* MIPS SIMD Architecture */
++#define MIPS_ASE_LOONGSON_MMI	0x00000800 /* Loongson MultiMedia extensions Instructions */
++#define MIPS_ASE_LOONGSON_EXT	0x00002000 /* Loongson EXTensions */
+ 
+ #endif /* _ASM_CPU_H */
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 6b9064499bd3d..ee71bda53d4e6 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1016,6 +1016,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
+ 			__cpu_name[cpu] = "ICT Loongson-3";
+ 			set_elf_platform(cpu, "loongson3a");
+ 			set_isa(c, MIPS_CPU_ISA_M64R1);
++			c->ases |= (MIPS_ASE_LOONGSON_MMI | MIPS_ASE_LOONGSON_EXT);
+ 			break;
+ 		case PRID_REV_LOONGSON3B_R1:
+ 		case PRID_REV_LOONGSON3B_R2:
+@@ -1023,6 +1024,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
+ 			__cpu_name[cpu] = "ICT Loongson-3";
+ 			set_elf_platform(cpu, "loongson3b");
+ 			set_isa(c, MIPS_CPU_ISA_M64R1);
++			c->ases |= (MIPS_ASE_LOONGSON_MMI | MIPS_ASE_LOONGSON_EXT);
+ 			break;
+ 		}
+ 
+diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+index f1fab6ff53e63..33c6cdff2331e 100644
+--- a/arch/mips/kernel/proc.c
++++ b/arch/mips/kernel/proc.c
+@@ -121,6 +121,8 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+ 	if (cpu_has_eva)	seq_printf(m, "%s", " eva");
+ 	if (cpu_has_htw)	seq_printf(m, "%s", " htw");
+ 	if (cpu_has_xpa)	seq_printf(m, "%s", " xpa");
++	if (cpu_has_loongson_mmi)	seq_printf(m, "%s", " loongson-mmi");
++	if (cpu_has_loongson_ext)	seq_printf(m, "%s", " loongson-ext");
+ 	seq_printf(m, "\n");
+ 
+ 	if (cpu_has_mmips) {
+-- 
+2.20.1
 
-I've gone with the latter since I think it reads better.
 
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
 
---x254sstnuxqz6cbi
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXbW6lwAKCRCdlLljIbnQ
-EoPNAP0TH7raCw5NCLFnqJEAJ2bl+pDz8oGtxQKGtoXC7HohOQEAqFv71cuFJjle
-mvHPyKwhvNv8coIv55o8qUxny+XxIAg=
-=0iVb
------END PGP SIGNATURE-----
-
---x254sstnuxqz6cbi--

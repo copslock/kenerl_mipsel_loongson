@@ -7,37 +7,37 @@ X-Spam-Status: No, score=-7.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CB155CA9EBC
-	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:13:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E603CA9EBD
+	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:21:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 9D6B521850
-	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:13:07 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4241721726
+	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1572210787;
+	s=default; t=1572211271;
 	bh=OxtsmDZcRyjTy/TwgnZe5iInYm/ARc+kAq5vsnT/P2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=TCTXPUF5N/NTFWxwsnyBl4gMGl+r3fN4ttuJTZOlEwreX8tR9PjpHXwCmBz5k2LsQ
-	 qjmDXFURzf38tPtuRia90TkFj4TN2nc9dF2UF4zOvo9ncm9Xj+hBea6s3EQ0Ak2/vx
-	 CiZK3Z6AkzfbhzHmeoWB2b+5PAwetHsuOVOOB9Zs=
+	b=YMVPevwqf7weXabftg3Tp3u7ze1qBXgnnDZVHWT+QObYc5B7ryJUmaSp4Wr6m+tPT
+	 7bobJGaxid0o54qE06QnfQZo38+I9xijSSFQef3SMnhsxmgxH9Y+M9SWdrp8hFMyrC
+	 fZE3Obs+82bpojMyW330N3/lnQOp3m+sLeKe8EUA=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730153AbfJ0VNF (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 27 Oct 2019 17:13:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60078 "EHLO mail.kernel.org"
+        id S1731253AbfJ0VVK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 27 Oct 2019 17:21:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41888 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730174AbfJ0VNE (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sun, 27 Oct 2019 17:13:04 -0400
+        id S1731859AbfJ0VVI (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sun, 27 Oct 2019 17:21:08 -0400
 Received: from localhost (100.50.158.77.rev.sfr.net [77.158.50.100])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A13FA205C9;
-        Sun, 27 Oct 2019 21:13:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 533BF205C9;
+        Sun, 27 Oct 2019 21:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572210783;
+        s=default; t=1572211267;
         bh=OxtsmDZcRyjTy/TwgnZe5iInYm/ARc+kAq5vsnT/P2M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dpl9nj8a7K2H1ULjIqcBtEI0GFzxfmgHQNZF8fnmnhvX+lKJuUa2s5agZXQGih4Om
-         LUQfYdLv6o4ji/QbeJWKxKt4E/MqbKahHVlCzbxP/a7mtACbwAOSycUMHS6pJjhMY3
-         bOICW1Vqg8taIr2BKN0YPCaJy6aaCKl/FOh5gqpo=
+        b=oN9QMqxAIW8H1riXXTEhJs1JYFVZdOGgr3ske+jRrIi8NNtm1dRcOSRmKdYB8LQYR
+         ywkFHxAEZ4vM95q9GROIfihsi9g0pU+aHN8jqAffg5o8E6J12/F5l/AbhlmiUSMDkG
+         w7Fy7Ciur0caOzSIPPl/+lkhDFkfYBgES0kliqm8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Paul Burton <paul.burton@mips.com>, chenhc@lemote.com,
         ralf@linux-mips.org, jhogan@kernel.org, linux-mips@vger.kernel.org,
         kernel-janitors@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 16/93] mips: Loongson: Fix the link time qualifier of serial_exit()
-Date:   Sun, 27 Oct 2019 22:00:28 +0100
-Message-Id: <20191027203255.107174272@linuxfoundation.org>
+Subject: [PATCH 5.3 047/197] mips: Loongson: Fix the link time qualifier of serial_exit()
+Date:   Sun, 27 Oct 2019 21:59:25 +0100
+Message-Id: <20191027203354.239642675@linuxfoundation.org>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191027203251.029297948@linuxfoundation.org>
-References: <20191027203251.029297948@linuxfoundation.org>
+In-Reply-To: <20191027203351.684916567@linuxfoundation.org>
+References: <20191027203351.684916567@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8

@@ -2,54 +2,59 @@ Return-Path: <SRS0=J4Li=YU=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 808F1CA9EAF
-	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:10:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 484A6CA9EBD
+	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:12:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 511F421783
-	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:10:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 10D37222CE
+	for <linux-mips@archiver.kernel.org>; Sun, 27 Oct 2019 21:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1572210648;
-	bh=/gWfBVXQDmT55zrCrf1LNT8GyHRiPFyNAtoTtM6/C/A=;
+	s=default; t=1572210768;
+	bh=qhJM50bxO+MG7WrkXdo6i8sZ/JZEPykOMKFr88gZ6t8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=BMLjJ0M7+4p5K4DJeRJTRJ0DT+q108vaDbiOED2IjG0x0WMtBEdn0nSQUcyQnddS/
-	 PE1r6ftlkGuB9s54gB5RB5H+9If2JTf96rIyWdbriUD59oiCiRaRkvVqZamcKOqqW5
-	 lwtRTM8VoTDPtS1n54GaoLHKy/wR3wUukmRxb7JI=
+	b=afb60f5qB/rOSL09/S8e60e0+XZQeOUwe3TO06+KrmtJ/gz+SOR7QMIOWlMtWoAkc
+	 tad1x3HnQGJs4hOQH/OXCBhCCZMb4ah/1rVsfVxH8cvX9R4rsMrhHjuS62OaeR7+47
+	 NtrGC7BUQjKLDu3XqRcwrp1z+nLvfi4hWFYR45ZI=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729753AbfJ0VKn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 27 Oct 2019 17:10:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57192 "EHLO mail.kernel.org"
+        id S1730106AbfJ0VMr (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 27 Oct 2019 17:12:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59684 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727627AbfJ0VKn (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sun, 27 Oct 2019 17:10:43 -0400
+        id S1728695AbfJ0VMq (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sun, 27 Oct 2019 17:12:46 -0400
 Received: from localhost (100.50.158.77.rev.sfr.net [77.158.50.100])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 062A02064A;
-        Sun, 27 Oct 2019 21:10:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 96339208C0;
+        Sun, 27 Oct 2019 21:12:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572210642;
-        bh=/gWfBVXQDmT55zrCrf1LNT8GyHRiPFyNAtoTtM6/C/A=;
+        s=default; t=1572210766;
+        bh=qhJM50bxO+MG7WrkXdo6i8sZ/JZEPykOMKFr88gZ6t8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U0W1WuVc+oLlB2XAgf/fgUi+uppGdstxA8W6V5MgaOgrEOmrOYcEkhoVDdk8WO5ez
-         RpTfqp0qs3xmP6SwnU671qAZj2EuZCBtyclaTbG7dDLMp3ijf5jkr5LdSEwF51V6hs
-         WItihrYCazK3C8V/LMns2ynVb1pAcSk0v1apow3g=
+        b=rNHzLkFCoifjGz4WHdK0Nqx9FZWTDGK6sil2IbLjyQnyhP3HdczuwO3KhmJika3je
+         g/6q2gKKR6F91RCq/a4xuSySJQaB7oWa9F1JQIXfgjz/ZpS3eykvtLxxqO/lSCDdIj
+         E5W4gxVpXRJWfQS0mlw+MTja3H7R3XC9nvbgR/Og=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paulburton@kernel.org>,
-        Dmitry Korotin <dkorotin@wavecomp.com>,
-        linux-mips@vger.kernel.org
-Subject: [PATCH 4.14 085/119] MIPS: tlbex: Fix build_restore_pagemask KScratch restore
-Date:   Sun, 27 Oct 2019 22:01:02 +0100
-Message-Id: <20191027203346.823276486@linuxfoundation.org>
+        stable@vger.kernel.org, Oleksij Rempel <o.rempel@pengutronix.de>,
+        Paul Burton <paul.burton@mips.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, devicetree@vger.kernel.org,
+        linux-mips@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 10/93] MIPS: dts: ar9331: fix interrupt-controller size
+Date:   Sun, 27 Oct 2019 22:00:22 +0100
+Message-Id: <20191027203254.069647999@linuxfoundation.org>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191027203259.948006506@linuxfoundation.org>
-References: <20191027203259.948006506@linuxfoundation.org>
+In-Reply-To: <20191027203251.029297948@linuxfoundation.org>
+References: <20191027203251.029297948@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,105 +64,42 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Paul Burton <paulburton@kernel.org>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit b42aa3fd5957e4daf4b69129e5ce752a2a53e7d6 upstream.
+[ Upstream commit 0889d07f3e4b171c453b2aaf2b257f9074cdf624 ]
 
-build_restore_pagemask() will restore the value of register $1/$at when
-its restore_scratch argument is non-zero, and aims to do so by filling a
-branch delay slot. Commit 0b24cae4d535 ("MIPS: Add missing EHB in mtc0
--> mfc0 sequence.") added an EHB instruction (Execution Hazard Barrier)
-prior to restoring $1 from a KScratch register, in order to resolve a
-hazard that can result in stale values of the KScratch register being
-observed. In particular, P-class CPUs from MIPS with out of order
-execution pipelines such as the P5600 & P6600 are affected.
+It is two registers each of 4 byte.
 
-Unfortunately this EHB instruction was inserted in the branch delay slot
-causing the MFC0 instruction which performs the restoration to no longer
-execute along with the branch. The result is that the $1 register isn't
-actually restored, ie. the TLB refill exception handler clobbers it -
-which is exactly the problem the EHB is meant to avoid for the P-class
-CPUs.
-
-Similarly build_get_pgd_vmalloc() will restore the value of $1/$at when
-its mode argument equals refill_scratch, and suffers from the same
-problem.
-
-Fix this by in both cases moving the EHB earlier in the emitted code.
-There's no reason it needs to immediately precede the MFC0 - it simply
-needs to be between the MTC0 & MFC0.
-
-This bug only affects Cavium Octeon systems which use
-build_fast_tlb_refill_handler().
-
-Signed-off-by: Paul Burton <paulburton@kernel.org>
-Fixes: 0b24cae4d535 ("MIPS: Add missing EHB in mtc0 -> mfc0 sequence.")
-Cc: Dmitry Korotin <dkorotin@wavecomp.com>
-Cc: stable@vger.kernel.org # v3.15+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: devicetree@vger.kernel.org
 Cc: linux-mips@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/mm/tlbex.c |   23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ arch/mips/boot/dts/qca/ar9331.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -658,6 +658,13 @@ static void build_restore_pagemask(u32 *
- 				   int restore_scratch)
- {
- 	if (restore_scratch) {
-+		/*
-+		 * Ensure the MFC0 below observes the value written to the
-+		 * KScratch register by the prior MTC0.
-+		 */
-+		if (scratch_reg >= 0)
-+			uasm_i_ehb(p);
-+
- 		/* Reset default page size */
- 		if (PM_DEFAULT_MASK >> 16) {
- 			uasm_i_lui(p, tmp, PM_DEFAULT_MASK >> 16);
-@@ -672,12 +679,10 @@ static void build_restore_pagemask(u32 *
- 			uasm_i_mtc0(p, 0, C0_PAGEMASK);
- 			uasm_il_b(p, r, lid);
- 		}
--		if (scratch_reg >= 0) {
--			uasm_i_ehb(p);
-+		if (scratch_reg >= 0)
- 			UASM_i_MFC0(p, 1, c0_kscratch(), scratch_reg);
--		} else {
-+		else
- 			UASM_i_LW(p, 1, scratchpad_offset(0), 0);
--		}
- 	} else {
- 		/* Reset default page size */
- 		if (PM_DEFAULT_MASK >> 16) {
-@@ -926,6 +931,10 @@ build_get_pgd_vmalloc64(u32 **p, struct
- 	}
- 	if (mode != not_refill && check_for_high_segbits) {
- 		uasm_l_large_segbits_fault(l, *p);
-+
-+		if (mode == refill_scratch && scratch_reg >= 0)
-+			uasm_i_ehb(p);
-+
- 		/*
- 		 * We get here if we are an xsseg address, or if we are
- 		 * an xuseg address above (PGDIR_SHIFT+PGDIR_BITS) boundary.
-@@ -942,12 +951,10 @@ build_get_pgd_vmalloc64(u32 **p, struct
- 		uasm_i_jr(p, ptr);
+diff --git a/arch/mips/boot/dts/qca/ar9331.dtsi b/arch/mips/boot/dts/qca/ar9331.dtsi
+index 2bae201aa3651..1c7bf11f8450b 100644
+--- a/arch/mips/boot/dts/qca/ar9331.dtsi
++++ b/arch/mips/boot/dts/qca/ar9331.dtsi
+@@ -99,7 +99,7 @@
  
- 		if (mode == refill_scratch) {
--			if (scratch_reg >= 0) {
--				uasm_i_ehb(p);
-+			if (scratch_reg >= 0)
- 				UASM_i_MFC0(p, 1, c0_kscratch(), scratch_reg);
--			} else {
-+			else
- 				UASM_i_LW(p, 1, scratchpad_offset(0), 0);
--			}
- 		} else {
- 			uasm_i_nop(p);
- 		}
+ 			miscintc: interrupt-controller@18060010 {
+ 				compatible = "qca,ar7240-misc-intc";
+-				reg = <0x18060010 0x4>;
++				reg = <0x18060010 0x8>;
+ 
+ 				interrupt-parent = <&cpuintc>;
+ 				interrupts = <6>;
+-- 
+2.20.1
+
 
 

@@ -2,222 +2,95 @@ Return-Path: <SRS0=x2NE=YW=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.3 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.1 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 65282CA9EC3
-	for <linux-mips@archiver.kernel.org>; Tue, 29 Oct 2019 10:50:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BE87ACA9EAE
+	for <linux-mips@archiver.kernel.org>; Tue, 29 Oct 2019 12:39:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 3003F2087F
-	for <linux-mips@archiver.kernel.org>; Tue, 29 Oct 2019 10:50:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8F1F621734
+	for <linux-mips@archiver.kernel.org>; Tue, 29 Oct 2019 12:39:07 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="p03N6vxV"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="HUuX5n8d"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728189AbfJ2Kux (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 29 Oct 2019 06:50:53 -0400
-Received: from forward105p.mail.yandex.net ([77.88.28.108]:35385 "EHLO
-        forward105p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726175AbfJ2Kux (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 29 Oct 2019 06:50:53 -0400
-Received: from mxback30g.mail.yandex.net (mxback30g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:330])
-        by forward105p.mail.yandex.net (Yandex) with ESMTP id 466B54D41890;
-        Tue, 29 Oct 2019 13:50:49 +0300 (MSK)
-Received: from sas1-e6a95a338f12.qloud-c.yandex.net (sas1-e6a95a338f12.qloud-c.yandex.net [2a02:6b8:c08:37a4:0:640:e6a9:5a33])
-        by mxback30g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id prv0bwwOtD-ontqu6G0;
-        Tue, 29 Oct 2019 13:50:49 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1572346249;
-        bh=jduwSQJoGEIcWRg2hiWnE/M3uIcfKhtBYbUPGIA3qEI=;
-        h=In-Reply-To:From:To:Subject:Cc:Date:References:Message-ID;
-        b=p03N6vxVxS+eI7QMvFQ8rel15iQgyxucrjYAMK7I25h6P25uTkdjO6kX/+drF7Ucx
-         bEquFatGt17ECcIWsxBds+cR2Olw+lhB1mRipNOjU2uWPyqMOa28r7lBgWuG27TIED
-         flWIyKDdv/DC+PkQt79IY0wDgqdM8hmZ6rshpKRs=
-Authentication-Results: mxback30g.mail.yandex.net; dkim=pass header.i=@flygoat.com
-Received: by sas1-e6a95a338f12.qloud-c.yandex.net (nwsmtp/Yandex) with ESMTPSA id zBH7CLbfZX-ogVeiGb9;
-        Tue, 29 Oct 2019 13:50:47 +0300
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (Client certificate not present)
-Subject: Re: [PATCH 4.14 027/119] MIPS: elf_hwcap: Export userspace ASEs
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org
-Cc:     stable@vger.kernel.org, Meng Zhuo <mengzhuo1203@gmail.com>,
-        linux-mips@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        Sasha Levin <sashal@kernel.org>
-References: <20191027203259.948006506@linuxfoundation.org>
- <20191027203308.417745883@linuxfoundation.org>
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-Message-ID: <c7cea5a0-bb68-b8ad-0548-6f246465a8b6@flygoat.com>
-Date:   Tue, 29 Oct 2019 18:50:38 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1732323AbfJ2MjH (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 29 Oct 2019 08:39:07 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:40206 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727039AbfJ2MjH (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 29 Oct 2019 08:39:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=N+ehmygc9BxX7lvA6aGJbMWaouzap7HiKg9Ic+o14PY=; b=HUuX5n8dhPbVxklcvlDuEpP910
+        2rrsNVRDtRIw8JqhZZIZtKDKW3KskJktVniS2bR6T4YczrftrnaBNVRyuIcjmxQRcvtK3FmnHGg+V
+        +4Z8fxRY43XE3ox5a/XAlk7bYEsFboxxfF7KmzZqs+8P3hQUmkmNawSUeeX+B1/0i+z0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.92.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1iPQly-0004C1-Jz; Tue, 29 Oct 2019 13:38:54 +0100
+Date:   Tue, 29 Oct 2019 13:38:54 +0100
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+        Jay Cliburn <jcliburn@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Paul Burton <paul.burton@mips.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        James Hogan <jhogan@kernel.org>,
+        Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+        linux-mips@vger.kernel.org,
+        Vivien Didelot <vivien.didelot@gmail.com>
+Subject: Re: [PATCH v4 5/5] net: dsa: add support for Atheros AR9331 build-in
+ switch
+Message-ID: <20191029123854.GN15259@lunn.ch>
+References: <20191022055743.6832-1-o.rempel@pengutronix.de>
+ <20191022055743.6832-6-o.rempel@pengutronix.de>
+ <20191023005850.GG5707@lunn.ch>
+ <20191029071404.pl34q4rmadusc2u5@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20191027203308.417745883@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191029071404.pl34q4rmadusc2u5@pengutronix.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
+Hi Oleksij
 
-在 2019/10/28 上午5:00, Greg Kroah-Hartman 写道:
-> From: Jiaxun Yang <jiaxun.yang@flygoat.com>
->
-> [ Upstream commit 38dffe1e4dde1d3174fdce09d67370412843ebb5 ]
->
-> A Golang developer reported MIPS hwcap isn't reflecting instructions
-> that the processor actually supported so programs can't apply optimized
-> code at runtime.
->
-> Thus we export the ASEs that can be used in userspace programs.
->
-> Reported-by: Meng Zhuo <mengzhuo1203@gmail.com>
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> Cc: linux-mips@vger.kernel.org
-> Cc: Paul Burton <paul.burton@mips.com>
-> Cc: <stable@vger.kernel.org> # 4.14+
-> Signed-off-by: Paul Burton <paul.burton@mips.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->   arch/mips/include/uapi/asm/hwcap.h | 11 ++++++++++
->   arch/mips/kernel/cpu-probe.c       | 33 ++++++++++++++++++++++++++++++
->   2 files changed, 44 insertions(+)
->
-> diff --git a/arch/mips/include/uapi/asm/hwcap.h b/arch/mips/include/uapi/asm/hwcap.h
-> index 600ad8fd68356..2475294c3d185 100644
-> --- a/arch/mips/include/uapi/asm/hwcap.h
-> +++ b/arch/mips/include/uapi/asm/hwcap.h
-> @@ -5,5 +5,16 @@
->   /* HWCAP flags */
->   #define HWCAP_MIPS_R6		(1 << 0)
->   #define HWCAP_MIPS_MSA		(1 << 1)
-> +#define HWCAP_MIPS_MIPS16	(1 << 3)
-> +#define HWCAP_MIPS_MDMX     (1 << 4)
-> +#define HWCAP_MIPS_MIPS3D   (1 << 5)
-> +#define HWCAP_MIPS_SMARTMIPS (1 << 6)
-> +#define HWCAP_MIPS_DSP      (1 << 7)
-> +#define HWCAP_MIPS_DSP2     (1 << 8)
-> +#define HWCAP_MIPS_DSP3     (1 << 9)
-> +#define HWCAP_MIPS_MIPS16E2 (1 << 10)
-> +#define HWCAP_LOONGSON_MMI  (1 << 11)
-> +#define HWCAP_LOONGSON_EXT  (1 << 12)
-> +#define HWCAP_LOONGSON_EXT2 (1 << 13)
->   
->   #endif /* _UAPI_ASM_HWCAP_H */
-> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-> index 3007ae1bb616a..c38cd62879f4e 100644
-> --- a/arch/mips/kernel/cpu-probe.c
-> +++ b/arch/mips/kernel/cpu-probe.c
-> @@ -2080,6 +2080,39 @@ void cpu_probe(void)
->   		elf_hwcap |= HWCAP_MIPS_MSA;
->   	}
->   
-> +	if (cpu_has_mips16)
-> +		elf_hwcap |= HWCAP_MIPS_MIPS16;
-> +
-> +	if (cpu_has_mdmx)
-> +		elf_hwcap |= HWCAP_MIPS_MDMX;
-> +
-> +	if (cpu_has_mips3d)
-> +		elf_hwcap |= HWCAP_MIPS_MIPS3D;
-> +
-> +	if (cpu_has_smartmips)
-> +		elf_hwcap |= HWCAP_MIPS_SMARTMIPS;
-> +
-> +	if (cpu_has_dsp)
-> +		elf_hwcap |= HWCAP_MIPS_DSP;
-> +
-> +	if (cpu_has_dsp2)
-> +		elf_hwcap |= HWCAP_MIPS_DSP2;
-> +
-> +	if (cpu_has_dsp3)
-> +		elf_hwcap |= HWCAP_MIPS_DSP3;
-> +
-> +	if (cpu_has_loongson_mmi)
-> +		elf_hwcap |= HWCAP_LOONGSON_MMI;
-> +
-> +	if (cpu_has_loongson_mmi)
-> +		elf_hwcap |= HWCAP_LOONGSON_CAM;
+> > > +static void ar9331_sw_port_disable(struct dsa_switch *ds, int port)
+> > > +{
+> > > +	struct ar9331_sw_priv *priv = (struct ar9331_sw_priv *)ds->priv;
+> > > +	struct regmap *regmap = priv->regmap;
+> > > +	int ret;
+> > > +
+> > > +	ret = regmap_write(regmap, AR9331_SW_REG_PORT_STATUS(port), 0);
+> > > +	if (ret)
+> > > +		dev_err_ratelimited(priv->dev, "%s: %i\n", __func__, ret);
+> > > +}
+> > 
+> > I've asked this before, but i don't remember the answer. Why are
+> > port_enable and port_disable the same?
+> 
+> I have only MAC TX/RX enable bit. This bit is set by phylink_mac_link_up and
+> removed by phylink_mac_link_down.
+> The port enable I use only to set predictable state of the port
+> register: all bits cleared. May be i should just drop port enable
+> function? What do you think? 
 
-Hi:
+At minimum, it needs a comment about why enable and disable are the
+same. If i keep asking, others will as well.
 
-Sorry, there is a typo causing build failure.
+If there is nothing useful to do, then drop it.
 
-Should be:
-
----
-  arch/mips/include/uapi/asm/hwcap.h | 11 ++++++++++
-  arch/mips/kernel/cpu-probe.c       | 33 ++++++++++++++++++++++++++++++
-  2 files changed, 44 insertions(+)
-
-diff --git a/arch/mips/include/uapi/asm/hwcap.h b/arch/mips/include/uapi/asm/hwcap.h
-index a2aba4b059e6..1ade1daa4921 100644
---- a/arch/mips/include/uapi/asm/hwcap.h
-+++ b/arch/mips/include/uapi/asm/hwcap.h
-@@ -6,5 +6,16 @@
-  #define HWCAP_MIPS_R6		(1 << 0)
-  #define HWCAP_MIPS_MSA		(1 << 1)
-  #define HWCAP_MIPS_CRC32	(1 << 2)
-+#define HWCAP_MIPS_MIPS16	(1 << 3)
-+#define HWCAP_MIPS_MDMX     (1 << 4)
-+#define HWCAP_MIPS_MIPS3D   (1 << 5)
-+#define HWCAP_MIPS_SMARTMIPS (1 << 6)
-+#define HWCAP_MIPS_DSP      (1 << 7)
-+#define HWCAP_MIPS_DSP2     (1 << 8)
-+#define HWCAP_MIPS_DSP3     (1 << 9)
-+#define HWCAP_MIPS_MIPS16E2 (1 << 10)
-+#define HWCAP_LOONGSON_MMI  (1 << 11)
-+#define HWCAP_LOONGSON_EXT  (1 << 12)
-+#define HWCAP_LOONGSON_EXT2 (1 << 13)
-  
-  #endif /* _UAPI_ASM_HWCAP_H */
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index c2eb392597bf..f521cbf934e7 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -2180,6 +2180,39 @@ void cpu_probe(void)
-  		elf_hwcap |= HWCAP_MIPS_MSA;
-  	}
-  
-+	if (cpu_has_mips16)
-+		elf_hwcap |= HWCAP_MIPS_MIPS16;
-+
-+	if (cpu_has_mdmx)
-+		elf_hwcap |= HWCAP_MIPS_MDMX;
-+
-+	if (cpu_has_mips3d)
-+		elf_hwcap |= HWCAP_MIPS_MIPS3D;
-+
-+	if (cpu_has_smartmips)
-+		elf_hwcap |= HWCAP_MIPS_SMARTMIPS;
-+
-+	if (cpu_has_dsp)
-+		elf_hwcap |= HWCAP_MIPS_DSP;
-+
-+	if (cpu_has_dsp2)
-+		elf_hwcap |= HWCAP_MIPS_DSP2;
-+
-+	if (cpu_has_dsp3)
-+		elf_hwcap |= HWCAP_MIPS_DSP3;
-+
-+	if (cpu_has_mips16e2)
-+		elf_hwcap |= HWCAP_MIPS_MIPS16E2;
-+
-+	if (cpu_has_loongson_mmi)
-+		elf_hwcap |= HWCAP_LOONGSON_MMI;
-+
-+	if (cpu_has_loongson_ext)
-+		elf_hwcap |= HWCAP_LOONGSON_EXT;
-+
-+	if (cpu_has_loongson_ext2)
-+		elf_hwcap |= HWCAP_LOONGSON_EXT2;
-+
-  	if (cpu_has_vz)
-  		cpu_probe_vz(c);
-  
--- 2.23.0
-
+   Andrew
 

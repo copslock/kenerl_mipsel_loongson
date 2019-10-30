@@ -2,58 +2,61 @@ Return-Path: <SRS0=SfqM=YX=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.6 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+X-Spam-Status: No, score=-2.1 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DE6BCA9EC6
-	for <linux-mips@archiver.kernel.org>; Wed, 30 Oct 2019 21:13:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F398CA9EC5
+	for <linux-mips@archiver.kernel.org>; Wed, 30 Oct 2019 21:26:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 10E4720856
-	for <linux-mips@archiver.kernel.org>; Wed, 30 Oct 2019 21:13:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1F0252080F
+	for <linux-mips@archiver.kernel.org>; Wed, 30 Oct 2019 21:26:11 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="LV8IOTKf"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="VRHi7s/T"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727091AbfJ3VMn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 30 Oct 2019 17:12:43 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:60300 "EHLO
+        id S1727046AbfJ3V0K (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 30 Oct 2019 17:26:10 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:35738 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726261AbfJ3VMn (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 30 Oct 2019 17:12:43 -0400
+        with ESMTP id S1727045AbfJ3V0K (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 30 Oct 2019 17:26:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=uB/ttCoq5Iteycq7BZ4GHcsjNmFlWaU9Pnqx8IZNFhs=; b=LV8IOTKfV+r3NpIzxE6a2OKr/
-        21GPJZJAo8oxOxngdzMF+t75XSybq09LD6bzW/7PbHQqTQKvVFL/h1+9/+HnryM+7+c7Zflp1dd2N
-        +lapxpA5JpvBoNowsEmp/FkUoMNvf2LWo8LBi6sAogpV9EGPe+GVLCVDdytsLQRRKtSnFY5DbFMBm
-        djsBZjuXI+ybtRay+EqBuh+qCTfpWsAImc18TxU6HH2ZrDjQvDrk/t3ScqNzuaDCew8HJh7EfOtys
-        75GwI+lKa4Z+YVBXsztjDcXZXPw0GLu02ojuxt7IsUUev1DkEx2zkHpxXC/tI11aE47p6jp9umsip
-        gc656+5xw==;
-Received: from [199.255.44.128] (helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1iPvGi-0007ci-MX; Wed, 30 Oct 2019 21:12:40 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     "David S. Miller" <davem@davemloft.net>,
-        Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Cc:     linux-mips@vger.kernel.org, netdev@vger.kernel.org,
+         bh=QAldfIZdfUsmWLWzOiJRMY3GvzhRHkvLuPhvI79W9ls=; b=VRHi7s/T9ZtPoBK3F7Zs53zRF
+        0HzDQB8rdbAdmMQDaExnfod3SW5ufMCnQtNUPbS9BA9yqOBc+3xTdK2CG1yswov9gBhCZGlfEfB8n
+        F2zlBgq3kUJvY8Trzov/KUZW8WjNokCsscCRmSWfWs87P8kviNeGwZigv+P58wvHeaeG7Q8nwQKFV
+        zBiXmHIZiiDTzemVEabr73lBZUrlbuVdnGTKba7hh/gbbRSbmYYS8lSd3I+3vifR+nmkkO+FIMFKf
+        wNcfJb371tEGed8DqE6Q3fRnTxqce3X79Br6nXU9iS2DyX1dRdVLXXMSPmo5e0qB3odoXy3xWus6Y
+        RgDgqjylA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1iPvTj-0004rm-0j; Wed, 30 Oct 2019 21:26:07 +0000
+Date:   Wed, 30 Oct 2019 14:26:06 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: ioc3_eth DMA API fixes
-Date:   Wed, 30 Oct 2019 14:12:29 -0700
-Message-Id: <20191030211233.30157-1-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
+Subject: Re: [PATCH] MIPS: SGI-IP27: fix exception handler replication
+Message-ID: <20191030212606.GB4251@infradead.org>
+References: <20191030105819.11266-1-tbogendoerfer@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191030105819.11266-1-tbogendoerfer@suse.de>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Dave and Thomas,
+On Wed, Oct 30, 2019 at 11:58:19AM +0100, Thomas Bogendoerfer wrote:
+> Commit b3ffcd0d800c ("mips/sgi-ip35: Initial rough-in of minimal platform
+> definition.")
 
-please take a look at this series which fixes DMA API usage in the ioc3
-ethernet driver.  At least the first one is a nasty abuse of internal
-APIs introduced in 5.4-rc which I'd prefer to be fixed before 5.4 final.
+I can't actually find that commit anywhere.

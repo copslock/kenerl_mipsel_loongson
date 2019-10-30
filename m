@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CAC8CA9EC6
-	for <linux-mips@archiver.kernel.org>; Wed, 30 Oct 2019 15:57:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C1129CA9EC5
+	for <linux-mips@archiver.kernel.org>; Wed, 30 Oct 2019 15:58:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 1972A21835
-	for <linux-mips@archiver.kernel.org>; Wed, 30 Oct 2019 15:57:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8DD9F217D9
+	for <linux-mips@archiver.kernel.org>; Wed, 30 Oct 2019 15:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1572451070;
-	bh=1X6i7lR6+B7BxUJpAHRSlPaRhmFHYsGGR9wrl7CzAA4=;
+	s=default; t=1572451119;
+	bh=WAau6IR/aThQUlLyDIXnoKCOCQz2hrk3FioonFNx534=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=MFJGEf+6QocmuvvR9vHLz/LsXz80k/0T2ZUcKTtuZQKDwNrRKxqZX44R8hdFai5Zn
-	 RlntTaIm9zd4Ov+w2dmZzcbZdF9oscOggHXtSo8oGkSw/Z0YwbsfRYfN3Zol67C7Kf
-	 PKAe9+IcMq41vXeFOXvwQ3QE7dVWgFzRqXHSi3qs=
+	b=SYiV42OOZOlEX38EyCNMOCAsdcrb+cl6OFjtWN/6pgKo0Vlp+s2GVPlp1U6F7Rywh
+	 eFUS9uxQSvyO/21wy4kY/Tss7CpRFXn7l7L4sXvBpCfLgmTPSm6nFXZrqex35D0lSQ
+	 EHCOWypmca2R5NSfSVwcVn0aAer7GvYgQmXobEQ8=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727729AbfJ3P5t (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 30 Oct 2019 11:57:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59458 "EHLO mail.kernel.org"
+        id S1729302AbfJ3P60 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 30 Oct 2019 11:58:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60270 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728355AbfJ3P5s (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 30 Oct 2019 11:57:48 -0400
+        id S1729291AbfJ3P6Z (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 30 Oct 2019 11:58:25 -0400
 Received: from sasha-vm.mshome.net (100.50.158.77.rev.sfr.net [77.158.50.100])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BF9B52067D;
-        Wed, 30 Oct 2019 15:57:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 843F42173E;
+        Wed, 30 Oct 2019 15:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572451067;
-        bh=1X6i7lR6+B7BxUJpAHRSlPaRhmFHYsGGR9wrl7CzAA4=;
+        s=default; t=1572451104;
+        bh=WAau6IR/aThQUlLyDIXnoKCOCQz2hrk3FioonFNx534=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OgSi1GqCW2pM7mpDIzylaSujLgwpvivFy5htd8KK63j39uyGhvjS3Ah0W/+j1ujAN
-         8BAl49R0rf4ADnLA3248ZG6Y/varrFSSqSsi2rDI+9/t3zkkjDrNxVx9eN8OWdD03Z
-         ddl3zGglnKUR+KNtySP1WeRkXuQ54kDtMQCiDagI=
+        b=zpwrsymddOZbI5x0YKj3LWCkQrwVChSfLKwagvv5KKBXoLEO+V3bjnjAbcLh6dLg9
+         i08P7l5qOkvmXKdxViQccl2EVCmAmUQe6Q6WGlU3GryxLsOCY4szZ2LNnaKn0iZuqU
+         MSAeULamiF9YIEZoMiAAz8Pya6Bs/AW3z0MTdRIU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Jonas Gorski <jonas.gorski@gmail.com>,
@@ -46,12 +46,12 @@ Cc:     Jonas Gorski <jonas.gorski@gmail.com>,
         linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.9 17/18] MIPS: bmips: mark exception vectors as char arrays
-Date:   Wed, 30 Oct 2019 11:56:59 -0400
-Message-Id: <20191030155700.10748-17-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 12/13] MIPS: bmips: mark exception vectors as char arrays
+Date:   Wed, 30 Oct 2019 11:57:50 -0400
+Message-Id: <20191030155751.10960-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191030155700.10748-1-sashal@kernel.org>
-References: <20191030155700.10748-1-sashal@kernel.org>
+In-Reply-To: <20191030155751.10960-1-sashal@kernel.org>
+References: <20191030155751.10960-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -121,7 +121,7 @@ index 7019e2967009e..bbbf8057565b2 100644
  		set_c0_cause(C_SW0);
  		cpumask_set_cpu(1, &bmips_booted_mask);
 diff --git a/arch/mips/include/asm/bmips.h b/arch/mips/include/asm/bmips.h
-index a92aee7b977ac..23f55af7d6bad 100644
+index 6d25ad33ec78f..860e4cef61be7 100644
 --- a/arch/mips/include/asm/bmips.h
 +++ b/arch/mips/include/asm/bmips.h
 @@ -75,11 +75,11 @@ static inline int register_bmips_smp_ops(void)
@@ -142,10 +142,10 @@ index a92aee7b977ac..23f55af7d6bad 100644
  extern int bmips_smp_enabled;
  extern int bmips_cpu_offset;
 diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
-index d4a293b68249b..416d53f587e7c 100644
+index 4874712b475e5..a62d24169d75c 100644
 --- a/arch/mips/kernel/smp-bmips.c
 +++ b/arch/mips/kernel/smp-bmips.c
-@@ -453,10 +453,10 @@ static void bmips_wr_vec(unsigned long dst, char *start, char *end)
+@@ -451,10 +451,10 @@ static void bmips_wr_vec(unsigned long dst, char *start, char *end)
  
  static inline void bmips_nmi_handler_setup(void)
  {

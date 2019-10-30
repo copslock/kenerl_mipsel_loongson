@@ -2,210 +2,95 @@ Return-Path: <SRS0=SfqM=YX=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EC20BCA9EAF
-	for <linux-mips@archiver.kernel.org>; Wed, 30 Oct 2019 06:52:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86A0CCA9EC5
+	for <linux-mips@archiver.kernel.org>; Wed, 30 Oct 2019 08:51:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id BE76420874
-	for <linux-mips@archiver.kernel.org>; Wed, 30 Oct 2019 06:52:43 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=nifty.com header.i=@nifty.com header.b="AB5pRE1Y"
+	by mail.kernel.org (Postfix) with ESMTP id 665B620578
+	for <linux-mips@archiver.kernel.org>; Wed, 30 Oct 2019 08:51:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727227AbfJ3Gwn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 30 Oct 2019 02:52:43 -0400
-Received: from condef-07.nifty.com ([202.248.20.72]:35631 "EHLO
-        condef-07.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727046AbfJ3Gwn (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 30 Oct 2019 02:52:43 -0400
-X-Greylist: delayed 530 seconds by postgrey-1.27 at vger.kernel.org; Wed, 30 Oct 2019 02:52:41 EDT
-Received: from conuserg-12.nifty.com ([10.126.8.75])by condef-07.nifty.com with ESMTP id x9U6e0iQ032498;
-        Wed, 30 Oct 2019 15:40:00 +0900
-Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
-        by conuserg-12.nifty.com with ESMTP id x9U6d6lv008465;
-        Wed, 30 Oct 2019 15:39:08 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com x9U6d6lv008465
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1572417549;
-        bh=2GktbG0AX5EtCMHePWHIbE0q7mnCifLYNvh9ZJFHfvs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AB5pRE1Y3NFeLYxFjunbmdeVQpZ+Rf7stI8M0RDP/Ph+dAukxSOblJVGK9stHr6sL
-         w7f/sEk1cdnHuGkMVjoBaasv02Eei75cCzREIovtTn8UGedX6/3gt+dobUqQKoyV/V
-         vRM0vHaFoDIECj+TK4eafRR3gud/gqFlyXwOIVd5tvoDNPgB4a+MmWWy+wcMjfXt0y
-         VUmzpNl9ZY347AiReQZmZKHbc46t7cBvzubiz9f+92QiGHZWTd5/irFaHWscaNlTXT
-         vZ60Av9A2CfEKqsSIB6yxtqylLp6dhof/z7SJ6wYF4g+YlpEatU+keTy5swzES6xuu
-         ofHSXCu7Nyr7w==
-X-Nifty-SrcIP: [153.142.97.92]
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-arch <linux-arch@vger.kernel.org>
-Cc:     linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, x86@kernel.org,
-        Arnd Bergmann <arnd@arndb.de>, sparclinux@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org,
-        Masahiro Yamada <yamada.masahiro@socionext.com>
-Subject: [PATCH 2/3] arch: msgbuf.h: make uapi asm/msgbuf.h self-contained
-Date:   Wed, 30 Oct 2019 15:38:54 +0900
-Message-Id: <20191030063855.9989-2-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191030063855.9989-1-yamada.masahiro@socionext.com>
-References: <20191030063855.9989-1-yamada.masahiro@socionext.com>
+        id S1726184AbfJ3Ivw (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 30 Oct 2019 04:51:52 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:33636 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726032AbfJ3Ivw (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 30 Oct 2019 04:51:52 -0400
+Received: by mail-oi1-f195.google.com with SMTP id m193so1318164oig.0;
+        Wed, 30 Oct 2019 01:51:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=mziza5J/MoDupcgI0RkmxCcsKm60Et3F2KLUw+t1RqQ=;
+        b=FX0Qpi9u4CqeUqqDJRv0OaUj52bbx/Xh9cSzN35AEx14RwvvFwdQiK/IxsR0X0gpIs
+         031snMs2K2ONh1aaFaDHcq8MCbuBVmJ5j1udrklDhi0pOVTbxJqEbHaJrqb7VdFsQXN/
+         Iy+R7kgA2dayPFHDNWCDgZ9OZNdEMTTLhUw49+Y2UGaUo8xvlARX+zUVqvdkHEfavtka
+         NdWKua2VdXBo0oypW7XJf3zNiPJ1tqYYp/EQwfG5wkTZpaTvVv13wo7K5tyOU9TkVHSF
+         UUdrcjbCwDnqWNKkIqSxlQHYkVbFVRkxs8xfzQf30Ia8GoP2VNwp4kTCh4uILnKkxi5r
+         3CbQ==
+X-Gm-Message-State: APjAAAVNjlNUyoh7BjJ+GtO+jgaxq2nfplYG4A5K6TAApapog6KVoq3n
+        UhCB7TPT5Ly5/F1KpOXj/5lWbazf5e5lxNztH2M=
+X-Google-Smtp-Source: APXvYqywm9C+CpnmelJ6SWQKVIah4mda9qPmB6OrDMq707nGOy+7YzCdX2/qccGqz5HinY9G/c8lSRqxbZE+WID7kSw=
+X-Received: by 2002:aca:4ac5:: with SMTP id x188mr4822487oia.148.1572425510897;
+ Wed, 30 Oct 2019 01:51:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20191029064834.23438-1-hch@lst.de> <20191029064834.23438-14-hch@lst.de>
+In-Reply-To: <20191029064834.23438-14-hch@lst.de>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 30 Oct 2019 09:51:39 +0100
+Message-ID: <CAMuHMdWGiHhSv=xCqnsUXok7wYG7Wr1EQh+yuPOZBxPCskUFVw@mail.gmail.com>
+Subject: Re: [PATCH 13/21] m68k: rename __iounmap and mark it static
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guan Xuetao <gxt@pku.edu.cn>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org, linux-mips@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Openrisc <openrisc@lists.librecores.org>,
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        nios2-dev@lists.rocketboards.org, linux-riscv@lists.infradead.org,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The user-space cannot compile <asm/msgbuf.h> due to some missing type
-definitions. For example, building it for x86 fails as follows:
+On Tue, Oct 29, 2019 at 7:56 AM Christoph Hellwig <hch@lst.de> wrote:
+> m68k uses __iounmap as the name for an internal helper that is only
+> used for some CPU types.  Mark it static, give it a better name
+> and move it around a bit to avoid a forward declaration.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-  CC      usr/include/asm/msgbuf.h.s
-In file included from ./usr/include/asm/msgbuf.h:6:0,
-                 from <command-line>:32:
-./usr/include/asm-generic/msgbuf.h:25:20: error: field ‘msg_perm’ has incomplete type
-  struct ipc64_perm msg_perm;
-                    ^~~~~~~~
-./usr/include/asm-generic/msgbuf.h:27:2: error: unknown type name ‘__kernel_time_t’
-  __kernel_time_t msg_stime; /* last msgsnd time */
-  ^~~~~~~~~~~~~~~
-./usr/include/asm-generic/msgbuf.h:28:2: error: unknown type name ‘__kernel_time_t’
-  __kernel_time_t msg_rtime; /* last msgrcv time */
-  ^~~~~~~~~~~~~~~
-./usr/include/asm-generic/msgbuf.h:29:2: error: unknown type name ‘__kernel_time_t’
-  __kernel_time_t msg_ctime; /* last change time */
-  ^~~~~~~~~~~~~~~
-./usr/include/asm-generic/msgbuf.h:41:2: error: unknown type name ‘__kernel_pid_t’
-  __kernel_pid_t msg_lspid; /* pid of last msgsnd */
-  ^~~~~~~~~~~~~~
-./usr/include/asm-generic/msgbuf.h:42:2: error: unknown type name ‘__kernel_pid_t’
-  __kernel_pid_t msg_lrpid; /* last receive pid */
-  ^~~~~~~~~~~~~~
+Thanks for the update!
 
-It is just a matter of missing include directive.
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-Include <asm/ipcbuf.h> to make it self-contained, and add it to
-the compile-test coverage.
+Gr{oetje,eeting}s,
 
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
----
+                        Geert
 
- arch/mips/include/uapi/asm/msgbuf.h    | 1 +
- arch/parisc/include/uapi/asm/msgbuf.h  | 1 +
- arch/powerpc/include/uapi/asm/msgbuf.h | 2 ++
- arch/sparc/include/uapi/asm/msgbuf.h   | 2 ++
- arch/x86/include/uapi/asm/msgbuf.h     | 3 +++
- arch/xtensa/include/uapi/asm/msgbuf.h  | 2 ++
- include/uapi/asm-generic/msgbuf.h      | 2 ++
- usr/include/Makefile                   | 1 -
- 8 files changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/include/uapi/asm/msgbuf.h b/arch/mips/include/uapi/asm/msgbuf.h
-index 46aa15b13e4e..2722f9b82cf2 100644
---- a/arch/mips/include/uapi/asm/msgbuf.h
-+++ b/arch/mips/include/uapi/asm/msgbuf.h
-@@ -2,6 +2,7 @@
- #ifndef _ASM_MSGBUF_H
- #define _ASM_MSGBUF_H
- 
-+#include <asm/ipcbuf.h>
- 
- /*
-  * The msqid64_ds structure for the MIPS architecture.
-diff --git a/arch/parisc/include/uapi/asm/msgbuf.h b/arch/parisc/include/uapi/asm/msgbuf.h
-index 6a2e9ab2ef8d..02ae1f616347 100644
---- a/arch/parisc/include/uapi/asm/msgbuf.h
-+++ b/arch/parisc/include/uapi/asm/msgbuf.h
-@@ -3,6 +3,7 @@
- #define _PARISC_MSGBUF_H
- 
- #include <asm/bitsperlong.h>
-+#include <asm/ipcbuf.h>
- 
- /* 
-  * The msqid64_ds structure for parisc architecture, copied from sparc.
-diff --git a/arch/powerpc/include/uapi/asm/msgbuf.h b/arch/powerpc/include/uapi/asm/msgbuf.h
-index 2b1b37797a47..30d5e1b45553 100644
---- a/arch/powerpc/include/uapi/asm/msgbuf.h
-+++ b/arch/powerpc/include/uapi/asm/msgbuf.h
-@@ -2,6 +2,8 @@
- #ifndef _ASM_POWERPC_MSGBUF_H
- #define _ASM_POWERPC_MSGBUF_H
- 
-+#include <asm/ipcbuf.h>
-+
- /*
-  * The msqid64_ds structure for the PowerPC architecture.
-  * Note extra padding because this structure is passed back and forth
-diff --git a/arch/sparc/include/uapi/asm/msgbuf.h b/arch/sparc/include/uapi/asm/msgbuf.h
-index ffc46c211d6d..81a8460fdd67 100644
---- a/arch/sparc/include/uapi/asm/msgbuf.h
-+++ b/arch/sparc/include/uapi/asm/msgbuf.h
-@@ -2,6 +2,8 @@
- #ifndef _SPARC_MSGBUF_H
- #define _SPARC_MSGBUF_H
- 
-+#include <asm/ipcbuf.h>
-+
- /*
-  * The msqid64_ds structure for sparc64 architecture.
-  * Note extra padding because this structure is passed back and forth
-diff --git a/arch/x86/include/uapi/asm/msgbuf.h b/arch/x86/include/uapi/asm/msgbuf.h
-index 90ab9a795b49..e09fd2363300 100644
---- a/arch/x86/include/uapi/asm/msgbuf.h
-+++ b/arch/x86/include/uapi/asm/msgbuf.h
-@@ -5,6 +5,9 @@
- #if !defined(__x86_64__) || !defined(__ILP32__)
- #include <asm-generic/msgbuf.h>
- #else
-+
-+#include <asm/ipcbuf.h>
-+
- /*
-  * The msqid64_ds structure for x86 architecture with x32 ABI.
-  *
-diff --git a/arch/xtensa/include/uapi/asm/msgbuf.h b/arch/xtensa/include/uapi/asm/msgbuf.h
-index d6915e9f071c..1ed2c85b693a 100644
---- a/arch/xtensa/include/uapi/asm/msgbuf.h
-+++ b/arch/xtensa/include/uapi/asm/msgbuf.h
-@@ -17,6 +17,8 @@
- #ifndef _XTENSA_MSGBUF_H
- #define _XTENSA_MSGBUF_H
- 
-+#include <asm/ipcbuf.h>
-+
- struct msqid64_ds {
- 	struct ipc64_perm msg_perm;
- #ifdef __XTENSA_EB__
-diff --git a/include/uapi/asm-generic/msgbuf.h b/include/uapi/asm-generic/msgbuf.h
-index 9fe4881557cb..7cdc7e52490d 100644
---- a/include/uapi/asm-generic/msgbuf.h
-+++ b/include/uapi/asm-generic/msgbuf.h
-@@ -3,6 +3,8 @@
- #define __ASM_GENERIC_MSGBUF_H
- 
- #include <asm/bitsperlong.h>
-+#include <asm/ipcbuf.h>
-+
- /*
-  * generic msqid64_ds structure.
-  *
-diff --git a/usr/include/Makefile b/usr/include/Makefile
-index 70f8fe256aed..099d7401aa23 100644
---- a/usr/include/Makefile
-+++ b/usr/include/Makefile
-@@ -16,7 +16,6 @@ override c_flags = $(UAPI_CFLAGS) -Wp,-MD,$(depfile) -I$(objtree)/usr/include
- # Please consider to fix the header first.
- #
- # Sorted alphabetically.
--header-test- += asm/msgbuf.h
- header-test- += asm/sembuf.h
- header-test- += asm/shmbuf.h
- header-test- += asm/signal.h
 -- 
-2.17.1
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -2,112 +2,90 @@ Return-Path: <SRS0=eOpe=YY=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2AD8CA9ECB
-	for <linux-mips@archiver.kernel.org>; Thu, 31 Oct 2019 21:36:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1AD36CA9ECB
+	for <linux-mips@archiver.kernel.org>; Thu, 31 Oct 2019 22:46:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id A1C712086D
-	for <linux-mips@archiver.kernel.org>; Thu, 31 Oct 2019 21:36:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DE6F320862
+	for <linux-mips@archiver.kernel.org>; Thu, 31 Oct 2019 22:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1572557799;
-	bh=1m3VBdZurZPNb35HYYMjKFHvbYsCbI1B+uqZZFVAF6M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=l+4YJoIGINL14J2SsaIAvKtfovxzYoZCt2IfuJURFYHFGSFgVSE6LSrIzFcuznXi0
-	 YLpSFFu+eB+xO4qsSFnzgZbklR6j6rkkgDFD4L1tofMmU9Ynbj8u5g3ffT9mmPOCBb
-	 vtquAj6NB5CfCgOGo7X3ciY2nU+1jFMEt4mzrrVE=
+	s=default; t=1572561965;
+	bh=Kb9SD2YTFmPRiJO+Z34huGSPFITDTrlM2qtT/jKPRaU=;
+	h=Date:From:To:CC:CC:Subject:References:In-Reply-To:List-ID:From;
+	b=gx14w2R6A8QJWDDSbQAQ91JFP+HiEtrc9zCvqX27fnuWtU8SrltgBprVQtR0oYq9o
+	 W/zLPSFzwPQen3+B0hZIwcvprs3nqWJAavvhi4LDRzhdgYaKaciAk05P0dk69rSAvx
+	 iU2VADdBvegosDJmseGwmsljZqF8B+2mw8p3JPAQ=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728639AbfJaVgj (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 31 Oct 2019 17:36:39 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:37860 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728520AbfJaVgj (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 31 Oct 2019 17:36:39 -0400
-Received: by mail-pg1-f194.google.com with SMTP id z24so401452pgu.4
-        for <linux-mips@vger.kernel.org>; Thu, 31 Oct 2019 14:36:38 -0700 (PDT)
+        id S1727918AbfJaWqF (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 31 Oct 2019 18:46:05 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:38763 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727477AbfJaWqF (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 31 Oct 2019 18:46:05 -0400
+Received: by mail-pf1-f194.google.com with SMTP id c13so5517799pfp.5;
+        Thu, 31 Oct 2019 15:46:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=05LDpsQ9sZm8hwS6WZ18ScWrDyW/Ok/p8dIpcJxtZf8=;
-        b=Gk9NnCiojXb7X9uZp5scaT0/CY5VYirai2FkZ2ugat+Yfc7uBQkm1hE9c8gPB7woLs
-         7PC3XP9NtgJKNxcuFnNW85THH5dpe5cfHDvuwgJTU/EtLw7WWm1jK9errG/6venDObTn
-         VhUrk8/wb+sToGC0kC/BE/SAX9tKFclbcBTAf72qRfWTdNSeX6p9+9yHN+tjieSzm3PJ
-         IAwiQREAzc5THhpkJJEimxy6CIJj2tLc6d9tbfJVheMgH+f446mv4dwv1c0djU7bQbR7
-         gkwVRBFHmFYXlU1nFvdQZD1aKrbk3iAn4Ptho/R/urOxyFnSj1LFR9psdzrBxLxuMITU
-         lmig==
-X-Gm-Message-State: APjAAAWdPS29wX59LgDAWqI3iBYj4gFKLx0FdcrB0i0uzUdIcXi/UxB4
-        ucXuCrOcEipZ4lfXs3BX+wQ=
-X-Google-Smtp-Source: APXvYqynHwQ1Ydim3vEYZhQXzV9PwyrOhxdx7A0zXVbkKHTTMRXdL4jNGWIuY7DiIA9+RLnWv43bNg==
-X-Received: by 2002:a17:90a:98d:: with SMTP id 13mr10258641pjo.98.1572557798030;
-        Thu, 31 Oct 2019 14:36:38 -0700 (PDT)
-Received: from localhost ([2601:646:8a00:9810:5af3:56d9:f882:39d4])
-        by smtp.gmail.com with ESMTPSA id b9sm5066510pfp.77.2019.10.31.14.36.37
+        h=x-gm-message-state:message-id:date:from:to:cc:cc:subject:references
+         :in-reply-to;
+        bh=QVItefipwjGqrppuci+M+vM6162XpV9VZniQZODk/Ko=;
+        b=X65wtPTQII92rF3v9iJx/Y/4nyjoC6GonHOKSp1f3WzvVNGq2Jlh5oL1hi8eT0RnDZ
+         jMEJJ5rJ3+vPkKV/XCSxv84zMBNh9ppTKARKDpD/3iv2BbFYGBkEgTmmSKH7w8DvrnIu
+         uenDtxGJIWyijgA14i99QNQd05yK6dJhsvtzI0ih3YBJVR1Iy6wAFUc13dIGaAeAoUcA
+         UDtBJPFuRMcWB+E8IaHf1iUD2w98LD0eC8FZRv4v1ycNom47TRHEdErfPSowXswfSkC7
+         uZ3WHyBGON5PnPsG8TfQvg7AVcrFXR00HL+MfP9YaoZfwQaB84nvMtMNRMoU3BjMzOXl
+         VuCw==
+X-Gm-Message-State: APjAAAUp4FWk6NVJ8yqyrmNYwpOoMa+FdQJuWpzIs04fx8sS+M+Go8Vg
+        B4LXeJmt3i+iaJ4QEXPnbBg=
+X-Google-Smtp-Source: APXvYqynmCI1j0rBTGTVR35qYJ2EdUO7wxgQliAe5zq8TQKKAW6SVW2TfhSo+ap3b8ItfcbM18Saqg==
+X-Received: by 2002:a63:c442:: with SMTP id m2mr9270433pgg.67.1572561964317;
+        Thu, 31 Oct 2019 15:46:04 -0700 (PDT)
+Received: from localhost ([12.94.197.246])
+        by smtp.gmail.com with ESMTPSA id e1sm3996126pgv.82.2019.10.31.15.46.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Oct 2019 14:36:37 -0700 (PDT)
-Date:   Thu, 31 Oct 2019 14:36:56 -0700
+        Thu, 31 Oct 2019 15:46:03 -0700 (PDT)
+Message-ID: <5dbb642b.1c69fb81.fa7a7.be3f@mx.google.com>
+Date:   Thu, 31 Oct 2019 15:46:02 -0700
 From:   Paul Burton <paulburton@kernel.org>
-To:     Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     Paul Burton <paul.burton@mips.com>, ralf@linux-mips.org,
-        jhogan@kernel.org, john@phrozen.org, NeilBrown <neil@brown.name>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-mips@vger.kernel.org
-Subject: Re: [PATCH RESEND] MIPS: ralink: enable PCI support only if driver
- for mt7621 SoC is selected
-Message-ID: <20191031213656.iycqiijz3nd5xtkr@lantea.localdomain>
-References: <20191031071124.22102-1-sergio.paracuellos@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20191031071124.22102-1-sergio.paracuellos@gmail.com>
-User-Agent: NeoMutt/20180716
+To:     Thomas Bogendoerfer <tbogendoerfer@suse.de>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+CC:     linux-mips@vger.kernel.org
+Subject: Re: [PATCH v2] MIPS: SGI-IP27: fix exception handler replication
+References:  <20191031094605.12380-1-tbogendoerfer@suse.de>
+In-Reply-To:  <20191031094605.12380-1-tbogendoerfer@suse.de>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi Sergio,
+Hello,
 
-On Thu, Oct 31, 2019 at 08:11:24AM +0100, Sergio Paracuellos wrote:
-> diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
-> index 1434fa60f3db..94e9ce994494 100644
-> --- a/arch/mips/ralink/Kconfig
-> +++ b/arch/mips/ralink/Kconfig
-> @@ -51,6 +51,7 @@ choice
->  		select MIPS_GIC
->  		select COMMON_CLK
->  		select CLKSRC_MIPS_GIC
-> +		select HAVE_PCI if PCI_MT7621
->  endchoice
->  
->  choice
-> diff --git a/drivers/staging/mt7621-pci/Kconfig b/drivers/staging/mt7621-pci/Kconfig
-> index af928b75a940..ce58042f2f21 100644
-> --- a/drivers/staging/mt7621-pci/Kconfig
-> +++ b/drivers/staging/mt7621-pci/Kconfig
-> @@ -2,7 +2,6 @@
->  config PCI_MT7621
->  	tristate "MediaTek MT7621 PCI Controller"
->  	depends on RALINK
-> -	depends on PCI
->  	select PCI_DRIVERS_GENERIC
->  	help
->  	  This selects a driver for the MediaTek MT7621 PCI Controller.
+Thomas Bogendoerfer wrote:
+> Commit 775b089aeffa ("MIPS: tlbex: Remove cpu_has_local_ebase") removed
+> generating tlb refill handlers for every CPU, which was needed for
+> generating per node exception handlers on IP27. Instead of resurrecting
+> (and fixing) refill handler generation, we simply copy all exception
+> vectors from the boot node to the other nodes. Also remove the config
+> option since the memory tradeoff for expection handler replication
+> is just 8k per node.
 
-This doesn't seem right to me - doesn't this now allow the PCI
-controller driver to build without PCI support enabled? Are you sure
-that won't allow more build failures?
+Applied to mips-fixes.
 
-How does enabling the driver change whether or not the SoC has PCI
-support? The SoC is always the same hardware regardless of whether you
-enable the driver for it, so this doesn't seem right to me.
-
-Hauke - do you recall what the build failure you mentioned in commit
-c4d48cf5e2f0 ("MIPS: ralink: deactivate PCI support for SOC_MT7621")
-was?
+> commit 637346748245
+> https://git.kernel.org/mips/c/637346748245
+> 
+> Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+> Signed-off-by: Paul Burton <paulburton@kernel.org>
 
 Thanks,
     Paul
+
+[ This message was auto-generated; if you believe anything is incorrect
+  then please email paulburton@kernel.org to report it. ]

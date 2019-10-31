@@ -2,54 +2,112 @@ Return-Path: <SRS0=eOpe=YY=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 404FDCA9ECB
-	for <linux-mips@archiver.kernel.org>; Thu, 31 Oct 2019 21:23:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D2AD8CA9ECB
+	for <linux-mips@archiver.kernel.org>; Thu, 31 Oct 2019 21:36:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 1BBC920862
-	for <linux-mips@archiver.kernel.org>; Thu, 31 Oct 2019 21:23:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A1C712086D
+	for <linux-mips@archiver.kernel.org>; Thu, 31 Oct 2019 21:36:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1572557799;
+	bh=1m3VBdZurZPNb35HYYMjKFHvbYsCbI1B+uqZZFVAF6M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=l+4YJoIGINL14J2SsaIAvKtfovxzYoZCt2IfuJURFYHFGSFgVSE6LSrIzFcuznXi0
+	 YLpSFFu+eB+xO4qsSFnzgZbklR6j6rkkgDFD4L1tofMmU9Ynbj8u5g3ffT9mmPOCBb
+	 vtquAj6NB5CfCgOGo7X3ciY2nU+1jFMEt4mzrrVE=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729916AbfJaVXU (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 31 Oct 2019 17:23:20 -0400
-Received: from verein.lst.de ([213.95.11.211]:53070 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726680AbfJaVXU (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 31 Oct 2019 17:23:20 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 18C5368BE1; Thu, 31 Oct 2019 22:23:18 +0100 (CET)
-Date:   Thu, 31 Oct 2019 22:23:17 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     David Miller <davem@davemloft.net>
-Cc:     hch@lst.de, tbogendoerfer@suse.de, linux-mips@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: ioc3_eth DMA API fixes
-Message-ID: <20191031212317.GA12656@lst.de>
-References: <20191030211233.30157-1-hch@lst.de> <20191031.141334.860083978503478801.davem@davemloft.net>
+        id S1728639AbfJaVgj (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 31 Oct 2019 17:36:39 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:37860 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728520AbfJaVgj (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 31 Oct 2019 17:36:39 -0400
+Received: by mail-pg1-f194.google.com with SMTP id z24so401452pgu.4
+        for <linux-mips@vger.kernel.org>; Thu, 31 Oct 2019 14:36:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=05LDpsQ9sZm8hwS6WZ18ScWrDyW/Ok/p8dIpcJxtZf8=;
+        b=Gk9NnCiojXb7X9uZp5scaT0/CY5VYirai2FkZ2ugat+Yfc7uBQkm1hE9c8gPB7woLs
+         7PC3XP9NtgJKNxcuFnNW85THH5dpe5cfHDvuwgJTU/EtLw7WWm1jK9errG/6venDObTn
+         VhUrk8/wb+sToGC0kC/BE/SAX9tKFclbcBTAf72qRfWTdNSeX6p9+9yHN+tjieSzm3PJ
+         IAwiQREAzc5THhpkJJEimxy6CIJj2tLc6d9tbfJVheMgH+f446mv4dwv1c0djU7bQbR7
+         gkwVRBFHmFYXlU1nFvdQZD1aKrbk3iAn4Ptho/R/urOxyFnSj1LFR9psdzrBxLxuMITU
+         lmig==
+X-Gm-Message-State: APjAAAWdPS29wX59LgDAWqI3iBYj4gFKLx0FdcrB0i0uzUdIcXi/UxB4
+        ucXuCrOcEipZ4lfXs3BX+wQ=
+X-Google-Smtp-Source: APXvYqynHwQ1Ydim3vEYZhQXzV9PwyrOhxdx7A0zXVbkKHTTMRXdL4jNGWIuY7DiIA9+RLnWv43bNg==
+X-Received: by 2002:a17:90a:98d:: with SMTP id 13mr10258641pjo.98.1572557798030;
+        Thu, 31 Oct 2019 14:36:38 -0700 (PDT)
+Received: from localhost ([2601:646:8a00:9810:5af3:56d9:f882:39d4])
+        by smtp.gmail.com with ESMTPSA id b9sm5066510pfp.77.2019.10.31.14.36.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Oct 2019 14:36:37 -0700 (PDT)
+Date:   Thu, 31 Oct 2019 14:36:56 -0700
+From:   Paul Burton <paulburton@kernel.org>
+To:     Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     Paul Burton <paul.burton@mips.com>, ralf@linux-mips.org,
+        jhogan@kernel.org, john@phrozen.org, NeilBrown <neil@brown.name>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-mips@vger.kernel.org
+Subject: Re: [PATCH RESEND] MIPS: ralink: enable PCI support only if driver
+ for mt7621 SoC is selected
+Message-ID: <20191031213656.iycqiijz3nd5xtkr@lantea.localdomain>
+References: <20191031071124.22102-1-sergio.paracuellos@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20191031.141334.860083978503478801.davem@davemloft.net>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20191031071124.22102-1-sergio.paracuellos@gmail.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, Oct 31, 2019 at 02:13:34PM -0700, David Miller wrote:
-> From: Christoph Hellwig <hch@lst.de>
-> Date: Wed, 30 Oct 2019 14:12:29 -0700
-> 
-> > Hi Dave and Thomas,
-> > 
-> > please take a look at this series which fixes DMA API usage in the ioc3
-> > ethernet driver.  At least the first one is a nasty abuse of internal
-> > APIs introduced in 5.4-rc which I'd prefer to be fixed before 5.4 final.
-> 
-> Please add the alignment code for 16K or whatever they need and I'll apply
-> this series.
+Hi Sergio,
 
-I'll let Thomas add this as this series doesn't change anything in that
-regard.
+On Thu, Oct 31, 2019 at 08:11:24AM +0100, Sergio Paracuellos wrote:
+> diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
+> index 1434fa60f3db..94e9ce994494 100644
+> --- a/arch/mips/ralink/Kconfig
+> +++ b/arch/mips/ralink/Kconfig
+> @@ -51,6 +51,7 @@ choice
+>  		select MIPS_GIC
+>  		select COMMON_CLK
+>  		select CLKSRC_MIPS_GIC
+> +		select HAVE_PCI if PCI_MT7621
+>  endchoice
+>  
+>  choice
+> diff --git a/drivers/staging/mt7621-pci/Kconfig b/drivers/staging/mt7621-pci/Kconfig
+> index af928b75a940..ce58042f2f21 100644
+> --- a/drivers/staging/mt7621-pci/Kconfig
+> +++ b/drivers/staging/mt7621-pci/Kconfig
+> @@ -2,7 +2,6 @@
+>  config PCI_MT7621
+>  	tristate "MediaTek MT7621 PCI Controller"
+>  	depends on RALINK
+> -	depends on PCI
+>  	select PCI_DRIVERS_GENERIC
+>  	help
+>  	  This selects a driver for the MediaTek MT7621 PCI Controller.
+
+This doesn't seem right to me - doesn't this now allow the PCI
+controller driver to build without PCI support enabled? Are you sure
+that won't allow more build failures?
+
+How does enabling the driver change whether or not the SoC has PCI
+support? The SoC is always the same hardware regardless of whether you
+enable the driver for it, so this doesn't seem right to me.
+
+Hauke - do you recall what the build failure you mentioned in commit
+c4d48cf5e2f0 ("MIPS: ralink: deactivate PCI support for SOC_MT7621")
+was?
+
+Thanks,
+    Paul

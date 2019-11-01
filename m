@@ -7,59 +7,59 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DBA4CCA9ECF
-	for <linux-mips@archiver.kernel.org>; Fri,  1 Nov 2019 23:27:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 996B5CA9ECF
+	for <linux-mips@archiver.kernel.org>; Fri,  1 Nov 2019 23:27:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id AE02620679
-	for <linux-mips@archiver.kernel.org>; Fri,  1 Nov 2019 23:27:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 708B221897
+	for <linux-mips@archiver.kernel.org>; Fri,  1 Nov 2019 23:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1572650874;
-	bh=KN3WQXmsibFO8twacp2N/YdEY4mMgeHvP5tPKD2b0NM=;
+	s=default; t=1572650877;
+	bh=UrABuFjHpV0UNTIkTU02ofs6wUHFw5pLOL8tbuuOp4o=;
 	h=Date:From:To:CC:CC:CC:Subject:References:In-Reply-To:List-ID:
 	 From;
-	b=N7YDwxNpEUQ+CrkAqxkn93DvXz5XzzhzJXmaI7PpPJbEQsujDMX8tu32EOQc9s7Zl
-	 2hw+o+pU4JmdezziWKWSUdt6LeNfHjaxo8X/nx/VASsNIGFTzaT3ffgYUTlXqT+ba9
-	 2v4yEjXYDOg5daF/pAC0p8kHTS8q3r3O70KwILpE=
+	b=Y0Ao4NvzXX1FOFGMbkDuutEEf6iHx0545ycTmyaLoSCUoIQ3sFLJrsudoJ0rGKxpj
+	 5VXAqg/RMrIu206ZSOn9Ke3ctizAXjMf5aa/q87O9SJTqfbDctPrw8G1tQWoPKnpLD
+	 SBinUHihpFAY0QUsol9RAMJSibJvA09T3T31pdoA=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726023AbfKAX1y (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 1 Nov 2019 19:27:54 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:33970 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725989AbfKAX1y (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Fri, 1 Nov 2019 19:27:54 -0400
-Received: by mail-pf1-f194.google.com with SMTP id x195so4556622pfd.1
-        for <linux-mips@vger.kernel.org>; Fri, 01 Nov 2019 16:27:53 -0700 (PDT)
+        id S1726396AbfKAX15 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 1 Nov 2019 19:27:57 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:33621 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726230AbfKAX14 (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 1 Nov 2019 19:27:56 -0400
+Received: by mail-pf1-f195.google.com with SMTP id c184so8056192pfb.0
+        for <linux-mips@vger.kernel.org>; Fri, 01 Nov 2019 16:27:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:message-id:date:from:to:cc:cc:cc:subject
          :references:in-reply-to;
-        bh=06oQR5SrM37qy3A4Fp0rhDuwDg2kkem19cyhrI1fnn8=;
-        b=MmIOj8KZweQMEi1Djf9ZiqmmaspAOweCsYNV1ivrm005CSBVPPBx6CMMy2sC3bTrCT
-         As532iKORS4sKJFiRtD901GlQ6Y6x2kIXVsz4eyAcDGdEDP5CxhUsSGlcov4uWoNMCCm
-         DxAfIt5jz2VhUktl23xx84mMWD5eC27C/s8z6oAaT1ArzSWSvXduafvxPOTnlM4KuUcz
-         ufOVyHerk89SWrxOvN/6G4gX9zTgz3g+aL7XZC35jQfqFpju4T6NInl+ZselP1lCnVvW
-         +M+dQpo6SuJz3ZdD8ADhlLEtB72Yzvp74mQBjjr3xAcfF9u0A5J3DiFXx5HyFJ5dMYEn
-         8YEA==
-X-Gm-Message-State: APjAAAUW28voRF+5loNPf5sqw/FsGYHaVBTh3fkYtsBcuVqMFIKli+oM
-        FFbgpC9FuVeZVilhnwDC1Xlk4zPcjdaC2g==
-X-Google-Smtp-Source: APXvYqwcAUgejrq5XBntamc2ufG4FLCilwQ4sEWSvjYlrQ+G4ReMz0uhcxjCcKHLZAN6BWXb334Eow==
-X-Received: by 2002:a63:fe0c:: with SMTP id p12mr16149712pgh.121.1572650872960;
-        Fri, 01 Nov 2019 16:27:52 -0700 (PDT)
+        bh=iV3ujg0jL8w3DL1Ebd85AybMgp6/+r6kGZKYeAJn2hE=;
+        b=PRFGaYbRtet14KsG7auy8FmwvUPO2Oe524L9E7QwhBWV0GT7EMYouRcKXwBE9mYIbv
+         u7hPEf+U1QwGspLkBzcp0gpDaozLtO8kTNf7pwgTMWmApfgrKROdmvWEviVmDhqXuVZX
+         ePa5VW9iHIB/g6mKOv1W8dTjRn3vCy6eASKrjPu12KcZuGYOjS0cQaarFgyQ4cgkkxW1
+         0ENUMYzCaX776DOqDbw6VPaSqD3XRTwTXh8BK981PdnCWtcj9hcRJ3BnK7L+TbPlBpti
+         eWUUbURDa3UbsDqr3xn1VOlCPAf0L2ZRLVK21dGq1Hbt5Wm2GXkZUuyrYUMBhRtfR4/c
+         0o+g==
+X-Gm-Message-State: APjAAAUN+VjoW14MF8ty4Ewie87CwQue/MxvlvSJT6BgrTVFyUbLIz6B
+        35mwWQwt2a+yynaQUJFNpABVsutlLEoPxg==
+X-Google-Smtp-Source: APXvYqzJ5qUwiRrjAR7kPN4X4jDdL7eq3EK6QtgwDcEcVCAJ14zbNwunKgV92kFcvrja0CXVA/ugew==
+X-Received: by 2002:a63:5b1d:: with SMTP id p29mr15982643pgb.209.1572650876009;
+        Fri, 01 Nov 2019 16:27:56 -0700 (PDT)
 Received: from localhost ([2601:646:8a00:9810:9d6:9cca:ff8c:efe0])
-        by smtp.gmail.com with ESMTPSA id u21sm17261143pjx.2.2019.11.01.16.27.52
+        by smtp.gmail.com with ESMTPSA id v10sm7032121pfg.11.2019.11.01.16.27.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Nov 2019 16:27:52 -0700 (PDT)
-Message-ID: <5dbcbf78.1c69fb81.86ca8.e144@mx.google.com>
-Date:   Fri, 01 Nov 2019 16:27:51 -0700
+        Fri, 01 Nov 2019 16:27:55 -0700 (PDT)
+Message-ID: <5dbcbf7b.1c69fb81.fd4c5.6083@mx.google.com>
+Date:   Fri, 01 Nov 2019 16:27:55 -0700
 From:   Paul Burton <paulburton@kernel.org>
 To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
 CC:     linux-mips@vger.kernel.org
 CC:     chenhc@lemote.com, paul.burton@mips.com,
         Jiaxun Yang <jiaxun.yang@flygoat.com>
 CC:     linux-mips@vger.kernel.org
-Subject: Re: [PATCH 1/6] MIPS: Loongson64: Rename CPU TYPES
-References:  <20191020144318.18341-2-jiaxun.yang@flygoat.com>
-In-Reply-To:  <20191020144318.18341-2-jiaxun.yang@flygoat.com>
+Subject: Re: [PATCH 2/6] MIPS: Fork loongson2ef from loongson64
+References:  <20191020144318.18341-3-jiaxun.yang@flygoat.com>
+In-Reply-To:  <20191020144318.18341-3-jiaxun.yang@flygoat.com>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
@@ -68,19 +68,20 @@ X-Mailing-List: linux-mips@vger.kernel.org
 Hello,
 
 Jiaxun Yang wrote:
-> CPU_LOONGSON2 -> CPU_LOONGSON2EF
-> CPU_LOONGSON3 -> CPU_LOONGSON64
+> As later model of GSx64 family processors including 2-series-soc have
+> similar design with initial loongson3a while loongson2e/f seems less
+> identical, we separate loongson2e/f support code out of mach-loongson64
+> to make our life easier.
 > 
-> As newer loongson-2 products (2G/2H/2K1000) can share kernel
-> implementation with loongson-3 while 2E/2F are less similar with
-> other LOONGSON64 products.
+> This patch contains mostly file moving works.
 
 Applied to mips-next.
 
-> commit 268a2d600130
-> https://git.kernel.org/mips/c/268a2d600130
+> commit 71e2f4dd5a65
+> https://git.kernel.org/mips/c/71e2f4dd5a65
 > 
 > Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> [paulburton@kernel.org: Squash in the MAINTAINERS updates]
 > Signed-off-by: Paul Burton <paulburton@kernel.org>
 
 Thanks,

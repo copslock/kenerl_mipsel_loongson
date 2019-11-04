@@ -2,52 +2,77 @@ Return-Path: <SRS0=n3Oa=Y4=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31D73C47E49
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 00:35:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C9E2CC47E49
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 00:46:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 07EC2222CF
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 00:35:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 96503222D0
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 00:46:07 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kkqMZ5+o"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728189AbfKDAez (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 3 Nov 2019 19:34:55 -0500
-Received: from verein.lst.de ([213.95.11.211]:36126 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728106AbfKDAez (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sun, 3 Nov 2019 19:34:55 -0500
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 9838568BFE; Mon,  4 Nov 2019 01:34:52 +0100 (CET)
-Date:   Mon, 4 Nov 2019 01:34:52 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-mips@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Christoph Hellwig <hch@lst.de>
-Subject: Re: [net v2 1/4] net: sgi: ioc3-eth: don't abuse dma_direct_* calls
-Message-ID: <20191104003452.GA2585@lst.de>
-References: <20191103103433.26826-1-tbogendoerfer@suse.de>
+        id S1728342AbfKDAqC (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 3 Nov 2019 19:46:02 -0500
+Received: from mail-yb1-f170.google.com ([209.85.219.170]:46014 "EHLO
+        mail-yb1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728332AbfKDAqB (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sun, 3 Nov 2019 19:46:01 -0500
+Received: by mail-yb1-f170.google.com with SMTP id x14so1954015ybq.12;
+        Sun, 03 Nov 2019 16:46:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=JUF6cCkeyUxrnFSTs3kKJzANX8OPwaEJlVexVZRYuvw=;
+        b=kkqMZ5+oXZUxttD6WuJtQ87JBNIpcxdctMwDMtaQZLAWLdVnEj0bqwPeg3pGl0KRwy
+         SWGHFXUsMgbisoWo9KmU6fM/Ew6s3YNWd6IGN0vvE0GUN+bP4+lxEDDvFK5FYQ3VvPC1
+         0Ke7sGV5msnW9WMmoh7pN4uVqe4lyNVox+shnyJ4Bli7iR9kSZBzf9cJap4JZF3HVASk
+         Ah7dY3dfj4rWPa6Frho/Rmw4Ell17LHOnML6/N/1ZpzqQqK2NAuwx5ldrEwgnuQHCf76
+         s7fgDfbdqBT1qlYdWTX/p8RR599rVjr6UaqK/dnAXz8e2ze8GyQNbOYQ+GBL8eGmlnUK
+         GnPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=JUF6cCkeyUxrnFSTs3kKJzANX8OPwaEJlVexVZRYuvw=;
+        b=hHwXcJKXfXpNJeEOJNMcjh1LVAtslLA288HYkoH2B24AiMLhxOeDpff6eOb5XAiuX+
+         /K7FBDHotC3ZsuIONOahsuJndOR2cFoAKqc5NgSbUkxvYYQTWuxeEL07zONEWc3uVzuX
+         qn3Xzam8zPl/6yWYO5bSW9+ITIxUvPdI8VCDsmpX/Gxi1pPLWJX5SS5tF2FgGj7K1zQT
+         kPNgq7jROnfxEZnOx1nl/67/6qOEoFjlkRI5UNWIv2a10P2FibsuvgzbcUP7damQEbJU
+         bVSeVp9qyNXGWUfFE982/Y4f14VkeEzcbNB8KNdNiUEJnSHzdrIhvvUBUdOgThOoWMUV
+         Fqxg==
+X-Gm-Message-State: APjAAAUb/8fI2m7Jdbng+hf6cag5cMXEwhGNmkHokQC95Q+aSwnuPkwm
+        p2C4b2Ze64Frr71pLcawY718vE/gxuocyWsT+OoeAA==
+X-Google-Smtp-Source: APXvYqxV81QeGtjshTf7RlqlI8Bll05pDUjXQ34sdoWj1hIikHDMZ/A/0YSkCOjWGBOySvnsr6Wg/lP6ZzX5yhS/hXQ=
+X-Received: by 2002:a25:be84:: with SMTP id i4mr21317590ybk.213.1572828360590;
+ Sun, 03 Nov 2019 16:46:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191103103433.26826-1-tbogendoerfer@suse.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+References: <20191103103433.26826-1-tbogendoerfer@suse.de> <20191104003452.GA2585@lst.de>
+In-Reply-To: <20191104003452.GA2585@lst.de>
+From:   Carlo Pisani <carlojpisani@gmail.com>
+Date:   Mon, 4 Nov 2019 01:45:45 +0100
+Message-ID: <CA+QBN9A=s-DRA6Zbi-eJ7WXnP6sOZtnX5AeeROL=4ax52sWb3A@mail.gmail.com>
+Subject: (metabare) net: sgi: ioc3-eth
+To:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Sun, Nov 03, 2019 at 11:34:30AM +0100, Thomas Bogendoerfer wrote:
-> From: Christoph Hellwig <hch@lst.de>
-> 
-> dma_direct_ is a low-level API that must never be used by drivers
-> directly.  Switch to use the proper DMA API instead.
-> 
-> Change in v2:
-> - ensure that tx ring is 16kB aligned
+hi
+I am currently writing code to support a PowerPC's bootloader
+(PPC405GP), hence I wonder if I can reuse part of the code to also
+write a bootloader for IP30
 
-FYI, I think this should be a separate patch.  The lack of explicitly
-alignment was just as broken before this patch as it is now.
+kind of u-boot for Octane
+
+but I wonder how difficult it will go about the network card. I don't
+need high performance, and if there is a bit of doc not in form of ...
+kernel code. I mean some document, like a datasheet.
+
+The netcard needs to be only used for TFTPBOOT, hence for udp/ip.

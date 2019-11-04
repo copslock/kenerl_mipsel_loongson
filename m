@@ -2,62 +2,98 @@ Return-Path: <SRS0=n3Oa=Y4=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C21CCA9EB5
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 19:30:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 14FAECA9ED3
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 21:48:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6B1C62080F
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 19:30:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D2162217F4
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 21:48:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1572904092;
+	bh=DuplhoRQredmAuojEW6TUPC1yPAM/K2dTnu2HW9tcM4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=evVFGdB7OJaM7TbfSiWFqTENj7eGm9Uz7wWmd1nSIDs0bobm6Os6JVHW+kdoihyW3
+	 GuFY8If2J1q1WWLY3hoZmZdrAmhWb2JlT5uEufcAkl35hKbxixh1vs0Cx4l3yBlSmP
+	 uc8Bwbzo3Wb0B69/UHTsnPVYBMZUbkU3nLlBnQkU=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728940AbfKDTap (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 4 Nov 2019 14:30:45 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:50482 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728174AbfKDTap (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Mon, 4 Nov 2019 14:30:45 -0500
-Received: from localhost (unknown [IPv6:2601:601:9f00:1e2::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id D55BE151D4FBA;
-        Mon,  4 Nov 2019 11:30:44 -0800 (PST)
-Date:   Mon, 04 Nov 2019 11:30:44 -0800 (PST)
-Message-Id: <20191104.113044.1639305550623277715.davem@davemloft.net>
-To:     tbogendoerfer@suse.de
-Cc:     ralf@linux-mips.org, linux-mips@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org, hch@lst.de
-Subject: Re: [net v3 1/5] net: sgi: ioc3-eth: don't abuse dma_direct_* calls
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20191104104515.7066-1-tbogendoerfer@suse.de>
-References: <20191104104515.7066-1-tbogendoerfer@suse.de>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 04 Nov 2019 11:30:45 -0800 (PST)
+        id S1729660AbfKDVsM (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 4 Nov 2019 16:48:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38266 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729937AbfKDVsM (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 4 Nov 2019 16:48:12 -0500
+Received: from localhost (6.204-14-84.ripe.coltfrance.com [84.14.204.6])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 296D021D71;
+        Mon,  4 Nov 2019 21:48:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1572904091;
+        bh=DuplhoRQredmAuojEW6TUPC1yPAM/K2dTnu2HW9tcM4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=XZI/4WdVmqhdykJ+MY+TE4cLW3Duur4Q27ccYB3v245jlFXvvYA/Z5V4VJgsTDaSv
+         AnQCx8OTjiHjZExOz1SrHv7olMZFbj6LZZYgJXXwFjPZyCSakzFYm8CKMrgfykzz5E
+         TAvMWa6pYXl62YmAMx89tRxRfmhN1e2mwCFhf3qk=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org,
+        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.4 19/46] MIPS: fw: sni: Fix out of bounds init of o32 stack
+Date:   Mon,  4 Nov 2019 22:44:50 +0100
+Message-Id: <20191104211849.216560250@linuxfoundation.org>
+X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20191104211830.912265604@linuxfoundation.org>
+References: <20191104211830.912265604@linuxfoundation.org>
+User-Agent: quilt/0.66
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
 From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Date: Mon,  4 Nov 2019 11:45:11 +0100
 
-> From: Christoph Hellwig <hch@lst.de>
-> 
-> dma_direct_ is a low-level API that must never be used by drivers
-> directly.  Switch to use the proper DMA API instead.
-> 
-> Fixes: ed870f6a7aa2 ("net: sgi: ioc3-eth: use dma-direct for dma allocations")
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+[ Upstream commit efcb529694c3b707dc0471b312944337ba16e4dd ]
 
-Series applied to net-next.
+Use ARRAY_SIZE to caluculate the top of the o32 stack.
 
-Please provide a proper "[PATCH v3 0/5] ..." header posting next time when you
-post a patch series.
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: linux-mips@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/mips/fw/sni/sniprom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thank you.
+diff --git a/arch/mips/fw/sni/sniprom.c b/arch/mips/fw/sni/sniprom.c
+index 6aa264b9856ac..7c6151d412bd7 100644
+--- a/arch/mips/fw/sni/sniprom.c
++++ b/arch/mips/fw/sni/sniprom.c
+@@ -42,7 +42,7 @@
+ 
+ /* O32 stack has to be 8-byte aligned. */
+ static u64 o32_stk[4096];
+-#define O32_STK	  &o32_stk[sizeof(o32_stk)]
++#define O32_STK	  (&o32_stk[ARRAY_SIZE(o32_stk)])
+ 
+ #define __PROM_O32(fun, arg) fun arg __asm__(#fun); \
+ 				     __asm__(#fun " = call_o32")
+-- 
+2.20.1
+
+
+

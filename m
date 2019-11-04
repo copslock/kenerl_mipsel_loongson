@@ -7,37 +7,37 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B6B9DCA9ED3
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 21:56:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55E3CCA9ED3
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 22:07:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 814A621929
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 21:56:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2A5B121929
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 22:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1572904563;
-	bh=WEjXPYN/4z2tLd11WOkLYZH11e/S5V8qQlTCbEuf090=;
+	s=default; t=1572905239;
+	bh=K0t/5gdRAUZIWMHMVHKYMsEkOxWj+ixEwMT6gmbfnko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=wXReqbndf38WPKJKzoR/3wBiIYZHh6kCwIagDgz63PJ9GdXCtOJkL3I5hxCFM/ccK
-	 lQojCBSHtGaN21KCSn3bIqIls21P3zlt50dX7f7Fu9zQThV0f71/uiTo9hmZUt2yA8
-	 wtmaaUIz3ClvaICe+w9Dp5sXPjMfNdGoBxrHYmHQ=
+	b=BTTpqV93KXgODteUzXUjuR0K7pIieH77AfM5OAYXRpPgKdcoACfAuAg0WyJXJy1R6
+	 icVp4SF67wfeW/RvaIlYNYdrGBmxfjCttglpAQZVN8mzT6GpugWOoGNlqDwtbJhv7W
+	 SBRl6+exiuUjjg4iFZzl0nJmDp8jg5Rs94h+K7GU=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388271AbfKDV4C (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 4 Nov 2019 16:56:02 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51432 "EHLO mail.kernel.org"
+        id S2389203AbfKDWHR (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 4 Nov 2019 17:07:17 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39598 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388243AbfKDV4A (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 4 Nov 2019 16:56:00 -0500
+        id S2390095AbfKDWHM (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 4 Nov 2019 17:07:12 -0500
 Received: from localhost (6.204-14-84.ripe.coltfrance.com [84.14.204.6])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 971B72053B;
-        Mon,  4 Nov 2019 21:55:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 69307217F5;
+        Mon,  4 Nov 2019 22:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572904559;
-        bh=WEjXPYN/4z2tLd11WOkLYZH11e/S5V8qQlTCbEuf090=;
+        s=default; t=1572905232;
+        bh=K0t/5gdRAUZIWMHMVHKYMsEkOxWj+ixEwMT6gmbfnko=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=opCVYteknBXJSKCnUKH+LYL9AKMJKjH2+5VbcZg0SwP+7w4JSmLP2ErQbEDLx8Yu9
-         xzNst+hu+dwYTi1Q5dsopUTw5T2ukSjqof3EpzdZoHBZQkRyjuipC5PSXy9ZWj4Y2h
-         c4VoyCwNHzUMdclOndauH368zfqSdfHGZJohY3gY=
+        b=jJvieSJoMHJaAHC8Wq58coPp9OCN+HLHyOGf9hVdUG8oC3uQYgwzJ7TtZr4GUrPcA
+         T5fQhkW7i8f2s4SKJHHEdcFup2VM1irn8lk4xnU9HnYbc4e1NdqqshpPOHe/fj3LSC
+         gi68wH+FHbZA/xBKLHtYqymbMaWX5e2cr5S1Pxn8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 51/95] MIPS: include: Mark __xchg as __always_inline
-Date:   Mon,  4 Nov 2019 22:44:49 +0100
-Message-Id: <20191104212104.338498240@linuxfoundation.org>
+Subject: [PATCH 5.3 074/163] MIPS: include: Mark __xchg as __always_inline
+Date:   Mon,  4 Nov 2019 22:44:24 +0100
+Message-Id: <20191104212145.432944823@linuxfoundation.org>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191104212038.056365853@linuxfoundation.org>
-References: <20191104212038.056365853@linuxfoundation.org>
+In-Reply-To: <20191104212140.046021995@linuxfoundation.org>
+References: <20191104212140.046021995@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -87,10 +87,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/mips/include/asm/cmpxchg.h b/arch/mips/include/asm/cmpxchg.h
-index 895f91b9e89c3..520ca166cbed5 100644
+index 319522fa3a45e..2b61052e10c94 100644
 --- a/arch/mips/include/asm/cmpxchg.h
 +++ b/arch/mips/include/asm/cmpxchg.h
-@@ -73,8 +73,8 @@ extern unsigned long __xchg_called_with_bad_pointer(void)
+@@ -77,8 +77,8 @@ extern unsigned long __xchg_called_with_bad_pointer(void)
  extern unsigned long __xchg_small(volatile void *ptr, unsigned long val,
  				  unsigned int size);
  

@@ -7,37 +7,37 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14F4ACA9EC9
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 22:22:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B08A9CA9EC9
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 22:23:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id D3B89204EC
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 22:22:28 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7A9C2204EC
+	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 22:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1572906148;
-	bh=DuplhoRQredmAuojEW6TUPC1yPAM/K2dTnu2HW9tcM4=;
+	s=default; t=1572906230;
+	bh=9bqpOQ/HTpFfl9Zq2N2vZhaiabTgyqLrkdRiLClf/oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=0YNmTwEleutDMN86drCHAaxel57Lgol0S84BR5Pe+qkvNKbmsz3I4btchhodaJjW6
-	 Y3qsd2Tw6tF3eoXxvV6ZCRnvVC7XmR0bbHOHzDyeQjZdklhkLPqTP7qOLxBF5FZfE/
-	 /8L/qKOUL9npCPR4LiGzgD4YvWif5XLGtWmCMbEA=
+	b=xDWBbgc0BUJiQ3/niVFmFidE/jcRfH6ogVE6rdiYksppMqC9cbBujSG3hwk69emzU
+	 WAB2/87RPX0Zzue3pgL9u+pzCMegXSX+BMgm3rs6BelfOiyk9NeUS108XAJm2MluVD
+	 u5lgQF0dsXmV2VPEKxpqwB2WgOOfnY4wEeQ73Pp4=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388374AbfKDV4a (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 4 Nov 2019 16:56:30 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52056 "EHLO mail.kernel.org"
+        id S2387801AbfKDVx5 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 4 Nov 2019 16:53:57 -0500
+Received: from mail.kernel.org ([198.145.29.99]:48160 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388349AbfKDV43 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 4 Nov 2019 16:56:29 -0500
+        id S2387688AbfKDVx4 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Mon, 4 Nov 2019 16:53:56 -0500
 Received: from localhost (6.204-14-84.ripe.coltfrance.com [84.14.204.6])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2756D217F5;
-        Mon,  4 Nov 2019 21:56:26 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 25C3D2190F;
+        Mon,  4 Nov 2019 21:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572904587;
-        bh=DuplhoRQredmAuojEW6TUPC1yPAM/K2dTnu2HW9tcM4=;
+        s=default; t=1572904435;
+        bh=9bqpOQ/HTpFfl9Zq2N2vZhaiabTgyqLrkdRiLClf/oc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aZPb8jbg3LnGNqP2Izv+2fUacZZO8ttLvlvzKk0w6lHpVcFB8it9oAcqK3O50JIQP
-         yVxCSgtzRyTsh13foUKZ7D0AvdM4ZVHPVmgFnngS/EYbwVuJLR45XrOWOefVJUKOzN
-         LDoYnxiD7t0QpLMxzd4hEV9lYcRkoTViG5f5ERXU=
+        b=eCvdXX/rdHMoDM0Bdbw7meCx+T6WXknWvyzI1K9G8i5L+I0QYdc4wB6dgf61Vxw+U
+         8h9wKINoDtsNoHtvxFQKDGy0zLZNL88PdWG1xtINyvCjAiPiuwHl1Gy1M7lNXngdSj
+         r1gYJzhy4inGZnbphj4dE28raeEn80nvCk2Q0XmQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 52/95] MIPS: fw: sni: Fix out of bounds init of o32 stack
-Date:   Mon,  4 Nov 2019 22:44:50 +0100
-Message-Id: <20191104212104.572057858@linuxfoundation.org>
+Subject: [PATCH 4.14 43/95] MIPS: include: Mark __cmpxchg as __always_inline
+Date:   Mon,  4 Nov 2019 22:44:41 +0100
+Message-Id: <20191104212102.161768953@linuxfoundation.org>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191104212038.056365853@linuxfoundation.org>
 References: <20191104212038.056365853@linuxfoundation.org>
@@ -64,11 +64,17 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 
-[ Upstream commit efcb529694c3b707dc0471b312944337ba16e4dd ]
+[ Upstream commit 88356d09904bc606182c625575237269aeece22e ]
 
-Use ARRAY_SIZE to caluculate the top of the o32 stack.
+Commit ac7c3e4ff401 ("compiler: enable CONFIG_OPTIMIZE_INLINING
+forcibly") allows compiler to uninline functions marked as 'inline'.
+In cace of cmpxchg this would cause to reference function
+__cmpxchg_called_with_bad_pointer, which is a error case
+for catching bugs and will not happen for correct code, if
+__cmpxchg is inlined.
 
 Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+[paul.burton@mips.com: s/__cmpxchd/__cmpxchg in subject]
 Signed-off-by: Paul Burton <paul.burton@mips.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: James Hogan <jhogan@kernel.org>
@@ -76,22 +82,25 @@ Cc: linux-mips@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/fw/sni/sniprom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/include/asm/cmpxchg.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/fw/sni/sniprom.c b/arch/mips/fw/sni/sniprom.c
-index 6aa264b9856ac..7c6151d412bd7 100644
---- a/arch/mips/fw/sni/sniprom.c
-+++ b/arch/mips/fw/sni/sniprom.c
-@@ -42,7 +42,7 @@
+diff --git a/arch/mips/include/asm/cmpxchg.h b/arch/mips/include/asm/cmpxchg.h
+index 89e9fb7976fe6..895f91b9e89c3 100644
+--- a/arch/mips/include/asm/cmpxchg.h
++++ b/arch/mips/include/asm/cmpxchg.h
+@@ -146,8 +146,9 @@ static inline unsigned long __xchg(volatile void *ptr, unsigned long x,
+ extern unsigned long __cmpxchg_small(volatile void *ptr, unsigned long old,
+ 				     unsigned long new, unsigned int size);
  
- /* O32 stack has to be 8-byte aligned. */
- static u64 o32_stk[4096];
--#define O32_STK	  &o32_stk[sizeof(o32_stk)]
-+#define O32_STK	  (&o32_stk[ARRAY_SIZE(o32_stk)])
- 
- #define __PROM_O32(fun, arg) fun arg __asm__(#fun); \
- 				     __asm__(#fun " = call_o32")
+-static inline unsigned long __cmpxchg(volatile void *ptr, unsigned long old,
+-				      unsigned long new, unsigned int size)
++static __always_inline
++unsigned long __cmpxchg(volatile void *ptr, unsigned long old,
++			unsigned long new, unsigned int size)
+ {
+ 	switch (size) {
+ 	case 1:
 -- 
 2.20.1
 

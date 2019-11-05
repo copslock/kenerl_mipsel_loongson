@@ -4,31 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-5.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B655C5DF61
-	for <linux-mips@archiver.kernel.org>; Tue,  5 Nov 2019 19:55:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3786AC5DF60
+	for <linux-mips@archiver.kernel.org>; Tue,  5 Nov 2019 20:35:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 4485F21D71
-	for <linux-mips@archiver.kernel.org>; Tue,  5 Nov 2019 19:55:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E7B95217F5
+	for <linux-mips@archiver.kernel.org>; Tue,  5 Nov 2019 20:35:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726141AbfKETy6 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Tue, 5 Nov 2019 14:54:58 -0500
-Received: from foss.arm.com ([217.140.110.172]:58036 "EHLO foss.arm.com"
+        id S1729727AbfKEUfD (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Tue, 5 Nov 2019 15:35:03 -0500
+Received: from foss.arm.com ([217.140.110.172]:60270 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725806AbfKETy5 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Tue, 5 Nov 2019 14:54:57 -0500
+        id S1725806AbfKEUe5 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Tue, 5 Nov 2019 15:34:57 -0500
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8E0787BB;
-        Tue,  5 Nov 2019 11:54:56 -0800 (PST)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7F2DD8E6;
+        Tue,  5 Nov 2019 12:34:56 -0800 (PST)
 Received: from [192.168.225.149] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9E7CA3FA35;
-        Mon,  4 Nov 2019 16:29:58 -0800 (PST)
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 178C53F95D;
+        Mon,  4 Nov 2019 16:00:07 -0800 (PST)
 Subject: Re: [PATCH V8] mm/debug: Add tests validating architecture page table
  helpers
-To:     linux-mm@kvack.org
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
+To:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>
+Cc:     Vlastimil Babka <vbabka@suse.cz>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Mike Rapoport <rppt@linux.vnet.ibm.com>,
@@ -64,11 +63,13 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        Michal Hocko <mhocko@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>
 References: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
 From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <18cdce9e-2107-04b3-f58f-b1e932265965@arm.com>
-Date:   Tue, 5 Nov 2019 06:00:31 +0530
+Message-ID: <e0aa8d49-5511-15e4-f413-62c99eea4fab@arm.com>
+Date:   Tue, 5 Nov 2019 05:30:41 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.9.1
 MIME-Version: 1.0
@@ -80,6 +81,8 @@ Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
+
+
 
 On 10/28/2019 10:59 AM, Anshuman Khandual wrote:
 > This adds tests which will validate architecture page table helpers and
@@ -181,7 +184,7 @@ On 10/28/2019 10:59 AM, Anshuman Khandual wrote:
 > - Added an information message in debug_vm_pgtable() per Christophe
 > - Dropped random_vaddr boundary condition checks per Christophe and Qian
 > - Replaced virt_addr_valid() check with pfn_valid() check in debug_vm_pgtable()
-> - Slightly changed pr_fmt(fmt) information
+
 Hello Andrew,
 
 Just wondering if this version looks okay or is there anything else which still

@@ -1,99 +1,105 @@
-Return-Path: <SRS0=n3Oa=Y4=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=7Wy+=Y5=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C580CA9EC9
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 22:27:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71902CA9ED3
+	for <linux-mips@archiver.kernel.org>; Tue,  5 Nov 2019 01:08:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 403CC2080F
-	for <linux-mips@archiver.kernel.org>; Mon,  4 Nov 2019 22:27:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1572906448;
-	bh=DuplhoRQredmAuojEW6TUPC1yPAM/K2dTnu2HW9tcM4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=L26bgW0+nDMATwF4WeuVEfsa5KZ2/EypZiubgL5eBjNmnTQZ1m1XpTATvXqQDiDlY
-	 Weh3iNwarHY5ZCQPkIFdIaMda4RlO+tPP57DYrNi59B6g+eOu5DdQgdx0GbwlMxXKx
-	 PWskojIzwcpQWu4ShvN+m/laYhaTSrBzBY1W5d28=
+	by mail.kernel.org (Postfix) with ESMTP id 492FB20848
+	for <linux-mips@archiver.kernel.org>; Tue,  5 Nov 2019 01:08:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387694AbfKDVuZ (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 4 Nov 2019 16:50:25 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42526 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387689AbfKDVuY (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 4 Nov 2019 16:50:24 -0500
-Received: from localhost (6.204-14-84.ripe.coltfrance.com [84.14.204.6])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 51C87214D8;
-        Mon,  4 Nov 2019 21:50:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572904223;
-        bh=DuplhoRQredmAuojEW6TUPC1yPAM/K2dTnu2HW9tcM4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1XaCdidX3cAqn0QGGO8VqZLygYyOoA7BlCfDnky9VRSXLuWYhheJHBrA4vc+7koTw
-         LHJuSjpGr5aFTezViQ+YwYK+PjlkCFWmBOgisjFI/2lhBjA0hVjT4K11XOGe38HMmZ
-         +ANgp89SSTxf3ISEPrHH+lyahFFxNSHxH3spZJWk=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.9 27/62] MIPS: fw: sni: Fix out of bounds init of o32 stack
-Date:   Mon,  4 Nov 2019 22:44:49 +0100
-Message-Id: <20191104211926.294578388@linuxfoundation.org>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191104211901.387893698@linuxfoundation.org>
-References: <20191104211901.387893698@linuxfoundation.org>
-User-Agent: quilt/0.66
+        id S1729796AbfKEBIn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 4 Nov 2019 20:08:43 -0500
+Received: from mail-io1-f65.google.com ([209.85.166.65]:42208 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728602AbfKEBIm (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 4 Nov 2019 20:08:42 -0500
+Received: by mail-io1-f65.google.com with SMTP id k1so20708498iom.9
+        for <linux-mips@vger.kernel.org>; Mon, 04 Nov 2019 17:08:42 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3iKTK9NDRXcOl8sogEDKyOwVRxBdTkLL2PgDkaYWwME=;
+        b=IsuJVeEUkSREle8ufiI2DRTQgLxzHJktbRhAy9Cw85+tsTqlsI7enIqKfR3FTsW5xz
+         5/+abrRt81IOcesFRqh7FvTx+goEnewQ50nTGVO1QGv9f8Cy272s3M+SchqjjMnlCnMB
+         MU4xcsAvR+vczoM17zSXJu2GiyYdHzKaRyEXYCYmS3xQQyY6LO4BvBBjbhjtRmhvixZV
+         wmxBLFmZIAJ5xPdBsyxtzIBXiqzDQqan25leMqodnh0ZCQOtWDgwvxsQ9lvEW60bfFhC
+         ciKKKGsIX8OnSYrmqo/TBkkPMVSFqo7mlza2dfYt0QH+cwvqV6DeswSbyHi6B9Fb6vNG
+         zwlw==
+X-Gm-Message-State: APjAAAWd357iGxujEJMaCKfYe0mWIHDTUC2dqcAc0xNo3KRJFmuVFWK1
+        HCh1q4YklX4tjIS8JmzZC0D60013PjxFpxDmGyM=
+X-Google-Smtp-Source: APXvYqzBYYv65fxO8N5aeRHVeHEu8yJeXGRSJoXCOZBt8mBZOzrrM8tEq6oC3yfr2/+3zX4LCA17avgyu0zHO1Bo/Lo=
+X-Received: by 2002:a5d:9b0f:: with SMTP id y15mr12428908ion.35.1572916121938;
+ Mon, 04 Nov 2019 17:08:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <1572758417-29265-1-git-send-email-chenhc@lemote.com> <20191104190330.hpzuqsyh5j5tkr4p@lantea.localdomain>
+In-Reply-To: <20191104190330.hpzuqsyh5j5tkr4p@lantea.localdomain>
+From:   Huacai Chen <chenhc@lemote.com>
+Date:   Tue, 5 Nov 2019 09:14:22 +0800
+Message-ID: <CAAhV-H4tzoPu_iHh9aUVRtwmNsJTQLkOJRN2i2159m_L7m1YRQ@mail.gmail.com>
+Subject: Re: [PATCH 1/3] MIPS: Loongson: Remove Loongson-2E/2F support
+To:     Paul Burton <paulburton@kernel.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "open list:MIPS" <linux-mips@vger.kernel.org>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Hi, Paul
 
-[ Upstream commit efcb529694c3b707dc0471b312944337ba16e4dd ]
+On Tue, Nov 5, 2019 at 3:03 AM Paul Burton <paulburton@kernel.org> wrote:
+>
+> Hi Huacai,
+>
+> On Sun, Nov 03, 2019 at 01:20:15PM +0800, Huacai Chen wrote:
+> > Loongson-2E/2F is old, inactive and a bit ugly, so let's remove them
+> > and the world will be more comfortable.
+> >
+> > Old:
+> > Products with Loongson-2E/2F are more than ten years old, there is no
+> > new products.
+> >
+> > Inactive:
+> > There are not any updates for a long time, and the maintainer (Jiaxun
+> > Yang) focuses on Loongson-3 now.
+>
+> Jiaxun just made changes to the 2E/2F code just a couple of weeks ago to
+> separate it from other Loongson64 support & clean it up - he also
+> indicated at the same time that he intends to contiue maintaining this
+> code [1].
+>
+> > Ugly:
+> > Loongson-2E/2F are not compatible with regular MIPS, e.g., ebase, cache
+> > flush method and tlb refill handler.
+>
+> Sadly "quirks" like this aren't solely the domain of Loongson 2E/2F
+> machines, so this isn't an unusual burden.
+>
+> > Linux-5.4.x is a LTS release, I think it is the suitable time to remove
+> > Loongson-2E/2F.
+>
+> I disagree - Jiaxun says he's happy to maintain the platform & has
+> recently been working on it. I'm not going to remove it & deny him that
+> chance. If it does indeed become unmaintained then sure let's drop it,
+> but that doesn't seem to be the case here.
+>
+OK, I will keep Loongson-2E/2F in the kernel, and please review my
+other patches. Thanks.
 
-Use ARRAY_SIZE to caluculate the top of the o32 stack.
-
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Signed-off-by: Paul Burton <paul.burton@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: linux-mips@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/mips/fw/sni/sniprom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/fw/sni/sniprom.c b/arch/mips/fw/sni/sniprom.c
-index 6aa264b9856ac..7c6151d412bd7 100644
---- a/arch/mips/fw/sni/sniprom.c
-+++ b/arch/mips/fw/sni/sniprom.c
-@@ -42,7 +42,7 @@
- 
- /* O32 stack has to be 8-byte aligned. */
- static u64 o32_stk[4096];
--#define O32_STK	  &o32_stk[sizeof(o32_stk)]
-+#define O32_STK	  (&o32_stk[ARRAY_SIZE(o32_stk)])
- 
- #define __PROM_O32(fun, arg) fun arg __asm__(#fun); \
- 				     __asm__(#fun " = call_o32")
--- 
-2.20.1
-
-
-
+Huacai
+> Thanks,
+>     Paul
+>
+> [1] https://lore.kernel.org/linux-mips/AF48876C-308C-46AD-B7B4-77BFA2413EDE@flygoat.com/

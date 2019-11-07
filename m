@@ -2,249 +2,191 @@ Return-Path: <SRS0=EWWg=Y7=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 93E15FA372C
-	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 11:18:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 258F6C5DF60
+	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 11:28:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 4B853218AE
-	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 11:18:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E288C21882
+	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 11:28:25 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="Ff3gjTt/"
+	dkim=pass (1024-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="eyns1n7O"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728183AbfKGLST (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 7 Nov 2019 06:18:19 -0500
-Received: from mo4-p04-ob.smtp.rzone.de ([85.215.255.124]:20476 "EHLO
-        mo4-p04-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387964AbfKGLST (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 7 Nov 2019 06:18:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1573125495;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=IY6Eulbt2jyl28hkhi/AyASn70Nx6tDbWDifM+F27ZI=;
-        b=Ff3gjTt/REZlvxp7RPNUN9/RIc+VokxJ9sINP3shu3m01/V0kvxvzrfiHzrFv2wgfo
-        Y7vxLEQ9XrI3LK78ePgbrtO/44sVAg/oOpVAurB6DCP4j2IlZyiwC9RpYeGxbF0WGm2w
-        /71kYzSufJLc4zQOmvW82F1BqUiiuUEJWjE/ZSHJCAcfL1mIu93vUAjFkh3c5kigcXL2
-        5KwUvVqXM/zme8Kq0gjSJE7lFfNsEhoEFVTqysFRg6WObh6vvXusg0hZnQ9jitinAfQJ
-        K7K4HJwW6eTqviCRL3oP4fgAZ71J7gzK3mUvk4VzNIMdZ+ha7M5KIekOtboQLHGQxhE2
-        wAKA==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1OAA2UNf2M7PR5/L9P0"
-X-RZG-CLASS-ID: mo00
-Received: from iMac.fritz.box
-        by smtp.strato.de (RZmta 44.29.0 DYNA|AUTH)
-        with ESMTPSA id L09db3vA7B6Ddgr
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Thu, 7 Nov 2019 12:06:13 +0100 (CET)
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-To:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paulburton@kernel.org>,
-        James Hogan <jhogan@kernel.org>
-Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        openpvrsgx-devgroup@letux.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com, linux-mips@vger.kernel.org,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: [PATCH v2 1/8] RFC: dt-bindings: add img,pvrsgx.yaml for Imagination GPUs
-Date:   Thu,  7 Nov 2019 12:06:04 +0100
-Message-Id: <4292cec1fd82cbd7d42742d749557adb01705574.1573124770.git.hns@goldelico.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <cover.1573124770.git.hns@goldelico.com>
-References: <cover.1573124770.git.hns@goldelico.com>
+        id S1727278AbfKGL2Z (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 7 Nov 2019 06:28:25 -0500
+Received: from forward100j.mail.yandex.net ([5.45.198.240]:59980 "EHLO
+        forward100j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727178AbfKGL2Z (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 7 Nov 2019 06:28:25 -0500
+Received: from forward100q.mail.yandex.net (forward100q.mail.yandex.net [IPv6:2a02:6b8:c0e:4b:0:640:4012:bb97])
+        by forward100j.mail.yandex.net (Yandex) with ESMTP id 1643D50E20DB;
+        Thu,  7 Nov 2019 14:28:21 +0300 (MSK)
+Received: from mxback12q.mail.yandex.net (mxback12q.mail.yandex.net [IPv6:2a02:6b8:c0e:1b3:0:640:3818:d096])
+        by forward100q.mail.yandex.net (Yandex) with ESMTP id 12F0C7080008;
+        Thu,  7 Nov 2019 14:28:21 +0300 (MSK)
+Received: from vla3-2bcfd5e94671.qloud-c.yandex.net (vla3-2bcfd5e94671.qloud-c.yandex.net [2a02:6b8:c15:350f:0:640:2bcf:d5e9])
+        by mxback12q.mail.yandex.net (mxback/Yandex) with ESMTP id 8dnNpwOQiV-SK3qqaGb;
+        Thu, 07 Nov 2019 14:28:20 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1573126101;
+        bh=j1KzLDE/nTHmQQFbg+MoNJVQOh55Uy5b1uE8Df6LdIk=;
+        h=Reply-to:Subject:To:From:Cc:Date:Message-Id;
+        b=eyns1n7OeOHGvdaDPtkpCLDSbIqLn+dyvv4IbABhRDdB8DPy5kPeDyp5MpMvnmt/U
+         bI95UH0ZzhFEXGHK0hqTvghJClpV7At7i9gj/XyLEQf+9CVrKRdQuHaJ/d0u4ydKvr
+         Z5HZ/EniqjqJ8vjrix9Uot6N96wpXcoPfgW2FsXI=
+Authentication-Results: mxback12q.mail.yandex.net; dkim=pass header.i=@flygoat.com
+Received: by vla3-2bcfd5e94671.qloud-c.yandex.net (smtp/Yandex) with ESMTPSA id a4NM0KkwfE-SGVGhG5w;
+        Thu, 07 Nov 2019 14:28:18 +0300
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (Client certificate not present)
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     yangtiezhu@loongson.cn
+Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+        yangyinglu@loongson.cn, jdelvare@suse.de,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH REPLY] MIPS: Scan the DMI system information
+Date:   Thu,  7 Nov 2019 19:28:01 +0800
+Message-Id: <20191107112801.7037-1-jiaxun.yang@flygoat.com>
+X-Mailer: git-send-email 2.24.0.rc1
 MIME-Version: 1.0
+Reply-to: 1573056341-21159-1-git-send-email-yangtiezhu@loongson.cn
 Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-The Imagination PVR/SGX GPU is part of several SoC from
-multiple vendors, e.g. TI OMAP, Ingenic JZ4780, Intel Poulsbo
-and others.
+Hi Tiezhu and Jean,
 
-With this binding, we describe how the SGX processor is
-interfaced to the SoC (registers, interrupt etc.).
+What about do like this?
+We shouldn't follow x86's Kconfig as most of MIPS devices
+don't support DMI.
 
-Clock, Reset and power management should be handled
-by a parent node or elsewhere.
+And, we can reuse map/unmap from io.h to reduce
+maintinance overhead.
 
+Thanks
+
+Jiaxun
+
+>8------------------------------------------------------8<
+
+Enable DMI scanning on the MIPS architecture, this setups DMI identifiers
+(dmi_system_id) for printing it out on task dumps and prepares DIMM entry
+information (dmi_memdev_info) from the SMBIOS table. With this patch, the
+driver can easily match various of mainboards.
+
+In the SMBIOS reference specification, the table anchor string "_SM_" is
+present in the address range 0xF0000 to 0xFFFFF on a 16-byte boundary,
+but there exists a special case for loongson platform, when call function
+dmi_early_remap, it should specify the start address to 0xFFFE000 due to
+it is reserved for SMBIOS and can be normally access in the BIOS.
+
+Co-developed-by: Yinglu Yang <yangyinglu@loongson.cn>
+Signed-off-by: Yinglu Yang <yangyinglu@loongson.cn>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+[jiaxun.yang@flygoat.com: Refine definitions and Kconfig]
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
+ arch/mips/Kconfig           |  9 +++++++++
+ arch/mips/include/asm/dmi.h | 20 ++++++++++++++++++++
+ arch/mips/kernel/setup.c    |  2 ++
+ drivers/firmware/dmi_scan.c |  6 +++++-
+ 4 files changed, 36 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/include/asm/dmi.h
 
-I have used the doc2yaml script to get a first veryion
-but I am still stuggling with the yaml thing. My impression
-is that while it is human readable, it is not very human
-writable... Unfortunately I haven't found a good tutorial
-for Dummies (like me) for bindings in YAML.
-
-The big problem is not the YAML syntax but what the schema
-should contain and how to correctly formulate ideas in this
-new language.
-
-Specific questions for this RFC:
-
-* formatting: is space/tab indentation correct?
-* are strings with "" correct or without?
-* how do I specify that there is a list of compatible strings required in a specific order?
-* but there are multiple such lists, and only one of them is to be chosen?
-* how can be described in the binding that there should be certain values in
-  the parent node (ranges) to make it work?
-
-I was not able to run
-
-	make dt_binding_check dtbs_check
-
-due to some missing dependencies (which I did not want to
-invest time to research them) on my build host, so I could
-not get automated help from those.
----
- .../devicetree/bindings/gpu/img,pvrsgx.yaml   | 128 ++++++++++++++++++
- 1 file changed, 128 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
-
-diff --git a/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml b/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index c3a022ca3345..414f3a0ea397 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2759,6 +2759,15 @@ config HW_PERF_EVENTS
+ 	  Enable hardware performance counter support for perf events. If
+ 	  disabled, perf events will use software events only.
+ 
++config DMI
++	default y if MACH_LOONGSON64
++	select DMI_SCAN_MACHINE_NON_EFI_FALLBACK
++	bool "Enable DMI scanning"
++	help
++	  Enabled scanning of DMI to identify machine quirks. Say Y
++	  here unless you have verified that your setup is not
++	  affected by entries in the DMI blacklist.
++
+ config SMP
+ 	bool "Multi-Processing support"
+ 	depends on SYS_SUPPORTS_SMP
+diff --git a/arch/mips/include/asm/dmi.h b/arch/mips/include/asm/dmi.h
 new file mode 100644
-index 000000000000..b1b021601c47
+index 000000000000..5153ef6fe8a2
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
-@@ -0,0 +1,128 @@
-+# SPDX-License-Identifier: None
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/bindings/gpu/img,pvrsgx.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/arch/mips/include/asm/dmi.h
+@@ -0,0 +1,20 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_MIPS_DMI_H
++#define _ASM_MIPS_DMI_H
 +
-+title: Imagination PVR/SGX GPU
++#include <linux/io.h>
++#include <linux/memblock.h>
 +
-+maintainers:
-+  - H. Nikolaus Schaller <hns@goldelico.com>
-+description: |+
-+  This binding describes the Imagination SGX5 series of 3D accelerators which
-+  are found in several different SoC like TI OMAP, Sitara, Ingenic JZ4780,
-+  Allwinner A83, and Intel Poulsbo and CedarView.
++#define dmi_early_remap(x, l)		ioremap_cache(x, l)
++#define dmi_early_unmap(x, l)		iounmap(x)
++#define dmi_remap(x, l)		ioremap_cache(x, l)
++#define dmi_unmap(x)			iounmap(x)
 +
-+  Only the Imagination SGX530, SGX540 and SGX544 GPUs are currently covered by
-+  this binding.
++/* MIPS initialize DMI scan before SLAB is ready, so we use memblock here */
++#define dmi_alloc(l)			memblock_alloc_low(l, PAGE_SIZE)
 +
-+  The SGX node is usually a child node of some DT node belonging to the SoC
-+  which handles clocks, reset and general address space mapping of the SGX
-+  register area.
++#if defined(CONFIG_MACH_LOONGSON64)
++#define SMBIOS_ENTRY_POINT_SCAN_START	0xfffe000
++#endif
 +
-+properties:
-+  compatible:
-+    oneOf:
-+      - item:
-+        # BeagleBoard ABC, OpenPandora 600MHz
-+        - const: "ti,omap3-sgx530-121", "img,sgx530-121", "img,sgx530", "img,sgx5"
-+        # BeagleBoard XM, GTA04, OpenPandora 1GHz
-+        - const: "ti,omap3-sgx530-125", "img,sgx530-125", "img,sgx530", "img,sgx5"
-+        # BeagleBone Black
-+        - const: "ti,am335x-sgx530-125", "img,sgx530-125", "img,sgx530", "img,sgx5"
-+        # Pandaboard (ES)
-+        - const: "ti,omap4-sgx540-120", "img,sgx540-120", "img,sgx540", "img,sgx5"
-+        - const "ti,omap4-sgx544-112", "img,sgx544-112", "img,sgx544", "img,sgx5"
-+        # OMAP5 UEVM, Pyra Handheld
-+        "ti,omap5-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5"
-+        "ti,dra7-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5"
-+        # CI20
-+        "ingenic,jz4780-sgx540-120", "img,sgx540-120", "img,sgx540", "img,sgx5";
++#endif /* _ASM_MIPS_DMI_H */
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index c3d4212b5f1d..da7d312e20eb 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -28,6 +28,7 @@
+ #include <linux/decompress/generic.h>
+ #include <linux/of_fdt.h>
+ #include <linux/of_reserved_mem.h>
++#include <linux/dmi.h>
+ 
+ #include <asm/addrspace.h>
+ #include <asm/bootinfo.h>
+@@ -802,6 +803,7 @@ void __init setup_arch(char **cmdline_p)
+ #endif
+ 
+ 	arch_mem_init(cmdline_p);
++	dmi_setup();
+ 
+ 	resource_init();
+ 	plat_smp_setup();
+diff --git a/drivers/firmware/dmi_scan.c b/drivers/firmware/dmi_scan.c
+index 35ed56b9c34f..ee2dbebf2063 100644
+--- a/drivers/firmware/dmi_scan.c
++++ b/drivers/firmware/dmi_scan.c
+@@ -11,6 +11,10 @@
+ #include <asm/dmi.h>
+ #include <asm/unaligned.h>
+ 
++#ifndef SMBIOS_ENTRY_POINT_SCAN_START
++#define SMBIOS_ENTRY_POINT_SCAN_START 0xf0000
++#endif
 +
-+  reg:
-+    items:
-+      - description: physical base address and length of the register area
-+
-+  interrupts:
-+     items:
-+      - description: interrupt from SGX subsystem to core processor
-+
-+  clocks:
-+     items:
-+      - description: optional clocks
-+
-+  required:
-+    - compatible
-+    - reg
-+    - interrupts
-+
-+examples: |
-+  gpu@fe00 {
-+  	compatible = "ti,omap-omap5-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5";
-+   	reg = <0xfe00 0x200>;
-+   	interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
-+  };
-+
-+
-+historical: |
-+  Imagination PVR/SGX GPU
-+
-+  Only the Imagination SGX530, SGX540 and SGX544 GPUs are currently covered by this binding.
-+
-+  Required properties:
-+  - compatible:	Should be one of
-+  		"ti,omap3-sgx530-121", "img,sgx530-121", "img,sgx530", "img,sgx5"; - BeagleBoard ABC, OpenPandora 600MHz
-+  		"ti,omap3-sgx530-125", "img,sgx530-125", "img,sgx530", "img,sgx5"; - BeagleBoard XM, GTA04, OpenPandora 1GHz
-+  		"ti,am3517-sgx530-125", "img,sgx530-125", "img,sgx530", "img,sgx5";
-+  		"ti,am335x-sgx530-125", "img,sgx530-125", "img,sgx530", "img,sgx5"; - BeagleBone Black
-+  		"ti,omap4-sgx540-120", "img,sgx540-120", "img,sgx540", "img,sgx5"; - Pandaboard (ES)
-+  		"ti,omap4-sgx544-112", "img,sgx544-112", "img,sgx544", "img,sgx5";
-+  		"ti,omap5-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5"; - OMAP5 UEVM, Pyra Handheld
-+  		"ti,dra7-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5";
-+  		"ti,am3517-sgx530-?", "img,sgx530-?", "img,sgx530", "img,sgx5";
-+  		"ti,am43xx-sgx530-?", "img,sgx530-?", "img,sgx530", "img,sgx5";
-+  		"ti,ti81xx-sgx530-?", "img,sgx530-?", "img,sgx530", "img,sgx5";
-+  		"img,jz4780-sgx540-?", "img,sgx540-?", "img,sgx540", "img,sgx5"; - CI20
-+  		"allwinner,sun8i-a83t-sgx544-?", "img,sgx544-116", "img,sgx544", "img,sgx5"; - Banana-Pi-M3 (Allwinner A83T)
-+  		"intel,poulsbo-gma500-sgx535", "img,sgx535-116", "img,sgx535", "img,sgx5"; - Atom Z5xx
-+  		"intel,medfield-gma-sgx540", "img,sgx540-116", "img,sgx540", "img,sgx5"; - Atom Z24xx
-+  		"intel,cedarview-gma3600-sgx545", "img,sgx545-116", "img,sgx545", "img,sgx5"; - Atom N2600, D2500
-+
-+  		The "ti,omap..." entries are needed temporarily to handle SoC
-+  		specific builds of the kernel module.
-+
-+  		In the long run, only the "img,sgx..." entry should suffice
-+  		to match a generic driver for all architectures and driver
-+  		code can dynamically find out on which SoC it is running.
-+
-+
-+  - reg:		Physical base address and length of the register area.
-+  - interrupts:	The interrupt numbers.
-+
-+  / {
-+  	ocp {
-+  		sgx_module: target-module@56000000 {
-+  			compatible = "ti,sysc-omap4", "ti,sysc";
-+  			reg = <0x5600fe00 0x4>,
-+  			      <0x5600fe10 0x4>;
-+  			reg-names = "rev", "sysc";
-+  			ti,sysc-midle = <SYSC_IDLE_FORCE>,
-+  					<SYSC_IDLE_NO>,
-+  					<SYSC_IDLE_SMART>;
-+  			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-+  					<SYSC_IDLE_NO>,
-+  					<SYSC_IDLE_SMART>;
-+  			clocks = <&gpu_clkctrl OMAP5_GPU_CLKCTRL 0>;
-+  			clock-names = "fck";
-+  			#address-cells = <1>;
-+  			#size-cells = <1>;
-+  			ranges = <0 0x56000000 0x2000000>;
-+
-+  			gpu@fe00 {
-+  				compatible = "ti,omap-omap5-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5";
-+  				reg = <0xfe00 0x200>;
-+  				interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
-+  			};
-+  		};
-+  	};
-+  };
+ struct kobject *dmi_kobj;
+ EXPORT_SYMBOL_GPL(dmi_kobj);
+ 
+@@ -661,7 +665,7 @@ static void __init dmi_scan_machine(void)
+ 			return;
+ 		}
+ 	} else if (IS_ENABLED(CONFIG_DMI_SCAN_MACHINE_NON_EFI_FALLBACK)) {
+-		p = dmi_early_remap(0xF0000, 0x10000);
++		p = dmi_early_remap(SMBIOS_ENTRY_POINT_SCAN_START, 0x10000);
+ 		if (p == NULL)
+ 			goto error;
+ 
 -- 
-2.23.0
+2.24.0.rc1
 

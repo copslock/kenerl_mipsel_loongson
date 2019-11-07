@@ -7,39 +7,40 @@ X-Spam-Status: No, score=-9.6 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E66D2FA372C
-	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 11:18:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BA19C5DF61
+	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 11:18:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id B1BD121D6C
-	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 11:18:14 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E053321882
+	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 11:18:17 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="DUtecxUE"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="nLgX8SwL"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727732AbfKGLSN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 7 Nov 2019 06:18:13 -0500
-Received: from mo4-p04-ob.smtp.rzone.de ([85.215.255.124]:21898 "EHLO
+        id S2388178AbfKGLSR (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 7 Nov 2019 06:18:17 -0500
+Received: from mo4-p04-ob.smtp.rzone.de ([81.169.146.178]:26787 "EHLO
         mo4-p04-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727278AbfKGLSN (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Thu, 7 Nov 2019 06:18:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1573125492;
+        with ESMTP id S2388093AbfKGLSR (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 7 Nov 2019 06:18:17 -0500
+X-Greylist: delayed 707 seconds by postgrey-1.27 at vger.kernel.org; Thu, 07 Nov 2019 06:18:16 EST
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1573125496;
         s=strato-dkim-0002; d=goldelico.com;
         h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
         X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=kuWxP6XI8yia7xcampj743xWvPrmABkKYwuFpHNeEY4=;
-        b=DUtecxUEaoG2lA8mBq9V7WAZioE+UrcQL7GHEavH+cyRZSyPAhU7dhPxKVjSrbB7XM
-        TeuKCTpMjsAOSZ7xPQOpUIMJC0SZiC2dH2Tr2k62b23IM9Ex56OaeMCGiHSQOLGOn/to
-        BcpC+S7DQMdv6Im95nCVYqpIrYVO7ulxTKmFzvuvFz+8rBbYcRNybD2tXBCFABLMgW/G
-        1FM89Th/0nc+rVPMKrLi9AHQTvExmk3dlknWjawhzWrGlgzLNDaNXB6hIYWVc/lSB6Mn
-        Z10kzYRt/e4E6IwOQkKvwUIWpEHnvFyAu7E4sq9gulVeD91dL+nBP2uSWsy7L4wXQttw
-        f0Zw==
+        bh=24fF1xUH22DnXnm6wMQiB8qNar/ohuK/dXnbgHGAvcQ=;
+        b=nLgX8SwL+nzyv2Q2tAJL6jpL+lbaYvpIP1s+N9TGjmDWiSUK3REbLhv9F7RyVjqeTz
+        eKkcm4/bFF+bp5Z9jZBryJi4S0pqIo0zq0EG22DdMiRxRnAbgZIDXoHxcEGx3hQXUpgX
+        FINvsdgPAIsRy5qTkhEAoNdxsg5kwn4zLS24OJlvaMbg1V9eX7oo8NwmTSq3xYPrqQt1
+        fDRNDPm1OzPHkQ0eLVzpxx+c4QVo2GvgRS/EnHT6SHh5Ny83Pc6yBibcrMLqsQxsZgpy
+        8UkaXh9vKO3HloUAlFEtsjLYEAgu5ugnMcAGSYK3sIKAVgzeuxPSlbBX16b2A+mpGo0V
+        fdsA==
 X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1OAA2UNf2M7PR5/L9P0"
 X-RZG-CLASS-ID: mo00
 Received: from iMac.fritz.box
         by smtp.strato.de (RZmta 44.29.0 DYNA|AUTH)
-        with ESMTPSA id L09db3vA7B6Fdh0
+        with ESMTPSA id L09db3vA7B6Ddgt
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
         (Client did not present a certificate);
-        Thu, 7 Nov 2019 12:06:15 +0100 (CET)
+        Thu, 7 Nov 2019 12:06:13 +0100 (CET)
 From:   "H. Nikolaus Schaller" <hns@goldelico.com>
 To:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
@@ -55,9 +56,9 @@ Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
         openpvrsgx-devgroup@letux.org, letux-kernel@openphoenux.org,
         kernel@pyra-handheld.com, linux-mips@vger.kernel.org,
         "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: [PATCH v2 5/8] ARM: DTS: omap36xx: add sgx gpu child node
-Date:   Thu,  7 Nov 2019 12:06:08 +0100
-Message-Id: <d94892eff3f2ad9b9a92f8e882121a96717a56c0.1573124770.git.hns@goldelico.com>
+Subject: [PATCH v2 2/8] ARM: DTS: am33xx: add sgx gpu child node
+Date:   Thu,  7 Nov 2019 12:06:05 +0100
+Message-Id: <fbe9f4a20fd55d111afe8f09d03c154a82cf5ba5.1573124770.git.hns@goldelico.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <cover.1573124770.git.hns@goldelico.com>
 References: <cover.1573124770.git.hns@goldelico.com>
@@ -70,42 +71,33 @@ X-Mailing-List: linux-mips@vger.kernel.org
 
 and add interrupt.
 
-Tested on GTA04 and BeagleBoard XM.
+Tested on BeagleBone Black.
 
 Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
 ---
- arch/arm/boot/dts/omap36xx.dtsi | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/arm/boot/dts/am33xx.dtsi | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap36xx.dtsi b/arch/arm/boot/dts/omap36xx.dtsi
-index 1e552f08f120..851d4abb943b 100644
---- a/arch/arm/boot/dts/omap36xx.dtsi
-+++ b/arch/arm/boot/dts/omap36xx.dtsi
-@@ -145,7 +145,7 @@
- 		 * "ti,sysc-omap4" type register with just sidle and midle bits
- 		 * available while omap34xx has "ti,sysc-omap2" type sysconfig.
- 		 */
--		sgx_module: target-module@50000000 {
-+		target-module@50000000 {
- 			compatible = "ti,sysc-omap4", "ti,sysc";
- 			reg = <0x5000fe00 0x4>,
- 			      <0x5000fe10 0x4>;
-@@ -162,10 +162,11 @@
+diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
+index a9d848d50b20..dbfb9d5aa915 100644
+--- a/arch/arm/boot/dts/am33xx.dtsi
++++ b/arch/arm/boot/dts/am33xx.dtsi
+@@ -480,10 +480,11 @@
  			#size-cells = <1>;
- 			ranges = <0 0x50000000 0x2000000>;
+ 			ranges = <0 0x56000000 0x1000000>;
  
 -			/*
 -			 * Closed source PowerVR driver, no child device
 -			 * binding or driver in mainline
 -			 */
 +			sgx: gpu@0 {
-+				compatible = "ti,omap3-sgx530-125", "img,sgx530-125", "img,sgx530";
-+				reg = <0x0 0x10000>;	/* 64kB */
-+				interrupts = <21>;
++				compatible = "ti,am335x-sgx530-125", "img,sgx530-125", "img,sgx530";
++				reg = <0x00 0x1000000>;	/* 16 MB */
++				interrupts = <37>;
 +			};
  		};
  	};
- 
+ };
 -- 
 2.23.0
 

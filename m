@@ -7,39 +7,40 @@ X-Spam-Status: No, score=-9.6 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD7DCC5DF60
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 73C79C5DF61
 	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 11:18:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 75E8F218AE
-	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 11:18:14 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B238621882
+	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 11:18:13 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="QcJiG6Z5"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="ZL/wPgP4"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387811AbfKGLSN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        id S2387796AbfKGLSN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
         Thu, 7 Nov 2019 06:18:13 -0500
-Received: from mo4-p04-ob.smtp.rzone.de ([85.215.255.122]:18844 "EHLO
+Received: from mo4-p04-ob.smtp.rzone.de ([85.215.255.124]:30104 "EHLO
         mo4-p04-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727732AbfKGLSN (ORCPT
+        with ESMTP id S1728183AbfKGLSN (ORCPT
         <rfc822;linux-mips@vger.kernel.org>); Thu, 7 Nov 2019 06:18:13 -0500
+X-Greylist: delayed 713 seconds by postgrey-1.27 at vger.kernel.org; Thu, 07 Nov 2019 06:18:12 EST
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1573125491;
         s=strato-dkim-0002; d=goldelico.com;
         h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
         X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=y3zYbwzLGCQd958Btkq+b622MLFLPWeGrOh+oKuq+CI=;
-        b=QcJiG6Z5nk8l2wAoj0W5K0Q0LHxB1BF70UGjdNGi2tECUPSUhzLW2XLEfJDSwe/0LS
-        epGSwlQ4w3KZtLRqCaOWdEIfp49JLluoFt/TErxl/mZamNWfNx0Ms+qesw7mg/Dded6X
-        bW7KlZ75oAbAFe+kYliU86X9oTHujyrqTJBgPH8rWqjfdMRyQ7TFBnJZ0lIJyLG3A4vL
-        1ZWuvYCHyLBsMLrHFJ9nouIvIfn0sdYTuWXidOoVphyus2EbfTtxQagEMDTuMsYOazA8
-        KXU3CUzdMxBPH54SMT46TCSzope/WsDxRZADeovNbOKrEvFThOllb0rhGzgk/+6FhaGa
-        VJRA==
+        bh=11dnnmhb1p7k4nx66KvKMNZIk0qpx8gkJedgWR7HCNM=;
+        b=ZL/wPgP4FtpaKR/gbstWCi906HsW9DzEd297K7hunes5CThWkRfdmNjQKmwjhLfwek
+        asflGKdUU2tOF6ddjQTF3PLzKkYdDdQNBvI9vsVFN4/gILeh1GP+YgkoU0TkPiYNFSTm
+        CypoO2HAYNWoDTINdZnA/1FK5pNx/+dIxqhH/HRdfKBYnPw10oYpWlkd+rDQZohdsgs9
+        AO+jiZiHtKRZbz0SN5kKa91INO9tXtSZsFJ7aani19OvlgD+yWyibiQ43nMeUmSHaFwH
+        CQ5BNMGo09Eumt3yWNl39C/jozp1P33ea89iCmDzbpsGt0KaM6D65S6/s4rlKfHsBic8
+        lEDQ==
 X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1OAA2UNf2M7PR5/L9P0"
 X-RZG-CLASS-ID: mo00
 Received: from iMac.fritz.box
         by smtp.strato.de (RZmta 44.29.0 DYNA|AUTH)
-        with ESMTPSA id L09db3vA7B6Fdgy
+        with ESMTPSA id L09db3vA7B6Hdh7
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
         (Client did not present a certificate);
-        Thu, 7 Nov 2019 12:06:15 +0100 (CET)
+        Thu, 7 Nov 2019 12:06:17 +0100 (CET)
 From:   "H. Nikolaus Schaller" <hns@goldelico.com>
 To:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
@@ -54,10 +55,11 @@ Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
         openpvrsgx-devgroup@letux.org, letux-kernel@openphoenux.org,
         kernel@pyra-handheld.com, linux-mips@vger.kernel.org,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: [PATCH v2 4/8] ARM: DTS: omap3: add sgx gpu child node
-Date:   Thu,  7 Nov 2019 12:06:07 +0100
-Message-Id: <78e6f575e25cd4cfec40a5d735303b8ac61521b9.1573124770.git.hns@goldelico.com>
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Paul Boddie <paul@boddie.org.uk>
+Subject: [PATCH v2 8/8] MIPS: DTS: jz4780: add sgx gpu node
+Date:   Thu,  7 Nov 2019 12:06:11 +0100
+Message-Id: <9e5dae8c163c2183e4c6fac5c0c9218782fad665.1573124770.git.hns@goldelico.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <cover.1573124770.git.hns@goldelico.com>
 References: <cover.1573124770.git.hns@goldelico.com>
@@ -68,44 +70,38 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-and add interrupt
+and add interrupt and clocks.
 
-Tested on OpenPandora 600 MHz.
+Tested to build for CI20 board and load a (non-working) driver.
 
+Suggested-by: Paul Boddie <paul@boddie.org.uk>
 Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
 ---
- arch/arm/boot/dts/omap34xx.dtsi | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/mips/boot/dts/ingenic/jz4780.dtsi | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/arm/boot/dts/omap34xx.dtsi b/arch/arm/boot/dts/omap34xx.dtsi
-index 7b09cbee8bb8..9b050d71849b 100644
---- a/arch/arm/boot/dts/omap34xx.dtsi
-+++ b/arch/arm/boot/dts/omap34xx.dtsi
-@@ -111,7 +111,7 @@
- 		 * are also different clocks, but we do not have any dts users
- 		 * for it.
- 		 */
--		sgx_module: target-module@50000000 {
-+		target-module@50000000 {
- 			compatible = "ti,sysc-omap2", "ti,sysc";
- 			reg = <0x50000014 0x4>;
- 			reg-names = "rev";
-@@ -121,10 +121,11 @@
- 			#size-cells = <1>;
- 			ranges = <0 0x50000000 0x4000>;
- 
--			/*
--			 * Closed source PowerVR driver, no child device
--			 * binding or driver in mainline
--			 */
-+			sgx: gpu@0 {
-+				compatible = "ti,omap3-sgx530-121", "img,sgx530-121", "img,sgx530";
-+				reg = <0x0 0x4000>;	/* 64kB */
-+				interrupts = <21>;
-+			};
- 		};
+diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+index c54bd7cfec55..21ea5f4a405b 100644
+--- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
++++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+@@ -46,6 +46,17 @@
+ 		#clock-cells = <1>;
  	};
  
++	gpu: gpu@13040000 {
++		compatible = "ingenic,jz4780-sgx540-120", "img,sgx540-120", "img,sgx540", "img,sgx5";
++		reg = <0x13040000 0x4000>;
++
++		clocks = <&cgu JZ4780_CLK_GPU>;
++		clock-names = "gpu";
++
++		interrupt-parent = <&intc>;
++		interrupts = <63>;
++	};
++
+ 	tcu: timer@10002000 {
+ 		compatible = "ingenic,jz4780-tcu",
+ 			     "ingenic,jz4770-tcu",
 -- 
 2.23.0
 

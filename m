@@ -2,45 +2,44 @@ Return-Path: <SRS0=EWWg=Y7=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.6 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+X-Spam-Status: No, score=-8.6 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BA19C5DF61
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 68984C5DF60
 	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 11:18:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E053321882
-	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 11:18:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 31AA12187F
+	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 11:18:18 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="nLgX8SwL"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="LN51C7K/"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388178AbfKGLSR (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        id S2388093AbfKGLSR (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
         Thu, 7 Nov 2019 06:18:17 -0500
-Received: from mo4-p04-ob.smtp.rzone.de ([81.169.146.178]:26787 "EHLO
+Received: from mo4-p04-ob.smtp.rzone.de ([85.215.255.121]:12785 "EHLO
         mo4-p04-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388093AbfKGLSR (ORCPT
+        with ESMTP id S1728183AbfKGLSR (ORCPT
         <rfc822;linux-mips@vger.kernel.org>); Thu, 7 Nov 2019 06:18:17 -0500
-X-Greylist: delayed 707 seconds by postgrey-1.27 at vger.kernel.org; Thu, 07 Nov 2019 06:18:16 EST
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1573125496;
         s=strato-dkim-0002; d=goldelico.com;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=24fF1xUH22DnXnm6wMQiB8qNar/ohuK/dXnbgHGAvcQ=;
-        b=nLgX8SwL+nzyv2Q2tAJL6jpL+lbaYvpIP1s+N9TGjmDWiSUK3REbLhv9F7RyVjqeTz
-        eKkcm4/bFF+bp5Z9jZBryJi4S0pqIo0zq0EG22DdMiRxRnAbgZIDXoHxcEGx3hQXUpgX
-        FINvsdgPAIsRy5qTkhEAoNdxsg5kwn4zLS24OJlvaMbg1V9eX7oo8NwmTSq3xYPrqQt1
-        fDRNDPm1OzPHkQ0eLVzpxx+c4QVo2GvgRS/EnHT6SHh5Ny83Pc6yBibcrMLqsQxsZgpy
-        8UkaXh9vKO3HloUAlFEtsjLYEAgu5ugnMcAGSYK3sIKAVgzeuxPSlbBX16b2A+mpGo0V
-        fdsA==
+        h=Message-Id:Date:Subject:Cc:To:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
+        Subject:Sender;
+        bh=XDDMV0r7God8oaw26RRX8bDOEGcPbFm9sSN1MRhg7fc=;
+        b=LN51C7K/neNQEqFxr4HPg2QbGpN3o103pRkhaRBTfVkLsAVhj/ztmJ/NigI1Xy/pHl
+        COnsAYe0mL7P4CooV9ckbnNl1nxE5R7vYyWQ35FOHw1oHZvhkgo8fb5TPuufxypQCKx1
+        tTgGsC7RpG/KVVjUvQzbWfVAru+xoFLOopo07WOWedzLOjKzpiDIED27f6gNyX2G/W17
+        5lWDgpdBLIqPDqmU/49YvS1SXO0bm1hW2UTkgc2HHX7Klshja+fcBYfrKPjcqbBuPJKj
+        WFHY5+9bC6r/KEvNPZWqNdy+0v8ldvXACfzrD+HB9GY7jDdhOw6wrgh9UFXxB9j5MSsS
+        /Yvw==
 X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1OAA2UNf2M7PR5/L9P0"
 X-RZG-CLASS-ID: mo00
 Received: from iMac.fritz.box
         by smtp.strato.de (RZmta 44.29.0 DYNA|AUTH)
-        with ESMTPSA id L09db3vA7B6Ddgt
+        with ESMTPSA id L09db3vA7B6Cdgn
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
         (Client did not present a certificate);
-        Thu, 7 Nov 2019 12:06:13 +0100 (CET)
+        Thu, 7 Nov 2019 12:06:12 +0100 (CET)
 From:   "H. Nikolaus Schaller" <hns@goldelico.com>
 To:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
@@ -56,12 +55,10 @@ Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
         openpvrsgx-devgroup@letux.org, letux-kernel@openphoenux.org,
         kernel@pyra-handheld.com, linux-mips@vger.kernel.org,
         "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: [PATCH v2 2/8] ARM: DTS: am33xx: add sgx gpu child node
-Date:   Thu,  7 Nov 2019 12:06:05 +0100
-Message-Id: <fbe9f4a20fd55d111afe8f09d03c154a82cf5ba5.1573124770.git.hns@goldelico.com>
+Subject: [PATCH v2 0/8] ARM/MIPS: DTS: add child nodes describing the PVRSGX present in some OMAP SoC and JZ4780
+Date:   Thu,  7 Nov 2019 12:06:03 +0100
+Message-Id: <cover.1573124770.git.hns@goldelico.com>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <cover.1573124770.git.hns@goldelico.com>
-References: <cover.1573124770.git.hns@goldelico.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
@@ -69,35 +66,57 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-and add interrupt.
+Changes:
+* tried convert bindings to YAML format - suggested by Rob Herring
+* added JZ4780 DTS node (proven to load the driver)
+* removed timer and img,cores properties until we know we really need them - suggested by Rob Herring
 
-Tested on BeagleBone Black.
+PATCH V1 2019-10-18 20:46:35:
 
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
----
- arch/arm/boot/dts/am33xx.dtsi | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+This patch set defines child nodes for the SGX5xx interface inside
+the OMAP SoC so that a driver can be found and probed by the
+compatible strings and can retrieve information about the SGX revision
+that is included in a specific SoC. It also defines the interrupt number
+to be used by the SGX driver.
 
-diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
-index a9d848d50b20..dbfb9d5aa915 100644
---- a/arch/arm/boot/dts/am33xx.dtsi
-+++ b/arch/arm/boot/dts/am33xx.dtsi
-@@ -480,10 +480,11 @@
- 			#size-cells = <1>;
- 			ranges = <0 0x56000000 0x1000000>;
- 
--			/*
--			 * Closed source PowerVR driver, no child device
--			 * binding or driver in mainline
--			 */
-+			sgx: gpu@0 {
-+				compatible = "ti,am335x-sgx530-125", "img,sgx530-125", "img,sgx530";
-+				reg = <0x00 0x1000000>;	/* 16 MB */
-+				interrupts = <37>;
-+			};
- 		};
- 	};
- };
+There is currently no mainline driver for these GPUs, but a project [1]
+is ongoing with the goal to get the open-source part as provided by TI/IMG
+into drivers/staging/pvr.
+
+The kernel modules built from this project have successfully demonstrated
+to work with the DTS definitions from this patch set on AM335x BeagleBone
+Black and OMAP5 Pyra. They partially works on DM3730 and PandaBoard ES but
+that is likely a problem in the kernel driver or the (non-free) user-space
+blobs.
+
+There is potential to extend this work to JZ4780 (CI20 board) and
+BananaPi-M3 (A83) and even some Intel Poulsbo and CedarView devices.
+
+[1]: https://github.com/openpvrsgx-devgroup
+
+H. Nikolaus Schaller (8):
+  RFC: dt-bindings: add img,pvrsgx.yaml for Imagination GPUs
+  ARM: DTS: am33xx: add sgx gpu child node
+  ARM: DTS: am3517: add sgx gpu child node
+  ARM: DTS: omap3: add sgx gpu child node
+  ARM: DTS: omap36xx: add sgx gpu child node
+  ARM: DTS: omap4: add sgx gpu child node
+  ARM: DTS: omap5: add sgx gpu child node
+  MIPS: DTS: jz4780: add sgx gpu node
+
+ .../devicetree/bindings/gpu/img,pvrsgx.yaml   | 128 ++++++++++++++++++
+ arch/arm/boot/dts/am33xx.dtsi                 |   9 +-
+ arch/arm/boot/dts/am3517.dtsi                 |  11 +-
+ arch/arm/boot/dts/omap34xx.dtsi               |  11 +-
+ arch/arm/boot/dts/omap36xx.dtsi               |  11 +-
+ arch/arm/boot/dts/omap4.dtsi                  |   9 +-
+ arch/arm/boot/dts/omap4470.dts                |  15 ++
+ arch/arm/boot/dts/omap5.dtsi                  |   9 +-
+ arch/mips/boot/dts/ingenic/jz4780.dtsi        |  11 ++
+ 9 files changed, 187 insertions(+), 27 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
+ create mode 100644 arch/arm/boot/dts/omap4470.dts
+
 -- 
 2.23.0
 

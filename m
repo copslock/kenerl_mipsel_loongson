@@ -7,44 +7,44 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F2B41C5DF60
-	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 04:01:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 69612C5DF61
+	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 04:02:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id C260F2178F
-	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 04:01:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3B01C2178F
+	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 04:02:03 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="rI0u+VLG"
+	dkim=pass (1024-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="B04gO/Yz"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733062AbfKGEBy (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 6 Nov 2019 23:01:54 -0500
-Received: from forward103j.mail.yandex.net ([5.45.198.246]:40733 "EHLO
+        id S1727279AbfKGECD (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 6 Nov 2019 23:02:03 -0500
+Received: from forward103j.mail.yandex.net ([5.45.198.246]:40826 "EHLO
         forward103j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727279AbfKGEBy (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Wed, 6 Nov 2019 23:01:54 -0500
-Received: from mxback27g.mail.yandex.net (mxback27g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:327])
-        by forward103j.mail.yandex.net (Yandex) with ESMTP id 411D06740311;
-        Thu,  7 Nov 2019 07:01:50 +0300 (MSK)
+        by vger.kernel.org with ESMTP id S1733102AbfKGECD (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Wed, 6 Nov 2019 23:02:03 -0500
+Received: from mxback22j.mail.yandex.net (mxback22j.mail.yandex.net [IPv6:2a02:6b8:0:1619::222])
+        by forward103j.mail.yandex.net (Yandex) with ESMTP id 5B6CE6740311;
+        Thu,  7 Nov 2019 07:01:59 +0300 (MSK)
 Received: from sas8-93a22d3a76f4.qloud-c.yandex.net (sas8-93a22d3a76f4.qloud-c.yandex.net [2a02:6b8:c1b:2988:0:640:93a2:2d3a])
-        by mxback27g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id lTsS6ygbv1-1nDWkCoa;
-        Thu, 07 Nov 2019 07:01:50 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1573099310;
-        bh=fu89WWaYiOMgppSvP1h5lqk+OY+A3oYlhfnJ05NZOEE=;
+        by mxback22j.mail.yandex.net (mxback/Yandex) with ESMTP id 6q14ZrIh7r-1xiqC3J6;
+        Thu, 07 Nov 2019 07:01:59 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1573099319;
+        bh=ckK5Hssu4zzQuaWruoW41xzbDqC+RA8d6/fynmhnZ0g=;
         h=In-Reply-To:Subject:To:From:Cc:References:Date:Message-Id;
-        b=rI0u+VLGQuY0J69Bj+UhX9+/aLeX5CBQj4H3XSm5Ww84c/aZ2GyQX0B4ua2oNQyp6
-         bBIgKO0W+isu7Rti7q/RbNVj43/R2wjuUuY9Ld1Hb8hcF9MyjYM9MokkcgmFUOsdE4
-         wKHOKH+AnlRh4vrEbLDKLcMnAQisN/2csU4XNZLM=
-Authentication-Results: mxback27g.mail.yandex.net; dkim=pass header.i=@flygoat.com
-Received: by sas8-93a22d3a76f4.qloud-c.yandex.net (smtp/Yandex) with ESMTPSA id Z8DeRIVREY-1jVmhNeC;
-        Thu, 07 Nov 2019 07:01:48 +0300
+        b=B04gO/YzjABordDf7hJ6Yp0SiPd0OBMYk5WZ97kqdJTbURNTczQdwcw3CeTc3LlzZ
+         e4s1IKOSrnDJC11mzXd/E/p3ANW7iH/g3Nw8nn1JrcpWZ8ihY/8fL0TCaXCSS0gBGI
+         yiuJBb7HqOFeYyT456ARcF461u3/7RZSSxThq5FQ=
+Authentication-Results: mxback22j.mail.yandex.net; dkim=pass header.i=@flygoat.com
+Received: by sas8-93a22d3a76f4.qloud-c.yandex.net (smtp/Yandex) with ESMTPSA id Z8DeRIVREY-1tVml3X0;
+        Thu, 07 Nov 2019 07:01:57 +0300
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
         (Client certificate not present)
 From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
 To:     linux-mips@vger.kernel.org
 Cc:     paulburton@kernel.org, chenhe@lemote.com,
         Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 1/5] MIPS: Drop pmon.h
-Date:   Thu,  7 Nov 2019 12:01:14 +0800
-Message-Id: <20191107040118.10685-2-jiaxun.yang@flygoat.com>
+Subject: [PATCH 3/5] MIPS: Drop CPU_SUPPORTS_UNCACHED_ACCELERATED
+Date:   Thu,  7 Nov 2019 12:01:16 +0800
+Message-Id: <20191107040118.10685-4-jiaxun.yang@flygoat.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191107040118.10685-1-jiaxun.yang@flygoat.com>
 References: <20191107040118.10685-1-jiaxun.yang@flygoat.com>
@@ -55,79 +55,126 @@ Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-There is no code still using pmon callvectors.
+CPU_SUPPORTS_UNCACHED_ACCELERATED was introduced when kernel can't handle
+writecombine remap well. Nowadays drivers can try writecombine remap by
+themselves so this function is nolonger needed.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- arch/mips/include/asm/pmon.h | 46 ------------------------------------
- arch/mips/kernel/smp-bmips.c |  1 -
- 2 files changed, 47 deletions(-)
- delete mode 100644 arch/mips/include/asm/pmon.h
+ arch/mips/Kconfig                  |  3 --
+ arch/mips/include/asm/pgtable.h    | 11 ------
+ arch/mips/loongson2ef/common/mem.c | 58 ------------------------------
+ 3 files changed, 72 deletions(-)
 
-diff --git a/arch/mips/include/asm/pmon.h b/arch/mips/include/asm/pmon.h
-deleted file mode 100644
-index 6ad519189ce2..000000000000
---- a/arch/mips/include/asm/pmon.h
-+++ /dev/null
-@@ -1,46 +0,0 @@
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 7cb894776f44..3dd7540c82bb 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1966,7 +1966,6 @@ config SYS_HAS_CPU_LOONGSON2F
+ 	bool
+ 	select CPU_SUPPORTS_CPUFREQ
+ 	select CPU_SUPPORTS_ADDRWINCFG if 64BIT
+-	select CPU_SUPPORTS_UNCACHED_ACCELERATED
+ 
+ config SYS_HAS_CPU_LOONGSON1B
+ 	bool
+@@ -2143,8 +2142,6 @@ config CPU_SUPPORTS_ADDRWINCFG
+ config CPU_SUPPORTS_HUGEPAGES
+ 	bool
+ 	depends on !(32BIT && (ARCH_PHYS_ADDR_T_64BIT || EVA))
+-config CPU_SUPPORTS_UNCACHED_ACCELERATED
+-	bool
+ config MIPS_PGD_C0_CONTEXT
+ 	bool
+ 	default y if 64BIT && (CPU_MIPSR2 || CPU_MIPSR6) && !CPU_XLP
+diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
+index f85bd5b15f51..91b89aab1787 100644
+--- a/arch/mips/include/asm/pgtable.h
++++ b/arch/mips/include/asm/pgtable.h
+@@ -643,17 +643,6 @@ static inline pmd_t pmdp_huge_get_and_clear(struct mm_struct *mm,
+ 
+ #include <asm-generic/pgtable.h>
+ 
 -/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2004 by Ralf Baechle
-- *
-- * The cpustart method is a PMC-Sierra's function to start the secondary CPU.
-- * Stock PMON 2000 has the smpfork, semlock and semunlock methods instead.
+- * uncached accelerated TLB map for video memory access
 - */
--#ifndef _ASM_PMON_H
--#define _ASM_PMON_H
+-#ifdef CONFIG_CPU_SUPPORTS_UNCACHED_ACCELERATED
+-#define __HAVE_PHYS_MEM_ACCESS_PROT
 -
--struct callvectors {
--	int	(*open) (char*, int, int);
--	int	(*close) (int);
--	int	(*read) (int, void*, int);
--	int	(*write) (int, void*, int);
--	off_t	(*lseek) (int, off_t, int);
--	int	(*printf) (const char*, ...);
--	void	(*cacheflush) (void);
--	char*	(*gets) (char*);
--	union {
--		int	(*smpfork) (unsigned long cp, char *sp);
--		int	(*cpustart) (long, void (*)(void), void *, long);
--	} _s;
--	int	(*semlock) (int sem);
--	void	(*semunlock) (int sem);
--};
+-struct file;
+-pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
+-		unsigned long size, pgprot_t vma_prot);
+-#endif
 -
--extern struct callvectors *debug_vectors;
+ /*
+  * We provide our own get_unmapped area to cope with the virtual aliasing
+  * constraints placed on us by the cache architecture.
+diff --git a/arch/mips/loongson2ef/common/mem.c b/arch/mips/loongson2ef/common/mem.c
+index 11bf6eefb82a..ae21f1c62baa 100644
+--- a/arch/mips/loongson2ef/common/mem.c
++++ b/arch/mips/loongson2ef/common/mem.c
+@@ -60,61 +60,3 @@ int __uncached_access(struct file *file, unsigned long addr)
+ 		((addr >= LOONGSON_MMIO_MEM_START) &&
+ 		 (addr < LOONGSON_MMIO_MEM_END));
+ }
 -
--#define pmon_open(name, flags, mode)	debug_vectors->open(name, flage, mode)
--#define pmon_close(fd)			debug_vectors->close(fd)
--#define pmon_read(fd, buf, count)	debug_vectors->read(fd, buf, count)
--#define pmon_write(fd, buf, count)	debug_vectors->write(fd, buf, count)
--#define pmon_lseek(fd, off, whence)	debug_vectors->lseek(fd, off, whence)
--#define pmon_printf(fmt...)		debug_vectors->printf(fmt)
--#define pmon_cacheflush()		debug_vectors->cacheflush()
--#define pmon_gets(s)			debug_vectors->gets(s)
--#define pmon_cpustart(n, f, sp, gp)	debug_vectors->_s.cpustart(n, f, sp, gp)
--#define pmon_smpfork(cp, sp)		debug_vectors->_s.smpfork(cp, sp)
--#define pmon_semlock(sem)		debug_vectors->semlock(sem)
--#define pmon_semunlock(sem)		debug_vectors->semunlock(sem)
+-#ifdef CONFIG_CPU_SUPPORTS_UNCACHED_ACCELERATED
 -
--#endif /* _ASM_PMON_H */
-diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
-index 712c15de6ab9..9058e9dcf080 100644
---- a/arch/mips/kernel/smp-bmips.c
-+++ b/arch/mips/kernel/smp-bmips.c
-@@ -31,7 +31,6 @@
- #include <asm/pgtable.h>
- #include <asm/processor.h>
- #include <asm/bootinfo.h>
--#include <asm/pmon.h>
- #include <asm/cacheflush.h>
- #include <asm/tlbflush.h>
- #include <asm/mipsregs.h>
+-#include <linux/pci.h>
+-#include <linux/sched.h>
+-#include <asm/current.h>
+-
+-static unsigned long uca_start, uca_end;
+-
+-pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
+-			      unsigned long size, pgprot_t vma_prot)
+-{
+-	unsigned long offset = pfn << PAGE_SHIFT;
+-	unsigned long end = offset + size;
+-
+-	if (__uncached_access(file, offset)) {
+-		if (uca_start && (offset >= uca_start) &&
+-		    (end <= uca_end))
+-			return __pgprot((pgprot_val(vma_prot) &
+-					 ~_CACHE_MASK) |
+-					_CACHE_UNCACHED_ACCELERATED);
+-		else
+-			return pgprot_noncached(vma_prot);
+-	}
+-	return vma_prot;
+-}
+-
+-static int __init find_vga_mem_init(void)
+-{
+-	struct pci_dev *dev = 0;
+-	struct resource *r;
+-	int idx;
+-
+-	if (uca_start)
+-		return 0;
+-
+-	for_each_pci_dev(dev) {
+-		if ((dev->class >> 16) == PCI_BASE_CLASS_DISPLAY) {
+-			for (idx = 0; idx < PCI_NUM_RESOURCES; idx++) {
+-				r = &dev->resource[idx];
+-				if (!r->start && r->end)
+-					continue;
+-				if (r->flags & IORESOURCE_IO)
+-					continue;
+-				if (r->flags & IORESOURCE_MEM) {
+-					uca_start = r->start;
+-					uca_end = r->end;
+-					return 0;
+-				}
+-			}
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+-late_initcall(find_vga_mem_init);
+-#endif /* !CONFIG_CPU_SUPPORTS_UNCACHED_ACCELERATED */
 -- 
 2.20.1
 

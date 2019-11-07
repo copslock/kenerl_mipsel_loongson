@@ -2,325 +2,199 @@ Return-Path: <SRS0=EWWg=Y7=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C311C5DF60
-	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 14:35:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CB2FFC6195
+	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 15:29:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5A059218AE
-	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 14:35:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1573137343;
-	bh=wwLmrh0U00tbD/J8CgxKi0nU5QepQNXQI2i3g4NanWQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:List-ID:From;
-	b=vLYn64hZwC97OLMfuSEPELMRcmXdmW5QNA0v/lMtOlLQJ9Yf3GmQoIiErJ1Oz5/Xm
-	 rLAFMIyiI7MqCj+Y4bkIMRlzV4eQmxNLZNQoEuVWindL7hMYFxwXdwEFvy4Vdq/dDR
-	 1CyJcmd0o6y34Cby6bcop2Uk8mYa96RxKDc6su5Y=
+	by mail.kernel.org (Postfix) with ESMTP id 1397C21D7B
+	for <linux-mips@archiver.kernel.org>; Thu,  7 Nov 2019 15:29:16 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=dabbelt-com.20150623.gappssmtp.com header.i=@dabbelt-com.20150623.gappssmtp.com header.b="noW+GrgC"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726924AbfKGOfn (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 7 Nov 2019 09:35:43 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44782 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726754AbfKGOfm (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 7 Nov 2019 09:35:42 -0500
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DF5092187F;
-        Thu,  7 Nov 2019 14:35:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573137341;
-        bh=wwLmrh0U00tbD/J8CgxKi0nU5QepQNXQI2i3g4NanWQ=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=AWCcCALH0IdprOT6EOBeEU2bRU74AF3nAR3TU+qhcwWqhk5AdhJUBTXXA3YrKyKDL
-         3d8mVl8+mx1evV26o9p+eJHp76Hqw26y5G8ca2dff3vbkeRbM7nz9j7ZcjgrvMvK64
-         gdyKMNy8gvUNajnjyzulJ9IqjLwI1awh3pXg2gqs=
-Received: by mail-qt1-f170.google.com with SMTP id y10so2617375qto.3;
-        Thu, 07 Nov 2019 06:35:40 -0800 (PST)
-X-Gm-Message-State: APjAAAVDWscfS84bfQssb8/vegV52JRll6a52RoDRFM4TN+bUC2zSekc
-        nrfn8mxflRLJZJRzb6I49xIgroTi0bvy33Cd8w==
-X-Google-Smtp-Source: APXvYqywGsSvcRTD5YG/9hLGCfgaArfaDxMX3Lkcr8Tk735sKkk8K0pZPwxkHFh8E/5JXs2wexLG2hxPzDM6/P4dwkc=
-X-Received: by 2002:ac8:73ce:: with SMTP id v14mr4149162qtp.136.1573137339809;
- Thu, 07 Nov 2019 06:35:39 -0800 (PST)
-MIME-Version: 1.0
-References: <cover.1573124770.git.hns@goldelico.com> <4292cec1fd82cbd7d42742d749557adb01705574.1573124770.git.hns@goldelico.com>
-In-Reply-To: <4292cec1fd82cbd7d42742d749557adb01705574.1573124770.git.hns@goldelico.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Thu, 7 Nov 2019 08:35:27 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+ri3AXb=qhedBzQ6WufLm4aPrSqNxXiHd3_=mH3vJ8xw@mail.gmail.com>
-Message-ID: <CAL_Jsq+ri3AXb=qhedBzQ6WufLm4aPrSqNxXiHd3_=mH3vJ8xw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/8] RFC: dt-bindings: add img,pvrsgx.yaml for
- Imagination GPUs
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paulburton@kernel.org>,
-        James Hogan <jhogan@kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        openpvrsgx-devgroup@letux.org,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
-        "open list:MIPS" <linux-mips@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1729873AbfKGP3M (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 7 Nov 2019 10:29:12 -0500
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:43220 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388166AbfKGP3M (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 7 Nov 2019 10:29:12 -0500
+Received: by mail-pl1-f194.google.com with SMTP id a18so1683331plm.10
+        for <linux-mips@vger.kernel.org>; Thu, 07 Nov 2019 07:29:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
+        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+         :content-transfer-encoding;
+        bh=celw7kLC34qqwTTfh++uCkQEjOgc/6nwF8dFF2fJRcA=;
+        b=noW+GrgCtBbtWmvRliYdOAuMA0YUG7D+eX91HjAU5IDNU+EBOcrbt42dkubqBTxW4S
+         WQ8n2ZfnbmfCL4+eE6s1MnG4kJG52VZJ91QbzuQNFIi/COPg+DrUHbZ8+Jcgjj/Q48Re
+         QNX4NY1E7vtLM68r6rfozcc3RNzkIItLOE7o9jhPPrBLVYCbQcAaXYdiCcQx1PUOZm7u
+         oSAbYZ4+XOAXy2q29Df881Gyse5LGoGTyAaPv6aJ5raeRYhtrrpUAm1qesZ/YD4XWer0
+         OQ5NPy7zRFp9dt0jb2kjIPuYcQwfIBFil4fTrnHBnYJ1ukrYml+utoouUC2biDI7it8K
+         q8Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+         :mime-version:content-transfer-encoding;
+        bh=celw7kLC34qqwTTfh++uCkQEjOgc/6nwF8dFF2fJRcA=;
+        b=FNck0I1F0LDm0jn23ZYwYdCq5+37/1+18WUsjUbAZYTWO8FP0Hsu5wW9RvqOP6BCcx
+         Hu+l4MF3xSKsF7kRgIEv2pgRFkW60Mgfdl+8rYbewVdqk4rfnvW1XQ8r5EkJRiTI/wVn
+         nzAJvN2YKiCe4e+0FvUqET2FB+upXP2/dnOTiayuIKl7pVq3i6qqMbvS3rVxX4v6Sqtx
+         1XjR1uiyAcvZBc2Bd/+enwOcINQ3h27+xWFeXA3RtkDz81VaMM0cnAXzoVVjqzqMUHcj
+         z71XKIAFwjYjH/lzNyDA1PZ2qSumxNdE5r0uNa339/V8/XbbAe2fq6gzNu8XBMpinvvb
+         0t9A==
+X-Gm-Message-State: APjAAAVbAOBjXHeuJkTsoL33t9KZ8NmuQnU5SwpTsGNxKHoMFJfdbEBs
+        ZbxpsmvZIHSV4MRmWEpInmo6WQ==
+X-Google-Smtp-Source: APXvYqxwW3UXdXBa6cGLkWhsyLfBz9Kw3ES1wGdovuqY/c7cBz2zbKIbrHc7CxUnNtedCkwAnHzZJw==
+X-Received: by 2002:a17:90a:174a:: with SMTP id 10mr5875131pjm.104.1573140550559;
+        Thu, 07 Nov 2019 07:29:10 -0800 (PST)
+Received: from localhost ([12.206.222.5])
+        by smtp.gmail.com with ESMTPSA id r10sm2405827pgn.68.2019.11.07.07.29.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Nov 2019 07:29:10 -0800 (PST)
+Date:   Thu, 07 Nov 2019 07:29:10 -0800 (PST)
+X-Google-Original-Date: Wed, 06 Nov 2019 10:45:31 PST (-0800)
+Subject:     Re: [PATCH 17/21] lib: provide a simple generic ioremap implementation
+In-Reply-To: <20191029064834.23438-18-hch@lst.de>
+CC:     Arnd Bergmann <arnd@arndb.de>, guoren@kernel.org, monstr@monstr.eu,
+        green.hu@gmail.com, deanbo422@gmail.com, gxt@pku.edu.cn,
+        x86@kernel.org, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-mtd@lists.infradead.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+From:   Palmer Dabbelt <palmer@dabbelt.com>
+To:     Christoph Hellwig <hch@lst.de>
+Message-ID: <mhng-e96b8613-e384-4e94-90f8-d1cf78c5627a@palmer-si-x1c4>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, Nov 7, 2019 at 5:06 AM H. Nikolaus Schaller <hns@goldelico.com> wrote:
+On Mon, 28 Oct 2019 23:48:30 PDT (-0700), Christoph Hellwig wrote:
+> A lot of architectures reuse the same simple ioremap implementation, so
+> start lifting the most simple variant to lib/ioremap.c.  It provides
+> ioremap_prot and iounmap, plus a default ioremap that uses prot_noncached,
+> although that can be overridden by asm/io.h.
 >
-> The Imagination PVR/SGX GPU is part of several SoC from
-> multiple vendors, e.g. TI OMAP, Ingenic JZ4780, Intel Poulsbo
-> and others.
->
-> With this binding, we describe how the SGX processor is
-> interfaced to the SoC (registers, interrupt etc.).
->
-> Clock, Reset and power management should be handled
-> by a parent node or elsewhere.
-
-That's probably TI specific...
-
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
+>  include/asm-generic/io.h | 20 ++++++++++++++++----
+>  lib/Kconfig              |  3 +++
+>  lib/ioremap.c            | 39 +++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 58 insertions(+), 4 deletions(-)
 >
-> I have used the doc2yaml script to get a first veryion
-> but I am still stuggling with the yaml thing. My impression
-> is that while it is human readable, it is not very human
-> writable... Unfortunately I haven't found a good tutorial
-> for Dummies (like me) for bindings in YAML.
-
-Did you read .../bindings/example-schema.yaml? It explains the common
-cases and what schema are doing. I recently added to it, so look at
-the version in linux-next.
-
-> The big problem is not the YAML syntax but what the schema
-> should contain and how to correctly formulate ideas in this
-> new language.
+> diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
+> index 4e45e1cb6560..4a661fdd1937 100644
+> --- a/include/asm-generic/io.h
+> +++ b/include/asm-generic/io.h
+> @@ -923,9 +923,10 @@ static inline void *phys_to_virt(unsigned long address)
+>   * DOC: ioremap() and ioremap_*() variants
+>   *
+>   * Architectures with an MMU are expected to provide ioremap() and iounmap()
+> - * themselves.  For NOMMU architectures we provide a default nop-op
+> - * implementation that expect that the physical address used for MMIO are
+> - * already marked as uncached, and can be used as kernel virtual addresses.
+> + * themselves or rely on GENERIC_IOREMAP.  For NOMMU architectures we provide
+> + * a default nop-op implementation that expect that the physical address used
+> + * for MMIO are already marked as uncached, and can be used as kernel virtual
+> + * addresses.
+>   *
+>   * ioremap_wc() and ioremap_wt() can provide more relaxed caching attributes
+>   * for specific drivers if the architecture choses to implement them.  If they
+> @@ -946,7 +947,18 @@ static inline void iounmap(void __iomem *addr)
+>  {
+>  }
+>  #endif
+> -#endif /* CONFIG_MMU */
+> +#elif defined(CONFIG_GENERIC_IOREMAP)
+> +#include <asm/pgtable.h>
+> +
+> +void __iomem *ioremap_prot(phys_addr_t addr, size_t size, unsigned long prot);
+> +void iounmap(volatile void __iomem *addr);
+> +
+> +static inline void __iomem *ioremap(phys_addr_t addr, size_t size)
+> +{
+> +	/* _PAGE_IOREMAP needs to be supplied by the architecture */
+> +	return ioremap_prot(addr, size, _PAGE_IOREMAP);
+> +}
+> +#endif /* !CONFIG_MMU || CONFIG_GENERIC_IOREMAP */
 >
-> Specific questions for this RFC:
+>  #ifndef ioremap_nocache
+>  #define ioremap_nocache ioremap
+> diff --git a/lib/Kconfig b/lib/Kconfig
+> index 183f92a297ca..afc78aaf2b25 100644
+> --- a/lib/Kconfig
+> +++ b/lib/Kconfig
+> @@ -638,6 +638,9 @@ config STRING_SELFTEST
 >
-> * formatting: is space/tab indentation correct?
-
-YAML requires spaces.
-
-> * are strings with "" correct or without?
-
-Generally only keys or values starting with '#' need quotes. There's
-other cases, but we simply don't hit them with DT. We tend to quote
-$ref values, but that's not strictly needed.
-
-> * how do I specify that there is a list of compatible strings required in a specific order?
-
-An 'items' list defines the order.
-
-> * but there are multiple such lists, and only one of them is to be chosen?
-
-                                                ^^^^^^
-'oneOf' is the schema keyword you are looking for.
-
-> * how can be described in the binding that there should be certain values in
->   the parent node (ranges) to make it work?
-
-You can't. Schemas match on a node and work down from there. So you
-can do it, but it's more complicated. You'd need a custom 'select'
-select that matches on the parent node having the child node you are
-looking for (assuming the parent is something generic like
-'simple-bus' which you can't match on). However, based on the example,
-I'd say checking 'ranges' is outside the scope of schema checks.
-'ranges' doesn't have to be a certain value any more than every case
-of 'reg' (except maybe i2c devices with fixed addresses). It's up to
-the .dts author how exactly to do address translation.
-
-I would like to have more ranges/reg checks such as bounds checks and
-overlapping addresses, but I think we'd do those with code, not
-schema.
-
-> I was not able to run
+>  endmenu
 >
->         make dt_binding_check dtbs_check
+> +config GENERIC_IOREMAP
+> +	bool
+> +
+>  config GENERIC_LIB_ASHLDI3
+>  	bool
 >
-> due to some missing dependencies (which I did not want to
-> invest time to research them) on my build host, so I could
-> not get automated help from those.
-
-Dependencies are documented in Documentation/devicetree/writing-schema.rst.
-
-> ---
->  .../devicetree/bindings/gpu/img,pvrsgx.yaml   | 128 ++++++++++++++++++
->  1 file changed, 128 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
+> diff --git a/lib/ioremap.c b/lib/ioremap.c
+> index 0a2ffadc6d71..3f0e18543de8 100644
+> --- a/lib/ioremap.c
+> +++ b/lib/ioremap.c
+> @@ -231,3 +231,42 @@ int ioremap_page_range(unsigned long addr,
 >
-> diff --git a/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml b/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
-> new file mode 100644
-> index 000000000000..b1b021601c47
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
-> @@ -0,0 +1,128 @@
-> +# SPDX-License-Identifier: None
+>  	return err;
+>  }
+> +
+> +#ifdef CONFIG_GENERIC_IOREMAP
+> +void __iomem *ioremap_prot(phys_addr_t addr, size_t size, unsigned long prot)
+> +{
+> +	unsigned long offset, vaddr;
+> +	phys_addr_t last_addr;
+> +	struct vm_struct *area;
+> +
+> +	/* Disallow wrap-around or zero size */
+> +	last_addr = addr + size - 1;
+> +	if (!size || last_addr < addr)
+> +		return NULL;
+> +
+> +	/* Page-align mappings */
+> +	offset = addr & (~PAGE_MASK);
+> +	addr -= offset;
+> +	size = PAGE_ALIGN(size + offset);
+> +
+> +	area = get_vm_area_caller(size, VM_IOREMAP,
+> +			__builtin_return_address(0));
+> +	if (!area)
+> +		return NULL;
+> +	vaddr = (unsigned long)area->addr;
+> +
+> +	if (ioremap_page_range(vaddr, vaddr + size, addr, __pgprot(prot))) {
+> +		free_vm_area(area);
+> +		return NULL;
+> +	}
+> +
+> +	return (void __iomem *)(vaddr + offset);
+> +}
+> +EXPORT_SYMBOL(ioremap_prot);
+> +
+> +void iounmap(volatile void __iomem *addr)
+> +{
+> +	vunmap((void *)((unsigned long)addr & PAGE_MASK));
+> +}
+> +EXPORT_SYMBOL(iounmap);
+> +#endif /* CONFIG_GENERIC_IOREMAP */
 
-Obviously not valid.
+Reviewed-by: Palmer Dabbelt <palmer@dabbelt.com>
 
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/bindings/gpu/img,pvrsgx.yaml#
-
-This should have been correct with the script, but you need to drop 'bindings'.
-
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Imagination PVR/SGX GPU
-> +
-> +maintainers:
-> +  - H. Nikolaus Schaller <hns@goldelico.com>
-> +description: |+
-> +  This binding describes the Imagination SGX5 series of 3D accelerators which
-> +  are found in several different SoC like TI OMAP, Sitara, Ingenic JZ4780,
-> +  Allwinner A83, and Intel Poulsbo and CedarView.
-> +
-> +  Only the Imagination SGX530, SGX540 and SGX544 GPUs are currently covered by
-> +  this binding.
-> +
-> +  The SGX node is usually a child node of some DT node belonging to the SoC
-> +  which handles clocks, reset and general address space mapping of the SGX
-> +  register area.
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - item:
-
-'item/items'
-
-> +        # BeagleBoard ABC, OpenPandora 600MHz
-> +        - const: "ti,omap3-sgx530-121", "img,sgx530-121", "img,sgx530", "img,sgx5"
-
-Not valid YAML nor json-schema. Each value needs to be list item with 'const:'
-
-Plenty of examples in bindings/arm/ with board/soc bindings.
-
-> +        # BeagleBoard XM, GTA04, OpenPandora 1GHz
-> +        - const: "ti,omap3-sgx530-125", "img,sgx530-125", "img,sgx530", "img,sgx5"
-
-This needs to be a new 'items' list under 'oneOf'.
-
-> +        # BeagleBone Black
-> +        - const: "ti,am335x-sgx530-125", "img,sgx530-125", "img,sgx530", "img,sgx5"
-> +        # Pandaboard (ES)
-> +        - const: "ti,omap4-sgx540-120", "img,sgx540-120", "img,sgx540", "img,sgx5"
-> +        - const "ti,omap4-sgx544-112", "img,sgx544-112", "img,sgx544", "img,sgx5"
-> +        # OMAP5 UEVM, Pyra Handheld
-> +        "ti,omap5-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5"
-> +        "ti,dra7-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5"
-
-Just gave up on trying to write a schema here?
-
-> +        # CI20
-> +        "ingenic,jz4780-sgx540-120", "img,sgx540-120", "img,sgx540", "img,sgx5";
-> +
-> +  reg:
-> +    items:
-> +      - description: physical base address and length of the register area
-
-For single entries, just 'maxItems: 1' is enough. Unless you have
-something special about this device, you don't need a description
-here.
-
-> +
-> +  interrupts:
-> +     items:
-> +      - description: interrupt from SGX subsystem to core processor
-> +
-> +  clocks:
-> +     items:
-> +      - description: optional clocks
-> +
-> +  required:
-> +    - compatible
-> +    - reg
-> +    - interrupts
-> +
-> +examples: |
-> +  gpu@fe00 {
-> +       compatible = "ti,omap-omap5-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5";
-> +       reg = <0xfe00 0x200>;
-> +       interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
-> +  };
-> +
-> +
-> +historical: |
-
-This should be dropped. It's just for reference as you write the schema.
-
-> +  Imagination PVR/SGX GPU
-> +
-> +  Only the Imagination SGX530, SGX540 and SGX544 GPUs are currently covered by this binding.
-> +
-> +  Required properties:
-> +  - compatible:        Should be one of
-> +               "ti,omap3-sgx530-121", "img,sgx530-121", "img,sgx530", "img,sgx5"; - BeagleBoard ABC, OpenPandora 600MHz
-> +               "ti,omap3-sgx530-125", "img,sgx530-125", "img,sgx530", "img,sgx5"; - BeagleBoard XM, GTA04, OpenPandora 1GHz
-> +               "ti,am3517-sgx530-125", "img,sgx530-125", "img,sgx530", "img,sgx5";
-> +               "ti,am335x-sgx530-125", "img,sgx530-125", "img,sgx530", "img,sgx5"; - BeagleBone Black
-> +               "ti,omap4-sgx540-120", "img,sgx540-120", "img,sgx540", "img,sgx5"; - Pandaboard (ES)
-> +               "ti,omap4-sgx544-112", "img,sgx544-112", "img,sgx544", "img,sgx5";
-> +               "ti,omap5-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5"; - OMAP5 UEVM, Pyra Handheld
-> +               "ti,dra7-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5";
-> +               "ti,am3517-sgx530-?", "img,sgx530-?", "img,sgx530", "img,sgx5";
-> +               "ti,am43xx-sgx530-?", "img,sgx530-?", "img,sgx530", "img,sgx5";
-> +               "ti,ti81xx-sgx530-?", "img,sgx530-?", "img,sgx530", "img,sgx5";
-> +               "img,jz4780-sgx540-?", "img,sgx540-?", "img,sgx540", "img,sgx5"; - CI20
-> +               "allwinner,sun8i-a83t-sgx544-?", "img,sgx544-116", "img,sgx544", "img,sgx5"; - Banana-Pi-M3 (Allwinner A83T)
-> +               "intel,poulsbo-gma500-sgx535", "img,sgx535-116", "img,sgx535", "img,sgx5"; - Atom Z5xx
-> +               "intel,medfield-gma-sgx540", "img,sgx540-116", "img,sgx540", "img,sgx5"; - Atom Z24xx
-> +               "intel,cedarview-gma3600-sgx545", "img,sgx545-116", "img,sgx545", "img,sgx5"; - Atom N2600, D2500
-> +
-> +               The "ti,omap..." entries are needed temporarily to handle SoC
-> +               specific builds of the kernel module.
-> +
-> +               In the long run, only the "img,sgx..." entry should suffice
-> +               to match a generic driver for all architectures and driver
-> +               code can dynamically find out on which SoC it is running.
-> +
-> +
-> +  - reg:               Physical base address and length of the register area.
-> +  - interrupts:        The interrupt numbers.
-> +
-> +  / {
-> +       ocp {
-> +               sgx_module: target-module@56000000 {
-> +                       compatible = "ti,sysc-omap4", "ti,sysc";
-> +                       reg = <0x5600fe00 0x4>,
-> +                             <0x5600fe10 0x4>;
-> +                       reg-names = "rev", "sysc";
-> +                       ti,sysc-midle = <SYSC_IDLE_FORCE>,
-> +                                       <SYSC_IDLE_NO>,
-> +                                       <SYSC_IDLE_SMART>;
-> +                       ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-> +                                       <SYSC_IDLE_NO>,
-> +                                       <SYSC_IDLE_SMART>;
-> +                       clocks = <&gpu_clkctrl OMAP5_GPU_CLKCTRL 0>;
-> +                       clock-names = "fck";
-> +                       #address-cells = <1>;
-> +                       #size-cells = <1>;
-> +                       ranges = <0 0x56000000 0x2000000>;
-> +
-> +                       gpu@fe00 {
-> +                               compatible = "ti,omap-omap5-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5";
-> +                               reg = <0xfe00 0x200>;
-> +                               interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
-> +                       };
-> +               };
-> +       };
-> +  };
-> --
-> 2.23.0
->
+Thanks!  This should let us get rid of arch/riscv/mm/ioremap.c.

@@ -7,37 +7,37 @@ X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA52AFC6196
-	for <linux-mips@archiver.kernel.org>; Fri,  8 Nov 2019 11:51:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BF26C5DF60
+	for <linux-mips@archiver.kernel.org>; Fri,  8 Nov 2019 11:55:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 882E021D7B
-	for <linux-mips@archiver.kernel.org>; Fri,  8 Nov 2019 11:51:27 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DD576215EA
+	for <linux-mips@archiver.kernel.org>; Fri,  8 Nov 2019 11:55:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1573213887;
+	s=default; t=1573214114;
 	bh=WvA7ooE23+rMcSXpkAwDLVyHFb12QEhAyN/XFwoVHjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=X1eTe4/Ta4Il8JFKu6JW/eYOLQcPhb3FBfjAil5PyH8Gj3dognhUEmBPBpW6Va8Go
-	 zAsCDkQJ6IAbU91KR3Jlx4WwDg4O+cOBOoc5hhtvwc3IwiZGKUwSlDh3jMIC2RRB+k
-	 X6Gxa6nATXuCuA+211EHVqqs2VOGZ9j+mcVaK7IM=
+	b=M10cvNdyrIpXOx9FBmEexm7tZa+ZichBAN09mL5cJ4OPaNRqVPiVc5gh/rnMht2w5
+	 +8ftsQBCNw4GEVVsEduuB6YMBx2uEOgfheQB0ILDxwgi39LyUkGKRNOGkwpCXMgWc6
+	 BKPWKETO6DUBh2bX/6RkR/LxBMQBcr5SRRjIZumA=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390709AbfKHLrd (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 8 Nov 2019 06:47:33 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36096 "EHLO mail.kernel.org"
+        id S1732976AbfKHLqE (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 8 Nov 2019 06:46:04 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33526 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391567AbfKHLrc (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 8 Nov 2019 06:47:32 -0500
+        id S2391244AbfKHLqD (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 8 Nov 2019 06:46:03 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 250B7222D4;
-        Fri,  8 Nov 2019 11:47:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D844721D82;
+        Fri,  8 Nov 2019 11:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573213652;
+        s=default; t=1573213562;
         bh=WvA7ooE23+rMcSXpkAwDLVyHFb12QEhAyN/XFwoVHjE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MVz7wcCVreFlO8CazsYgU2O+MsqodP/qTIGAQ041n0ow2HRqG9wQiAwg1ZAw6gYi3
-         kVUlLRqHPNZt9pnddUO1CdHWW6vwUXeuEwtTR9BBvPw2TAz5sJc7WazThR58wYQ6ba
-         9XA1GNznIREfOkRtxlz86w9jmfRes59z0EkwEUqw=
+        b=xWgsfV2zikTa8FAxNqZBZ4o6niF58kOj42cUrafpYD127xs+uy1U86gMru5ee0Xt6
+         OiuYrJbowUFJraqF3bBw3p4WIIV4mXJW9Atavhw1+y8N9AFlLwR1woJmBlnsL8Nwo+
+         63qxxVSENvLKHMcdAa78ikKJIkp+gXs+Cc+UWmBk=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>,
@@ -46,12 +46,12 @@ Cc:     Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>,
         =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
         linux-mips@linux-mips.org, Sasha Levin <sashal@kernel.org>,
         linux-mips@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 07/44] MIPS: BCM47XX: Enable USB power on Netgear WNDR3400v3
-Date:   Fri,  8 Nov 2019 06:46:43 -0500
-Message-Id: <20191108114721.15944-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 11/64] MIPS: BCM47XX: Enable USB power on Netgear WNDR3400v3
+Date:   Fri,  8 Nov 2019 06:44:52 -0500
+Message-Id: <20191108114545.15351-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191108114721.15944-1-sashal@kernel.org>
-References: <20191108114721.15944-1-sashal@kernel.org>
+In-Reply-To: <20191108114545.15351-1-sashal@kernel.org>
+References: <20191108114545.15351-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review

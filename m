@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B46AC5DF60
-	for <linux-mips@archiver.kernel.org>; Fri,  8 Nov 2019 11:46:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E3507FA372C
+	for <linux-mips@archiver.kernel.org>; Fri,  8 Nov 2019 11:50:45 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 325B021D82
-	for <linux-mips@archiver.kernel.org>; Fri,  8 Nov 2019 11:46:23 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id ACCEC21D7B
+	for <linux-mips@archiver.kernel.org>; Fri,  8 Nov 2019 11:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1573213583;
-	bh=w2JAkOrPiofgLKs2h0rKndbJj4/d5l6EqsvOSzuhnFs=;
+	s=default; t=1573213845;
+	bh=K08qYBsV8gIGodec1gOeRpkimbF/syiDZ9dHNTWL40Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=Xtap98cRXv84JwiXl2nN+D3TXq4waF8/YWPYHihaMgXtRHBih+8crQ2bVw52EOw/9
-	 I8nAQSuwETiqNFE8ekpe75rARBi/RGw7OluHgC9kJdRImuOXfRGpLrdmQzsbQC9B8n
-	 1vgZdKHT2gwexjF9/F+MkWOmQJL1wyD2s25XR1OY=
+	b=OSL7C0jY5knyHiSUejG2qITUehFSaQB+sV8rlTtYcKFJeGjDZgQcHS4++6HSHkZlF
+	 ablA10Ht8Gs8Ey3wjYBC2DmeDWi1ImcB2eSozzQscZ8qSs2db/LkXavNRBAvC+ejNx
+	 eMUHY8NdjJrJkgj9It5iuq+nmeNJaMwJI6J7QqKM=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391330AbfKHLqW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 8 Nov 2019 06:46:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34052 "EHLO mail.kernel.org"
+        id S2391647AbfKHLrq (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 8 Nov 2019 06:47:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36488 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391327AbfKHLqV (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 8 Nov 2019 06:46:21 -0500
+        id S2391643AbfKHLrq (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 8 Nov 2019 06:47:46 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 297ED2084D;
-        Fri,  8 Nov 2019 11:46:20 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 82DB420656;
+        Fri,  8 Nov 2019 11:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573213581;
-        bh=w2JAkOrPiofgLKs2h0rKndbJj4/d5l6EqsvOSzuhnFs=;
+        s=default; t=1573213665;
+        bh=K08qYBsV8gIGodec1gOeRpkimbF/syiDZ9dHNTWL40Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kuLr9nKVDFG5qmPLHok65a9eCE+N4mMzh1V+bIfumckLsVeHbLa8xYStn6OBnyPWq
-         eEBGcGb83Jtk4PFwtp4xta/03SKyxLEaiRG+5ca8gacb3i2hyLuEbkouMvBV1mCJOw
-         rD/0aWxSsIb8H0lNzmVmEm4mVqcyDLnmcJg5j+kY=
+        b=1VTBHqPQHTtjYBN/Pn/xG7NODHpCCcWEWn+kk3KcqauJAyApceNntrpKDa7PMnM3p
+         kpV8aYZzez2lZwGlD3BWm1X/6fD6ohi2Qn10VOtOBDPQu8uP5gVIhBT37v/hgDfmpS
+         l4VsSlFWPPkF4uUg8YWJR06sIS3p1/ZcQhXqMesE=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Ding Xiang <dingxiang@cmss.chinamobile.com>,
@@ -45,12 +45,12 @@ Cc:     Ding Xiang <dingxiang@cmss.chinamobile.com>,
         Paul Burton <paul.burton@mips.com>, ralf@linux-mips.org,
         jhogan@kernel.org, linux-mips@linux-mips.org,
         Sasha Levin <sashal@kernel.org>, linux-mips@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 25/64] mips: txx9: fix iounmap related issue
-Date:   Fri,  8 Nov 2019 06:45:06 -0500
-Message-Id: <20191108114545.15351-25-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 18/44] mips: txx9: fix iounmap related issue
+Date:   Fri,  8 Nov 2019 06:46:54 -0500
+Message-Id: <20191108114721.15944-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191108114545.15351-1-sashal@kernel.org>
-References: <20191108114545.15351-1-sashal@kernel.org>
+In-Reply-To: <20191108114721.15944-1-sashal@kernel.org>
+References: <20191108114721.15944-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -81,10 +81,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
-index a1d98b5c8fd67..5c53b8aa43d26 100644
+index 9d9962ab7d25c..7dc97e944d5aa 100644
 --- a/arch/mips/txx9/generic/setup.c
 +++ b/arch/mips/txx9/generic/setup.c
-@@ -959,12 +959,11 @@ void __init txx9_sramc_init(struct resource *r)
+@@ -961,12 +961,11 @@ void __init txx9_sramc_init(struct resource *r)
  		goto exit_put;
  	err = sysfs_create_bin_file(&dev->dev.kobj, &dev->bindata_attr);
  	if (err) {

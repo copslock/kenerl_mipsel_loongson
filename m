@@ -2,167 +2,246 @@ Return-Path: <SRS0=IVZI=ZA=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,URIBL_SBL,
+	URIBL_SBL_A,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29127FC6195
-	for <linux-mips@archiver.kernel.org>; Fri,  8 Nov 2019 19:19:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B7A36FC6196
+	for <linux-mips@archiver.kernel.org>; Fri,  8 Nov 2019 21:05:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id EAEAB21D7B
-	for <linux-mips@archiver.kernel.org>; Fri,  8 Nov 2019 19:19:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1573240776;
-	bh=ysw7QuSPH6w9H59lOO9u2sSxRofHAlj8WmxiEtXxzkY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=vqeJyugHvlA9zSkIL0KGTz/oq1/z67tbqbfSGS6H6jpqVtWYY9c4YfslTZOWve5YO
-	 oi5jPeDqmG66WsaxUI6lunt9DQk49Ww93aNRW7eD4LiU4xS33vcCBFOKYPCd1+TsoN
-	 mdy8qvSytu7pA41hIWnVfP2sUXEMcpq91zDaSgn0=
+	by mail.kernel.org (Postfix) with ESMTP id 81141214DB
+	for <linux-mips@archiver.kernel.org>; Fri,  8 Nov 2019 21:05:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390150AbfKHTTU (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Fri, 8 Nov 2019 14:19:20 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57276 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731387AbfKHTAK (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Fri, 8 Nov 2019 14:00:10 -0500
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 514DB22466;
-        Fri,  8 Nov 2019 18:57:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573239478;
-        bh=ysw7QuSPH6w9H59lOO9u2sSxRofHAlj8WmxiEtXxzkY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ssNJ8MfYzqWhcNUoWBlo90NURN2Bk9BOVX1Velqsq5ZQ8jvHgI3zHWL2LmHZfZES7
-         6CYvaU2yKKbwrKuDVRvq94zXiF94PPsYBpLI7UnSbnBmQZougI+67XwrX8clAo3Dll
-         KWqFhrSzaxXMgQj7LGLfRu78pJykNbirlKyuJDLA=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Jonas Gorski <jonas.gorski@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Paul Burton <paulburton@kernel.org>,
-        linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 19/62] MIPS: bmips: mark exception vectors as char arrays
-Date:   Fri,  8 Nov 2019 19:50:07 +0100
-Message-Id: <20191108174735.046218064@linuxfoundation.org>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191108174719.228826381@linuxfoundation.org>
-References: <20191108174719.228826381@linuxfoundation.org>
-User-Agent: quilt/0.66
+        id S1730461AbfKHVFh (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 8 Nov 2019 16:05:37 -0500
+Received: from mout.kundenserver.de ([212.227.126.135]:38665 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726394AbfKHVFg (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Fri, 8 Nov 2019 16:05:36 -0500
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue012 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 1MI41P-1ifa9R3rIV-00FECL; Fri, 08 Nov 2019 22:03:03 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     y2038@lists.linaro.org
+Cc:     linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        rth@twiddle.net, tony.luck@intel.com, paul.burton@mips.com,
+        green.hu@gmail.com, deller@gmx.de, mpe@ellerman.id.au,
+        davem@davemloft.net, tglx@linutronix.de, x86@kernel.org,
+        jdike@addtoit.com, richard@nod.at, viro@zeniv.linux.org.uk,
+        bcrl@kvack.org, john.stultz@linaro.org, sboyd@kernel.org,
+        rostedt@goodmis.org, vincenzo.frascino@arm.com,
+        paul@paul-moore.com, sds@tycho.nsa.gov, eparis@parisplace.org,
+        peterz@infradead.org, will@kernel.org, deepa.kernel@gmail.com,
+        christian@brauner.io, heiko.carstens@de.ibm.com,
+        christophe.leroy@c-s.fr, ebiederm@xmission.com,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+        linux-aio@kvack.org, linux-api@vger.kernel.org,
+        linux-arch@vger.kernel.org, netdev@vger.kernel.org,
+        selinux@vger.kernel.org
+Subject: [PATCH 00/23] y2038 cleanups
+Date:   Fri,  8 Nov 2019 22:02:21 +0100
+Message-Id: <20191108210236.1296047-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.20.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:UnBnEVvh9e/TAlbVJpAgl+cZfINqrWh9dLOxhM2cR8aLh8bxi43
+ imnX6NUaeePS5+DRA0WRYUJVamsiPbbVcIxpp/4FOrH5eYIasgtQ9F4iNEhxTjL7CjcCc5K
+ bAv59di7IK248c9R001Bzfk5n9zBi6XSKGbbURpyvKXfff1XY6BWVKsSxLxE879MSpi2NAc
+ hQzqPBvdAyeO+K+Sge1xw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:OIDj0+r1Q9A=:9gN4BqFLWG42/ujpgO6Cgr
+ o8zqBPZmLIUIEnDlrrAXeH2vLeBpIadNXhV86RgylTicv9xsmYlpVaFpBMf/H/Yjlzbw54cpy
+ eh/U17TACQhr/ys8Bi+1eshVGdQxS5ivhF8awvsaZnAXg9mNAA8jkqXgpcpwWt367C/8Kd86R
+ PArvSuqzyeR9kXxr8BvqUTmoaE4g6Rd8F0lY4P97kcm/hZDDTFU9lm0mHxnM0bHAyM+SvOHYd
+ iw+439TjI1JHDeQqBpLukAr0wnd9IY2f05cEO8b48Hy7kYtbaI2rom9bTJZ3BbKszOykd7H0q
+ oK4Ya32pPC2rfGc0OBMvlJAfW+U7J0Y2JHzAkyUMd/7/mal+bfzBkSg8A0O6/exDyl/Z/WNJy
+ m3TRmxcGqeD+mrruFnCOYH9J91b9cbHcwtFZD/CAY9jd9786DVfTW8CKd5BLmZRsHl71EyEi5
+ K6mfaAx63kT3i52V/5zPjVHi/xplJ3YpYGzCTEeY7jgkxp6i6NqIi2ghC/8j5/eYAtCM51h3d
+ Z8Ob7p2gDLZwWhpdQ4b78C5ehph2lPjnzxiqzxTyMT+MD96QhPQWmWVKsWIK0FAs0qvDqsP2a
+ GKGNlVHb+qr7JyGt+fF9+SvIKG13x6Bhw26DKuQtLgfO6qnyM9jMr6nN5/5EV/9nPPKgeZMi6
+ a1svux7RWVOd64AYgjbwsp2PjdbU/xpWDDSVGOMhQmktNt60nxmbkWIkGbMHoosfsFgXXEfB4
+ i7LmjSLuzVGAOXL0n7HULZV9tfkZIv5cbllBdYB5FinD1QYgQQG36yK6WhFCFvCPmv1hlou8U
+ ye11gYsvTwOfF7tDpZ1QmTJ1v1Q1y1VYzfbIpHyUIMvlz8YcXL2vDgC6IMOdob8B3C6bh7EPJ
+ j24sn73RDOt7PznprOsg==
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+This is a series of cleanups for the y2038 work, mostly intended
+for namespace cleaning: the kernel defines the traditional
+time_t, timeval and timespec types that often lead to y2038-unsafe
+code. Even though the unsafe usage is mostly gone from the kernel,
+having the types and associated functions around means that we
+can still grow new users, and that we may be missing conversions
+to safe types that actually matter.
 
-[ Upstream commit e4f5cb1a9b27c0f94ef4f5a0178a3fde2d3d0e9e ]
+As there is no rush on any of these patches, I would either
+queue them up in linux-next through my y2038 branch, or
+Thomas could add them to the tip tree if he wants.
 
-The vectors span more than one byte, so mark them as arrays.
+As mentioned in another series, this is part of a larger
+effort to fix all the remaining bits and pieces that are
+not completed yet from the y2038 conversion, and the full
+set can be found at:
 
-Fixes the following build error when building when using GCC 8.3:
+https://git.kernel.org/pub/scm/linux/kernel/git/arnd/playground.git/log/?h=y2038-endgame
 
-In file included from ./include/linux/string.h:19,
-                 from ./include/linux/bitmap.h:9,
-                 from ./include/linux/cpumask.h:12,
-                 from ./arch/mips/include/asm/processor.h:15,
-                 from ./arch/mips/include/asm/thread_info.h:16,
-                 from ./include/linux/thread_info.h:38,
-                 from ./include/asm-generic/preempt.h:5,
-                 from ./arch/mips/include/generated/asm/preempt.h:1,
-                 from ./include/linux/preempt.h:81,
-                 from ./include/linux/spinlock.h:51,
-                 from ./include/linux/mmzone.h:8,
-                 from ./include/linux/bootmem.h:8,
-                 from arch/mips/bcm63xx/prom.c:10:
-arch/mips/bcm63xx/prom.c: In function 'prom_init':
-./arch/mips/include/asm/string.h:162:11: error: '__builtin_memcpy' forming offset [2, 32] is out of the bounds [0, 1] of object 'bmips_smp_movevec' with type 'char' [-Werror=array-bounds]
-   __ret = __builtin_memcpy((dst), (src), __len); \
-           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-arch/mips/bcm63xx/prom.c:97:3: note: in expansion of macro 'memcpy'
-   memcpy((void *)0xa0000200, &bmips_smp_movevec, 0x20);
-   ^~~~~~
-In file included from arch/mips/bcm63xx/prom.c:14:
-./arch/mips/include/asm/bmips.h:80:13: note: 'bmips_smp_movevec' declared here
- extern char bmips_smp_movevec;
+Maintainers, please review and provide Acks.
 
-Fixes: 18a1eef92dcd ("MIPS: BMIPS: Introduce bmips.h")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-Signed-off-by: Paul Burton <paulburton@kernel.org>
-Cc: linux-mips@vger.kernel.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: James Hogan <jhogan@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/mips/bcm63xx/prom.c      |  2 +-
- arch/mips/include/asm/bmips.h | 10 +++++-----
- arch/mips/kernel/smp-bmips.c  |  8 ++++----
- 3 files changed, 10 insertions(+), 10 deletions(-)
+Let me know if you have any opinion on whether we should do
+the include last two patches of this series or not.
 
-diff --git a/arch/mips/bcm63xx/prom.c b/arch/mips/bcm63xx/prom.c
-index 7019e2967009e..bbbf8057565b2 100644
---- a/arch/mips/bcm63xx/prom.c
-+++ b/arch/mips/bcm63xx/prom.c
-@@ -84,7 +84,7 @@ void __init prom_init(void)
- 		 * Here we will start up CPU1 in the background and ask it to
- 		 * reconfigure itself then go back to sleep.
- 		 */
--		memcpy((void *)0xa0000200, &bmips_smp_movevec, 0x20);
-+		memcpy((void *)0xa0000200, bmips_smp_movevec, 0x20);
- 		__sync();
- 		set_c0_cause(C_SW0);
- 		cpumask_set_cpu(1, &bmips_booted_mask);
-diff --git a/arch/mips/include/asm/bmips.h b/arch/mips/include/asm/bmips.h
-index b3e2975f83d36..a564915fddc40 100644
---- a/arch/mips/include/asm/bmips.h
-+++ b/arch/mips/include/asm/bmips.h
-@@ -75,11 +75,11 @@ static inline int register_bmips_smp_ops(void)
- #endif
- }
- 
--extern char bmips_reset_nmi_vec;
--extern char bmips_reset_nmi_vec_end;
--extern char bmips_smp_movevec;
--extern char bmips_smp_int_vec;
--extern char bmips_smp_int_vec_end;
-+extern char bmips_reset_nmi_vec[];
-+extern char bmips_reset_nmi_vec_end[];
-+extern char bmips_smp_movevec[];
-+extern char bmips_smp_int_vec[];
-+extern char bmips_smp_int_vec_end[];
- 
- extern int bmips_smp_enabled;
- extern int bmips_cpu_offset;
-diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
-index 382d12eb88f0f..45fbcbbf2504e 100644
---- a/arch/mips/kernel/smp-bmips.c
-+++ b/arch/mips/kernel/smp-bmips.c
-@@ -457,10 +457,10 @@ static void bmips_wr_vec(unsigned long dst, char *start, char *end)
- 
- static inline void bmips_nmi_handler_setup(void)
- {
--	bmips_wr_vec(BMIPS_NMI_RESET_VEC, &bmips_reset_nmi_vec,
--		&bmips_reset_nmi_vec_end);
--	bmips_wr_vec(BMIPS_WARM_RESTART_VEC, &bmips_smp_int_vec,
--		&bmips_smp_int_vec_end);
-+	bmips_wr_vec(BMIPS_NMI_RESET_VEC, bmips_reset_nmi_vec,
-+		bmips_reset_nmi_vec_end);
-+	bmips_wr_vec(BMIPS_WARM_RESTART_VEC, bmips_smp_int_vec,
-+		bmips_smp_int_vec_end);
- }
- 
- struct reset_vec_info {
+     Arnd
+
+Arnd Bergmann (23):
+  y2038: remove CONFIG_64BIT_TIME
+  y2038: add __kernel_old_timespec and __kernel_old_time_t
+  y2038: vdso: change timeval to __kernel_old_timeval
+  y2038: vdso: change timespec to __kernel_old_timespec
+  y2038: vdso: change time_t to __kernel_old_time_t
+  y2038: vdso: nds32: open-code timespec_add_ns()
+  y2038: vdso: powerpc: avoid timespec references
+  y2038: ipc: remove __kernel_time_t reference from headers
+  y2038: stat: avoid 'time_t' in 'struct stat'
+  y2038: uapi: change __kernel_time_t to __kernel_old_time_t
+  y2038: rusage: use __kernel_old_timeval
+  y2038: syscalls: change remaining timeval to __kernel_old_timeval
+  y2038: socket: remove timespec reference in timestamping
+  y2038: make ns_to_compat_timeval use __kernel_old_timeval
+  y2038: elfcore: Use __kernel_old_timeval for process times
+  y2038: timerfd: Use timespec64 internally
+  y2038: time: avoid timespec usage in settimeofday()
+  y2038: itimer: compat handling to itimer.c
+  y2038: use compat_{get,set}_itimer on alpha
+  y2038: move itimer reset into itimer.c
+  y2038: itimer: change implementation to timespec64
+  [RFC] y2038: itimer: use ktime_t internally
+  y2038: allow disabling time32 system calls
+
+ arch/Kconfig                              |  11 +-
+ arch/alpha/kernel/osf_sys.c               |  67 +-----
+ arch/alpha/kernel/syscalls/syscall.tbl    |   4 +-
+ arch/ia64/kernel/asm-offsets.c            |   2 +-
+ arch/mips/include/uapi/asm/msgbuf.h       |   6 +-
+ arch/mips/include/uapi/asm/sembuf.h       |   4 +-
+ arch/mips/include/uapi/asm/shmbuf.h       |   6 +-
+ arch/mips/include/uapi/asm/stat.h         |  16 +-
+ arch/mips/kernel/binfmt_elfn32.c          |   4 +-
+ arch/mips/kernel/binfmt_elfo32.c          |   4 +-
+ arch/nds32/kernel/vdso/gettimeofday.c     |  61 +++--
+ arch/parisc/include/uapi/asm/msgbuf.h     |   6 +-
+ arch/parisc/include/uapi/asm/sembuf.h     |   4 +-
+ arch/parisc/include/uapi/asm/shmbuf.h     |   6 +-
+ arch/powerpc/include/asm/asm-prototypes.h |   3 +-
+ arch/powerpc/include/asm/vdso_datapage.h  |   6 +-
+ arch/powerpc/include/uapi/asm/msgbuf.h    |   6 +-
+ arch/powerpc/include/uapi/asm/sembuf.h    |   4 +-
+ arch/powerpc/include/uapi/asm/shmbuf.h    |   6 +-
+ arch/powerpc/include/uapi/asm/stat.h      |   2 +-
+ arch/powerpc/kernel/asm-offsets.c         |  18 +-
+ arch/powerpc/kernel/syscalls.c            |   4 +-
+ arch/powerpc/kernel/time.c                |   5 +-
+ arch/powerpc/kernel/vdso32/gettimeofday.S |   6 +-
+ arch/powerpc/kernel/vdso64/gettimeofday.S |   8 +-
+ arch/sparc/include/uapi/asm/msgbuf.h      |   6 +-
+ arch/sparc/include/uapi/asm/sembuf.h      |   4 +-
+ arch/sparc/include/uapi/asm/shmbuf.h      |   6 +-
+ arch/sparc/include/uapi/asm/stat.h        |  24 +-
+ arch/sparc/vdso/vclock_gettime.c          |  36 +--
+ arch/x86/entry/vdso/vclock_gettime.c      |   6 +-
+ arch/x86/entry/vsyscall/vsyscall_64.c     |   4 +-
+ arch/x86/include/uapi/asm/msgbuf.h        |   6 +-
+ arch/x86/include/uapi/asm/sembuf.h        |   4 +-
+ arch/x86/include/uapi/asm/shmbuf.h        |   6 +-
+ arch/x86/um/vdso/um_vdso.c                |  12 +-
+ fs/aio.c                                  |   2 +-
+ fs/binfmt_elf.c                           |  12 +-
+ fs/binfmt_elf_fdpic.c                     |  12 +-
+ fs/compat_binfmt_elf.c                    |   4 +-
+ fs/select.c                               |  10 +-
+ fs/timerfd.c                              |  14 +-
+ fs/utimes.c                               |   8 +-
+ include/linux/compat.h                    |  19 +-
+ include/linux/syscalls.h                  |  16 +-
+ include/linux/time.h                      |   9 +-
+ include/linux/time32.h                    |   2 +-
+ include/linux/types.h                     |   2 +-
+ include/trace/events/timer.h              |  29 +--
+ include/uapi/asm-generic/msgbuf.h         |  12 +-
+ include/uapi/asm-generic/posix_types.h    |   1 +
+ include/uapi/asm-generic/sembuf.h         |   7 +-
+ include/uapi/asm-generic/shmbuf.h         |  12 +-
+ include/uapi/linux/cyclades.h             |   6 +-
+ include/uapi/linux/elfcore.h              |   8 +-
+ include/uapi/linux/errqueue.h             |   7 +
+ include/uapi/linux/msg.h                  |   6 +-
+ include/uapi/linux/ppp_defs.h             |   4 +-
+ include/uapi/linux/resource.h             |   4 +-
+ include/uapi/linux/sem.h                  |   4 +-
+ include/uapi/linux/shm.h                  |   6 +-
+ include/uapi/linux/time.h                 |   6 +-
+ include/uapi/linux/time_types.h           |   5 +
+ include/uapi/linux/utime.h                |   4 +-
+ ipc/syscall.c                             |   2 +-
+ kernel/compat.c                           |  24 --
+ kernel/power/power.h                      |   2 +-
+ kernel/sys.c                              |   4 +-
+ kernel/sys_ni.c                           |  23 ++
+ kernel/time/hrtimer.c                     |   2 +-
+ kernel/time/itimer.c                      | 280 ++++++++++++++--------
+ kernel/time/time.c                        |  32 ++-
+ lib/vdso/gettimeofday.c                   |   4 +-
+ net/core/scm.c                            |   6 +-
+ net/socket.c                              |   2 +-
+ security/selinux/hooks.c                  |  10 +-
+ 76 files changed, 501 insertions(+), 504 deletions(-)
+
 -- 
-2.20.1
+2.20.0
 
-
+Cc: rth@twiddle.net
+Cc: tony.luck@intel.com
+Cc: paul.burton@mips.com
+Cc: green.hu@gmail.com
+Cc: deller@gmx.de
+Cc: mpe@ellerman.id.au
+Cc: davem@davemloft.net
+Cc: tglx@linutronix.de
+Cc: x86@kernel.org
+Cc: jdike@addtoit.com
+Cc: richard@nod.at
+Cc: viro@zeniv.linux.org.uk
+Cc: bcrl@kvack.org
+Cc: john.stultz@linaro.org
+Cc: sboyd@kernel.org
+Cc: rostedt@goodmis.org
+Cc: arnd@arndb.de
+Cc: vincenzo.frascino@arm.com
+Cc: paul@paul-moore.com
+Cc: sds@tycho.nsa.gov
+Cc: eparis@parisplace.org
+Cc: peterz@infradead.org
+Cc: will@kernel.org
+Cc: deepa.kernel@gmail.com
+Cc: christian@brauner.io
+Cc: heiko.carstens@de.ibm.com
+Cc: christophe.leroy@c-s.fr
+Cc: ebiederm@xmission.com
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-alpha@vger.kernel.org>
+Cc: linux-ia64@vger.kernel.org>
+Cc: linux-mips@vger.kernel.org>
+Cc: linux-parisc@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org>
+Cc: sparclinux@vger.kernel.org>
+Cc: linux-um@lists.infradead.org>
+Cc: linux-fsdevel@vger.kernel.org>
+Cc: linux-aio@kvack.org>
+Cc: linux-api@vger.kernel.org>
+Cc: linux-arch@vger.kernel.org>
+Cc: netdev@vger.kernel.org>
+Cc: selinux@vger.kernel.org>
 

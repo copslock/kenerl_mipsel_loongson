@@ -1,111 +1,107 @@
-Return-Path: <SRS0=mdZ3=ZB=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=owFe=ZC=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 105D3C17440
-	for <linux-mips@archiver.kernel.org>; Sat,  9 Nov 2019 19:18:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2762FC17443
+	for <linux-mips@archiver.kernel.org>; Sun, 10 Nov 2019 02:53:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id DD44821882
-	for <linux-mips@archiver.kernel.org>; Sat,  9 Nov 2019 19:18:08 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="YPrLHNng"
+	by mail.kernel.org (Postfix) with ESMTP id E5FD2214E0
+	for <linux-mips@archiver.kernel.org>; Sun, 10 Nov 2019 02:53:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1573354399;
+	bh=sYb0kI6xjNmTi/Z3GcNdyHBUYvIrv95pkcRwyTj4ySM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=2Km3xbILH2dY9VtYkwvRMlvn/htY8DdQel+OCK/XfYjlmj33F+wu0gr4AhphfXQXU
+	 hhtfVEppYKtozZV7RblhVy0+7srlySVKJN5dqh5AmhHbwYLn8wqqWnHZgizpUUL0x0
+	 fz5ZE8g+rcA0hyEMKUAvYRS/y4u1oLtsPM3XDIBA=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726789AbfKITSG (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 9 Nov 2019 14:18:06 -0500
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:35234 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726530AbfKITRu (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 9 Nov 2019 14:17:50 -0500
-Received: by mail-pf1-f196.google.com with SMTP id d13so7412691pfq.2
-        for <linux-mips@vger.kernel.org>; Sat, 09 Nov 2019 11:17:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=IkFL+O4AgYFx1OONXesexHJ5CbtF3Jn1N0Qya4xrddw=;
-        b=YPrLHNngmS1tJAvcSMsgJEZh8HdBQEwSw0bJ8S5ojIqaCdtTh7y7x/8xvEXf2Z00n6
-         p++6Y/urc8Z88qhr3eCTXqqZmdpWySEgIEww+jNkXaRb+J2epcucNuHiJuFiHlxW0uKk
-         AHYlELgxTqUl9pjpfsdumyOeWgfzdZSuHm8vk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=IkFL+O4AgYFx1OONXesexHJ5CbtF3Jn1N0Qya4xrddw=;
-        b=c3HtLu9Goxq/z/HOPYEunPDUkS62PUWnA/+axQ0FpxKQDcRxTxfnYSFuGC/GrECSpN
-         y3m3VeRl46BNfiiug00n5XNDWK7bO0yjpMJP6ckeT4CCFgOR4ewI3Zs1EhVd6hIORqOV
-         ukZp1+79f8L/ujl/JDHNVGSObLGds2q7SFo87prVO59eozEgLlhPj4Es/P9sK0/i7n/Z
-         BbzaQ/NznPeMD5EouInl+HSBUdhVQ4+DVCYb8EO9bx1VZ3RABSY/MToIvnHz7Y6st4zy
-         vL3FHwp1R2Zp8tObXcbT3EC01oep2zbttvjdY5GvWrlCdSapoh3FPTGHwsc1BP/1HOYp
-         ZZZg==
-X-Gm-Message-State: APjAAAVy6ZMW8W2DdlRr9p+k4HMFp0B1ziKOHRHFeYVidq5xQSQBnI93
-        BJSQlmcsYF/5/HE0pqCGLNYeCwhctJE=
-X-Google-Smtp-Source: APXvYqyTQDUg289HvMjCfRmb7zKuKPtAOHS7ULkRiIVT4D+AHpNRRfK1XQJS7vZzBBWOsf2O8cIF9A==
-X-Received: by 2002:a62:1c8:: with SMTP id 191mr20604153pfb.152.1573327068017;
-        Sat, 09 Nov 2019 11:17:48 -0800 (PST)
-Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
-        by smtp.gmail.com with ESMTPSA id i11sm9193577pgd.7.2019.11.09.11.17.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Nov 2019 11:17:47 -0800 (PST)
-From:   Douglas Anderson <dianders@chromium.org>
-To:     Paul Burton <paul.burton@mips.com>,
-        Jason Wessel <jason.wessel@windriver.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     qiaochong@loongson.cn, kgdb-bugreport@lists.sourceforge.net,
-        ralf@linux-mips.org, Douglas Anderson <dianders@chromium.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Chuhong Yuan <hslester96@gmail.com>,
-        linux-mips@vger.kernel.org, Nicholas Mc Guire <hofrat@osadl.org>,
-        James Hogan <jhogan@kernel.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Prarit Bhargava <prarit@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Will Deacon <will@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        linux-kernel@vger.kernel.org,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: [PATCH 0/5] kdb: Don't implicitly change tasks; plus misc fixups
-Date:   Sat,  9 Nov 2019 11:16:39 -0800
-Message-Id: <20191109191644.191766-1-dianders@chromium.org>
-X-Mailer: git-send-email 2.24.0.432.g9d3f5f5b63-goog
+        id S1729956AbfKJCvW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 9 Nov 2019 21:51:22 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35784 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729950AbfKJCvV (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 9 Nov 2019 21:51:21 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id CB1AE22595;
+        Sun, 10 Nov 2019 02:51:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573354280;
+        bh=sYb0kI6xjNmTi/Z3GcNdyHBUYvIrv95pkcRwyTj4ySM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=yrYOtEsccg/XgIsUophuhn8LZmmYOJScg/NXlFQP6O28nlAGDbmfAXP6dVK6sFwcP
+         yhlB03kVS7bjftBCOtHGMevclIXiJ7EiEKUg2+VfB8sFj1qaP8aNOC/R3UTjZQZPtX
+         7Da6zv6BRYEghBS/ILXSdNeRb4yHmWpNeZfC+/TM=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Dengcheng Zhu <dzhu@wavecomp.com>,
+        Rachel Mozes <rachel.mozes@intel.com>,
+        Paul Burton <paul.burton@mips.com>, pburton@wavecomp.com,
+        ralf@linux-mips.org, linux-mips@linux-mips.org,
+        Sasha Levin <sashal@kernel.org>, linux-mips@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.4 23/40] MIPS: kexec: Relax memory restriction
+Date:   Sat,  9 Nov 2019 21:50:15 -0500
+Message-Id: <20191110025032.827-23-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191110025032.827-1-sashal@kernel.org>
+References: <20191110025032.827-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-This started out as just a follow-up to Daniel's post [1].  I wanted
-to stop implicitly changing the current task in kdb.  ...but, of
-course, everywhere you look in kdb there are things to cleanup, so
-this gets a few misc cleanups I found along the way.  Enjoy.
+From: Dengcheng Zhu <dzhu@wavecomp.com>
 
-[1] https://lore.kernel.org/r/20191010150735.dhrj3pbjgmjrdpwr@holly.lan
+[ Upstream commit a6da4d6fdf8bd512c98d3ac7f1d16bc4bb282919 ]
 
+We can rely on the system kernel and the dump capture kernel themselves in
+memory usage.
 
-Douglas Anderson (5):
-  MIPS: kdb: Remove old workaround for backtracing on other CPUs
-  kdb: kdb_current_regs should be private
-  kdb: kdb_current_task shouldn't be exported
-  kdb: Gid rid of implicit setting of the current task / regs
-  kdb: Get rid of confusing diag msg from "rd" if current task has no
-    regs
+Being restrictive with 512MB limit may cause kexec tool failure on some
+platforms.
 
- arch/mips/kernel/traps.c       |  5 -----
- include/linux/kdb.h            |  2 --
- kernel/debug/kdb/kdb_bt.c      |  8 +-------
- kernel/debug/kdb/kdb_main.c    | 31 ++++++++++++++-----------------
- kernel/debug/kdb/kdb_private.h |  2 +-
- 5 files changed, 16 insertions(+), 32 deletions(-)
+Tested-by: Rachel Mozes <rachel.mozes@intel.com>
+Reported-by: Rachel Mozes <rachel.mozes@intel.com>
+Signed-off-by: Dengcheng Zhu <dzhu@wavecomp.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Patchwork: https://patchwork.linux-mips.org/patch/20568/
+Cc: pburton@wavecomp.com
+Cc: ralf@linux-mips.org
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/mips/include/asm/kexec.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/arch/mips/include/asm/kexec.h b/arch/mips/include/asm/kexec.h
+index ee25ebbf2a288..b6a4d4aa548f5 100644
+--- a/arch/mips/include/asm/kexec.h
++++ b/arch/mips/include/asm/kexec.h
+@@ -12,11 +12,11 @@
+ #include <asm/stacktrace.h>
+ 
+ /* Maximum physical address we can use pages from */
+-#define KEXEC_SOURCE_MEMORY_LIMIT (0x20000000)
++#define KEXEC_SOURCE_MEMORY_LIMIT (-1UL)
+ /* Maximum address we can reach in physical address mode */
+-#define KEXEC_DESTINATION_MEMORY_LIMIT (0x20000000)
++#define KEXEC_DESTINATION_MEMORY_LIMIT (-1UL)
+  /* Maximum address we can use for the control code buffer */
+-#define KEXEC_CONTROL_MEMORY_LIMIT (0x20000000)
++#define KEXEC_CONTROL_MEMORY_LIMIT (-1UL)
+ /* Reserve 3*4096 bytes for board-specific info */
+ #define KEXEC_CONTROL_PAGE_SIZE (4096 + 3*4096)
+ 
 -- 
-2.24.0.432.g9d3f5f5b63-goog
+2.20.1
 

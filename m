@@ -7,37 +7,37 @@ X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2762FC17443
-	for <linux-mips@archiver.kernel.org>; Sun, 10 Nov 2019 02:53:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 054E6C17443
+	for <linux-mips@archiver.kernel.org>; Sun, 10 Nov 2019 03:01:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id E5FD2214E0
-	for <linux-mips@archiver.kernel.org>; Sun, 10 Nov 2019 02:53:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C5E0721850
+	for <linux-mips@archiver.kernel.org>; Sun, 10 Nov 2019 03:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1573354399;
-	bh=sYb0kI6xjNmTi/Z3GcNdyHBUYvIrv95pkcRwyTj4ySM=;
+	s=default; t=1573354911;
+	bh=8DD4osZh3pqSw/v3Z8lBeKCbS7/Ml7qR65jLNRSZyrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=2Km3xbILH2dY9VtYkwvRMlvn/htY8DdQel+OCK/XfYjlmj33F+wu0gr4AhphfXQXU
-	 hhtfVEppYKtozZV7RblhVy0+7srlySVKJN5dqh5AmhHbwYLn8wqqWnHZgizpUUL0x0
-	 fz5ZE8g+rcA0hyEMKUAvYRS/y4u1oLtsPM3XDIBA=
+	b=uS7bh17+6cwUjS83pkGbrwtGSglnbPl+GxgOgxaH91vWepjIPninp582j5sXzyrOV
+	 xY0qXxbzgdzi1ApLccm8uOSalWRdF3zsjk8oCC3LYnDzkXI+2MY6kAk5kgQlsyGtJu
+	 2qPKwVyXs+Xd2rgWkGVN2/g9P8UYjHH0WD8K5B8Q=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729956AbfKJCvW (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 9 Nov 2019 21:51:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35784 "EHLO mail.kernel.org"
+        id S1729506AbfKJCtk (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sat, 9 Nov 2019 21:49:40 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59476 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729950AbfKJCvV (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Sat, 9 Nov 2019 21:51:21 -0500
+        id S1729498AbfKJCtj (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Sat, 9 Nov 2019 21:49:39 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CB1AE22595;
-        Sun, 10 Nov 2019 02:51:19 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0D03322581;
+        Sun, 10 Nov 2019 02:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573354280;
-        bh=sYb0kI6xjNmTi/Z3GcNdyHBUYvIrv95pkcRwyTj4ySM=;
+        s=default; t=1573354179;
+        bh=8DD4osZh3pqSw/v3Z8lBeKCbS7/Ml7qR65jLNRSZyrc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yrYOtEsccg/XgIsUophuhn8LZmmYOJScg/NXlFQP6O28nlAGDbmfAXP6dVK6sFwcP
-         yhlB03kVS7bjftBCOtHGMevclIXiJ7EiEKUg2+VfB8sFj1qaP8aNOC/R3UTjZQZPtX
-         7Da6zv6BRYEghBS/ILXSdNeRb4yHmWpNeZfC+/TM=
+        b=NWQdmhx4D1nh6VHPgsz9WlVM3JvuhWWfGUBO19agIsDqSfgHYfSPrFN2ti1JELu0c
+         90mMgr/QchD6RXf7GP5T/CskoACyFkIwDL84R9uEWnZJcrdJoPuUBntssFCc8jxE7W
+         w3ZnlZg4ry8T49zSesKTpDahnSC+BxhShTMRoIlw=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Dengcheng Zhu <dzhu@wavecomp.com>,
@@ -45,12 +45,12 @@ Cc:     Dengcheng Zhu <dzhu@wavecomp.com>,
         Paul Burton <paul.burton@mips.com>, pburton@wavecomp.com,
         ralf@linux-mips.org, linux-mips@linux-mips.org,
         Sasha Levin <sashal@kernel.org>, linux-mips@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 23/40] MIPS: kexec: Relax memory restriction
-Date:   Sat,  9 Nov 2019 21:50:15 -0500
-Message-Id: <20191110025032.827-23-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 29/66] MIPS: kexec: Relax memory restriction
+Date:   Sat,  9 Nov 2019 21:48:08 -0500
+Message-Id: <20191110024846.32598-29-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191110025032.827-1-sashal@kernel.org>
-References: <20191110025032.827-1-sashal@kernel.org>
+In-Reply-To: <20191110024846.32598-1-sashal@kernel.org>
+References: <20191110024846.32598-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -84,7 +84,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/mips/include/asm/kexec.h b/arch/mips/include/asm/kexec.h
-index ee25ebbf2a288..b6a4d4aa548f5 100644
+index 493a3cc7c39ad..cfdbe66575f4d 100644
 --- a/arch/mips/include/asm/kexec.h
 +++ b/arch/mips/include/asm/kexec.h
 @@ -12,11 +12,11 @@

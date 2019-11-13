@@ -2,113 +2,120 @@ Return-Path: <SRS0=VLT5=ZF=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_2 autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DC3AC33C8C
-	for <linux-mips@archiver.kernel.org>; Wed, 13 Nov 2019 16:26:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 38FA7C43215
+	for <linux-mips@archiver.kernel.org>; Wed, 13 Nov 2019 20:34:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 70B8522CB3
-	for <linux-mips@archiver.kernel.org>; Wed, 13 Nov 2019 15:49:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E3A4A206F0
+	for <linux-mips@archiver.kernel.org>; Wed, 13 Nov 2019 20:34:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726395AbfKMPtu (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 13 Nov 2019 10:49:50 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59466 "EHLO mail.kernel.org"
+        id S1726409AbfKMUe3 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 13 Nov 2019 15:34:29 -0500
+Received: from foss.arm.com ([217.140.110.172]:58006 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726276AbfKMPtt (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 13 Nov 2019 10:49:49 -0500
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 26B8222B4B;
-        Wed, 13 Nov 2019 15:49:47 +0000 (UTC)
-Date:   Wed, 13 Nov 2019 10:49:45 -0500
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Dmitry Safonov <dima@arista.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Dmitry Safonov <0x7f454c46@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ingo Molnar <mingo@kernel.org>, Jiri Slaby <jslaby@suse.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Ben Segall <bsegall@google.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        James Hogan <jhogan@kernel.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Mel Gorman <mgorman@suse.de>, Michal Simek <monstr@monstr.eu>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Burton <paulburton@kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
+        id S1726162AbfKMUe3 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 13 Nov 2019 15:34:29 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2ECF57A7;
+        Wed, 13 Nov 2019 12:34:28 -0800 (PST)
+Received: from [10.1.196.37] (e121345-lin.cambridge.arm.com [10.1.196.37])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9CFC03F52E;
+        Wed, 13 Nov 2019 12:34:23 -0800 (PST)
+Subject: Re: [PATCH] dma-mapping: treat dev->bus_dma_mask as a DMA limit
+To:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Marek Szyprowski <m.szyprowski@samsung.com>
+Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-ide@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Paul Burton <paulburton@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>, x86@kernel.org,
+        phil@raspberrypi.org, linux-acpi@vger.kernel.org,
+        Ingo Molnar <mingo@redhat.com>,
+        James Hogan <jhogan@kernel.org>, Len Brown <lenb@kernel.org>,
+        devicetree@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Will Deacon <will@kernel.org>, linux-mips@vger.kernel.org,
-        linux-riscv@lists.infradead.org
-Subject: Re: [PATCH 01/50] kallsyms/printk: Add loglvl to print_ip_sym()
-Message-ID: <20191113104945.604e34d2@gandalf.local.home>
-In-Reply-To: <20191106030542.868541-2-dima@arista.com>
-References: <20191106030542.868541-1-dima@arista.com>
-        <20191106030542.868541-2-dima@arista.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        linux-arm-kernel@lists.infradead.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+References: <20191113161340.27228-1-nsaenzjulienne@suse.de>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <f74cd8a6-00bf-46c3-8e2e-d278e72d6e0e@arm.com>
+Date:   Wed, 13 Nov 2019 20:34:15 +0000
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20191113161340.27228-1-nsaenzjulienne@suse.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Wed,  6 Nov 2019 03:04:52 +0000
-Dmitry Safonov <dima@arista.com> wrote:
+On 13/11/2019 4:13 pm, Nicolas Saenz Julienne wrote:
+> Using a mask to represent bus DMA constraints has a set of limitations.
+> The biggest one being it can only hold a power of two (minus one). The
+> DMA mapping code is already aware of this and treats dev->bus_dma_mask
+> as a limit. This quirk is already used by some architectures although
+> still rare.
+> 
+> With the introduction of the Raspberry Pi 4 we've found a new contender
+> for the use of bus DMA limits, as its PCIe bus can only address the
+> lower 3GB of memory (of a total of 4GB). This is impossible to represent
+> with a mask. To make things worse the device-tree code rounds non power
+> of two bus DMA limits to the next power of two, which is unacceptable in
+> this case.
+> 
+> In the light of this, rename dev->bus_dma_mask to dev->bus_dma_limit all
+> over the tree and treat it as such. Note that dev->bus_dma_limit is
+> meant to contain the higher accesible DMA address.
 
-> --- a/kernel/trace/ftrace.c
-> +++ b/kernel/trace/ftrace.c
-> @@ -2002,12 +2002,12 @@ void ftrace_bug(int failed, struct dyn_ftrace *rec)
->  	case -EFAULT:
->  		FTRACE_WARN_ON_ONCE(1);
->  		pr_info("ftrace faulted on modifying ");
+Neat, you win a "why didn't I do it that way in the first place?" :)
 
-Hmm, I wonder if I should change that from info to something more
-important, as this is important information for debugging. But this has
-nothing to do with this patch set.
+Looking at it without all the history of previous attempts, this looks 
+entirely reasonable, and definitely a step in the right direction.
 
-> -		print_ip_sym(ip);
-> +		print_ip_sym(KERN_INFO, ip);
+[...]
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index 5a7551d060f2..f18827cf96df 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -1097,7 +1097,7 @@ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
+>   		 * Limit coherent and dma mask based on size
+>   		 * retrieved from firmware.
+>   		 */
+> -		dev->bus_dma_mask = mask;
+> +		dev->bus_dma_limit = mask;
 
-Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Although this preserves the existing behaviour, as in of_dma_configure() 
+we can do better here since we have the original address range to hand. 
+I think it's worth keeping the ACPI and OF paths in sync for minor 
+tweaks like this, rather than letting them diverge unnecessarily.
 
--- Steve
+Otherwise, the rest looks OK to me - in principle we could store it as 
+an exclusive limit such that we could then streamline the min_not_zero() 
+tests to just min(mask, limit - 1), but that's probably too clever for 
+its own good.
 
->  		break;
->  	case -EINVAL:
->  		FTRACE_WARN_ON_ONCE(1);
->  		pr_info("ftrace failed to modify ");
-> -		print_ip_sym(ip);
-> +		print_ip_sym(KERN_INFO, ip);
->  		print_ip_ins(" actual:   ", (unsigned char *)ip);
->  		pr_cont("\n");
->  		if (ftrace_expected) {
-> @@ -2018,12 +2018,12 @@ void ftrace_bug(int failed, struct dyn_ftrace *rec)
->  	case -EPERM:
->  		FTRACE_WARN_ON_ONCE(1);
->  		pr_info("ftrace faulted on writing ");
-> -		print_ip_sym(ip);
-> +		print_ip_sym(KERN_INFO, ip);
->  		break;
->  	default:
->  		FTRACE_WARN_ON_ONCE(1);
->  		pr_info("ftrace faulted on unknown error ");
-> -		print_ip_sym(ip);
-> +		print_ip_sym(KERN_INFO, ip);
->  	}
->  	print_bug_type();
->  	if (rec) {
+Robin.
 
+>   		dev->coherent_dma_mask = mask;
+>   		*dev->dma_mask = mask;
+>   	}

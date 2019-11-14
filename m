@@ -6,76 +6,63 @@ X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
 	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5FC9DC432C3
-	for <linux-mips@archiver.kernel.org>; Thu, 14 Nov 2019 00:00:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 258CCC432C3
+	for <linux-mips@archiver.kernel.org>; Thu, 14 Nov 2019 00:00:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 70525206F2
-	for <linux-mips@archiver.kernel.org>; Thu, 14 Nov 2019 00:00:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3BE7E206F2
+	for <linux-mips@archiver.kernel.org>; Thu, 14 Nov 2019 00:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1573689608;
-	bh=an73RoCEpEY4XTHg9/CJPsUgM/+xPI7xEYL5UWkn8wY=;
+	s=default; t=1573689614;
+	bh=SMoH6WwYPt/ixZvrWX0yET7Q++IwXKfiGaXl8elanxg=;
 	h=In-Reply-To:References:Cc:To:From:Subject:Date:List-ID:From;
-	b=o2YK4gqZWqxaJ4zNxZ1viiTYREAXRnbM8+OrM+XHgem/+eFFC4Tywbclz5K/CKVD/
-	 itaqxygvpywXV+TgOX0MFSXw9xdXfr31y31PKV++XVAOrHI48GYDNooJBiXBBs6uMw
-	 767cIhIpNYU03gAhdxIFE03klIlu0AayUMh4aZo8=
+	b=MplMXdyIpOeJ1m6ahruYQ5mZ94GZ+wC0/1vul+Qezf+263MyvDHp0W+0DXZobhtml
+	 JT9YGK5+mgABHDhvJbGL/XJLzmNxdVFDctjd/jBT4B19Vs9GK+aPK9+RtyAoaN4ngP
+	 9AC2XimYLVJSU4l3wRNl/oW9a442tDv4HH7qr6R8=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726528AbfKMX74 (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Wed, 13 Nov 2019 18:59:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:43784 "EHLO mail.kernel.org"
+        id S1726195AbfKNAAN (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 13 Nov 2019 19:00:13 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44052 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726195AbfKMX74 (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Wed, 13 Nov 2019 18:59:56 -0500
+        id S1726628AbfKNAAN (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 13 Nov 2019 19:00:13 -0500
 Received: from kernel.org (unknown [104.132.0.74])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 927B6206EE;
-        Wed, 13 Nov 2019 23:59:55 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 01505206F0;
+        Thu, 14 Nov 2019 00:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573689595;
-        bh=an73RoCEpEY4XTHg9/CJPsUgM/+xPI7xEYL5UWkn8wY=;
+        s=default; t=1573689613;
+        bh=SMoH6WwYPt/ixZvrWX0yET7Q++IwXKfiGaXl8elanxg=;
         h=In-Reply-To:References:Cc:To:From:Subject:Date:From;
-        b=KVXFppjrpKPUhInreh3eWJeoaCWQlOvCbQy4T6yc1iqduMXlETStW4X0/cV2yQ6Ee
-         E85DW0KX5Ho0siUwyw6r//HEMWtB/w9jwiUt8H+VmIf4gh7m4xVFMa00OVfZO/3E8N
-         /CoWBhTmYJO/HZPtata10Kjm/6/1s4TJVZeRiEFc=
+        b=v6azWa7aLlXLxpMwHARRMmnvE9HBxwA8StGNNm56uYbBgTbSRdNUbj08rc7id5EMe
+         vgK/P8D++PHM9JUtGuOeLOZiYdc3SJ2s5vufdHshIrxuoGRY223prQn1WxZPCzjZsk
+         Q8AsYO8hXW+smxrAEll4s0RCSXXLqIqpZOs6qjZE=
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20191112005544.GB7038@bogus>
-References: <1571421006-12771-1-git-send-email-zhouyanjie@zoho.com> <1573378102-72380-1-git-send-email-zhouyanjie@zoho.com> <1573378102-72380-2-git-send-email-zhouyanjie@zoho.com> <20191112005544.GB7038@bogus>
-Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        mturquette@baylibre.com, paul.burton@mips.com, robh+dt@kernel.org,
-        syq@debian.org, mark.rutland@arm.com, paul@crapouillou.net
-To:     Rob Herring <robh@kernel.org>, Zhou Yanjie <zhouyanjie@zoho.com>
+In-Reply-To: <1573378102-72380-3-git-send-email-zhouyanjie@zoho.com>
+References: <1571421006-12771-1-git-send-email-zhouyanjie@zoho.com> <1573378102-72380-1-git-send-email-zhouyanjie@zoho.com> <1573378102-72380-3-git-send-email-zhouyanjie@zoho.com>
+Cc:     linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, mturquette@baylibre.com,
+        paul.burton@mips.com, robh+dt@kernel.org, syq@debian.org,
+        mark.rutland@arm.com, paul@crapouillou.net
+To:     Zhou Yanjie <zhouyanjie@zoho.com>, linux-mips@vger.kernel.org
 From:   Stephen Boyd <sboyd@kernel.org>
-Subject: Re: [PATCH 1/2 v3] dt-bindings: clock: Add X1000 bindings.
+Subject: Re: [PATCH 2/2 v3] clk: Ingenic: Add CGU driver for X1000.
 User-Agent: alot/0.8.1
-Date:   Wed, 13 Nov 2019 15:59:54 -0800
-Message-Id: <20191113235955.927B6206EE@mail.kernel.org>
+Date:   Wed, 13 Nov 2019 16:00:11 -0800
+Message-Id: <20191114000013.01505206F0@mail.kernel.org>
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Quoting Rob Herring (2019-11-11 16:55:44)
-> On Sun, 10 Nov 2019 17:28:21 +0800, Zhou Yanjie wrote:
-> > Add the clock bindings for the X1000 Soc from Ingenic.
-> >=20
-> > Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
-> > ---
-> >  .../devicetree/bindings/clock/ingenic,cgu.txt      |  1 +
-> >  include/dt-bindings/clock/x1000-cgu.h              | 44 ++++++++++++++=
-++++++++
-> >  2 files changed, 45 insertions(+)
-> >  create mode 100644 include/dt-bindings/clock/x1000-cgu.h
-> >=20
+Quoting Zhou Yanjie (2019-11-10 01:28:22)
+> Add support for the clocks provided by the CGU in the Ingenic X1000
+> SoC, making use of the cgu code to do the heavy lifting.
 >=20
-> Please add Acked-by/Reviewed-by tags when posting new versions. However,
-> there's no need to repost patches *only* to add the tags. The upstream
-> maintainer will do that for acks received on the version they apply.
->=20
-> If a tag was not added on purpose, please state why and what changed.
+> Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
+> ---
 
-It looks like some extra defines were added. I carried forward your
-review tag.
+Applied to clk-next
 

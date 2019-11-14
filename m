@@ -1,128 +1,67 @@
-Return-Path: <SRS0=9xw0=ZF=vger.kernel.org=linux-m68k-owner@kernel.org>
+Return-Path: <SRS0=ixen=ZG=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CEDAC43331
-	for <linux-m68k@archiver.kernel.org>; Wed, 13 Nov 2019 07:53:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F8C7C43141
+	for <linux-mips@archiver.kernel.org>; Thu, 14 Nov 2019 00:00:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 2FD36222C1
-	for <linux-m68k@archiver.kernel.org>; Wed, 13 Nov 2019 07:53:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 987EE206F5
+	for <linux-mips@archiver.kernel.org>; Thu, 14 Nov 2019 00:00:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1573689608;
+	bh=Y6Eieh9beInLEW7jW9lSW9b/ygUtDFn49k3uQk4DJL4=;
+	h=In-Reply-To:References:Cc:To:From:Subject:Date:List-ID:From;
+	b=2XkG2mnXLDCAnGgALGUpL2GU8NijX1uL7WPxkyNAdc22wwNHUgX1pRKKdW3OekUlZ
+	 2lr9caj/N9KML3J1CO4IqOsx8IC1YdAwdyqtMtirTYvAu3UME/7NusNhp57slATv7x
+	 +x5LcILg8tcKbHI7GZ8xC2Mlii5BVZUcNJregKb8=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725976AbfKMHxF (ORCPT <rfc822;linux-m68k@archiver.kernel.org>);
-        Wed, 13 Nov 2019 02:53:05 -0500
-Received: from mout-p-201.mailbox.org ([80.241.56.171]:42486 "EHLO
-        mout-p-201.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726074AbfKMHxE (ORCPT
-        <rfc822;linux-m68k@lists.linux-m68k.org>);
-        Wed, 13 Nov 2019 02:53:04 -0500
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        id S1726949AbfKNAAH (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Wed, 13 Nov 2019 19:00:07 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43930 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726628AbfKNAAH (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Wed, 13 Nov 2019 19:00:07 -0500
+Received: from kernel.org (unknown [104.132.0.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 47CcKk24kPzQlBh;
-        Wed, 13 Nov 2019 08:52:58 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
-        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
-        with ESMTP id Bp_N38N4yiqo; Wed, 13 Nov 2019 08:52:50 +0100 (CET)
-Date:   Wed, 13 Nov 2019 18:52:27 +1100
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Al Viro <viro@zeniv.linux.org.uk>
-Cc:     Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Jann Horn <jannh@google.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tycho Andersen <tycho@tycho.ws>,
-        David Drysdale <drysdale@google.com>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Christian Brauner <christian@brauner.io>,
-        Aleksa Sarai <asarai@suse.de>,
-        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        linux-api@vger.kernel.org, libc-alpha@sourceware.org,
-        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v15 6/9] namei: LOOKUP_{IN_ROOT,BENEATH}: permit limited
- ".." resolution
-Message-ID: <20191113075227.lu5b5uvc2nuk76uk@yavin.dot.cyphar.com>
-References: <20191105090553.6350-1-cyphar@cyphar.com>
- <20191105090553.6350-7-cyphar@cyphar.com>
- <20191113020917.GC26530@ZenIV.linux.org.uk>
+        by mail.kernel.org (Postfix) with ESMTPSA id 4DD0D206F0;
+        Thu, 14 Nov 2019 00:00:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573689607;
+        bh=Y6Eieh9beInLEW7jW9lSW9b/ygUtDFn49k3uQk4DJL4=;
+        h=In-Reply-To:References:Cc:To:From:Subject:Date:From;
+        b=I4pMUDX6RuRIZY9d5h/7PHKkS9Z4/N9AQMXFgY7C2B0zXUqMem3cSuhBT6KHGkms9
+         jy7l8oAw42vPiMJLQ0Xz2TyVe/F3vChqS9sGfEwVr+EFCfPkEovPO+nncURMRB+Vj9
+         XTG6OWp6oQHFVizbwCpL77mYvZ1j1iQxHN8bRJ/M=
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="qprdfpbfkuvffdu5"
-Content-Disposition: inline
-In-Reply-To: <20191113020917.GC26530@ZenIV.linux.org.uk>
-Sender: linux-m68k-owner@vger.kernel.org
-Precedence: bulk
-List-ID: <linux-m68k.vger.kernel.org>
-X-Mailing-List: linux-m68k@vger.kernel.org
-Message-ID: <20191113075227.Tsrt5n0sJ00ZANpsV0xEm8fdtCSKYJaALBsO4nJD-Uk@z>
-
-
---qprdfpbfkuvffdu5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1573378102-72380-2-git-send-email-zhouyanjie@zoho.com>
+References: <1571421006-12771-1-git-send-email-zhouyanjie@zoho.com> <1573378102-72380-1-git-send-email-zhouyanjie@zoho.com> <1573378102-72380-2-git-send-email-zhouyanjie@zoho.com>
+Cc:     linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, mturquette@baylibre.com,
+        paul.burton@mips.com, robh+dt@kernel.org, syq@debian.org,
+        mark.rutland@arm.com, paul@crapouillou.net
+To:     Zhou Yanjie <zhouyanjie@zoho.com>, linux-mips@vger.kernel.org
+From:   Stephen Boyd <sboyd@kernel.org>
+Subject: Re: [PATCH 1/2 v3] dt-bindings: clock: Add X1000 bindings.
+User-Agent: alot/0.8.1
+Date:   Wed, 13 Nov 2019 16:00:06 -0800
+Message-Id: <20191114000007.4DD0D206F0@mail.kernel.org>
+Sender: linux-mips-owner@vger.kernel.org
+Precedence: bulk
+List-ID: <linux-mips.vger.kernel.org>
+X-Mailing-List: linux-mips@vger.kernel.org
 
-On 2019-11-13, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> On Tue, Nov 05, 2019 at 08:05:50PM +1100, Aleksa Sarai wrote:
+Quoting Zhou Yanjie (2019-11-10 01:28:21)
+> Add the clock bindings for the X1000 Soc from Ingenic.
 >=20
-> > One other possible alternative (which previous versions of this patch
-> > used) would be to check with path_is_under() if there was a racing
-> > rename or mount (after re-taking the relevant seqlocks). While this does
-> > work, it results in possible O(n*m) behaviour if there are many renames
-> > or mounts occuring *anywhere on the system*.
->=20
-> BTW, do you realize that open-by-fhandle (or working nfsd, for that matte=
-r)
-> will trigger arseloads of write_seqlock(&rename_lock) simply on d_splice_=
-alias()
-> bringing disconnected subtrees in contact with parent?
+> Signed-off-by: Zhou Yanjie <zhouyanjie@zoho.com>
+> ---
 
-I wasn't aware of that -- that makes path_is_under() even less viable.
-I'll reword it to be clearer that path_is_under() isn't a good idea and
-why we went with -EAGAIN over an in-kernel retry.
+Applied to clk-next
 
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---qprdfpbfkuvffdu5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXcu2OAAKCRCdlLljIbnQ
-EtqZAQCjNdiANKBF7WCOTHUeD48U+o/7WczR7I/1WTsCcSBp9gEA6HgEdHKRHmol
-+5Fvn3Eg1Tya83fWQgWoVLu8i6CUUwE=
-=voMa
------END PGP SIGNATURE-----
-
---qprdfpbfkuvffdu5--

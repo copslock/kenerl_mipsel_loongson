@@ -1,188 +1,129 @@
-Return-Path: <SRS0=JohQ=ZG=vger.kernel.org=linux-m68k-owner@kernel.org>
+Return-Path: <SRS0=8q/F=ZH=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 732F3C43215
-	for <linux-m68k@archiver.kernel.org>; Thu, 14 Nov 2019 13:33:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4EDE5C432C3
+	for <linux-mips@archiver.kernel.org>; Fri, 15 Nov 2019 00:30:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 4DE47206E6
-	for <linux-m68k@archiver.kernel.org>; Thu, 14 Nov 2019 13:33:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 20AB820727
+	for <linux-mips@archiver.kernel.org>; Fri, 15 Nov 2019 00:30:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1573777824;
+	bh=yJKFYb8fJypr2wTAgsff0UsCFgPG4gcuFQXMSb8Cbps=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=VGWYmgKvlrsOBAiP8T8UFXo4S/TSH/ZlUmLbPcM2pApmLsWn+HH/GmBpuWNqbzpbO
+	 d+MVKSzMgXe9QKBgN/GJ1oCnInG/OIuhbG/YkwGak481R3tkoR5QE2o5HG8x+ryZDx
+	 F3lAVrUNOXXZb+ATkRYsoQOuHFsquYynfzPPf5J8=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726528AbfKNNdj (ORCPT <rfc822;linux-m68k@archiver.kernel.org>);
-        Thu, 14 Nov 2019 08:33:39 -0500
-Received: from mout-p-201.mailbox.org ([80.241.56.171]:21232 "EHLO
-        mout-p-201.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726202AbfKNNdj (ORCPT
-        <rfc822;linux-m68k@lists.linux-m68k.org>);
-        Thu, 14 Nov 2019 08:33:39 -0500
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:105:465:1:1:0])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 47DMrH5rJDzQl9x;
-        Thu, 14 Nov 2019 14:33:35 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
-        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
-        with ESMTP id Wtrcg9lX2PUE; Thu, 14 Nov 2019 14:33:30 +0100 (CET)
-Date:   Fri, 15 Nov 2019 00:33:00 +1100
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Al Viro <viro@zeniv.linux.org.uk>
-Cc:     Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        David Drysdale <drysdale@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Christian Brauner <christian@brauner.io>,
-        Aleksa Sarai <asarai@suse.de>,
-        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        linux-api@vger.kernel.org, libc-alpha@sourceware.org,
-        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v15 3/9] namei: LOOKUP_NO_XDEV: block mountpoint crossing
-Message-ID: <20191114133300.soxnzmufwbt2ddid@yavin.dot.cyphar.com>
-References: <20191105090553.6350-1-cyphar@cyphar.com>
- <20191105090553.6350-4-cyphar@cyphar.com>
- <20191113013630.GZ26530@ZenIV.linux.org.uk>
- <20191114044945.ldedzjrb4s7i7irr@yavin.dot.cyphar.com>
- <20191114054348.GH26530@ZenIV.linux.org.uk>
+        id S1727295AbfKOAaX (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Thu, 14 Nov 2019 19:30:23 -0500
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:36524 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727020AbfKOAaX (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Thu, 14 Nov 2019 19:30:23 -0500
+Received: by mail-pg1-f194.google.com with SMTP id k13so4856209pgh.3;
+        Thu, 14 Nov 2019 16:30:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=bRROesaeb887xsfxVtqXv2u2WV15FLCC+kH5tjbZrG4=;
+        b=rahj838TYFEVrCmHe0gH4QiWTRk4J4HGu0pIFSvO5x1a0HQZovDk8FQtaidt4Rw5YG
+         5vJ+jYIyP6CcJWTHsoAhuGuJ7Q7Kp3WojhPmVBDOj+B7GjmkLe94jwetzhrziI0VBQhZ
+         xkoAhVkKbDnuex2tvVLA40/+BwknEownVEZJXVsXjOXommRCUwsIyMNRL5MzaMZBlJLK
+         aUbMocugarGvpBA/OKTBv3CDnwG4S//9c9WMRu8ZoBiPJw+8FM2MhBJiblyfh631ptBp
+         es6NqZsP/4ApwJKQq1sMSjhGP5GOyNbv9K4b1797ta8Jd0AMSQBHK3WTo6ZHUxQY7+fi
+         UY7g==
+X-Gm-Message-State: APjAAAW7QiPpVxz/uCMkp4uyv97nhqBMN4VYHrSorV/4G7x4BDzFj+9t
+        N3yBb5A/DjnhCEyiQBzdS+Q=
+X-Google-Smtp-Source: APXvYqxRCiDHNwOwz8S2vHv+Vw1KysxP6MjchfjJ8RJjB+G4iXLq5xzmRwKDSWDpgbgjjVU/9UyUpw==
+X-Received: by 2002:a65:528b:: with SMTP id y11mr13072963pgp.420.1573777820863;
+        Thu, 14 Nov 2019 16:30:20 -0800 (PST)
+Received: from localhost ([2601:646:8a00:9810:5af3:56d9:f882:39d4])
+        by smtp.gmail.com with ESMTPSA id y24sm9046884pfr.116.2019.11.14.16.30.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Nov 2019 16:30:19 -0800 (PST)
+Date:   Thu, 14 Nov 2019 16:30:51 -0800
+From:   Paul Burton <paulburton@kernel.org>
+To:     Daniel Thompson <daniel.thompson@linaro.org>
+Cc:     Douglas Anderson <dianders@chromium.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Jason Wessel <jason.wessel@windriver.com>,
+        qiaochong@loongson.cn, kgdb-bugreport@lists.sourceforge.net,
+        ralf@linux-mips.org,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        James Hogan <jhogan@kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 1/5] MIPS: kdb: Remove old workaround for backtracing on
+ other CPUs
+Message-ID: <20191115003051.blbbwr7hmuqyzjwb@lantea.localdomain>
+References: <20191109191644.191766-1-dianders@chromium.org>
+ <20191109111623.1.I30a0cac4d9880040c8d41495bd9a567fe3e24989@changeid>
+ <20191114105125.t3jma3ghwj2wtv6w@holly.lan>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="zoh3k636biknnjmo"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20191114054348.GH26530@ZenIV.linux.org.uk>
-Sender: linux-m68k-owner@vger.kernel.org
+In-Reply-To: <20191114105125.t3jma3ghwj2wtv6w@holly.lan>
+User-Agent: NeoMutt/20180716
+Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
-List-ID: <linux-m68k.vger.kernel.org>
-X-Mailing-List: linux-m68k@vger.kernel.org
-Message-ID: <20191114133300.6wbSt74OpHFi8iXtrJTyX92NLvv4-aOZaqZsz0dqoaQ@z>
+List-ID: <linux-mips.vger.kernel.org>
+X-Mailing-List: linux-mips@vger.kernel.org
 
+Hi Daniel,
 
---zoh3k636biknnjmo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Thu, Nov 14, 2019 at 10:51:25AM +0000, Daniel Thompson wrote:
+> On Sat, Nov 09, 2019 at 11:16:40AM -0800, Douglas Anderson wrote:
+> > As of commit 2277b492582d ("kdb: Fix stack crawling on 'running' CPUs
+> > that aren't the master") we no longer need any special case for doing
+> > stack dumps on CPUs that are not the kdb master.  Let's remove.
+> > 
+> > Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> > ---
+> > I have no way to test this personally, so hopefully someone who uses
+> > kdb/kgdb on MIPS can.
+> 
+> I took this as a hint to add mips support to kgdbtest ;-)
 
-On 2019-11-14, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> On Thu, Nov 14, 2019 at 03:49:45PM +1100, Aleksa Sarai wrote:
-> > On 2019-11-13, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> > > On Tue, Nov 05, 2019 at 08:05:47PM +1100, Aleksa Sarai wrote:
-> > >=20
-> > > > @@ -862,6 +870,8 @@ static int nd_jump_root(struct nameidata *nd)
-> > > >  void nd_jump_link(struct path *path)
-> > > >  {
-> > > >  	struct nameidata *nd =3D current->nameidata;
-> > > > +
-> > > > +	nd->last_magiclink.same_mnt =3D (nd->path.mnt =3D=3D path->mnt);
-> > > >  	path_put(&nd->path);
-> > > > =20
-> > > >  	nd->path =3D *path;
-> > > > @@ -1082,6 +1092,10 @@ const char *get_link(struct nameidata *nd)
-> > > >  		if (nd->flags & LOOKUP_MAGICLINK_JUMPED) {
-> > > >  			if (unlikely(nd->flags & LOOKUP_NO_MAGICLINKS))
-> > > >  				return ERR_PTR(-ELOOP);
-> > > > +			if (unlikely(nd->flags & LOOKUP_NO_XDEV)) {
-> > > > +				if (!nd->last_magiclink.same_mnt)
-> > > > +					return ERR_PTR(-EXDEV);
-> > > > +			}
-> > > >  		}
-> > >=20
-> > > Ugh...  Wouldn't it be better to take that logics (some equivalent th=
-ereof)
-> > > into nd_jump_link()?  Or just have nd_jump_link() return an error...
-> >=20
-> > This could be done, but the reason for stashing it away in
-> > last_magiclink is because of the future magic-link re-opening patches
-> > which can't be implemented like that without putting the open_flags
-> > inside nameidata (which was decided to be too ugly a while ago).
-> >=20
-> > My point being that I could implement it this way for this series, but
-> > I'd have to implement something like last_magiclink when I end up
-> > re-posting the magic-link stuff in a few weeks.
-> >=20
-> > Looking at all the nd_jump_link() users, the other option is to just
-> > disallow magic-link crossings entirely for LOOKUP_NO_XDEV. The only
-> > thing allowing them permits is to resolve file descriptors that are
-> > pointing to the same procfs mount -- and it's unclear to me how useful
-> > that really is (apparmorfs and nsfs will always give -EXDEV because
-> > aafs_mnt and nsfs_mnt are internal kernel vfsmounts).
->=20
-> I would rather keep the entire if (nd->flags & LOOKUP_MAGICLINK_JUMPED)
-> out of the get_link().  If you want to generate some error if
-> nd_jump_link() has been called, just do it right there.  The fewer
-> pieces of state need to be carried around, the better...
+Wonderful! :)
 
-Sure, I can make nd_jump_link() give -ELOOP and drop the current need
-for LOOKUP_MAGICLINK_JUMPED -- if necessary we can re-add it for the
-magic-link reopening patches.
+> Support is added and working well. Unfortunately lack of familiarity
+> with mips means I have not yet figured out which mips defconfig gives
+> us working SMP (and what the corresponding qemu invocation should be).
 
-> And as for opening them...  Why would you need full open_flags in there?
-> Details, please...
+You can build 64r6el_defconfig & boot it something like this:
 
-I was referring to [1] which has been dropped from this series. I
-misspoke -- you don't need the full open_flags, you just need acc_mode
-in nameidata -- but from memory you (understandably) weren't in favour
-of that either because it further muddled the open semantics with namei.
+$ qemu-system-mips64el \
+    -M boston -cpu I6500 -smp 4 \
+    -kernel arch/mips/boot/vmlinux.gz.itb \
+    -serial stdio \
+    -hda my-disk-image.bin \
+    -append "root=/dev/sda"
 
-So the solution I went with was to stash away the i_mode of the
-magiclink in nd->last_magiclink.mode (though to avoid a race which Jann
-found, you actually need to recalculate it when you call nd_jump_link()
-but that's a different topic) and then check it in trailing_magiclink().
+Linux should see the system as a single core with 4 hardware threads
+(VPs or Virtual Processors in MIPS terminology).
 
-However, I've since figured out that we need to restrict things like
-bind-mounts and truncate() because they can be used to get around the
-restrictions. I dropped that patch from this series so that I could work
-on implementing the restrictions for the other relevant VFS syscalls
-separately from openat2 (upgrade_mask will be re-added to open_how with
-those patches).
+> > Ideally this patch should be Acked by MIPS folks and then land through
+> > the kdb/kgdb tree since the next patch in the series, ("kdb:
+> > kdb_current_regs should be private") depends on it.
+> 
+> An Acked-by from a MIPS maintainer would be very welcome. Perhaps
+> with a bit of extra work on the above I might be able to provide
+> a Tested-by:.
 
-My point was that AFAICS we will either have to have nd->acc_mode (or
-something similar) or have nd->last_magiclink in order to implement the
-magic-link reopening hardening.
+The patches look reasonable to me; I was hoping to test them before
+giving an ack but haven't had the time yet. It seems you may be making
+that easier :)
 
-[1]: https://lore.kernel.org/lkml/20190930183316.10190-2-cyphar@cyphar.com/
-
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---zoh3k636biknnjmo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXc1XiQAKCRCdlLljIbnQ
-EgEVAQDde9bpKjJAbLEIt4D/9cw3B8CHqEBeW8SnIT4PqQNQUQD/TtE4FY5p3N1d
-gPZFRde/N3ihwtWscDvPXctFNxykJAQ=
-=TSKH
------END PGP SIGNATURE-----
-
---zoh3k636biknnjmo--
+Thanks,
+    Paul

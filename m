@@ -1,4 +1,4 @@
-Return-Path: <SRS0=1EjI=ZJ=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=CZ/z=ZK=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
@@ -8,27 +8,27 @@ X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84019C432C0
-	for <linux-mips@archiver.kernel.org>; Sun, 17 Nov 2019 16:37:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CB291C432C3
+	for <linux-mips@archiver.kernel.org>; Mon, 18 Nov 2019 04:17:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5A95220715
-	for <linux-mips@archiver.kernel.org>; Sun, 17 Nov 2019 16:37:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 90FEC20720
+	for <linux-mips@archiver.kernel.org>; Mon, 18 Nov 2019 04:17:53 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=zoho.com header.i=zhouyanjie@zoho.com header.b="OBBKzJAQ"
+	dkim=pass (1024-bit key) header.d=zoho.com header.i=zhouyanjie@zoho.com header.b="eqbr+02V"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726171AbfKQQhY (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 17 Nov 2019 11:37:24 -0500
-Received: from sender4-pp-o98.zoho.com ([136.143.188.98]:25807 "EHLO
+        id S1726332AbfKRERx (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 17 Nov 2019 23:17:53 -0500
+Received: from sender4-pp-o98.zoho.com ([136.143.188.98]:25871 "EHLO
         sender4-pp-o98.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726069AbfKQQhY (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sun, 17 Nov 2019 11:37:24 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1574008614; cv=none; 
+        with ESMTP id S1726314AbfKRERw (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sun, 17 Nov 2019 23:17:52 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1574050633; cv=none; 
         d=zohomail.com; s=zohoarc; 
-        b=iZvZaFt2TDN4F+bPGgxQLCYTfmtL12svU+BXnmGWAQkzPUidKWcixIK+jvPOudN5BfRdCF49nd5SbRzcFWdR0NTN9G5Hyc/bbyreSa//+eBNsNOrqBspfQnFSQ/rk1KepAMO0wwa0ntUyCpGKqClU5Pz6lfMDRXeZx5oyFcwBO8=
+        b=LWIRgsgjSbpdYthFFRZ+BMAljnyU2PrWYNtoCwVx+1Q3WGKHqMA4Fth7OURLRZi2MD3EUMjVApJjW9JiKbjEZgD5VJuO21UOLAQ3fy8c+DvQQuwc6jDLOftBplOnltfOrmA5A7zijXSTh9HSsRCL/WxzBTqHdFMiBgU1PH25FY8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-        t=1574008614; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=82IU1NUBXG2G+tAXsvrhPZDTikNtk3RE8tTPl9Uh1wY=; 
-        b=jzmCZ24wNbZU5Zq4ErheBliuqPgIb9hEpstkZ/YWKVB2dcYcNu5LDgZchphcoRQ1fH9gFvv3P2k4huj1Qn4s9noi5VZJm3ymu3gdp3MZffvZ60imkF1RczRNsvH4wbep+tJMoMDOV54EoMyXNaSvUMEm3ybzQSM7jDjvF1BwyvE=
+        t=1574050633; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=aHnTiY4MATUs3VbgJH+xic5jl0bZNotDKT87u4DN7FE=; 
+        b=InL0I13cIdu1suH7bQ6R6IX79k6Osz/D0WJRlqdn4W0yMAAHI95HaCnfH+IL0vFtAUw0cc3vvVtdfPpzmXP41cldHqnGEDeYPvPcUb/2lzPtZf6/ZUgfY+6YXxDNjTpQDQDoOorAyn442VCMraj7sB5+lI5C/I+3D8hwRnmBJlI=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
         dkim=pass  header.i=zoho.com;
         spf=pass  smtp.mailfrom=zhouyanjie@zoho.com;
@@ -36,17 +36,17 @@ ARC-Authentication-Results: i=1; mx.zohomail.com;
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; 
   s=zapps768; d=zoho.com; 
   h=subject:to:references:cc:from:message-id:date:user-agent:mime-version:in-reply-to:content-type; 
-  b=CBMP1HfQWfMU89JNIaaATJeC427lNlhkq/Zag/M5bO3T7t8ztyLrXkYeYxxvR3h/hwXzku6J3Cra
-    ZhY9nS7jL+d7kgMLNJc2sBYf0/wbSYQXUnFHm0CuYlE02xZinDCe  
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1574008614;
+  b=ROboRtyzhiwNlR2ifB7DlEcGHqi3bMaxEDHftpt3EaVa3IjhFH++xy8JXt1qUOWsqtgOD1bo1p3F
+    8MhnfJhy2qbu9T0pNkyz/p3Z12zXdERw7vkSWXusSVZT+3UzRSJ4  
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1574050633;
         s=zm2019; d=zoho.com; i=zhouyanjie@zoho.com;
         h=Subject:To:References:Cc:From:Message-ID:Date:MIME-Version:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        l=4964; bh=82IU1NUBXG2G+tAXsvrhPZDTikNtk3RE8tTPl9Uh1wY=;
-        b=OBBKzJAQbQOnpqe70EQAv78yL4AV/6Vsa1I6gaoes9dEl+60TqV5IVrHa+DNjaPv
-        2zCdN5QLEmr68R8MJVThDtEY5F9VgQSdIFpVaAyIaLYzGkyumCr7C32veArLKWQYUo6
-        /btTkrU/clLts0jCcLcbm8cXC5pSXjm/n2FKTQUI=
+        l=4952; bh=aHnTiY4MATUs3VbgJH+xic5jl0bZNotDKT87u4DN7FE=;
+        b=eqbr+02VieLQI69iJ2MCiW85VZ5ifxhnU6aJ/L6OvKyku/IzKNCCJIhRvOk7SGd0
+        QZ3MdbGaFz8YOR98PvqrsceI3DIG6V+I1CfxPGh94aQnPkRwfawGXjukYOnLCBhImjo
+        U6glzWILEMjKwFN/z0PFSl1HuxpcRv2LmrIogC8I=
 Received: from [192.168.88.128] (171.221.112.196 [171.221.112.196]) by mx.zohomail.com
-        with SMTPS id 1574008614125857.3636712250745; Sun, 17 Nov 2019 08:36:54 -0800 (PST)
+        with SMTPS id 157405063211113.88116265251631; Sun, 17 Nov 2019 20:17:12 -0800 (PST)
 Subject: Re: [PATCH 2/2] MIPS: Ingenic: Disable abandoned HPTLB function.
 To:     Paul Cercueil <paul@crapouillou.net>
 References: <1571909341-10108-1-git-send-email-zhouyanjie@zoho.com>
@@ -59,8 +59,8 @@ Cc:     Paul Burton <paulburton@kernel.org>, linux-mips@vger.kernel.org,
         paul.burton@mips.com, chenhc@lemote.com, tglx@linutronix.de,
         jiaxun.yang@flygoat.com
 From:   Zhou Yanjie <zhouyanjie@zoho.com>
-Message-ID: <5DD1770F.7030300@zoho.com>
-Date:   Mon, 18 Nov 2019 00:36:31 +0800
+Message-ID: <5DD21B41.4010908@zoho.com>
+Date:   Mon, 18 Nov 2019 12:17:05 +0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.8.0
 MIME-Version: 1.0
@@ -113,16 +113,18 @@ On 2019=E5=B9=B411=E6=9C=8817=E6=97=A5 19:49, Paul Cercueil wrote:
 >
 > Actually hugepages work fine on all Ingenic SoCs I tested with, from=20
 > JZ4740 upwards, with the VTLB, so this is incorrect.
-
-It may be that I have misunderstood their explanation. I will check this=20
-with Ingenic
-again tomorrow. However, one thing is certain: these chips default to=20
-HPTLB mode
-after power-on, which will cause the kernel to be stuck (tested on=20
-JZ4770/JZ4775/X1000).
-Then need to shutdown HPTLB mode and use VTLB to start normally.
-
 >
+
+I once again checked with Ingenic. I was wrong before, and VTLB is fully
+implemented. HPTLB is a custom mode that is not compatible with the
+MIPS standard. The two are parallel relationship, not the complementary
+relationship I have previously understood. After the chip reset, the defaul=
+t
+is HPTLB mode, so we need to write 0xa9000000 to cp0 register 5 sel 4 to
+switch back to VTLB mode.
+
+Thanks and best regards!
+
 >
 >> Support for larger pages was implemented by a component called HPTLB=20
 >> that
@@ -139,11 +141,6 @@ Then need to shutdown HPTLB mode and use VTLB to start normally.
 > That's good info, please consider adding that in the comment and in=20
 > the commit message, and maybe also change the last sentence to reflect=20
 > what's actually going on with the infinite loop after the tlbmiss.
-
-OK, I will add them to the v3's comment and commit message.
-
-Thanks and best regards=EF=BC=81
-
 >
 > Cheers,
 > -Paul

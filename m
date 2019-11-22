@@ -1,76 +1,100 @@
-Return-Path: <SRS0=RVnT=ZN=vger.kernel.org=linux-mips-owner@kernel.org>
+Return-Path: <SRS0=LaxS=ZO=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 28410C43215
-	for <linux-mips@archiver.kernel.org>; Thu, 21 Nov 2019 17:17:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 41C94C432C0
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Nov 2019 06:09:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id F286E206CC
-	for <linux-mips@archiver.kernel.org>; Thu, 21 Nov 2019 17:17:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 09AD32068F
+	for <linux-mips@archiver.kernel.org>; Fri, 22 Nov 2019 06:09:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1574402951;
+	bh=rsLBM3cma18JC08uAkyl2VGiLgFBkK5qXvuZx/pyph4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=wEObG9VManwttVEM7mor/VG3/9RfG7LotK1boVMAZ0+I3FZpofM/BXqw1WhMsH/ow
+	 Q6V3NC9owGk7W0nq2xGBQrMQ0B4taqVf/kR+5ljDMKtVm/FCPgjZyCjBICwHGI+eQH
+	 eyhErmwudDeUPVQ54lSo5Om7DtNb3Z7qFWPZ0mbM=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726858AbfKURRR (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Thu, 21 Nov 2019 12:17:17 -0500
-Received: from verein.lst.de ([213.95.11.211]:47378 "EHLO verein.lst.de"
+        id S1727569AbfKVGJK (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Fri, 22 Nov 2019 01:09:10 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35450 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726279AbfKURRR (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Thu, 21 Nov 2019 12:17:17 -0500
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id A77C768BFE; Thu, 21 Nov 2019 18:17:13 +0100 (CET)
-Date:   Thu, 21 Nov 2019 18:17:13 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
+        id S1729384AbfKVF5O (ORCPT <rfc822;linux-mips@vger.kernel.org>);
+        Fri, 22 Nov 2019 00:57:14 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1701C20659;
+        Fri, 22 Nov 2019 05:57:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1574402234;
+        bh=rsLBM3cma18JC08uAkyl2VGiLgFBkK5qXvuZx/pyph4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=ioxdETCZ88eV/ef3xk8JFJSYbqa4ARXTWXcolDm+VjQI4gd0Djq1RBh1OfXE8g374
+         kEz5u91MzoT3HSwMSVgmTXAw4F+NizKFV8TlyWJyFstYfQmKGUo8yzRAV/QCs+pnQO
+         OvfmPfBlMt9RdWr51h0YrJak5xPnVWs5AN+yX6Yw=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Jonas Gorski <jonas.gorski@gmail.com>,
+        Paul Burton <paul.burton@mips.com>, linux-mips@vger.kernel.org,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paulburton@kernel.org>,
         James Hogan <jhogan@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ide@vger.kernel.org,
-        iommu@lists.linux-foundation.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2] dma-mapping: treat dev->bus_dma_mask as a DMA limit
-Message-ID: <20191121171713.GB2932@lst.de>
-References: <20191121092646.8449-1-nsaenzjulienne@suse.de> <c407877d-a812-de85-5e8f-e0915f5a517f@arm.com>
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 4.14 079/127] MIPS: BCM63XX: fix switch core reset on BCM6368
+Date:   Fri, 22 Nov 2019 00:54:57 -0500
+Message-Id: <20191122055544.3299-78-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191122055544.3299-1-sashal@kernel.org>
+References: <20191122055544.3299-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c407877d-a812-de85-5e8f-e0915f5a517f@arm.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Thu, Nov 21, 2019 at 05:07:54PM +0000, Robin Murphy wrote:
-> ^^ super-nit only because I can't not see my editor currently highlighting 
-> the typo: "accessible"
->
-> Regardless of that though,
->
-> Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-Applied for real now with that typo fixed and on top of the pulled in
-arm64 branch.
+[ Upstream commit 8a38dacf87180738d42b058334c951eba15d2d47 ]
+
+The Ethernet Switch core mask was set to 0, causing the switch core to
+be not reset on BCM6368 on boot. Provide the proper mask so the switch
+core gets reset to a known good state.
+
+Fixes: 799faa626c71 ("MIPS: BCM63XX: add core reset helper")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Paul Burton <paul.burton@mips.com>
+Cc: linux-mips@vger.kernel.org
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/mips/bcm63xx/reset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/mips/bcm63xx/reset.c b/arch/mips/bcm63xx/reset.c
+index a2af38cf28a70..64574e74cb236 100644
+--- a/arch/mips/bcm63xx/reset.c
++++ b/arch/mips/bcm63xx/reset.c
+@@ -120,7 +120,7 @@
+ #define BCM6368_RESET_DSL	0
+ #define BCM6368_RESET_SAR	SOFTRESET_6368_SAR_MASK
+ #define BCM6368_RESET_EPHY	SOFTRESET_6368_EPHY_MASK
+-#define BCM6368_RESET_ENETSW	0
++#define BCM6368_RESET_ENETSW	SOFTRESET_6368_ENETSW_MASK
+ #define BCM6368_RESET_PCM	SOFTRESET_6368_PCM_MASK
+ #define BCM6368_RESET_MPI	SOFTRESET_6368_MPI_MASK
+ #define BCM6368_RESET_PCIE	0
+-- 
+2.20.1
+

@@ -2,132 +2,105 @@ Return-Path: <SRS0=pvkH=ZQ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
+X-Spam-Status: No, score=-9.6 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9765AC432C0
-	for <linux-mips@archiver.kernel.org>; Sun, 24 Nov 2019 03:54:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B1D1BC432C3
+	for <linux-mips@archiver.kernel.org>; Sun, 24 Nov 2019 11:40:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 6986720659
-	for <linux-mips@archiver.kernel.org>; Sun, 24 Nov 2019 03:54:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 77FC12075E
+	for <linux-mips@archiver.kernel.org>; Sun, 24 Nov 2019 11:40:57 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="eS4K+WL/"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726719AbfKXDyr convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@archiver.kernel.org>);
-        Sat, 23 Nov 2019 22:54:47 -0500
-Received: from mail-io1-f67.google.com ([209.85.166.67]:40656 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726676AbfKXDyq (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sat, 23 Nov 2019 22:54:46 -0500
-Received: by mail-io1-f67.google.com with SMTP id b26so10518926ion.7
-        for <linux-mips@vger.kernel.org>; Sat, 23 Nov 2019 19:54:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=PZ/KE2hJprGqFwsV7+0s99EI+jTXk9VkSRz/9n+Yrow=;
-        b=ql+f4eq1/jPotwBuO7qq4jSo3rBU68jmS0FqwWIH85YcVxrYceXwy7AsI9ZAZX7zOB
-         mIZIy7LOT0HScCR4OinGkJce8z3NnwXCCrBP94y0yruEMKljBtpfOJa8xt2tQK9Uv3us
-         DCMRakDZozm90KOoW3cbjbDj4BQOof9d8G8JCRTCUdQfWtCE31Eb0lAMM5OtfkUm2Nhx
-         VmJDqMbGC9MzQKBMoSYBBZECw1XTPNMSo1jj2JgqgMBU+gXHTsuukkx3mmCvPWQRTf+1
-         2F5eqtW+GYfb0HFwjh5JjWGe7xwhRHyhrZb721hVvuBLK17o8WWiIOdp13L6J+MWtgms
-         YAQA==
-X-Gm-Message-State: APjAAAX8XCL05bYK8zKWAzdbcCOfaIvn7ZeEnPg00u16yOHlU6xT4spt
-        IKVXCPvoxLDyM71ghg1wgBKWxTz69OLdMdNW2SEZzk7m
-X-Google-Smtp-Source: APXvYqw5om0hdlNUAekobhlo7SO95tX8sAyy6KO/yg8RJluTP+zdD0VzvTbuSj9rZCswVfvGTY9dn6Dl1rk8qNAJ8F8=
-X-Received: by 2002:a02:ce5b:: with SMTP id y27mr22559747jar.38.1574567685414;
- Sat, 23 Nov 2019 19:54:45 -0800 (PST)
-MIME-Version: 1.0
-References: <1574335820-15188-1-git-send-email-chenhc@lemote.com>
- <20191122184731.l7ttfg4evgi4tvcp@lantea.localdomain> <EAC4F77C-88BE-47FA-83A5-5855A869425A@flygoat.com>
- <3C1D695B-09AA-4C2D-A94F-84DFC05C6F0C@flygoat.com>
-In-Reply-To: <3C1D695B-09AA-4C2D-A94F-84DFC05C6F0C@flygoat.com>
-From:   Huacai Chen <chenhc@lemote.com>
-Date:   Sun, 24 Nov 2019 12:00:51 +0800
-Message-ID: <CAAhV-H4R1LqwLyehnTo89XPCeZo=ka=p29_rHVg=vJ_YiqqNCQ@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Make sure ebase address is in KSEG0
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     Paul Burton <paulburton@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
+        id S1727071AbfKXLkv (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 24 Nov 2019 06:40:51 -0500
+Received: from mo4-p04-ob.smtp.rzone.de ([85.215.255.120]:8163 "EHLO
+        mo4-p04-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727128AbfKXLkv (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sun, 24 Nov 2019 06:40:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1574595649;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=11dnnmhb1p7k4nx66KvKMNZIk0qpx8gkJedgWR7HCNM=;
+        b=eS4K+WL/SFTR6d/xYkF5lhb8d/GMjFdszHfPtLZCrbM7/jqw3KfHWX5x/dUMGg9wWq
+        ay07uRUabJr1pEOVprAzDGDG+7FMCilrQIpRBpBmskfRdpwHgrkOiKuJyAJfGXHH2A1m
+        L0ydbAtCP3k47W2hzoLvVWNBkYxDvajBcFeZDT23un3A7ZKtSvgxCpQrAlvl4ZFUhNMi
+        H0i/jwE1xEBPFEfPSnlMQeJ0XgAkn6feCFsuVzFOFR0Kbo+abk3xNYNjUsnps2L2yHyb
+        twYWr9NNvERujdfa4APMa0jLMmNR2e2XOQgZDa5v2XmWjl4c/pcEihYHXhgpLSabKF8J
+        C00A==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1mfYzBGHXH4HEaKeuIV"
+X-RZG-CLASS-ID: mo00
+Received: from iMac.fritz.box
+        by smtp.strato.de (RZmta 44.29.0 DYNA|AUTH)
+        with ESMTPSA id L09db3vAOBeXwEa
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Sun, 24 Nov 2019 12:40:33 +0100 (CET)
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+To:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Paul Cercueil <paul@crapouillou.net>,
         Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <jhogan@kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "open list:MIPS" <linux-mips@vger.kernel.org>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+        Paul Burton <paulburton@kernel.org>,
+        James Hogan <jhogan@kernel.org>
+Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        openpvrsgx-devgroup@letux.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, linux-mips@vger.kernel.org,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Paul Boddie <paul@boddie.org.uk>
+Subject: [PATCH v3 8/8] MIPS: DTS: jz4780: add sgx gpu node
+Date:   Sun, 24 Nov 2019 12:40:28 +0100
+Message-Id: <c73e2cee4f818654f264b0b7b5458bfaa0ac6a7a.1574595627.git.hns@goldelico.com>
+X-Mailer: git-send-email 2.23.0
+In-Reply-To: <cover.1574595627.git.hns@goldelico.com>
+References: <cover.1574595627.git.hns@goldelico.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-Hi, Paul,
+and add interrupt and clocks.
 
-On Sat, Nov 23, 2019 at 2:11 PM Jiaxun Yang <jiaxun.yang@flygoat.com> wrote:
->
->
->
-> 于 2019年11月23日 GMT+08:00 下午1:08:38, Jiaxun Yang <jiaxun.yang@flygoat.com> 写到:
-> >
-> >
-> >于 2019年11月23日 GMT+08:00 上午2:47:31, Paul Burton <paulburton@kernel.org>
-> >写到:
-> >>Hi Huacai,
-> >>
-> >>On Thu, Nov 21, 2019 at 07:30:20PM +0800, Huacai Chen wrote:
-> >>> Dynamically allocated ebase address above 0x20000000 can be
-> >triggered
-> >>> by some special physical memory layout, or just by a "big kernel +
-> >>big
-> >>> initrd + big swiotlb" configuration.
-> >>>
-> >>> For MIPS32, ebase address above 0x20000000 is unusable, for MIPS64
-> >it
-> >>> is usable but this case is warned. However, this warning is useless
-> >>> because it is unfixable in a specific system configuration. So we
-> >>just
-> >>> use CKSEG0 as a fallback.
-> >>
-> >>I'd prefer that we don't assume there's memory at physical address
-> >zero
-> >>- that property doesn't hold for all systems.
-> >>
-> >>How about the change I suggested previously over here:
-> >>
-> >>https://lore.kernel.org/linux-mips/20191108191149.bbq3h4xp4famsh2n@lantea.localdomain/
-> >>
-> >>Would that work for you?
-Now this patch has nothing to do with WG bit, and also has nothing to
-do with Loongson, it just a problem with ebase address -- on any
-MIPSr2 platforms where ebase is dynamically allocated.
+Tested to build for CI20 board and load a (non-working) driver.
 
-In the comments it is said that ebase address above 0x20000000 (which
-should be in XKphys) has problems to handle cache error. However, if
-we really treat it as a problem, we should avoid it (not just a
-warning); and if we don't think it is a problem, then we can remove
-the warning (because the warning is unfixable in a specific system
-configuration).
+Suggested-by: Paul Boddie <paul@boddie.org.uk>
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+---
+ arch/mips/boot/dts/ingenic/jz4780.dtsi | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-Huacai
-> >
-> >Hi Paul
-> >
-> >Our problem is, sometimes the ebase from firmware is totally a random
-> >address,
-> >even not inside the memory region. I'd prefer ignore address if it's
-> >not valid since the warning here can't deal with it.
->
-> I'm sorry. I was wrong. Please ignore the noise.
->
-> Thanks
->
-> >
-> >Thanks.
-> >>
-> >>Thanks,
-> >>    Paul
-> >>
->
-> --
-> Jiaxun Yang
+diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+index c54bd7cfec55..21ea5f4a405b 100644
+--- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
++++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+@@ -46,6 +46,17 @@
+ 		#clock-cells = <1>;
+ 	};
+ 
++	gpu: gpu@13040000 {
++		compatible = "ingenic,jz4780-sgx540-120", "img,sgx540-120", "img,sgx540", "img,sgx5";
++		reg = <0x13040000 0x4000>;
++
++		clocks = <&cgu JZ4780_CLK_GPU>;
++		clock-names = "gpu";
++
++		interrupt-parent = <&intc>;
++		interrupts = <63>;
++	};
++
+ 	tcu: timer@10002000 {
+ 		compatible = "ingenic,jz4780-tcu",
+ 			     "ingenic,jz4770-tcu",
+-- 
+2.23.0
+

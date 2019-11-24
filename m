@@ -2,127 +2,114 @@ Return-Path: <SRS0=pvkH=ZQ=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.6 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B143C43215
-	for <linux-mips@archiver.kernel.org>; Sun, 24 Nov 2019 11:41:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C87EC43215
+	for <linux-mips@archiver.kernel.org>; Sun, 24 Nov 2019 12:57:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 68AC9207FC
-	for <linux-mips@archiver.kernel.org>; Sun, 24 Nov 2019 11:41:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B4B76207FC
+	for <linux-mips@archiver.kernel.org>; Sun, 24 Nov 2019 12:57:47 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="EoVYU7Bu"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="RTmLlG47"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726765AbfKXLkl (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Sun, 24 Nov 2019 06:40:41 -0500
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.81]:23309 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726705AbfKXLkl (ORCPT
-        <rfc822;linux-mips@vger.kernel.org>); Sun, 24 Nov 2019 06:40:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1574595638;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=Message-Id:Date:Subject:Cc:To:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
-        Subject:Sender;
-        bh=Xz/eSV1DQtvQmnwSq2ae2J1MX8uxZYrtnzHz1rAuGSM=;
-        b=EoVYU7ButJgC/UtlY1aMHcWQYoloT8CM6OTn0E6HHduOPMEOZEg/2WWTXwC42nuMKs
-        Kjxe5iNT3KZYSqE+xpg9hpJHUmLILqc3WyvOwyfY5tiPW87conuqynJOk6SVQpFwj0u7
-        rQIYGP7W1v7Am0kk7Tle0KNhZ2KVuIEOf853J6SfprjNadgsMrJ105R0iE3xNeKe5GS1
-        NxIYBf9bvQJ0C6xFwaJFW2lvGo6BhNBu1nrNHHcOFiTBSPm7LzPdUnh8b6KKnePhpZUo
-        /SX/GuxWmHcqbVhUPvIQYVDo4fJfQyov85fg5yciL5EJ39eVWVKY0RbSVrtuRdlk86l3
-        C2eQ==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1mfYzBGHXH4HEaKeuIV"
-X-RZG-CLASS-ID: mo00
-Received: from iMac.fritz.box
-        by smtp.strato.de (RZmta 44.29.0 DYNA|AUTH)
-        with ESMTPSA id L09db3vAOBeTwEQ
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Sun, 24 Nov 2019 12:40:29 +0100 (CET)
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-To:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        id S1726719AbfKXM5p (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Sun, 24 Nov 2019 07:57:45 -0500
+Received: from outils.crapouillou.net ([89.234.176.41]:55330 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726705AbfKXM5o (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Sun, 24 Nov 2019 07:57:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1574600256; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=eB/LD07EzRmsuGpIzh39d3UMiNMxk6mHLnDiEe/ssLc=;
+        b=RTmLlG47A3S6kbPnIBIe7NBB8tBfySmc8DFNLpb3oBf3DRfID7C9iXEZT7Iv3pi6Z4Fqo7
+        7tzP6M2RV59ImZiSVFCCpJ+3ZIDKEeCKP13KxThOdg3Gtz+ujaaTSI2L/4VyI86+Sb2x4p
+        92iUAkNIHsPORo95QlVgtT+scNtBMjU=
+Date:   Sun, 24 Nov 2019 13:57:26 +0100
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH v3 8/8] MIPS: DTS: jz4780: add sgx gpu node
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        =?iso-8859-1?q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
-        Paul Cercueil <paul@crapouillou.net>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paulburton@kernel.org>,
-        James Hogan <jhogan@kernel.org>
-Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        James Hogan <jhogan@kernel.org>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
         openpvrsgx-devgroup@letux.org, letux-kernel@openphoenux.org,
         kernel@pyra-handheld.com, linux-mips@vger.kernel.org,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: [PATCH v3 0/8] ARM/MIPS: DTS: add child nodes describing the PVRSGX GPU present in some OMAP SoC and JZ4780 (and many more)
-Date:   Sun, 24 Nov 2019 12:40:20 +0100
-Message-Id: <cover.1574595627.git.hns@goldelico.com>
-X-Mailer: git-send-email 2.23.0
+        Paul Boddie <paul@boddie.org.uk>
+Message-Id: <1574600246.3.0@crapouillou.net>
+In-Reply-To: <c73e2cee4f818654f264b0b7b5458bfaa0ac6a7a.1574595627.git.hns@goldelico.com>
+References: <cover.1574595627.git.hns@goldelico.com>
+        <c73e2cee4f818654f264b0b7b5458bfaa0ac6a7a.1574595627.git.hns@goldelico.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-* reworked YAML format with help by Rob Herring
-* removed .txt binding document
-* change compatible "ti,am335x-sgx" to "ti,am3352-sgx" - suggested by Tony Lindgren
-
-PATCH V2 2019-11-07 12:06:17:
-* tried to convert bindings to YAML format - suggested by Rob Herring
-* added JZ4780 DTS node (proven to load the driver)
-* removed timer and img,cores properties until we know we really need them - suggested by Rob Herring
-
-PATCH V1 2019-10-18 20:46:35:
-
-This patch series defines child nodes for the SGX5xx interface inside
-different SoC so that a driver can be found and probed by the
-compatible strings and can retrieve information about the SGX revision
-that is included in a specific SoC. It also defines the interrupt number
-to be used by the SGX driver.
-
-There is currently no mainline driver for these GPUs, but a project [1]
-is ongoing with the goal to get the open-source part as provided by TI/IMG
-and others into drivers/gpu/drm/pvrsgx.
-
-The kernel modules built from this project have successfully demonstrated
-to work with the DTS definitions from this patch set on AM335x BeagleBone
-Black, DM3730 and OMAP5 Pyra and Droid 4. They partially work on OMAP3530 and
-PandaBoard ES but that is likely a problem in the kernel driver or the
-(non-free) user-space libraries and binaries.
-
-Wotk for JZ4780 (CI20 board) is in progress and there is potential to extend
-this work to e.g. BananaPi-M3 (A83) and  some Intel Poulsbo and CedarView
-devices.
-
-[1]: https://github.com/openpvrsgx-devgroup
+Hi Nikolaus,
 
 
-H. Nikolaus Schaller (8):
-  dt-bindings: add img,pvrsgx.yaml for Imagination GPUs
-  ARM: DTS: am33xx: add sgx gpu child node
-  ARM: DTS: am3517: add sgx gpu child node
-  ARM: DTS: omap3: add sgx gpu child node
-  ARM: DTS: omap36xx: add sgx gpu child node
-  ARM: DTS: omap4: add sgx gpu child node
-  ARM: DTS: omap5: add sgx gpu child node
-  MIPS: DTS: jz4780: add sgx gpu node
+Le dim., nov. 24, 2019 at 12:40, H. Nikolaus Schaller=20
+<hns@goldelico.com> a =E9crit :
+> and add interrupt and clocks.
+>=20
+> Tested to build for CI20 board and load a (non-working) driver.
+>=20
+> Suggested-by: Paul Boddie <paul@boddie.org.uk>
+> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+> ---
+>  arch/mips/boot/dts/ingenic/jz4780.dtsi | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+>=20
+> diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi=20
+> b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+> index c54bd7cfec55..21ea5f4a405b 100644
+> --- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
+> +++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
+> @@ -46,6 +46,17 @@
+>  		#clock-cells =3D <1>;
+>  	};
+>=20
+> +	gpu: gpu@13040000 {
 
- .../devicetree/bindings/gpu/img,pvrsgx.yaml   | 83 +++++++++++++++++++
- arch/arm/boot/dts/am33xx.dtsi                 | 38 ++++++++-
- arch/arm/boot/dts/am3517.dtsi                 | 11 +--
- arch/arm/boot/dts/omap34xx.dtsi               | 11 +--
- arch/arm/boot/dts/omap36xx.dtsi               | 11 +--
- arch/arm/boot/dts/omap4.dtsi                  |  9 +-
- arch/arm/boot/dts/omap4470.dts                | 15 ++++
- arch/arm/boot/dts/omap5.dtsi                  |  9 +-
- arch/mips/boot/dts/ingenic/jz4780.dtsi        | 11 +++
- 9 files changed, 171 insertions(+), 27 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
- create mode 100644 arch/arm/boot/dts/omap4470.dts
+We try to keep the nodes ordered by address, could you move this node=20
+where it belongs?
 
--- 
-2.23.0
+Thanks,
+-Paul
+
+
+> +		compatible =3D "ingenic,jz4780-sgx540-120", "img,sgx540-120",=20
+> "img,sgx540", "img,sgx5";
+> +		reg =3D <0x13040000 0x4000>;
+> +
+> +		clocks =3D <&cgu JZ4780_CLK_GPU>;
+> +		clock-names =3D "gpu";
+> +
+> +		interrupt-parent =3D <&intc>;
+> +		interrupts =3D <63>;
+> +	};
+> +
+>  	tcu: timer@10002000 {
+>  		compatible =3D "ingenic,jz4780-tcu",
+>  			     "ingenic,jz4770-tcu",
+> --
+> 2.23.0
+>=20
+
+=
 

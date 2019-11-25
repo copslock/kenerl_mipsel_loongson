@@ -2,75 +2,86 @@ Return-Path: <SRS0=yUC0=ZR=vger.kernel.org=linux-mips-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 57EFFC432C3
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Nov 2019 07:44:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53201C432C0
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Nov 2019 09:50:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 316C72084D
-	for <linux-mips@archiver.kernel.org>; Mon, 25 Nov 2019 07:44:22 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 27E72207FD
+	for <linux-mips@archiver.kernel.org>; Mon, 25 Nov 2019 09:50:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726694AbfKYHoS (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
-        Mon, 25 Nov 2019 02:44:18 -0500
-Received: from verein.lst.de ([213.95.11.211]:34672 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725535AbfKYHoS (ORCPT <rfc822;linux-mips@vger.kernel.org>);
-        Mon, 25 Nov 2019 02:44:18 -0500
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id D394368C4E; Mon, 25 Nov 2019 08:44:12 +0100 (CET)
-Date:   Mon, 25 Nov 2019 08:44:12 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     Nathan Chancellor <natechancellor@gmail.com>
-Cc:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-ide@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Paul Burton <paulburton@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>, x86@kernel.org,
-        linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        James Hogan <jhogan@kernel.org>, Len Brown <lenb@kernel.org>,
-        devicetree@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-arm-kernel@lists.infradead.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2] dma-mapping: treat dev->bus_dma_mask as a DMA limit
-Message-ID: <20191125074412.GA30595@lst.de>
-References: <20191121092646.8449-1-nsaenzjulienne@suse.de> <20191123165108.GA15306@ubuntu-x2-xlarge-x86>
+        id S1727215AbfKYJuV (ORCPT <rfc822;linux-mips@archiver.kernel.org>);
+        Mon, 25 Nov 2019 04:50:21 -0500
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:40438 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727052AbfKYJuV (ORCPT
+        <rfc822;linux-mips@vger.kernel.org>); Mon, 25 Nov 2019 04:50:21 -0500
+Received: by mail-ot1-f65.google.com with SMTP id m15so12021637otq.7;
+        Mon, 25 Nov 2019 01:50:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bMQwMvsg+lPwUnZvGgrwp3V8xVxHE9IKpDMhB02XS+s=;
+        b=KPXh2cpuLsOEO3INDBtgCoz9MuPEqBlfu0qZ6AXelvopW/BWi871N/E8oc4BkzviAT
+         tV2UG9t5S5xVnztUwf+esj5RpWAQXAEqoUrbsh18EW8HZj44L3/sVV7zoqPfq6hZ01jy
+         8Tu2LWEkOdyU2rMCHjxfeHaWeKEOA9i9+gbWxOPUlG7/E0bf31j4sML71BJFMLF7LBf1
+         OAREgVV464kip6jyTLW0PE9xhxhbDDf4hICrgVvoSkD9DGCyrgV3stGlH4xVbo/whsOM
+         J8cXMnytd6wGKrsVpEYn70NcW6xlYRxj1K5K3UvNaX+rN6pjl3vgN0T5Hzc5ahM7GWwO
+         ftDA==
+X-Gm-Message-State: APjAAAXXWhjUOAY35HrcTnq4mgR/cndX3EME+GaL249DijmwiD8rg4iW
+        hn8ZZq9rhJSaGWTUK0LAIogGd1dIidzyCrw87WVjrb2x
+X-Google-Smtp-Source: APXvYqxCudGtj7rgIRB+xAwBzb8X+EExCAa/giJ2DnWTgefeyJAR6CwVpd7366ZFc1VH/0nORYt5XfeoW8QzIGbWoAw=
+X-Received: by 2002:a05:6830:1047:: with SMTP id b7mr18387980otp.107.1574675420457;
+ Mon, 25 Nov 2019 01:50:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191123165108.GA15306@ubuntu-x2-xlarge-x86>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+References: <20191125094110.14667-1-geert@linux-m68k.org>
+In-Reply-To: <20191125094110.14667-1-geert@linux-m68k.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 25 Nov 2019 10:50:09 +0100
+Message-ID: <CAMuHMdX-N2AHHpBVJCqkh1RoMxFXhGikGn4mj9E7sj0qkR4ukg@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v5.4
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     linux-mips@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-mips-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-mips.vger.kernel.org>
 X-Mailing-List: linux-mips@vger.kernel.org
 
-On Sat, Nov 23, 2019 at 09:51:08AM -0700, Nathan Chancellor wrote:
-> Just as an FYI, this introduces a warning on arm32 allyesconfig for me:
+On Mon, Nov 25, 2019 at 10:44 AM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+> JFYI, when comparing v5.4[1] to v5.4-rc8[3], the summaries are:
+>   - build errors: +3/-0
 
-I think the dma_limit argument to iommu_dma_alloc_iova should be a u64
-and/or we need to use min_t and open code the zero exception.
+  + /kisskb/src/drivers/staging/octeon/ethernet-spi.c: error:
+'OCTEON_IRQ_RML' undeclared (first use in this function):  => 224:12,
+198:19
+  + /kisskb/src/drivers/staging/octeon/ethernet-spi.c: error:
+'OCTEON_IRQ_RML' undeclared (first use in this function); did you mean
+'OCTEON_IS_MODEL'?:  => 198:19, 224:12
+  + /kisskb/src/drivers/staging/octeon/ethernet-tx.c: error:
+'OCTEON_IRQ_TIMER1' undeclared (first use in this function):  =>
+716:11, 705:18
 
-Robin, Nicolas - any opinions?
+mips-gcc8/mips-allmodconfig
 
-Also I wonder how this file gets compiled on arm32 given that arm32
-has its own set of iommu dma ops..
+All seen before, but hidden in v5.4-rcX (X > 5) by other build failures.
+
+[1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/219d54332a09e8d8741c1e1982f5eae56099de85/
+(232 out of 242 configs)
+[3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/af42d3466bdc8f39806b26f593604fdc54140bcb/
+(232 out of 242 configs)
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
